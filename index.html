@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labour Mitra - Contractor ERP & Manpower Management</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+    <!-- Header / Navbar -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-black text-blue-500">Labour</span>
+                <span class="text-2xl font-black text-amber-400">Mitra</span>
+                <span class="text-xs bg-blue-800 text-blue-200 px-2 py-0.5 rounded font-bold ml-2">ERP</span>
+            </div>
+            <a href="#login-section" class="bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold px-4 py-2 rounded-lg transition">
+                Portal Login
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-b from-slate-900 to-slate-800 text-white py-16 md:py-24 px-4 text-center">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <span class="bg-blue-900/80 text-blue-300 border border-blue-700 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider">
+                #1 Portal for Power Plant & Infrastructure Contractors
+            </span>
+            <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
+                100% Digital Solution for Attendance, PF/ESI & <span class="text-amber-400">Power Plant Billing</span>
+            </h1>
+            <p class="text-slate-300 text-sm md:text-base max-w-2xl mx-auto">
+                Eliminate paper registers. Mark mobile attendance on-site, generate PF ECR reports, and auto-create client invoices for plant HR in one click.
+            </p>
+            <div class="pt-4 flex flex-wrap justify-center gap-4">
+                <a href="#login-section" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-3 rounded-lg shadow-lg text-sm transition">
+                    Access Portal Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-12 max-w-7xl mx-auto px-4">
+        <h2 class="text-2xl font-bold text-center mb-8 text-slate-800">Key Features</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center font-bold text-lg mb-4">📱</div>
+                <h3 class="font-bold text-lg mb-2">Mobile Site Attendance</h3>
+                <p class="text-slate-600 text-xs leading-relaxed">Supervisors can onboard workers on-site, upload KYC documents, and mark daily shifts (P/A/HD) directly from mobile phones.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center font-bold text-lg mb-4">📊</div>
+                <h3 class="font-bold text-lg mb-2">PF & ECR Auto-Generator</h3>
+                <p class="text-slate-600 text-xs leading-relaxed">Export PF (13%) and ESI (3.25%) monthly ECR sheets ready for government portal upload with zero manual data entry.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center font-bold text-lg mb-4">🧾</div>
+                <h3 class="font-bold text-lg mb-2">Contractor Billing Engine</h3>
+                <p class="text-slate-600 text-xs leading-relaxed">Automated invoice calculations for Power Plant HR including service charge (10%) and GST for error-free monthly billing.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Form Section -->
+    <section id="login-section" class="py-12 bg-slate-200/60 px-4">
+        <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-md border border-slate-300">
+            <h2 class="text-2xl font-bold text-slate-900 text-center mb-1">Portal Login</h2>
+            <p class="text-xs text-slate-500 text-center mb-6">Sign in to your Admin or Supervisor account</p>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Select Role</label>
+                    <select id="user-role" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm bg-slate-50 focus:bg-white">
+                        <option value="ADMIN">Contractor / Admin (Admin Panel)</option>
+                        <option value="SUPERVISOR">Site Supervisor (Supervisor Portal)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+                    <input type="email" id="email" required class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="user@powerplant.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+                    <input type="password" id="password" required class="w-full border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="••••••••">
+                </div>
+                <button type="submit" id="login-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg text-sm shadow transition">
+                    Secure Login
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800">
+        <p>© 2026 Labour Mitra ERP System. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Firebase Config (Replace with your actual Firebase keys)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('login-btn');
+            btn.disabled = true;
+            btn.innerText = "Verifying...";
+
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            const role = document.getElementById('user-role').value;
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(userCredential => {
+                    if (role === "ADMIN") {
+                        window.location.href = "admin.html";
+                    } else {
+                        window.location.href = "supervisor.html";
+                    }
+                })
+                .catch(error => {
+                    alert("Login Error: " + error.message);
+                    btn.disabled = false;
+                    btn.innerText = "Secure Login";
+                });
+        }
+    </script>
+</body>
+</html>
