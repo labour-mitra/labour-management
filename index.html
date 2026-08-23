@@ -307,7 +307,7 @@
                 <!-- ------------------------------------------------------------- -->
                 <div id="view-contractor-panel" class="view-panel space-y-6 hidden">
                     
-                    <!-- 1. Commercial Profit & Loss Engine ("Apna Fayda" Live Matrix) -->
+                    <!-- Commercial Profit & Loss Engine ("Apna Fayda" Live Matrix) -->
                     <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-blue-950 border border-slate-800 p-5 rounded-2xl space-y-4">
                         <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-800 pb-3">
                             <div>
@@ -351,7 +351,7 @@
                         </div>
                     </div>
 
-                    <!-- 2. Creation Action Modules (Forms) -->
+                    <!-- Creation Action Modules (Forms) -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         
                         <!-- Form 1: Add Plant Contract -->
@@ -421,7 +421,7 @@
                         </div>
                     </div>
 
-                    <!-- 3. Registered Labour Directory -->
+                    <!-- Registered Labour Directory -->
                     <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                         <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
                             <div>
@@ -578,26 +578,28 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. REACTIVE STATE ENGINE & CONTROLLER SCRIPTS                             -->
+    <!-- 4. REACTIVE STATE ENGINE & REFRESH PERSISTENCE SCRIPT                     -->
     <!-- ========================================================================= -->
     <script>
-        // Clean Reactive State (Zero fake initial records)
+        // Clean Reactive State
         let APP_STATE = {
-            currentUserRole: null, // ADMIN, CONTRACTOR, SUPERVISOR, COMPANY
+            currentUserRole: null,
             currentSupervisor: null,
             currentCompanyId: null,
             plants: [],
             supervisors: [],
             labour: [],
-            attendance: {}, // { workerId: 'P' | 'HD' | 'A' }
-            advances: {}, // { workerId: amount }
+            attendance: {},
+            advances: {},
             expenses: 3500
         };
 
+        // Window Load: Restore Session & State
         window.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
             loadStateFromStorage();
             refreshPublicCounters();
+            checkAndRestoreSession();
+            lucide.createIcons();
         });
 
         function saveStateToStorage() {
@@ -609,10 +611,39 @@
             const data = localStorage.getItem('LABOUR_MITRA_FINAL_STATE');
             if (data) {
                 try {
-                    APP_STATE = JSON.parse(data);
+                    const parsed = JSON.parse(data);
+                    APP_STATE.plants = parsed.plants || [];
+                    APP_STATE.supervisors = parsed.supervisors || [];
+                    APP_STATE.labour = parsed.labour || [];
+                    APP_STATE.attendance = parsed.attendance || {};
+                    APP_STATE.advances = parsed.advances || {};
+                    APP_STATE.expenses = parsed.expenses || 3500;
                 } catch (e) {
                     console.error("State parse error:", e);
                 }
+            }
+        }
+
+        // Session Retention on Refresh
+        function checkAndRestoreSession() {
+            const sessionRole = sessionStorage.getItem('LM_AUTH_ROLE');
+            const sessionSup = sessionStorage.getItem('LM_AUTH_SUP');
+            const sessionComp = sessionStorage.getItem('LM_AUTH_COMP');
+
+            if (sessionRole) {
+                APP_STATE.currentUserRole = sessionRole;
+                if (sessionSup) {
+                    try { APP_STATE.currentSupervisor = JSON.parse(sessionSup); } catch (e) {}
+                }
+                if (sessionComp) {
+                    APP_STATE.currentCompanyId = sessionComp;
+                }
+
+                // Show authenticated view directly
+                document.getElementById('public-website-view').classList.add('hidden');
+                document.getElementById('authenticated-app').classList.remove('hidden');
+
+                setupRoleWorkspace(sessionRole);
             }
         }
 
@@ -686,12 +717,15 @@
             const authId = document.getElementById('auth-id').value.trim();
 
             APP_STATE.currentUserRole = role;
+            sessionStorage.setItem('LM_AUTH_ROLE', role);
 
             if (role === 'SUPERVISOR') {
                 const matchedSup = APP_STATE.supervisors.find(s => s.mobile === authId) || APP_STATE.supervisors[0];
                 APP_STATE.currentSupervisor = matchedSup || { name: 'Field Supervisor', plantId: APP_STATE.plants[0]?.id };
+                sessionStorage.setItem('LM_AUTH_SUP', JSON.stringify(APP_STATE.currentSupervisor));
             } else if (role === 'COMPANY') {
                 APP_STATE.currentCompanyId = authId || 'COMP-0001';
+                sessionStorage.setItem('LM_AUTH_COMP', APP_STATE.currentCompanyId);
             }
 
             closeLoginModal();
@@ -706,6 +740,12 @@
             APP_STATE.currentUserRole = null;
             APP_STATE.currentSupervisor = null;
             APP_STATE.currentCompanyId = null;
+            
+            // Clear Session on explicit logout
+            sessionStorage.removeItem('LM_AUTH_ROLE');
+            sessionStorage.removeItem('LM_AUTH_SUP');
+            sessionStorage.removeItem('LM_AUTH_COMP');
+
             document.getElementById('authenticated-app').classList.add('hidden');
             document.getElementById('public-website-view').classList.remove('hidden');
             refreshPublicCounters();
@@ -762,7 +802,7 @@
         }
 
         // =========================================================================
-        // 1. CONTRACTOR & ACCOUNTANT LOGIC (P&L, Plant, Supervisor, Labour)
+        // CONTRACTOR & ACCOUNTANT LOGIC (P&L, Plant, Supervisor, Labour)
         // =========================================================================
         function renderContractorView() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
@@ -884,7 +924,7 @@
         }
 
         // =========================================================================
-        // 2. SUPERVISOR LOGIC (Syncs directly with Contractor-assigned plant)
+        // SUPERVISOR LOGIC (Syncs with Plant)
         // =========================================================================
         function renderSupervisorView() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
@@ -944,7 +984,7 @@
         }
 
         // =========================================================================
-        // 3. CLIENT / COMPANY LOGIC (Isolated Scope)
+        // CLIENT / COMPANY LOGIC
         // =========================================================================
         function renderCompanyView() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
@@ -974,7 +1014,7 @@
         }
 
         // =========================================================================
-        // 4. MASTER ADMIN LOGIC (God View)
+        // MASTER ADMIN LOGIC
         // =========================================================================
         function renderAdminView() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
@@ -1010,10 +1050,8 @@
         }
 
         // =========================================================================
-        // 5. DIRECT PDF & BULK EXPORT GENERATION MODULES (jsPDF + CSV)
+        // DIRECT PDF GENERATION MODULES (jsPDF)
         // =========================================================================
-        
-        // Multi-Mode Payout 1: Bank Bulk Upload CSV (NEFT/RTGS/CMS)
         function executeBankBulkExport() {
             let csvContent = "data:text/csv;charset=utf-8,Beneficiary_Name,Account_Number,IFSC_Code,Amount,Remarks\n";
             
@@ -1036,7 +1074,6 @@
             alert("Bank Bulk Payout CSV generated successfully! Payout batch is now locked.");
         }
 
-        // Multi-Mode Payout 2: Cash & Khuraki Receipt Voucher (PDF)
         function executeCashVouchersPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -1064,7 +1101,6 @@
             closePayoutModal();
         }
 
-        // Statutory Form B Register PDF (Central Labour Act)
         function downloadFormBRegisterPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape');
@@ -1089,7 +1125,6 @@
             doc.save("Statutory_Form_B_Register.pdf");
         }
 
-        // Individual Worker Form T Wage Slip PDF
         function downloadFormTWageSlipPDF(workerId) {
             const worker = APP_STATE.labour.find(w => w.id === workerId);
             if (!worker) return;
@@ -1127,7 +1162,6 @@
             doc.save(`WageSlip_${worker.id}.pdf`);
         }
 
-        // Worker PVC QR Gate Pass PDF
         function downloadWorkerIDCardPDF(workerId) {
             const worker = APP_STATE.labour.find(w => w.id === workerId);
             if (!worker) return;
@@ -1136,15 +1170,15 @@
             const doc = new jsPDF({
                 orientation: 'portrait',
                 unit: 'mm',
-                format: [85, 54] // Standard PVC ID card dimensions
+                format: [85, 54]
             });
 
             const plant = APP_STATE.plants.find(p => p.id === worker.plantId);
 
-            doc.setFillColor(15, 23, 42); // Slate 900
+            doc.setFillColor(15, 23, 42);
             doc.rect(0, 0, 85, 54, 'F');
 
-            doc.setTextColor(245, 158, 11); // Amber 500
+            doc.setTextColor(245, 158, 11);
             doc.setFontSize(9);
             doc.text("LABOUR MITRA ERP", 27, 8);
 
@@ -1152,13 +1186,11 @@
             doc.setFontSize(7);
             doc.text("INDUSTRIAL GATE PASS", 26, 12);
 
-            // Photo Placeholder Box
             doc.setDrawColor(245, 158, 11);
             doc.rect(4, 15, 22, 26);
             doc.setFontSize(6);
             doc.text("PHOTO", 11, 29);
 
-            // Details
             doc.setFontSize(7);
             doc.text("ID: " + worker.id, 29, 18);
             doc.text("Name: " + worker.name, 29, 23);
@@ -1166,7 +1198,6 @@
             doc.text("Plant: " + (plant ? plant.name.substring(0, 14) : 'General Unit'), 29, 33);
             doc.text("Blood Grp: O+", 29, 38);
 
-            // Bottom Security Bar
             doc.setFillColor(37, 99, 235);
             doc.rect(0, 48, 85, 6, 'F');
             doc.setTextColor(255, 255, 255);
@@ -1176,7 +1207,6 @@
             doc.save(`GatePass_${worker.id}.pdf`);
         }
 
-        // P&L Ledger PDF
         function downloadProfitLedgerPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
