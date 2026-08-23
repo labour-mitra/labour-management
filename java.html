@@ -1,8 +1,118 @@
-const firebaseConfig = {
-    apiKey: "AIzaSy...",
-    authDomain: "labour-mitra.firebaseapp.com",
-    projectId: "labour-mitra",
-    storageBucket: "labour-mitra.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abcdef123456"
-};
+package com.manpowerpro.erp.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+// --- 1. WORKER MASTER ENTITY ---
+@Entity
+@Table(name = "workers", indexes = {
+    @Index(name = "idx_worker_unique_id", columnList = "workerId", unique = true),
+    @Index(name = "idx_worker_identity", columnList = "identityHash", unique = true)
+})
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+public class Worker {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true, length = 30)
+    private String workerId; // Format: LAB-000001
+
+    @Column(nullable = false)
+    private String fullName;
+
+    private String fatherName;
+    private LocalDate dob;
+    private String mobileNumber;
+
+    @Column(nullable = false, unique = true)
+    private String identityHash; // SHA-256 for duplicate checking
+
+    @Column(nullable = false)
+    private String panNumber;
+
+    // Bank Details
+    private String bankAccountEncrypted;
+    private String ifscCode;
+    private String bankName;
+
+    // Statutory Details
+    private String uanNumber;
+    private boolean pfApplicable;
+    private String esicNumber;
+    private boolean esicApplicable;
+
+    // Employment
+    private BigDecimal dailyWage;
+    private BigDecimal otRatePerHour;
+
+    @Enumerated(EnumType.STRING)
+    private EmploymentStatus status; // ACTIVE, ON_LEAVE, SUSPENDED, TERMINATED
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "current_plant_id")
+    private Plant currentPlant;
+}
+
+// --- 2. ATTENDANCE & AUDIT LOG ENTITY ---
+@Entity
+@Table(name = "attendance_records", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"worker_id", "attendanceDate"})
+})
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+public class AttendanceRecord {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "worker_id")
+    private Worker worker;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "plant_id")
+    private Plant plant;
+
+    @Column(nullable = false)
+    private LocalDate attendanceDate;
+
+    @Enumerated(EnumType.STRING)
+    private ShiftStatus status; // P, A, HD, PAID_LEAVE, UNPAID_LEAVE
+
+    private Double otHours;
+
+    @Enumerated(EnumType.STRING)
+    private WorkflowStatus workflowStatus; // DRAFT, SUBMITTED, APPROVED, LOCKED
+
+    private String markedBySupervisorId;
+    private LocalDateTime markedAt;
+}
+
+// --- 3. IMMUTABLE AUDIT TRAIL ---
+@Entity
+@Table(name = "system_audit_logs")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+public class AuditLog {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String performedBy;
+    private String role;
+    private String action; // ATTENDANCE_EDIT, PAYROLL_APPROVE, BANK_CHANGE
+    private String targetEntity;
+    private String recordId;
+    
+    @Column(columnDefinition = "TEXT")
+    private String oldValue;
+    
+    @Column(columnDefinition = "TEXT")
+    private String newValue;
+    
+    private String reason;
+    private LocalDateTime timestamp;
+    private String ipAddress;
+}
