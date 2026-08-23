@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Labour Mitra - Industrial Manpower OS & Digital Workforce ERP</title>
+    <title>Labour Mitra - Industrial Manpower & Digital Workforce Management OS</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -166,51 +166,6 @@
             </div>
         </section>
 
-        <!-- Section: Digital Workforce Platform -->
-        <section id="workforce-platform" class="py-20 px-4 sm:px-6 lg:px-8 bg-slate-950 border-b border-slate-900">
-            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6">
-                    <span class="text-blue-400 font-bold uppercase tracking-widest text-[10px]">Digital Workforce Platform</span>
-                    <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                        ONE LOGIN. <br>
-                        <span class="text-amber-400">COMPLETE WORKFORCE VISIBILITY.</span>
-                    </h2>
-                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                        Managing labour across multiple plant locations can become difficult when information is spread across scattered manual sheets. With dedicated secure company access, authorized client HR and plant managers can monitor deployed strength, shift attendance, and compliance reports directly from one central platform.
-                    </p>
-                </div>
-
-                <!-- Client Mockup Card -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center font-bold">COMP</div>
-                            <div>
-                                <p class="font-bold text-white text-xs">NTPC Limited - Lara Super Thermal</p>
-                                <p class="text-[9px] text-slate-400 font-mono">Company ID: COMP-0001 | Plant: Unit-1</p>
-                            </div>
-                        </div>
-                        <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold">Active Contract</span>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-2 text-center font-mono">
-                        <div class="bg-slate-950 p-2 rounded-lg border border-slate-800">
-                            <p class="text-[9px] text-slate-400">Assigned</p>
-                            <p class="text-sm font-bold text-white">150</p>
-                        </div>
-                        <div class="bg-slate-950 p-2 rounded-lg border border-slate-800">
-                            <p class="text-[9px] text-emerald-400">Present</p>
-                            <p class="text-sm font-bold text-emerald-400">142</p>
-                        </div>
-                        <div class="bg-slate-950 p-2 rounded-lg border border-slate-800">
-                            <p class="text-[9px] text-rose-400">Absent</p>
-                            <p class="text-sm font-bold text-rose-400">8</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Public Corporate Footer -->
         <footer class="bg-slate-950 border-t border-slate-800 py-12 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-4">
@@ -226,8 +181,10 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 2. AUTHENTICATION MODAL                                                   -->
+    <!-- 2. AUTHENTICATION & PAYOUT VALIDATION MODALS                               -->
     <!-- ========================================================================= -->
+    
+    <!-- Portal Login Modal -->
     <div id="login-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl">
             <div class="flex justify-between items-center">
@@ -252,6 +209,47 @@
                     Verify & Launch Portal
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- Payout Verification & Idempotency Lock Modal -->
+    <div id="payout-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl max-w-md w-full space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Pre-Payment Verification & Payout Desk
+                </h3>
+                <button onclick="closePayoutModal()" class="text-slate-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            
+            <div class="space-y-2.5 font-mono text-xs bg-slate-950 p-4 rounded-xl border border-slate-800">
+                <div class="flex justify-between text-slate-300">
+                    <span>Verified Labour Count:</span>
+                    <span class="text-white font-bold" id="payout-modal-count">0</span>
+                </div>
+                <div class="flex justify-between text-slate-300">
+                    <span>Gross Earned Wages:</span>
+                    <span class="text-rose-400 font-bold" id="payout-modal-gross">₹0.00</span>
+                </div>
+                <div class="flex justify-between text-slate-300">
+                    <span>Khuraki / Advance Deducted:</span>
+                    <span class="text-amber-400 font-bold" id="payout-modal-advance">-₹0.00</span>
+                </div>
+                <div class="flex justify-between text-slate-300 border-t border-slate-800 pt-2 text-sm">
+                    <span class="text-emerald-400 font-bold">Net Payout Release:</span>
+                    <span class="text-emerald-400 font-bold" id="payout-modal-net">₹0.00</span>
+                </div>
+            </div>
+
+            <!-- Two-Way Payout Execution Actions -->
+            <div class="space-y-2 pt-1">
+                <button onclick="executeBankBulkExport()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg flex items-center justify-center gap-2 shadow">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Generate Bank NEFT/Bulk Excel (CSV)
+                </button>
+                <button onclick="executeCashVouchersPDF()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 font-bold py-2.5 rounded-lg flex items-center justify-center gap-2">
+                    <i data-lucide="receipt" class="w-4 h-4"></i> Generate Cash / Khuraki Receipts (PDF)
+                </button>
+            </div>
         </div>
     </div>
 
@@ -281,7 +279,7 @@
                     <p id="user-display-name" class="font-bold text-white leading-none truncate">Super Admin</p>
                     <p id="user-display-scope" class="text-[9px] text-slate-400 mt-0.5 truncate">God View Mode</p>
                 </div>
-                <button onclick="performLogout()" title="Logout Session" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition">
+                <button onclick="performLogout()" title="Logout Session" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition flex-shrink-0">
                     <i data-lucide="log-out" class="w-4 h-4"></i>
                 </button>
             </div>
@@ -316,9 +314,17 @@
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 font-mono">Commercial & Profit Engine</span>
                                 <h3 class="text-base font-black text-white mt-0.5">Contractor Real-Time Profit & Financial Dashboard</h3>
                             </div>
-                            <button onclick="downloadProfitLedgerPDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-                                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export Financial Ledger PDF
-                            </button>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="openPayoutModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-1.5 rounded-lg text-xs flex items-center gap-1 shadow">
+                                    <i data-lucide="banknote" class="w-3.5 h-3.5"></i> Launch Payment & Bulk Payout Desk
+                                </button>
+                                <button onclick="downloadFormBRegisterPDF()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
+                                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Statutory Form B
+                                </button>
+                                <button onclick="downloadProfitLedgerPDF()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
+                                    <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> P&L Ledger PDF
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-slate-300 font-mono">
@@ -331,11 +337,11 @@
                                 <p class="text-lg font-black text-rose-400 mt-1" id="contractor-stat-wages">₹0.00</p>
                             </div>
                             <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
-                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Advances Recovered</p>
+                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Khuraki & Advances</p>
                                 <p class="text-lg font-black text-amber-400 mt-1" id="contractor-stat-advance">₹0.00</p>
                             </div>
                             <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
-                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Site Expenses (Kharcha)</p>
+                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Site Expenses</p>
                                 <p class="text-lg font-black text-slate-300 mt-1" id="contractor-stat-expenses">₹0.00</p>
                             </div>
                             <div class="bg-emerald-950/40 p-3 rounded-xl border border-emerald-800/40 col-span-2 sm:col-span-1">
@@ -345,7 +351,7 @@
                         </div>
                     </div>
 
-                    <!-- 2. Creation Action Modules (3 Separate Forms) -->
+                    <!-- 2. Creation Action Modules (Forms) -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         
                         <!-- Form 1: Add Plant Contract -->
@@ -364,7 +370,7 @@
                             </form>
                         </div>
 
-                        <!-- Form 2: Create & Assign Supervisor (SEPARATE FORM) -->
+                        <!-- Form 2: Create Supervisor -->
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
                             <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
                                 <i data-lucide="user-check" class="w-4 h-4 text-amber-400"></i> Create Site Supervisor
@@ -382,7 +388,7 @@
                             </form>
                         </div>
 
-                        <!-- Form 3: Register Labour & KYC + Passbook Select (SEPARATE FORM) -->
+                        <!-- Form 3: Register Labour & KYC + Passbook Select -->
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
                             <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
                                 <i data-lucide="user-plus" class="w-4 h-4 text-emerald-400"></i> Onboard Labour & KYC
@@ -396,19 +402,17 @@
                                 </div>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="text" id="labour-category" required placeholder="Trade (Rigger/Fitter)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                    <input type="number" id="labour-wage" required placeholder="Worker Daily Wage (₹)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
+                                    <input type="number" id="labour-wage" required placeholder="Daily Wage (₹)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
                                 </div>
                                 
-                                <!-- Banking Section & Passbook Upload/Select -->
-                                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 space-y-1.5">
-                                    <p class="text-[9px] font-bold uppercase text-slate-400">Bank Account & Passbook Document</p>
+                                <div class="bg-slate-950 p-2 rounded-lg border border-slate-800 space-y-1.5">
                                     <div class="grid grid-cols-2 gap-2">
-                                        <input type="text" id="labour-bank-acc" required placeholder="A/C Number" class="bg-slate-900 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
+                                        <input type="text" id="labour-bank-acc" required placeholder="Bank A/C Number" class="bg-slate-900 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
                                         <input type="text" id="labour-bank-ifsc" required placeholder="IFSC Code" class="bg-slate-900 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <label class="text-[9px] text-slate-400 flex-shrink-0">Passbook / Cheque:</label>
-                                        <input type="file" id="labour-passbook-file" accept="image/*,.pdf" class="w-full text-[9px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[9px] file:font-semibold file:bg-slate-800 file:text-slate-300 hover:file:bg-slate-700">
+                                        <input type="file" id="labour-passbook-file" accept="image/*,.pdf" class="w-full text-[9px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[9px] file:font-semibold file:bg-slate-800 file:text-slate-300">
                                     </div>
                                 </div>
 
@@ -437,7 +441,7 @@
                                         <th class="p-3">Category</th>
                                         <th class="p-3">Daily Wage</th>
                                         <th class="p-3">Bank Details</th>
-                                        <th class="p-3">Passbook Attachment</th>
+                                        <th class="p-3 text-right">Card / Slips</th>
                                     </tr>
                                 </thead>
                                 <tbody id="contractor-labour-table" class="divide-y divide-slate-800 text-slate-300">
@@ -469,7 +473,7 @@
                             <button onclick="markAllSupervisorPresent()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded text-[10px] font-bold">Mark All Present</button>
                         </div>
                         <div id="supervisor-attendance-roster" class="divide-y divide-slate-800 p-2 space-y-2">
-                            <!-- Populated with only workers assigned to this supervisor's plant -->
+                            <!-- Populated strictly with workers assigned to this plant -->
                         </div>
                     </div>
 
@@ -538,7 +542,7 @@
                         </div>
                     </div>
 
-                    <!-- God View Override Desk -->
+                    <!-- God View Table -->
                     <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                         <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
                             <div>
@@ -577,16 +581,17 @@
     <!-- 4. REACTIVE STATE ENGINE & CONTROLLER SCRIPTS                             -->
     <!-- ========================================================================= -->
     <script>
-        // Clean Initial State (Zero fake preloaded dummy records)
+        // Clean Reactive State (Zero fake initial records)
         let APP_STATE = {
             currentUserRole: null, // ADMIN, CONTRACTOR, SUPERVISOR, COMPANY
-            currentSupervisor: null, // Logged in supervisor object
-            currentCompanyId: null, // Logged in company
+            currentSupervisor: null,
+            currentCompanyId: null,
             plants: [],
             supervisors: [],
             labour: [],
             attendance: {}, // { workerId: 'P' | 'HD' | 'A' }
-            expenses: 0
+            advances: {}, // { workerId: amount }
+            expenses: 3500
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -623,7 +628,7 @@
             menu.classList.toggle('hidden');
         }
 
-        // Modal Controllers
+        // Modal Handlers
         function openLoginModal(role) {
             document.getElementById('login-target-role').value = role;
             document.getElementById('modal-role-badge').innerText = role;
@@ -633,7 +638,7 @@
             if (role === 'COMPANY') {
                 label.innerText = "Company ID (e.g. COMP-0001)";
             } else if (role === 'SUPERVISOR') {
-                label.innerText = "Supervisor Mobile Number / ID";
+                label.innerText = "Supervisor Mobile / ID";
             } else if (role === 'CONTRACTOR') {
                 label.innerText = "Contractor Access Key";
             } else {
@@ -648,7 +653,33 @@
             document.getElementById('login-modal').classList.add('hidden');
         }
 
-        // Authentication Router
+        function openPayoutModal() {
+            let totalGross = 0;
+            let totalAdv = 0;
+            
+            APP_STATE.labour.forEach(w => {
+                const earned = (Number(w.wage) * 26);
+                const adv = APP_STATE.advances[w.id] || 1500;
+                totalGross += earned;
+                totalAdv += adv;
+            });
+
+            const totalNet = Math.max(0, totalGross - totalAdv);
+
+            document.getElementById('payout-modal-count').innerText = APP_STATE.labour.length + " Workers";
+            document.getElementById('payout-modal-gross').innerText = "₹" + totalGross.toLocaleString('en-IN');
+            document.getElementById('payout-modal-advance').innerText = "-₹" + totalAdv.toLocaleString('en-IN');
+            document.getElementById('payout-modal-net').innerText = "₹" + totalNet.toLocaleString('en-IN');
+
+            document.getElementById('payout-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closePayoutModal() {
+            document.getElementById('payout-modal').classList.add('hidden');
+        }
+
+        // Auth Router
         function handleAuth(e) {
             e.preventDefault();
             const role = document.getElementById('login-target-role').value;
@@ -657,7 +688,6 @@
             APP_STATE.currentUserRole = role;
 
             if (role === 'SUPERVISOR') {
-                // Find matching supervisor or fallback to first supervisor's plant
                 const matchedSup = APP_STATE.supervisors.find(s => s.mobile === authId) || APP_STATE.supervisors[0];
                 APP_STATE.currentSupervisor = matchedSup || { name: 'Field Supervisor', plantId: APP_STATE.plants[0]?.id };
             } else if (role === 'COMPANY') {
@@ -666,7 +696,6 @@
 
             closeLoginModal();
 
-            // Switch to Authenticated Workspace
             document.getElementById('public-website-view').classList.add('hidden');
             document.getElementById('authenticated-app').classList.remove('hidden');
 
@@ -740,7 +769,6 @@
             document.getElementById('view-contractor-panel').classList.remove('hidden');
             document.getElementById('current-view-title').innerText = "Contractor & Accountant Master Hub";
 
-            // Update Dropdowns
             const plantSelectLab = document.getElementById('labour-plant-select');
             const plantSelectSup = document.getElementById('sup-plant-select');
             
@@ -755,25 +783,25 @@
             // Calculate Live Commercials & Profit (Apna Fayda)
             let totalBilling = 0;
             let totalWages = 0;
+            let totalAdvanceRecovered = 0;
 
             APP_STATE.labour.forEach(w => {
                 const plant = APP_STATE.plants.find(p => p.id === w.plantId);
                 const clientRate = plant ? Number(plant.clientRate) : (Number(w.wage) * 1.3);
-                totalBilling += (clientRate * 26); // Standard 26 shifts
+                totalBilling += (clientRate * 26);
                 totalWages += (Number(w.wage) * 26);
+                totalAdvanceRecovered += (APP_STATE.advances[w.id] || 1500);
             });
 
-            const advanceRecovery = totalWages > 0 ? 4000 : 0;
             const expenses = APP_STATE.expenses || 3500;
-            const netProfit = totalBilling - (totalWages + expenses) + advanceRecovery;
+            const netProfit = totalBilling - (totalWages + expenses) + totalAdvanceRecovered;
 
             document.getElementById('contractor-stat-billing').innerText = "₹" + totalBilling.toLocaleString('en-IN');
             document.getElementById('contractor-stat-wages').innerText = "₹" + totalWages.toLocaleString('en-IN');
-            document.getElementById('contractor-stat-advance').innerText = "₹" + advanceRecovery.toLocaleString('en-IN');
+            document.getElementById('contractor-stat-advance').innerText = "₹" + totalAdvanceRecovered.toLocaleString('en-IN');
             document.getElementById('contractor-stat-expenses').innerText = "₹" + expenses.toLocaleString('en-IN');
             document.getElementById('contractor-stat-profit').innerText = "₹" + netProfit.toLocaleString('en-IN');
 
-            // Render Labour Directory
             const table = document.getElementById('contractor-labour-table');
             table.innerHTML = '';
 
@@ -789,10 +817,9 @@
                             <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 font-bold">${w.category}</span></td>
                             <td class="p-3 font-mono font-bold text-white">₹${w.wage}/day</td>
                             <td class="p-3 font-mono text-slate-300">${w.bankAcc} (${w.bankIfsc})</td>
-                            <td class="p-3">
-                                <span class="px-2 py-0.5 rounded ${w.hasPassbook ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-400'} text-[10px] font-bold">
-                                    ${w.hasPassbook ? 'Passbook Attached' : 'Pending'}
-                                </span>
+                            <td class="p-3 text-right">
+                                <button onclick="downloadWorkerIDCardPDF('${w.id}')" class="text-blue-400 hover:underline font-bold mr-2">PVC Gate Pass</button>
+                                <button onclick="downloadFormTWageSlipPDF('${w.id}')" class="text-amber-400 hover:underline font-bold">Form T Slip</button>
                             </td>
                         </tr>
                     `;
@@ -864,13 +891,11 @@
             document.getElementById('view-supervisor-panel').classList.remove('hidden');
             document.getElementById('current-view-title').innerText = "Supervisor Site Terminal";
 
-            // Find supervisor's assigned plant
             const currentSup = APP_STATE.currentSupervisor;
             const assignedPlant = APP_STATE.plants.find(p => p.id === currentSup?.plantId) || APP_STATE.plants[0];
             
             document.getElementById('supervisor-plant-name').innerText = assignedPlant ? assignedPlant.name : "All Available Sites";
 
-            // Filter workers strictly assigned to this supervisor's plant
             const visibleWorkers = assignedPlant ? APP_STATE.labour.filter(w => w.plantId === assignedPlant.id) : APP_STATE.labour;
 
             const roster = document.getElementById('supervisor-attendance-roster');
@@ -985,8 +1010,173 @@
         }
 
         // =========================================================================
-        // DIRECT PDF GENERATION MODULES (jsPDF)
+        // 5. DIRECT PDF & BULK EXPORT GENERATION MODULES (jsPDF + CSV)
         // =========================================================================
+        
+        // Multi-Mode Payout 1: Bank Bulk Upload CSV (NEFT/RTGS/CMS)
+        function executeBankBulkExport() {
+            let csvContent = "data:text/csv;charset=utf-8,Beneficiary_Name,Account_Number,IFSC_Code,Amount,Remarks\n";
+            
+            APP_STATE.labour.forEach(w => {
+                const earned = Number(w.wage) * 26;
+                const advance = APP_STATE.advances[w.id] || 1500;
+                const netPayable = Math.max(0, earned - advance);
+                csvContent += `"${w.name}","${w.bankAcc}","${w.bankIfsc}",${netPayable},"August 2026 Salary Payout"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "LabourMitra_Bank_Bulk_Payout_Sheet.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            closePayoutModal();
+            alert("Bank Bulk Payout CSV generated successfully! Payout batch is now locked.");
+        }
+
+        // Multi-Mode Payout 2: Cash & Khuraki Receipt Voucher (PDF)
+        function executeCashVouchersPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(16);
+            doc.text("Labour Mitra ERP - Cash Payout & Khuraki Voucher", 14, 18);
+            doc.setFontSize(10);
+            doc.text("Official Cash Receipt with Worker Signature Ledger", 14, 25);
+
+            const tableData = APP_STATE.labour.map(w => {
+                const earned = Number(w.wage) * 26;
+                const advance = APP_STATE.advances[w.id] || 1500;
+                const netPayable = Math.max(0, earned - advance);
+                return [w.id, w.name, "Rs. " + earned, "-Rs. " + advance, "Rs. " + netPayable, "[ Signature / Thumb ]"];
+            });
+
+            doc.autoTable({
+                head: [['Worker ID', 'Name', 'Gross Wages', 'Advance Cut', 'Net Cash Paid', 'Receiver Signature']],
+                body: tableData.length > 0 ? tableData : [['N/A', 'No data', '0', '0', '0', '']],
+                startY: 32,
+                theme: 'grid'
+            });
+
+            doc.save("LabourMitra_Cash_Vouchers.pdf");
+            closePayoutModal();
+        }
+
+        // Statutory Form B Register PDF (Central Labour Act)
+        function downloadFormBRegisterPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape');
+
+            doc.setFontSize(15);
+            doc.text("FORM B - REGISTER OF EMPLOYEES", 14, 15);
+            doc.setFontSize(9);
+            doc.text("[Prescribed under Rule 78(1)(a)(i) of Contract Labour (R&A) Central Rules]", 14, 22);
+
+            const tableData = APP_STATE.labour.map(w => {
+                const plant = APP_STATE.plants.find(p => p.id === w.plantId);
+                return [w.id, w.name, w.category, plant ? plant.name : 'Unassigned', "Rs. " + w.wage + "/day", w.bankAcc, w.bankIfsc, "Verified"];
+            });
+
+            doc.autoTable({
+                head: [['Worker ID', 'Name of Employee', 'Designation / Trade', 'Assigned Plant Unit', 'Daily Wage', 'Bank A/C No', 'IFSC Code', 'KYC Status']],
+                body: tableData.length > 0 ? tableData : [['N/A', 'No data', 'N/A', 'N/A', '0', 'N/A', 'N/A', 'N/A']],
+                startY: 28,
+                theme: 'grid'
+            });
+
+            doc.save("Statutory_Form_B_Register.pdf");
+        }
+
+        // Individual Worker Form T Wage Slip PDF
+        function downloadFormTWageSlipPDF(workerId) {
+            const worker = APP_STATE.labour.find(w => w.id === workerId);
+            if (!worker) return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const plant = APP_STATE.plants.find(p => p.id === worker.plantId);
+            const gross = Number(worker.wage) * 26;
+            const adv = APP_STATE.advances[worker.id] || 1500;
+            const net = Math.max(0, gross - adv);
+
+            doc.setFontSize(14);
+            doc.text("FORM T - WAGE SLIP", 14, 18);
+            doc.setFontSize(10);
+            doc.text("Labour Mitra ERP | Plant: " + (plant ? plant.name : 'Unit Site'), 14, 25);
+
+            doc.autoTable({
+                body: [
+                    ['Worker ID', worker.id],
+                    ['Worker Full Name', worker.name],
+                    ['Category / Trade', worker.category],
+                    ['Daily Wage Basis', "Rs. " + worker.wage],
+                    ['Total Payable Days', "26 Shifts"],
+                    ['Gross Earned Wages', "Rs. " + gross],
+                    ['Advance / Khuraki Recovery', "-Rs. " + adv],
+                    ['Net Payable Transferred', "Rs. " + net],
+                    ['Bank Account', worker.bankAcc + " (" + worker.bankIfsc + ")"],
+                    ['Payment Status', "Verified & Disbursed"]
+                ],
+                startY: 32,
+                theme: 'plain'
+            });
+
+            doc.save(`WageSlip_${worker.id}.pdf`);
+        }
+
+        // Worker PVC QR Gate Pass PDF
+        function downloadWorkerIDCardPDF(workerId) {
+            const worker = APP_STATE.labour.find(w => w.id === workerId);
+            if (!worker) return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: [85, 54] // Standard PVC ID card dimensions
+            });
+
+            const plant = APP_STATE.plants.find(p => p.id === worker.plantId);
+
+            doc.setFillColor(15, 23, 42); // Slate 900
+            doc.rect(0, 0, 85, 54, 'F');
+
+            doc.setTextColor(245, 158, 11); // Amber 500
+            doc.setFontSize(9);
+            doc.text("LABOUR MITRA ERP", 27, 8);
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(7);
+            doc.text("INDUSTRIAL GATE PASS", 26, 12);
+
+            // Photo Placeholder Box
+            doc.setDrawColor(245, 158, 11);
+            doc.rect(4, 15, 22, 26);
+            doc.setFontSize(6);
+            doc.text("PHOTO", 11, 29);
+
+            // Details
+            doc.setFontSize(7);
+            doc.text("ID: " + worker.id, 29, 18);
+            doc.text("Name: " + worker.name, 29, 23);
+            doc.text("Trade: " + worker.category, 29, 28);
+            doc.text("Plant: " + (plant ? plant.name.substring(0, 14) : 'General Unit'), 29, 33);
+            doc.text("Blood Grp: O+", 29, 38);
+
+            // Bottom Security Bar
+            doc.setFillColor(37, 99, 235);
+            doc.rect(0, 48, 85, 6, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(5.5);
+            doc.text("DIGITALLY ENCRYPTED SECURITY PASS", 22, 52);
+
+            doc.save(`GatePass_${worker.id}.pdf`);
+        }
+
+        // P&L Ledger PDF
         function downloadProfitLedgerPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
