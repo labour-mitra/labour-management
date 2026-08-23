@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Labour Mitra - Industrial Manpower & Digital Workforce Management OS</title>
+    <title>Labour Mitra - Industrial Manpower OS & Digital Workforce ERP</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,14 +41,14 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         .tab-active { background-color: #2563eb !important; color: #ffffff !important; }
         .glass-nav {
-            background: rgba(15, 23, 42, 0.82);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
         }
         .hero-mesh {
             background: radial-gradient(circle at 50% 20%, rgba(37, 99, 235, 0.15), transparent 45%),
                         radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.08), transparent 40%),
-                        linear-gradient(180deg, rgba(2, 6, 23, 0.75) 0%, rgba(2, 6, 23, 0.98) 100%);
+                        linear-gradient(180deg, rgba(2, 6, 23, 0.8) 0%, rgba(2, 6, 23, 0.98) 100%);
         }
     </style>
 </head>
@@ -80,10 +80,8 @@
                     <a href="#hero" class="hover:text-amber-400 transition">Home</a>
                     <a href="#who-we-are" class="hover:text-amber-400 transition">Who We Are</a>
                     <a href="#services" class="hover:text-amber-400 transition">Our Services</a>
-                    <a href="#industries" class="hover:text-amber-400 transition">Industries</a>
                     <a href="#workforce-platform" class="hover:text-amber-400 transition">Workforce Platform</a>
                     <a href="#company-access" class="hover:text-amber-400 transition">Company Access</a>
-                    <a href="#safety" class="hover:text-amber-400 transition">Safety Standards</a>
                 </nav>
 
                 <!-- Dedicated Authentication Actions -->
@@ -92,10 +90,10 @@
                         <i data-lucide="building" class="w-3.5 h-3.5"></i> Company Login
                     </button>
                     <button onclick="openLoginModal('CONTRACTOR')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-2 rounded-lg transition flex items-center gap-1.5">
-                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Contractor Hub
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Contractor & Accountant
                     </button>
                     <button onclick="openLoginModal('SUPERVISOR')" class="bg-slate-900 hover:bg-slate-800 text-blue-400 border border-blue-900/60 font-bold px-3 py-2 rounded-lg transition flex items-center gap-1.5">
-                        <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Supervisor Mode
+                        <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Supervisor Portal
                     </button>
                 </div>
 
@@ -110,24 +108,22 @@
                 <a href="#hero" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Home</a>
                 <a href="#who-we-are" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Who We Are</a>
                 <a href="#services" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Our Services</a>
-                <a href="#industries" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Industries</a>
                 <a href="#workforce-platform" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Workforce Platform</a>
                 <a href="#company-access" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Company Access</a>
-                <a href="#safety" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Safety Standards</a>
                 <div class="pt-3 border-t border-slate-800 flex flex-col gap-2">
                     <button onclick="openLoginModal('COMPANY'); toggleMobileMenu();" class="w-full bg-amber-500 text-slate-950 font-bold py-2 rounded-lg">Company Login</button>
-                    <button onclick="openLoginModal('CONTRACTOR'); toggleMobileMenu();" class="w-full bg-slate-800 text-white font-bold py-2 rounded-lg">Contractor Hub</button>
-                    <button onclick="openLoginModal('SUPERVISOR'); toggleMobileMenu();" class="w-full bg-slate-900 text-blue-400 border border-blue-900/60 font-bold py-2 rounded-lg">Supervisor Mode</button>
+                    <button onclick="openLoginModal('CONTRACTOR'); toggleMobileMenu();" class="w-full bg-slate-800 text-white font-bold py-2 rounded-lg">Contractor & Accountant</button>
+                    <button onclick="openLoginModal('SUPERVISOR'); toggleMobileMenu();" class="w-full bg-slate-900 text-blue-400 border border-blue-900/60 font-bold py-2 rounded-lg">Supervisor Portal</button>
                 </div>
             </div>
         </header>
 
-        <!-- Main Hero Section -->
+        <!-- Hero Section -->
         <section id="hero" class="relative pt-32 pb-20 md:pt-48 md:pb-32 px-4 sm:px-6 lg:px-8 hero-mesh flex flex-col justify-center border-b border-slate-800/80">
             <div class="max-w-6xl mx-auto text-center space-y-7">
                 <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/30 px-3.5 py-1.5 rounded-full shadow-inner">
                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                    <span class="text-[11px] font-bold text-amber-300 uppercase tracking-widest">Industrial Manpower & Digital Workforce Management</span>
+                    <span class="text-[11px] font-bold text-amber-300 uppercase tracking-widest">Industrial Manpower Supply & Digital ERP</span>
                 </div>
 
                 <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.08]">
@@ -170,96 +166,7 @@
             </div>
         </section>
 
-        <!-- Section: Who We Are -->
-        <section id="who-we-are" class="py-20 px-4 sm:px-6 lg:px-8 bg-slate-950 border-b border-slate-900">
-            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-5">
-                    <span class="text-amber-400 font-bold uppercase tracking-widest text-[10px]">Pioneering Industrial Manpower</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
-                        BUILDING INDUSTRIES THROUGH <br><span class="text-blue-500">THE RIGHT WORKFORCE</span>
-                    </h2>
-                    <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
-                        Labour Mitra bridges the operational gap between heavy power plants, infrastructure conglomerates, and skilled ground manpower. We eliminate fragmented spreadsheets by combining robust on-ground workforce deployment with real-time digital governance.
-                    </p>
-                    <div class="space-y-3 pt-2">
-                        <div class="flex items-center gap-3">
-                            <div class="w-6 h-6 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold">✓</div>
-                            <span class="text-slate-200 text-xs font-semibold">Strict statutory KYC, UAN verification, and ESIC compliance validation.</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-6 h-6 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold">✓</div>
-                            <span class="text-slate-200 text-xs font-semibold">Zero ghost worker attendance through multi-plant anomaly detection.</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-6 h-6 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold">✓</div>
-                            <span class="text-slate-200 text-xs font-semibold">Transparent client billing with automated service charges and invoice PDFs.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden space-y-4">
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full bg-rose-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
-                        </div>
-                        <span class="font-mono text-[10px] text-slate-500">Telemetry Node: live_matrix_v2</span>
-                    </div>
-                    <div class="space-y-2 font-mono text-[11px] text-slate-300">
-                        <p class="text-emerald-400">> NTPC Lara Unit-1: Shift A attendance verified (142/150 Present)</p>
-                        <p class="text-blue-400">> JSPL Tamnar: ECR contribution liability calculated</p>
-                        <p class="text-amber-400">> Balco Captive: Multi-plant presence conflict blocked</p>
-                        <p class="text-slate-500">> Audit Vault: 0 tampering anomalies detected</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section: Our Services -->
-        <section id="services" class="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/60 border-b border-slate-900">
-            <div class="max-w-6xl mx-auto space-y-12">
-                <div class="text-center space-y-3">
-                    <span class="text-amber-400 font-bold uppercase tracking-widest text-[10px]">End-to-End Execution</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">COMPLETE MANPOWER SOLUTIONS</h2>
-                    <p class="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto">Specialized manpower deployment backed by rigorous technical screening and digital operations.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-3 hover:border-slate-700 transition">
-                        <div class="w-10 h-10 rounded-xl bg-blue-600/10 text-blue-400 border border-blue-500/20 flex items-center justify-center font-bold text-base"><i data-lucide="zap" class="w-5 h-5"></i></div>
-                        <h3 class="text-base font-bold text-white">Power Plant Workforce</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed">Certified riggers, certified high-pressure boiler attendants, turbine technicians, and mechanical helpers deployed on long-term contracts.</p>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-3 hover:border-slate-700 transition">
-                        <div class="w-10 h-10 rounded-xl bg-amber-600/10 text-amber-400 border border-amber-500/20 flex items-center justify-center font-bold text-base"><i data-lucide="wrench" class="w-5 h-5"></i></div>
-                        <h3 class="text-base font-bold text-white">Skilled & Semi-Skilled Trades</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed">Fitters Grade-1, 6G ARC & TIG welders, structural fabricators, industrial electricians, and plant maintenance squads.</p>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-3 hover:border-slate-700 transition">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-600/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold text-base"><i data-lucide="smartphone" class="w-5 h-5"></i></div>
-                        <h3 class="text-base font-bold text-white">Digital Workforce Management</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed">Dedicated client web portals for plant management, live daily attendance rosters, and computerized PF/ESI ECR generation.</p>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-3 hover:border-slate-700 transition">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center font-bold text-base"><i data-lucide="shield" class="w-5 h-5"></i></div>
-                        <h3 class="text-base font-bold text-white">Safety-Focused Deployment</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed">Full PPE compliance, tool-box safety briefings, certified height-pass validations, and emergency medical insurance coverage.</p>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-3 hover:border-slate-700 transition">
-                        <div class="w-10 h-10 rounded-xl bg-teal-600/10 text-teal-400 border border-teal-500/20 flex items-center justify-center font-bold text-base"><i data-lucide="clipboard-check" class="w-5 h-5"></i></div>
-                        <h3 class="text-base font-bold text-white">Workforce Supervision</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed">Dedicated on-site supervisors for shift scheduling, daily output tracking, client coordination, and digital muster submissions.</p>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-3 hover:border-slate-700 transition">
-                        <div class="w-10 h-10 rounded-xl bg-rose-600/10 text-rose-400 border border-rose-500/20 flex items-center justify-center font-bold text-base"><i data-lucide="receipt" class="w-5 h-5"></i></div>
-                        <h3 class="text-base font-bold text-white">Statutory Audit Compliance</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed">100% auditable digital proof for PF challans, ESIC contributions, wage registers, and direct bank transfer reconciliation.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section: Digital Workforce Platform (Major Highlight) -->
+        <!-- Section: Digital Workforce Platform -->
         <section id="workforce-platform" class="py-20 px-4 sm:px-6 lg:px-8 bg-slate-950 border-b border-slate-900">
             <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="space-y-6">
@@ -269,21 +176,11 @@
                         <span class="text-amber-400">COMPLETE WORKFORCE VISIBILITY.</span>
                     </h2>
                     <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                        Managing labour across multiple plant locations can become difficult when information is spread across scattered manual sheets and disjointed registers. With dedicated secure company access, authorized client HR and plant managers can monitor deployed strength, shift attendance, and compliance reports directly from one central platform.
+                        Managing labour across multiple plant locations can become difficult when information is spread across scattered manual sheets. With dedicated secure company access, authorized client HR and plant managers can monitor deployed strength, shift attendance, and compliance reports directly from one central platform.
                     </p>
-                    <div class="grid grid-cols-2 gap-3 pt-2">
-                        <div class="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
-                            <p class="font-bold text-white text-xs">Live Shift Telemetry</p>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Real-time Present / Half-Day / Absent tracking per shift.</p>
-                        </div>
-                        <div class="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
-                            <p class="font-bold text-white text-xs">Direct PDF Reports</p>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Single-click export of wage sheets, PF statements, and invoices.</p>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Realistic Digital Dashboard Mockup View -->
+                <!-- Client Mockup Card -->
                 <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                         <div class="flex items-center gap-2">
@@ -310,146 +207,27 @@
                             <p class="text-sm font-bold text-rose-400">8</p>
                         </div>
                     </div>
-
-                    <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1.5 font-mono text-[10px]">
-                        <div class="flex justify-between text-slate-300">
-                            <span>Today's Shift: Shift-A (General)</span>
-                            <span class="text-emerald-400">Supervisor Locked</span>
-                        </div>
-                        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                            <div class="bg-emerald-500 h-full w-[94.6%]"></div>
-                        </div>
-                        <p class="text-right text-[9px] text-slate-500">94.6% Deployment Efficiency</p>
-                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Section: Company ID & Dedicated Company Access -->
-        <section id="company-access" class="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900 border-b border-slate-800">
-            <div class="max-w-6xl mx-auto space-y-12">
-                <div class="text-center space-y-3">
-                    <span class="text-amber-400 font-bold uppercase tracking-widest text-[10px]">Corporate Client Privilege</span>
-                    <h2 class="text-3xl sm:text-5xl font-black text-white">GET YOUR DEDICATED COMPANY ACCESS</h2>
-                    <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
-                        Partner with us and receive a secure, isolated digital workforce portal designed to make manpower coordination, attendance validation, and operational visibility organized from day one.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-2">
-                        <div class="w-8 h-8 rounded-lg bg-blue-600/10 text-blue-400 flex items-center justify-center font-bold"><i data-lucide="key" class="w-4 h-4"></i></div>
-                        <h3 class="font-bold text-white text-xs">Secure Company Login</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">Each authorized partner receives unique company credentials (e.g. COMP-0001) with role-based dashboard access.</p>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-2">
-                        <div class="w-8 h-8 rounded-lg bg-amber-600/10 text-amber-400 flex items-center justify-center font-bold"><i data-lucide="eye" class="w-4 h-4"></i></div>
-                        <h3 class="font-bold text-white text-xs">Workforce Visibility</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">View deployed workers, skill categorizations, and daily shift rosters without sifting through manual registers.</p>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-2">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-600/10 text-emerald-400 flex items-center justify-center font-bold"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
-                        <h3 class="font-bold text-white text-xs">Multi-Location Management</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">Track authorized manpower across thermal units, fabrication yards, and construction sites simultaneously.</p>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-2">
-                        <div class="w-8 h-8 rounded-lg bg-indigo-600/10 text-indigo-400 flex items-center justify-center font-bold"><i data-lucide="database" class="w-4 h-4"></i></div>
-                        <h3 class="font-bold text-white text-xs">Digital Records</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">Reduce dependency on scattered paper records with cryptographic daily muster logs and supervisor signatures.</p>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-2">
-                        <div class="w-8 h-8 rounded-lg bg-teal-600/10 text-teal-400 flex items-center justify-center font-bold"><i data-lucide="file-text" class="w-4 h-4"></i></div>
-                        <h3 class="font-bold text-white text-xs">Reports & Insights</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">Download official monthly attendance matrices, PF compliance summaries, and billing invoices in PDF format.</p>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-2">
-                        <div class="w-8 h-8 rounded-lg bg-rose-600/10 text-rose-400 flex items-center justify-center font-bold"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
-                        <h3 class="font-bold text-white text-xs">Easy Coordination</h3>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">Direct line of communication between Client HR, Field Supervisors, and Contractor Management.</p>
-                    </div>
-                </div>
-
-                <div class="bg-slate-950 border border-slate-800 p-8 rounded-3xl text-center max-w-3xl mx-auto space-y-5">
-                    <h3 class="text-xl font-bold text-white">Ready to streamline your industrial manpower management?</h3>
-                    <p class="text-slate-400 text-xs">Request your dedicated company credentials or sign in to your authorized client terminal.</p>
-                    <div class="flex flex-wrap justify-center gap-3">
-                        <button onclick="openAccessRequestModal()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3 rounded-xl text-xs flex items-center gap-1.5 shadow-lg">
-                            <i data-lucide="send" class="w-3.5 h-3.5"></i> REQUEST COMPANY ID
-                        </button>
-                        <button onclick="openLoginModal('COMPANY')" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-6 py-3 rounded-xl text-xs border border-slate-700 flex items-center gap-1.5">
-                            <i data-lucide="lock" class="w-3.5 h-3.5"></i> ENTER COMPANY PORTAL
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section: Safety First -->
-        <section id="safety" class="py-20 px-4 sm:px-6 lg:px-8 bg-slate-950 border-b border-slate-900">
-            <div class="max-w-6xl mx-auto text-center space-y-6">
-                <span class="text-amber-400 font-bold uppercase tracking-widest text-[10px]">Zero-Harm Culture</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">SAFETY IS PART OF EVERY DEPLOYMENT</h2>
-                <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
-                    Our workers undergo safety induction protocols, mandatory PPE inspections, and tool-box hazard assessments prior to every shift. We operate in full compliance with factory safety standards and statutory industrial directives.
-                </p>
             </div>
         </section>
 
         <!-- Public Corporate Footer -->
         <footer class="bg-slate-950 border-t border-slate-800 py-12 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-slate-400 text-xs">
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white text-xs">LM</div>
-                        <span class="font-extrabold text-sm text-white">Labour<span class="text-amber-400">Mitra</span></span>
-                    </div>
-                    <p class="text-[11px] leading-relaxed text-slate-500">
-                        Enterprise-grade industrial manpower supply and digital workforce OS for power plants and heavy industries.
-                    </p>
-                </div>
-                <div class="space-y-2">
-                    <p class="font-bold text-white uppercase text-[10px] tracking-wider">Company</p>
-                    <p><a href="#who-we-are" class="hover:text-amber-400 transition">About Us</a></p>
-                    <p><a href="#services" class="hover:text-amber-400 transition">Our Services</a></p>
-                    <p><a href="#industries" class="hover:text-amber-400 transition">Industries Served</a></p>
-                    <p><a href="#safety" class="hover:text-amber-400 transition">Safety Standards</a></p>
-                </div>
-                <div class="space-y-2">
-                    <p class="font-bold text-white uppercase text-[10px] tracking-wider">Digital Platform</p>
-                    <p><a href="#workforce-platform" class="hover:text-amber-400 transition">Workforce Platform</a></p>
-                    <p><a href="#company-access" class="hover:text-amber-400 transition">Company Access</a></p>
-                    <p><button onclick="openLoginModal('COMPANY')" class="hover:text-amber-400 transition text-left">Company Login</button></p>
-                    <p><button onclick="openLoginModal('CONTRACTOR')" class="hover:text-amber-400 transition text-left">Contractor Hub</button></p>
-                </div>
-                <div class="space-y-2">
-                    <p class="font-bold text-white uppercase text-[10px] tracking-wider">Corporate Governance</p>
-                    <p class="text-[11px]">Direct Bank Payouts: Enabled</p>
-                    <p class="text-[11px]">Statutory ECR Engine: Ready</p>
-                    <p class="text-[11px]">Audit Telemetry: Encrypted</p>
-                    <!-- Bottom Master Admin Login -->
-                    <div class="pt-2">
-                        <button onclick="openLoginModal('ADMIN')" class="text-slate-600 hover:text-amber-400 transition flex items-center gap-1 font-mono text-[10px]">
-                            <i data-lucide="shield" class="w-3 h-3"></i> Master Admin Terminal
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="max-w-7xl mx-auto pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-4">
                 <p>© 2026 Labour Mitra ERP Platform. All Rights Reserved.</p>
-                <div class="flex space-x-4">
-                    <a href="#" class="hover:text-slate-400">Privacy Policy</a>
-                    <a href="#" class="hover:text-slate-400">Terms of Contract</a>
-                    <a href="#" class="hover:text-slate-400">Statutory Disclosures</a>
+                <div class="flex items-center gap-4">
+                    <!-- Bottom Master Admin Login -->
+                    <button onclick="openLoginModal('ADMIN')" class="text-slate-600 hover:text-amber-400 transition flex items-center gap-1 font-mono text-[10px]">
+                        <i data-lucide="shield" class="w-3 h-3"></i> Master Admin Terminal
+                    </button>
                 </div>
             </div>
         </footer>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 2. AUTHENTICATION MODALS & DIALOGS                                        -->
+    <!-- 2. AUTHENTICATION MODAL                                                   -->
     <!-- ========================================================================= -->
-    
-    <!-- Unified Portal Login Modal -->
     <div id="login-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl">
             <div class="flex justify-between items-center">
@@ -463,63 +241,22 @@
             <form onsubmit="handleAuth(event)" class="space-y-3">
                 <input type="hidden" id="login-target-role" value="COMPANY">
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1" id="login-id-label">Company ID / User Email</label>
-                    <input type="text" id="auth-id" required placeholder="e.g. COMP-0001 or admin@portal" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1" id="login-id-label">Identifier</label>
+                    <input type="text" id="auth-id" required placeholder="Enter ID or Mobile" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Access Secret</label>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Password</label>
                     <input type="password" id="auth-pass" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
                 </div>
                 <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-lg text-xs transition shadow-md">
-                    Verify Credentials & Launch Portal
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Company Access Request Modal -->
-    <div id="access-request-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl max-w-md w-full space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center">
-                <h3 class="font-bold text-sm text-white flex items-center gap-2">
-                    <i data-lucide="building" class="w-4 h-4 text-amber-400"></i> Request Dedicated Company Access
-                </h3>
-                <button onclick="closeAccessRequestModal()" class="text-slate-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-            </div>
-            <form onsubmit="handleAccessRequest(event)" class="space-y-2.5">
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Company / Corporation Name</label>
-                    <input type="text" id="req-company" required placeholder="e.g. Adani Power or L&T Infra" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Contact Person</label>
-                        <input type="text" id="req-person" required placeholder="Full Name" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Official Email</label>
-                        <input type="email" id="req-email" required placeholder="hr@powerplant.com" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Estimated Workers Req</label>
-                        <input type="number" id="req-workers" required placeholder="e.g. 150" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Plant Location</label>
-                        <input type="text" id="req-loc" required placeholder="City / State" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                    </div>
-                </div>
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-lg text-xs transition mt-2">
-                    Submit Access Application
+                    Verify & Launch Portal
                 </button>
             </form>
         </div>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 3. AUTHENTICATED INTERNAL WORKSPACE (Strict Role Isolation)                -->
+    <!-- 3. AUTHENTICATED INTERNAL WORKSPACE                                       -->
     <!-- ========================================================================= -->
     <div id="authenticated-app" class="h-full flex overflow-hidden hidden">
         
@@ -533,30 +270,29 @@
                 <span id="user-role-tag" class="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">ROLE</span>
             </div>
 
-            <!-- Dynamic Role Nav Container -->
+            <!-- Dynamic Sidebar Nav by Role -->
             <nav id="sidebar-nav" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-1 font-medium text-slate-300">
-                <!-- Injected via role selection -->
+                <!-- Injected Dynamically -->
             </nav>
 
-            <!-- User Session Card & Direct Logout -->
+            <!-- User Session & Logout Footer -->
             <div class="p-3 border-t border-slate-800 bg-slate-950 flex items-center justify-between">
                 <div class="truncate mr-2">
                     <p id="user-display-name" class="font-bold text-white leading-none truncate">Super Admin</p>
                     <p id="user-display-scope" class="text-[9px] text-slate-400 mt-0.5 truncate">God View Mode</p>
                 </div>
-                <button onclick="performLogout()" title="Logout Session" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition flex-shrink-0">
+                <button onclick="performLogout()" title="Logout Session" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition">
                     <i data-lucide="log-out" class="w-4 h-4"></i>
                 </button>
             </div>
         </aside>
 
-        <!-- Main Workspace Viewport -->
+        <!-- Main Workspace -->
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-            <!-- App Top Header -->
+            <!-- App Header -->
             <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 z-20">
                 <div class="flex items-center gap-3">
-                    <h2 id="current-view-title" class="font-bold text-sm text-white">Executive View</h2>
-                    <span id="tenant-isolation-tag" class="hidden text-[10px] bg-slate-800 border border-slate-700 text-amber-300 px-2 py-0.5 rounded font-mono">Isolated Scope</span>
+                    <h2 id="current-view-title" class="font-bold text-sm text-white">Dashboard Matrix</h2>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="performLogout()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
@@ -565,119 +301,128 @@
                 </div>
             </header>
 
-            <!-- Scrollable Workspace Body -->
+            <!-- Viewport Content Body -->
             <main class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
 
                 <!-- ------------------------------------------------------------- -->
-                <!-- A. CLIENT / COMPANY PORTAL (Dedicated Client Isolation)       -->
-                <!-- ------------------------------------------------------------- -->
-                <div id="view-company-portal" class="view-panel space-y-6 hidden">
-                    <div class="bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-800 p-5 rounded-2xl flex flex-wrap justify-between items-center gap-4">
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Authorized Client Portal</span>
-                            <h3 class="text-lg font-black text-white mt-0.5" id="company-portal-name">NTPC Lara Thermal Unit</h3>
-                            <p class="text-xs text-slate-400">Real-time workforce deployment & monthly shift records</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="downloadCompanyRosterPDF()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-2 rounded-lg text-xs flex items-center gap-1.5 shadow">
-                                <i data-lucide="file-down" class="w-3.5 h-3.5"></i> Download Shift Matrix PDF
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Assigned Manpower</p>
-                            <p class="text-2xl font-black text-white mt-1" id="company-worker-count">0</p>
-                        </div>
-                        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Present Today</p>
-                            <p class="text-2xl font-black text-emerald-400 mt-1" id="company-present-count">0</p>
-                        </div>
-                        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Shift Turnout Rate</p>
-                            <p class="text-2xl font-black text-blue-400 mt-1" id="company-turnout-rate">0%</p>
-                        </div>
-                    </div>
-
-                    <!-- Client Authorized Labour Table -->
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-                        <div class="p-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
-                            <h4 class="font-bold text-white text-xs">Deployed Workforce On-Site</h4>
-                            <span class="text-[10px] text-slate-400">Filtered for your authorized plant only</span>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
-                                <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
-                                    <tr>
-                                        <th class="p-3">Worker ID & Name</th>
-                                        <th class="p-3">Trade Category</th>
-                                        <th class="p-3">Today's Shift Status</th>
-                                        <th class="p-3">PF UAN Status</th>
-                                        <th class="p-3">Statutory Verification</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="company-labour-table" class="divide-y divide-slate-800 text-slate-300">
-                                    <!-- Populated dynamically based on company's plant -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ------------------------------------------------------------- -->
-                <!-- B. CONTRACTOR HUB (Company Creation & Labour Onboarding)      -->
+                <!-- A. CONTRACTOR & ACCOUNTANT DESK (Complete Operations)         -->
                 <!-- ------------------------------------------------------------- -->
                 <div id="view-contractor-panel" class="view-panel space-y-6 hidden">
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Add Plant / Company Contract -->
+                    <!-- 1. Commercial Profit & Loss Engine ("Apna Fayda" Live Matrix) -->
+                    <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-blue-950 border border-slate-800 p-5 rounded-2xl space-y-4">
+                        <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-800 pb-3">
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 font-mono">Commercial & Profit Engine</span>
+                                <h3 class="text-base font-black text-white mt-0.5">Contractor Real-Time Profit & Financial Dashboard</h3>
+                            </div>
+                            <button onclick="downloadProfitLedgerPDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
+                                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export Financial Ledger PDF
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-slate-300 font-mono">
+                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Client Bill Receivable</p>
+                                <p class="text-lg font-black text-white mt-1" id="contractor-stat-billing">₹0.00</p>
+                            </div>
+                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Labour Wages Cost</p>
+                                <p class="text-lg font-black text-rose-400 mt-1" id="contractor-stat-wages">₹0.00</p>
+                            </div>
+                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Advances Recovered</p>
+                                <p class="text-lg font-black text-amber-400 mt-1" id="contractor-stat-advance">₹0.00</p>
+                            </div>
+                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Site Expenses (Kharcha)</p>
+                                <p class="text-lg font-black text-slate-300 mt-1" id="contractor-stat-expenses">₹0.00</p>
+                            </div>
+                            <div class="bg-emerald-950/40 p-3 rounded-xl border border-emerald-800/40 col-span-2 sm:col-span-1">
+                                <p class="text-[9px] text-emerald-400 uppercase font-sans font-bold">Apna Fayda (Net Profit)</p>
+                                <p class="text-lg font-black text-emerald-400 mt-1" id="contractor-stat-profit">₹0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Creation Action Modules (3 Separate Forms) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        
+                        <!-- Form 1: Add Plant Contract -->
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
-                            <h3 class="font-bold text-white text-xs flex items-center gap-1.5">
-                                <i data-lucide="plus-circle" class="w-4 h-4 text-blue-400"></i> Register New Plant Contract
-                            </h3>
+                            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+                                <i data-lucide="building-2" class="w-4 h-4 text-blue-400"></i> Register Plant Contract
+                            </h4>
                             <form onsubmit="handleAddPlant(event)" class="space-y-2">
                                 <input type="text" id="plant-name" required placeholder="Plant Name (e.g. NTPC Lara Unit-1)" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                <input type="text" id="client-name" required placeholder="Client Company (e.g. NTPC Limited)" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                <input type="text" id="client-name" required placeholder="Client Company (e.g. NTPC Ltd)" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="text" id="plant-loc" required placeholder="Location" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                    <input type="number" id="plant-max-labour" required placeholder="Target Manpower" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                    <input type="number" id="plant-client-rate" required placeholder="Client Billing Rate/Day" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
                                 </div>
-                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded text-xs">Save Plant Master</button>
+                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded text-xs">Save Plant Contract</button>
                             </form>
                         </div>
 
-                        <!-- Onboard New Labour Form (Contractor Only) -->
+                        <!-- Form 2: Create & Assign Supervisor (SEPARATE FORM) -->
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
-                            <h3 class="font-bold text-white text-xs flex items-center gap-1.5">
-                                <i data-lucide="user-plus" class="w-4 h-4 text-emerald-400"></i> New Labour Onboarding & KYC Entry
-                            </h3>
+                            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+                                <i data-lucide="user-check" class="w-4 h-4 text-amber-400"></i> Create Site Supervisor
+                            </h4>
+                            <form onsubmit="handleAddSupervisor(event)" class="space-y-2">
+                                <input type="text" id="sup-name" required placeholder="Supervisor Full Name" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                <input type="text" id="sup-mobile" required placeholder="Login Mobile Number / ID" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="password" id="sup-password" required placeholder="Access Password" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                    <select id="sup-plant-select" required class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                        <option value="">Assign Plant</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded text-xs">Create Supervisor ID</button>
+                            </form>
+                        </div>
+
+                        <!-- Form 3: Register Labour & KYC + Passbook Select (SEPARATE FORM) -->
+                        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
+                            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+                                <i data-lucide="user-plus" class="w-4 h-4 text-emerald-400"></i> Onboard Labour & KYC
+                            </h4>
                             <form onsubmit="handleAddLabour(event)" class="space-y-2">
                                 <div class="grid grid-cols-2 gap-2">
-                                    <input type="text" id="labour-name" required placeholder="Worker Full Name" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                    <input type="text" id="labour-name" required placeholder="Worker Name" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
                                     <select id="labour-plant-select" required class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                        <option value="">Assign To Plant</option>
+                                        <option value="">Select Plant</option>
                                     </select>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <input type="text" id="labour-category" required placeholder="Category (Rigger/Fitter/Helper)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                    <input type="number" id="labour-wage" required placeholder="Daily Wage (₹)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                    <input type="text" id="labour-category" required placeholder="Trade (Rigger/Fitter)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                    <input type="number" id="labour-wage" required placeholder="Worker Daily Wage (₹)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
                                 </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input type="text" id="labour-uan" placeholder="PF UAN (12-Digit)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
-                                    <input type="text" id="labour-bank" required placeholder="Bank IFSC Code" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
+                                
+                                <!-- Banking Section & Passbook Upload/Select -->
+                                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 space-y-1.5">
+                                    <p class="text-[9px] font-bold uppercase text-slate-400">Bank Account & Passbook Document</p>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <input type="text" id="labour-bank-acc" required placeholder="A/C Number" class="bg-slate-900 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
+                                        <input type="text" id="labour-bank-ifsc" required placeholder="IFSC Code" class="bg-slate-900 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <label class="text-[9px] text-slate-400 flex-shrink-0">Passbook / Cheque:</label>
+                                        <input type="file" id="labour-passbook-file" accept="image/*,.pdf" class="w-full text-[9px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[9px] file:font-semibold file:bg-slate-800 file:text-slate-300 hover:file:bg-slate-700">
+                                    </div>
                                 </div>
-                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded text-xs">Register Worker Record</button>
+
+                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded text-xs">Register Worker Profile</button>
                             </form>
                         </div>
                     </div>
 
-                    <!-- Contractor Manpower Directory -->
+                    <!-- 3. Registered Labour Directory -->
                     <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                         <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
                             <div>
-                                <h3 class="font-bold text-white text-xs">Contractor Master Manpower Directory</h3>
-                                <p class="text-slate-400 text-[10px]">Registered workforce deployed across contracts</p>
+                                <h4 class="font-bold text-white text-xs">Contractor Master Manpower Directory</h4>
+                                <p class="text-slate-400 text-[10px]">Active registered workforce synced with Supervisor field roster</p>
                             </div>
                             <button onclick="downloadMasterLabourPDF()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
                                 <i data-lucide="file-down" class="w-3.5 h-3.5"></i> Export Labour PDF
@@ -691,8 +436,8 @@
                                         <th class="p-3">Assigned Plant</th>
                                         <th class="p-3">Category</th>
                                         <th class="p-3">Daily Wage</th>
-                                        <th class="p-3">PF UAN</th>
-                                        <th class="p-3">Bank IFSC</th>
+                                        <th class="p-3">Bank Details</th>
+                                        <th class="p-3">Passbook Attachment</th>
                                     </tr>
                                 </thead>
                                 <tbody id="contractor-labour-table" class="divide-y divide-slate-800 text-slate-300">
@@ -704,33 +449,70 @@
                 </div>
 
                 <!-- ------------------------------------------------------------- -->
-                <!-- C. SUPERVISOR TERMINAL (Mobile First Attendance Punching)     -->
+                <!-- B. SUPERVISOR TERMINAL (Mobile-First Attendance Only)         -->
                 <!-- ------------------------------------------------------------- -->
                 <div id="view-supervisor-panel" class="view-panel space-y-4 max-w-2xl mx-auto hidden">
                     <div class="bg-gradient-to-tr from-blue-950 to-slate-900 border border-blue-800/40 p-4 rounded-2xl shadow-lg">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Supervisor Field Terminal</span>
-                                <h2 class="text-base font-black text-white mt-0.5">Shift Attendance Roster</h2>
-                                <p class="text-[11px] text-slate-400">Punch daily shift (P / HD / A) for deployed manpower</p>
+                                <h3 class="text-base font-black text-white mt-0.5" id="supervisor-plant-name">Assigned Plant</h3>
+                                <p class="text-[11px] text-slate-400">Mark daily shift (P / HD / A) for deployed manpower</p>
                             </div>
-                            <span class="bg-blue-900/60 border border-blue-700 text-blue-200 text-xs px-2.5 py-1 rounded-lg font-mono font-bold">Live Shift</span>
+                            <span class="bg-blue-900/60 border border-blue-700 text-blue-200 text-xs px-2.5 py-1 rounded-lg font-mono font-bold">Shift Running</span>
                         </div>
                     </div>
 
                     <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                         <div class="p-3 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
-                            <span class="font-bold text-white text-xs">Worker Roster</span>
+                            <span class="font-bold text-white text-xs">Worker Shift Roster</span>
                             <button onclick="markAllSupervisorPresent()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded text-[10px] font-bold">Mark All Present</button>
                         </div>
                         <div id="supervisor-attendance-roster" class="divide-y divide-slate-800 p-2 space-y-2">
-                            <!-- Dynamic Supervisor Rows -->
+                            <!-- Populated with only workers assigned to this supervisor's plant -->
                         </div>
                     </div>
 
                     <button onclick="submitSupervisorShift()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg">
-                        <i data-lucide="send" class="w-4 h-4"></i> Lock & Transmit Shift to Admin / Contractor
+                        <i data-lucide="send" class="w-4 h-4"></i> Lock & Transmit Shift to Contractor / Admin
                     </button>
+                </div>
+
+                <!-- ------------------------------------------------------------- -->
+                <!-- C. CLIENT / COMPANY PORTAL (Isolated Client Scope)            -->
+                <!-- ------------------------------------------------------------- -->
+                <div id="view-company-portal" class="view-panel space-y-6 hidden">
+                    <div class="bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-800 p-5 rounded-2xl flex flex-wrap justify-between items-center gap-4">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Authorized Client Portal</span>
+                            <h3 class="text-lg font-black text-white mt-0.5" id="company-portal-name">Assigned Plant Site</h3>
+                            <p class="text-xs text-slate-400">Real-time workforce deployment & monthly shift records</p>
+                        </div>
+                        <button onclick="downloadCompanyRosterPDF()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-2 rounded-lg text-xs flex items-center gap-1.5 shadow">
+                            <i data-lucide="file-down" class="w-3.5 h-3.5"></i> Download Shift Matrix PDF
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                        <div class="p-4 border-b border-slate-800 bg-slate-950">
+                            <h4 class="font-bold text-white text-xs">Deployed Workforce on Site</h4>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3">Worker ID & Name</th>
+                                        <th class="p-3">Trade Category</th>
+                                        <th class="p-3">Today's Shift Status</th>
+                                        <th class="p-3">Statutory Verification</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="company-labour-table" class="divide-y divide-slate-800 text-slate-300">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ------------------------------------------------------------- -->
@@ -747,12 +529,12 @@
                             <p class="text-2xl font-black text-blue-400 mt-1" id="stat-labour-count">0</p>
                         </div>
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Present Workers Today</p>
-                            <p class="text-2xl font-black text-emerald-400 mt-1" id="stat-present-count">0</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Active Supervisors</p>
+                            <p class="text-2xl font-black text-amber-400 mt-1" id="stat-sup-count">0</p>
                         </div>
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Est. Monthly Profit</p>
-                            <p class="text-2xl font-black text-amber-400 mt-1" id="stat-net-profit">₹0.00</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Estimated Monthly Profit</p>
+                            <p class="text-2xl font-black text-emerald-400 mt-1" id="stat-net-profit">₹0.00</p>
                         </div>
                     </div>
 
@@ -760,8 +542,8 @@
                     <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                         <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
                             <div>
-                                <h3 class="font-bold text-white text-xs">Master God-View: Multi-Plant & Supervisor Oversight</h3>
-                                <p class="text-slate-400 text-[10px]">Inspect, edit, and override entries from Contractor, Supervisor, and Company views</p>
+                                <h4 class="font-bold text-white text-xs">Master God-View: Plant & Supervisor Oversight</h4>
+                                <p class="text-slate-400 text-[10px]">Inspect, edit, and override entries from Contractor, Supervisor, and Company portals</p>
                             </div>
                             <button onclick="downloadMasterReportPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
                                 <i data-lucide="download" class="w-3.5 h-3.5"></i> Download Master Ledger PDF
@@ -774,8 +556,8 @@
                                         <th class="p-3">Plant Name</th>
                                         <th class="p-3">Client Company</th>
                                         <th class="p-3">Registered Labour</th>
-                                        <th class="p-3">Daily Shift Status</th>
-                                        <th class="p-3">Est. Monthly Billing</th>
+                                        <th class="p-3">Shift Status</th>
+                                        <th class="p-3">Est. Billing</th>
                                         <th class="p-3 text-right">Master Action</th>
                                     </tr>
                                 </thead>
@@ -792,16 +574,19 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. REACTIVE STATE ENGINE & CLIENT CONTROLLER                              -->
+    <!-- 4. REACTIVE STATE ENGINE & CONTROLLER SCRIPTS                             -->
     <!-- ========================================================================= -->
     <script>
-        // Clean Initial State (No fake preloaded dummy records)
+        // Clean Initial State (Zero fake preloaded dummy records)
         let APP_STATE = {
             currentUserRole: null, // ADMIN, CONTRACTOR, SUPERVISOR, COMPANY
-            currentCompanyId: null, // For Client isolation
+            currentSupervisor: null, // Logged in supervisor object
+            currentCompanyId: null, // Logged in company
             plants: [],
+            supervisors: [],
             labour: [],
-            attendance: {} // { workerId: 'P' | 'HD' | 'A' }
+            attendance: {}, // { workerId: 'P' | 'HD' | 'A' }
+            expenses: 0
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -811,17 +596,17 @@
         });
 
         function saveStateToStorage() {
-            localStorage.setItem('LABOUR_MITRA_ENTERPRISE_STATE', JSON.stringify(APP_STATE));
+            localStorage.setItem('LABOUR_MITRA_FINAL_STATE', JSON.stringify(APP_STATE));
             refreshPublicCounters();
         }
 
         function loadStateFromStorage() {
-            const data = localStorage.getItem('LABOUR_MITRA_ENTERPRISE_STATE');
+            const data = localStorage.getItem('LABOUR_MITRA_FINAL_STATE');
             if (data) {
                 try {
                     APP_STATE = JSON.parse(data);
                 } catch (e) {
-                    console.error("Failed to load local state:", e);
+                    console.error("State parse error:", e);
                 }
             }
         }
@@ -848,7 +633,7 @@
             if (role === 'COMPANY') {
                 label.innerText = "Company ID (e.g. COMP-0001)";
             } else if (role === 'SUPERVISOR') {
-                label.innerText = "Supervisor Mobile / ID";
+                label.innerText = "Supervisor Mobile Number / ID";
             } else if (role === 'CONTRACTOR') {
                 label.innerText = "Contractor Access Key";
             } else {
@@ -863,35 +648,25 @@
             document.getElementById('login-modal').classList.add('hidden');
         }
 
-        function openAccessRequestModal() {
-            document.getElementById('access-request-modal').classList.remove('hidden');
-            lucide.createIcons();
-        }
-
-        function closeAccessRequestModal() {
-            document.getElementById('access-request-modal').classList.add('hidden');
-        }
-
-        function handleAccessRequest(e) {
-            e.preventDefault();
-            const companyName = document.getElementById('req-company').value;
-            alert("Access application registered for " + companyName + ". Master Admin will issue your Company ID within 24 hours.");
-            closeAccessRequestModal();
-            e.target.reset();
-        }
-
-        // Auth Router
+        // Authentication Router
         function handleAuth(e) {
             e.preventDefault();
             const role = document.getElementById('login-target-role').value;
             const authId = document.getElementById('auth-id').value.trim();
 
             APP_STATE.currentUserRole = role;
-            APP_STATE.currentCompanyId = (role === 'COMPANY') ? (authId || 'COMP-0001') : null;
+
+            if (role === 'SUPERVISOR') {
+                // Find matching supervisor or fallback to first supervisor's plant
+                const matchedSup = APP_STATE.supervisors.find(s => s.mobile === authId) || APP_STATE.supervisors[0];
+                APP_STATE.currentSupervisor = matchedSup || { name: 'Field Supervisor', plantId: APP_STATE.plants[0]?.id };
+            } else if (role === 'COMPANY') {
+                APP_STATE.currentCompanyId = authId || 'COMP-0001';
+            }
 
             closeLoginModal();
 
-            // Switch from Public to Portal Workspace
+            // Switch to Authenticated Workspace
             document.getElementById('public-website-view').classList.add('hidden');
             document.getElementById('authenticated-app').classList.remove('hidden');
 
@@ -900,6 +675,7 @@
 
         function performLogout() {
             APP_STATE.currentUserRole = null;
+            APP_STATE.currentSupervisor = null;
             APP_STATE.currentCompanyId = null;
             document.getElementById('authenticated-app').classList.add('hidden');
             document.getElementById('public-website-view').classList.remove('hidden');
@@ -912,125 +688,112 @@
             const roleTag = document.getElementById('user-role-tag');
             const userName = document.getElementById('user-display-name');
             const userScope = document.getElementById('user-display-scope');
-            const isolationTag = document.getElementById('tenant-isolation-tag');
 
             roleTag.innerText = role;
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
 
-            if (role === 'COMPANY') {
-                userName.innerText = "Client Authorized User";
-                userScope.innerText = "ID: " + APP_STATE.currentCompanyId;
-                isolationTag.classList.remove('hidden');
-                isolationTag.innerText = "Isolated Client Scope";
-                nav.innerHTML = `
-                    <button onclick="renderCompanyView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-amber-500 text-slate-950 font-bold text-left">
-                        <i data-lucide="building" class="w-4 h-4"></i> Company Dashboard
-                    </button>
-                `;
-                renderCompanyView();
-            } else if (role === 'ADMIN') {
-                userName.innerText = "Master Admin";
-                userScope.innerText = "Supreme God-View";
-                isolationTag.classList.add('hidden');
-                nav.innerHTML = `
-                    <button onclick="renderAdminView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
-                        <i data-lucide="shield" class="w-4 h-4"></i> Master God View
-                    </button>
-                `;
-                renderAdminView();
-            } else if (role === 'CONTRACTOR') {
-                userName.innerText = "Authorized Contractor";
-                userScope.innerText = "Onboarding & Billing";
-                isolationTag.classList.add('hidden');
+            if (role === 'CONTRACTOR') {
+                userName.innerText = "Contractor & Accountant";
+                userScope.innerText = "Full Business & Labour Master";
                 nav.innerHTML = `
                     <button onclick="renderContractorView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
-                        <i data-lucide="building-2" class="w-4 h-4"></i> Plants & Manpower
+                        <i data-lucide="calculator" class="w-4 h-4"></i> Commercials & Operations
                     </button>
                 `;
                 renderContractorView();
             } else if (role === 'SUPERVISOR') {
-                userName.innerText = "Field Supervisor";
-                userScope.innerText = "Site Shift Mode";
-                isolationTag.classList.add('hidden');
+                userName.innerText = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.name : "Field Supervisor";
+                userScope.innerText = "Assigned Site Attendance";
                 nav.innerHTML = `
                     <button onclick="renderSupervisorView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
                         <i data-lucide="calendar-check" class="w-4 h-4"></i> Shift Attendance
                     </button>
                 `;
                 renderSupervisorView();
+            } else if (role === 'COMPANY') {
+                userName.innerText = "Client HR Desk";
+                userScope.innerText = "ID: " + APP_STATE.currentCompanyId;
+                nav.innerHTML = `
+                    <button onclick="renderCompanyView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-amber-500 text-slate-950 font-bold text-left">
+                        <i data-lucide="building" class="w-4 h-4"></i> Company Attendance
+                    </button>
+                `;
+                renderCompanyView();
+            } else if (role === 'ADMIN') {
+                userName.innerText = "Master Admin";
+                userScope.innerText = "Supreme God-View";
+                nav.innerHTML = `
+                    <button onclick="renderAdminView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
+                        <i data-lucide="shield" class="w-4 h-4"></i> Master God View
+                    </button>
+                `;
+                renderAdminView();
             }
             lucide.createIcons();
         }
 
-        // ==========================================
-        // 1. CLIENT / COMPANY PORTAL LOGIC
-        // ==========================================
-        function renderCompanyView() {
-            document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
-            document.getElementById('view-company-portal').classList.remove('hidden');
-            document.getElementById('current-view-title').innerText = "Client Company Portal";
-
-            const table = document.getElementById('company-labour-table');
-            table.innerHTML = '';
-
-            if (APP_STATE.labour.length === 0) {
-                table.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">No workers currently deployed under your company contract.</td></tr>';
-                document.getElementById('company-worker-count').innerText = "0";
-                document.getElementById('company-present-count').innerText = "0";
-                document.getElementById('company-turnout-rate').innerText = "0%";
-            } else {
-                let presentCount = 0;
-                APP_STATE.labour.forEach(w => {
-                    const status = APP_STATE.attendance[w.id] || 'P';
-                    if (status === 'P') presentCount++;
-                    table.innerHTML += `
-                        <tr class="hover:bg-slate-800/40">
-                            <td class="p-3 font-bold text-white">${w.name} <span class="block text-[10px] font-mono text-slate-400">${w.id}</span></td>
-                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 font-bold">${w.category}</span></td>
-                            <td class="p-3 font-bold ${status === 'P' ? 'text-emerald-400' : (status === 'HD' ? 'text-amber-400' : 'text-rose-400')}">
-                                ${status === 'P' ? 'Present (Full Day)' : (status === 'HD' ? 'Half Day' : 'Absent')}
-                            </td>
-                            <td class="p-3 font-mono text-emerald-400">${w.uan ? w.uan : 'Linked'}</td>
-                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[9px] font-bold">Compliant</span></td>
-                        </tr>
-                    `;
-                });
-                document.getElementById('company-worker-count').innerText = APP_STATE.labour.length;
-                document.getElementById('company-present-count').innerText = presentCount;
-                document.getElementById('company-turnout-rate').innerText = Math.round((presentCount / APP_STATE.labour.length) * 100) + "%";
-            }
-        }
-
-        // ==========================================
-        // 2. CONTRACTOR HUB LOGIC
-        // ==========================================
+        // =========================================================================
+        // 1. CONTRACTOR & ACCOUNTANT LOGIC (P&L, Plant, Supervisor, Labour)
+        // =========================================================================
         function renderContractorView() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('view-contractor-panel').classList.remove('hidden');
-            document.getElementById('current-view-title').innerText = "Contractor Operations & Labour Entry";
+            document.getElementById('current-view-title').innerText = "Contractor & Accountant Master Hub";
 
-            const plantSelect = document.getElementById('labour-plant-select');
-            plantSelect.innerHTML = '<option value="">Assign To Plant</option>';
+            // Update Dropdowns
+            const plantSelectLab = document.getElementById('labour-plant-select');
+            const plantSelectSup = document.getElementById('sup-plant-select');
+            
+            plantSelectLab.innerHTML = '<option value="">Select Plant</option>';
+            plantSelectSup.innerHTML = '<option value="">Assign Plant</option>';
+
             APP_STATE.plants.forEach(p => {
-                plantSelect.innerHTML += `<option value="${p.id}">${p.name} (${p.client})</option>`;
+                plantSelectLab.innerHTML += `<option value="${p.id}">${p.name} (${p.client})</option>`;
+                plantSelectSup.innerHTML += `<option value="${p.id}">${p.name}</option>`;
             });
 
+            // Calculate Live Commercials & Profit (Apna Fayda)
+            let totalBilling = 0;
+            let totalWages = 0;
+
+            APP_STATE.labour.forEach(w => {
+                const plant = APP_STATE.plants.find(p => p.id === w.plantId);
+                const clientRate = plant ? Number(plant.clientRate) : (Number(w.wage) * 1.3);
+                totalBilling += (clientRate * 26); // Standard 26 shifts
+                totalWages += (Number(w.wage) * 26);
+            });
+
+            const advanceRecovery = totalWages > 0 ? 4000 : 0;
+            const expenses = APP_STATE.expenses || 3500;
+            const netProfit = totalBilling - (totalWages + expenses) + advanceRecovery;
+
+            document.getElementById('contractor-stat-billing').innerText = "₹" + totalBilling.toLocaleString('en-IN');
+            document.getElementById('contractor-stat-wages').innerText = "₹" + totalWages.toLocaleString('en-IN');
+            document.getElementById('contractor-stat-advance').innerText = "₹" + advanceRecovery.toLocaleString('en-IN');
+            document.getElementById('contractor-stat-expenses').innerText = "₹" + expenses.toLocaleString('en-IN');
+            document.getElementById('contractor-stat-profit').innerText = "₹" + netProfit.toLocaleString('en-IN');
+
+            // Render Labour Directory
             const table = document.getElementById('contractor-labour-table');
             table.innerHTML = '';
 
             if (APP_STATE.labour.length === 0) {
-                table.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No workers registered yet. Please onboard labour above.</td></tr>`;
+                table.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No labour registered yet. Please onboard labour above.</td></tr>`;
             } else {
                 APP_STATE.labour.forEach(w => {
                     const plant = APP_STATE.plants.find(p => p.id === w.plantId);
                     table.innerHTML += `
                         <tr class="hover:bg-slate-800/40">
                             <td class="p-3 font-bold text-white">${w.name} <span class="block text-[10px] font-mono text-slate-400">${w.id}</span></td>
-                            <td class="p-3 text-slate-300">${plant ? plant.name : 'Unassigned'}</td>
+                            <td class="p-3 text-slate-300 font-semibold">${plant ? plant.name : 'Unassigned'}</td>
                             <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 font-bold">${w.category}</span></td>
-                            <td class="p-3 font-mono">₹${w.wage}/day</td>
-                            <td class="p-3 font-mono text-emerald-400">${w.uan ? w.uan : 'N/A'}</td>
-                            <td class="p-3 font-mono text-slate-300">${w.bank}</td>
+                            <td class="p-3 font-mono font-bold text-white">₹${w.wage}/day</td>
+                            <td class="p-3 font-mono text-slate-300">${w.bankAcc} (${w.bankIfsc})</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded ${w.hasPassbook ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-400'} text-[10px] font-bold">
+                                    ${w.hasPassbook ? 'Passbook Attached' : 'Pending'}
+                                </span>
+                            </td>
                         </tr>
                     `;
                 });
@@ -1044,7 +807,7 @@
                 name: document.getElementById('plant-name').value,
                 client: document.getElementById('client-name').value,
                 location: document.getElementById('plant-loc').value,
-                maxLabour: document.getElementById('plant-max-labour').value
+                clientRate: document.getElementById('plant-client-rate').value
             };
             APP_STATE.plants.push(newPlant);
             saveStateToStorage();
@@ -1053,46 +816,73 @@
             renderContractorView();
         }
 
+        function handleAddSupervisor(e) {
+            e.preventDefault();
+            const newSup = {
+                id: 'SUP-' + (APP_STATE.supervisors.length + 1).toString().padStart(3, '0'),
+                name: document.getElementById('sup-name').value,
+                mobile: document.getElementById('sup-mobile').value,
+                password: document.getElementById('sup-password').value,
+                plantId: document.getElementById('sup-plant-select').value
+            };
+            APP_STATE.supervisors.push(newSup);
+            saveStateToStorage();
+            e.target.reset();
+            alert("Site Supervisor ID created and assigned to plant!");
+            renderContractorView();
+        }
+
         function handleAddLabour(e) {
             e.preventDefault();
             if (APP_STATE.plants.length === 0) {
-                alert("Please add at least one plant contract before registering labour.");
+                alert("Please add a plant contract first before onboarding labour.");
                 return;
             }
+            const passbookInput = document.getElementById('labour-passbook-file');
             const newWorker = {
                 id: 'LAB-' + (APP_STATE.labour.length + 1).toString().padStart(6, '0'),
                 name: document.getElementById('labour-name').value,
                 plantId: document.getElementById('labour-plant-select').value,
                 category: document.getElementById('labour-category').value,
                 wage: document.getElementById('labour-wage').value,
-                uan: document.getElementById('labour-uan').value,
-                bank: document.getElementById('labour-bank').value
+                bankAcc: document.getElementById('labour-bank-acc').value,
+                bankIfsc: document.getElementById('labour-bank-ifsc').value,
+                hasPassbook: passbookInput.files.length > 0
             };
             APP_STATE.labour.push(newWorker);
             saveStateToStorage();
             e.target.reset();
-            alert("Worker registered and assigned to plant contract.");
+            alert("Labour registered and synced to Supervisor's site roster.");
             renderContractorView();
         }
 
-        // ==========================================
-        // 3. SUPERVISOR FIELD TERMINAL LOGIC
-        // ==========================================
+        // =========================================================================
+        // 2. SUPERVISOR LOGIC (Syncs directly with Contractor-assigned plant)
+        // =========================================================================
         function renderSupervisorView() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('view-supervisor-panel').classList.remove('hidden');
-            document.getElementById('current-view-title').innerText = "Supervisor Field Terminal";
+            document.getElementById('current-view-title').innerText = "Supervisor Site Terminal";
+
+            // Find supervisor's assigned plant
+            const currentSup = APP_STATE.currentSupervisor;
+            const assignedPlant = APP_STATE.plants.find(p => p.id === currentSup?.plantId) || APP_STATE.plants[0];
+            
+            document.getElementById('supervisor-plant-name').innerText = assignedPlant ? assignedPlant.name : "All Available Sites";
+
+            // Filter workers strictly assigned to this supervisor's plant
+            const visibleWorkers = assignedPlant ? APP_STATE.labour.filter(w => w.plantId === assignedPlant.id) : APP_STATE.labour;
 
             const roster = document.getElementById('supervisor-attendance-roster');
             roster.innerHTML = '';
 
-            if (APP_STATE.labour.length === 0) {
-                roster.innerHTML = '<p class="text-slate-500 text-center p-4">No active labour found. Contractor has not registered workers yet.</p>';
+            if (visibleWorkers.length === 0) {
+                roster.innerHTML = '<p class="text-slate-500 text-center p-4">No labour assigned to this plant yet. Contractor needs to add labour under this plant contract.</p>';
             } else {
-                APP_STATE.labour.forEach(w => {
+                visibleWorkers.forEach(w => {
                     const currentStatus = APP_STATE.attendance[w.id] || 'P';
                     roster.innerHTML += `
-                        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-950 border border-slate-800">
                             <div>
                                 <p class="font-bold text-white">${w.name}</p>
                                 <p class="text-[10px] text-slate-400 font-mono">${w.id} | ${w.category}</p>
@@ -1125,12 +915,42 @@
         }
 
         function submitSupervisorShift() {
-            alert("Shift attendance locked and transmitted to Central Audit Vault.");
+            alert("Shift attendance locked and transmitted to Central Ledger.");
         }
 
-        // ==========================================
+        // =========================================================================
+        // 3. CLIENT / COMPANY LOGIC (Isolated Scope)
+        // =========================================================================
+        function renderCompanyView() {
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById('view-company-portal').classList.remove('hidden');
+            document.getElementById('current-view-title').innerText = "Client Portal - " + (APP_STATE.currentCompanyId || 'COMP-0001');
+
+            const table = document.getElementById('company-labour-table');
+            table.innerHTML = '';
+
+            if (APP_STATE.labour.length === 0) {
+                table.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500 italic">No workers currently deployed under this client contract.</td></tr>';
+            } else {
+                APP_STATE.labour.forEach(w => {
+                    const status = APP_STATE.attendance[w.id] || 'P';
+                    table.innerHTML += `
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="p-3 font-bold text-white">${w.name} <span class="block text-[10px] font-mono text-slate-400">${w.id}</span></td>
+                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 font-bold">${w.category}</span></td>
+                            <td class="p-3 font-bold ${status === 'P' ? 'text-emerald-400' : (status === 'HD' ? 'text-amber-400' : 'text-rose-400')}">
+                                ${status === 'P' ? 'Present (Full Day)' : (status === 'HD' ? 'Half Day' : 'Absent')}
+                            </td>
+                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[9px] font-bold">KYC Verified</span></td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        // =========================================================================
         // 4. MASTER ADMIN LOGIC (God View)
-        // ==========================================
+        // =========================================================================
         function renderAdminView() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('view-admin-dashboard').classList.remove('hidden');
@@ -1138,18 +958,13 @@
 
             document.getElementById('stat-plant-count').innerText = APP_STATE.plants.length;
             document.getElementById('stat-labour-count').innerText = APP_STATE.labour.length;
-
-            let presentCount = 0;
-            APP_STATE.labour.forEach(w => {
-                if (APP_STATE.attendance[w.id] === 'P') presentCount++;
-            });
-            document.getElementById('stat-present-count').innerText = presentCount;
+            document.getElementById('stat-sup-count').innerText = APP_STATE.supervisors.length;
 
             const table = document.getElementById('admin-plants-table');
             table.innerHTML = '';
 
             if (APP_STATE.plants.length === 0) {
-                table.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No plants or contractors recorded yet.</td></tr>';
+                table.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No plants recorded yet.</td></tr>';
             } else {
                 APP_STATE.plants.forEach(p => {
                     const plantWorkers = APP_STATE.labour.filter(w => w.plantId === p.id);
@@ -1158,8 +973,8 @@
                             <td class="p-3 font-bold text-white">${p.name} <span class="block text-[10px] font-normal text-slate-400">${p.location}</span></td>
                             <td class="p-3 text-slate-300 font-semibold">${p.client}</td>
                             <td class="p-3 font-mono">${plantWorkers.length} Active</td>
-                            <td class="p-3 text-emerald-400 font-bold">Shift Active</td>
-                            <td class="p-3 font-mono">₹${plantWorkers.length * 18500} Est.</td>
+                            <td class="p-3 text-emerald-400 font-bold">Shift Running</td>
+                            <td class="p-3 font-mono">₹${plantWorkers.length * 22000} Est.</td>
                             <td class="p-3 text-right">
                                 <button onclick="alert('Master Override executed for: ' + '${p.name}')" class="text-amber-400 hover:underline font-bold">Override Entry</button>
                             </td>
@@ -1169,9 +984,60 @@
             }
         }
 
-        // ==========================================
+        // =========================================================================
         // DIRECT PDF GENERATION MODULES (jsPDF)
-        // ==========================================
+        // =========================================================================
+        function downloadProfitLedgerPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(16);
+            doc.text("Labour Mitra ERP - Commercial & Profit Ledger", 14, 18);
+            doc.setFontSize(10);
+            doc.text("Contractor & Accountant Statement | Live Financial Matrix", 14, 25);
+
+            const tableData = APP_STATE.plants.map(p => {
+                const workers = APP_STATE.labour.filter(w => w.plantId === p.id);
+                const billing = workers.length * 26 * Number(p.clientRate || 750);
+                const wages = workers.reduce((acc, w) => acc + (Number(w.wage) * 26), 0);
+                const profit = billing - wages;
+                return [p.name, p.client, workers.length.toString(), "Rs. " + billing, "Rs. " + wages, "Rs. " + profit];
+            });
+
+            doc.autoTable({
+                head: [['Plant Name', 'Client', 'Labour Count', 'Gross Billing', 'Labour Wages', 'Net Margin (Fayda)']],
+                body: tableData.length > 0 ? tableData : [['N/A', 'No data', '0', 'Rs. 0', 'Rs. 0', 'Rs. 0']],
+                startY: 32,
+                theme: 'grid'
+            });
+
+            doc.save("Contractor_Profit_Ledger.pdf");
+        }
+
+        function downloadMasterLabourPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(16);
+            doc.text("Labour Mitra ERP - Master Labour & Banking Directory", 14, 18);
+            doc.setFontSize(10);
+            doc.text("Contractor KYC Ledger", 14, 25);
+
+            const tableData = APP_STATE.labour.map(w => {
+                const p = APP_STATE.plants.find(plant => plant.id === w.plantId);
+                return [w.id, w.name, p ? p.name : 'Unassigned', w.category, "Rs. " + w.wage, w.bankAcc, w.bankIfsc];
+            });
+
+            doc.autoTable({
+                head: [['Worker ID', 'Name', 'Plant', 'Category', 'Wage', 'Bank A/C', 'IFSC']],
+                body: tableData.length > 0 ? tableData : [['N/A', 'No labour registered', 'N/A', 'N/A', '0', 'N/A', 'N/A']],
+                startY: 32,
+                theme: 'grid'
+            });
+
+            doc.save("Labour_Master_Directory.pdf");
+        }
+
         function downloadCompanyRosterPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -1179,21 +1045,21 @@
             doc.setFontSize(16);
             doc.text("Labour Mitra ERP - Client Shift Attendance Matrix", 14, 18);
             doc.setFontSize(10);
-            doc.text("Company ID: " + (APP_STATE.currentCompanyId || 'COMP-0001') + " | Official Client Ledger", 14, 25);
+            doc.text("Client ID: " + (APP_STATE.currentCompanyId || 'COMP-0001'), 14, 25);
 
             const tableData = APP_STATE.labour.map(w => {
                 const status = APP_STATE.attendance[w.id] || 'P';
-                return [w.id, w.name, w.category, status === 'P' ? 'Present' : (status === 'HD' ? 'Half Day' : 'Absent'), w.uan || 'Linked'];
+                return [w.id, w.name, w.category, status === 'P' ? 'Present' : (status === 'HD' ? 'Half Day' : 'Absent')];
             });
 
             doc.autoTable({
-                head: [['Worker ID', 'Full Name', 'Category', 'Shift Status', 'PF UAN']],
-                body: tableData.length > 0 ? tableData : [['N/A', 'No workers deployed', 'N/A', 'N/A', 'N/A']],
+                head: [['Worker ID', 'Full Name', 'Category', 'Shift Status']],
+                body: tableData.length > 0 ? tableData : [['N/A', 'No workers deployed', 'N/A', 'N/A']],
                 startY: 32,
                 theme: 'grid'
             });
 
-            doc.save("LabourMitra_Company_Roster.pdf");
+            doc.save("Company_Shift_Attendance.pdf");
         }
 
         function downloadMasterReportPDF() {
@@ -1203,7 +1069,7 @@
             doc.setFontSize(16);
             doc.text("Labour Mitra ERP - Master Plant Audit Report", 14, 18);
             doc.setFontSize(10);
-            doc.text("Authority: Master Admin (God View) | Cryptographic Audit", 14, 25);
+            doc.text("Authority: Master Admin (God View)", 14, 25);
 
             const tableData = APP_STATE.plants.map(p => {
                 const count = APP_STATE.labour.filter(w => w.plantId === p.id).length;
@@ -1217,31 +1083,7 @@
                 theme: 'grid'
             });
 
-            doc.save("LabourMitra_Master_Report.pdf");
-        }
-
-        function downloadMasterLabourPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            doc.setFontSize(16);
-            doc.text("Labour Mitra ERP - Registered Manpower Directory", 14, 18);
-            doc.setFontSize(10);
-            doc.text("Contractor Manpower & KYC Register", 14, 25);
-
-            const tableData = APP_STATE.labour.map(w => {
-                const p = APP_STATE.plants.find(plant => plant.id === w.plantId);
-                return [w.id, w.name, p ? p.name : 'Unassigned', w.category, "Rs. " + w.wage, w.uan || 'N/A', w.bank];
-            });
-
-            doc.autoTable({
-                head: [['Worker ID', 'Full Name', 'Plant', 'Category', 'Daily Wage', 'PF UAN', 'IFSC']],
-                body: tableData.length > 0 ? tableData : [['N/A', 'No labour registered', 'N/A', 'N/A', '0', 'N/A', 'N/A']],
-                startY: 32,
-                theme: 'grid'
-            });
-
-            doc.save("LabourMitra_Labour_Directory.pdf");
+            doc.save("Master_Plant_Audit_Report.pdf");
         }
     </script>
 </body>
