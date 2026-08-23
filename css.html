@@ -1,0 +1,356 @@
+/* ==========================================================================
+   ManpowerPro ERP - Enterprise Production Stylesheet (style.css)
+   Designed for: Multi-Plant Operations, 5000+ Labour Scaling & Mobile First
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. ROOT DESIGN TOKENS & SYSTEM VARIABLES
+   -------------------------------------------------------------------------- */
+:root {
+  /* Neutral Slate Palette */
+  --bg-app: #020617;          /* Slate 950 */
+  --bg-surface: #0f172a;      /* Slate 900 */
+  --bg-surface-elevated: #1e293b; /* Slate 800 */
+  --bg-surface-subtle: #090d16;  /* Deep base */
+  
+  --border-subtle: #1e293b;   /* Slate 800 */
+  --border-strong: #334155;   /* Slate 700 */
+  --border-focus: #3b82f6;    /* Blue 500 */
+
+  --text-main: #f8fafc;       /* Slate 50 */
+  --text-muted: #94a3b8;      /* Slate 400 */
+  --text-faint: #64748b;      /* Slate 500 */
+
+  /* Semantic Action Colors */
+  --brand-blue: #2563eb;
+  --brand-blue-hover: #1d4ed8;
+  --brand-blue-subtle: rgba(37, 99, 235, 0.15);
+
+  --status-emerald: #10b981;
+  --status-emerald-subtle: rgba(16, 185, 129, 0.15);
+  
+  --status-amber: #f59e0b;
+  --status-amber-subtle: rgba(245, 158, 11, 0.15);
+  
+  --status-rose: #f43f5e;
+  --status-rose-subtle: rgba(244, 63, 94, 0.15);
+
+  --status-indigo: #6366f1;
+  --status-indigo-subtle: rgba(99, 102, 241, 0.15);
+
+  /* Typography & Layout */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   2. BASE RESET & ACCESSIBILITY
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   3. HIGH-DENSITY ENTERPRISE SCROLLBARS
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+}
+
+/* --------------------------------------------------------------------------
+   4. NAVIGATION & HEADER
+   -------------------------------------------------------------------------- */
+.header-glass {
+  background-color: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.brand-badge {
+  background-color: var(--brand-blue-subtle);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+}
+
+/* --------------------------------------------------------------------------
+   5. ANOMALY & FRAUD PREVENTION ALERT BANNER
+   -------------------------------------------------------------------------- */
+.anomaly-banner {
+  background-color: rgba(245, 158, 11, 0.08);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+  color: #fde68a;
+  padding: 10px 16px;
+  font-size: 12px;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.98); }
+}
+
+.alert-pulse {
+  animation: pulse-subtle 2s infinite ease-in-out;
+}
+
+/* --------------------------------------------------------------------------
+   6. METRIC KPI CARDS & DATA PANELS
+   -------------------------------------------------------------------------- */
+.kpi-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.kpi-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+.card-panel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   7. DATA TABLES & GRID DISPLAY
+   -------------------------------------------------------------------------- */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+thead th {
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-fast);
+}
+
+tbody tr:hover {
+  background-color: rgba(30, 41, 59, 0.4);
+}
+
+tbody td {
+  padding: 14px 16px;
+  font-size: 12px;
+  color: var(--text-main);
+}
+
+/* --------------------------------------------------------------------------
+   8. STATUS PILLS & COMPLIANCE BADGES
+   -------------------------------------------------------------------------- */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.badge-operational {
+  background-color: var(--status-emerald-subtle);
+  color: var(--status-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-pending {
+  background-color: var(--status-amber-subtle);
+  color: var(--status-amber);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-alert {
+  background-color: var(--status-rose-subtle);
+  color: var(--status-rose);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.badge-info {
+  background-color: var(--status-indigo-subtle);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   9. MOBILE-FIRST SUPERVISOR ATTENDANCE CONTROLS
+   -------------------------------------------------------------------------- */
+.attendance-grid {
+  display: flex;
+  gap: 6px;
+}
+
+.attendance-btn {
+  flex: 1;
+  min-width: 44px;
+  min-height: 38px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  background-color: var(--bg-surface-elevated);
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.attendance-btn:active {
+  transform: scale(0.94);
+}
+
+.attendance-btn.active-p {
+  background-color: var(--status-emerald) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+}
+
+.attendance-btn.active-hd {
+  background-color: var(--status-amber) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+}
+
+.attendance-btn.active-a {
+  background-color: var(--status-rose) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   10. FORMS, INPUTS & CONTROL ELEMENTS
+   -------------------------------------------------------------------------- */
+input, select, textarea {
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 13px;
+  width: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+input::placeholder {
+  color: var(--text-faint);
+}
+
+/* --------------------------------------------------------------------------
+   11. DATA MASKING & AUDIT LOG ROW
+   -------------------------------------------------------------------------- */
+.masked-data {
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.audit-row {
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   12. RESPONSIVE BREAKPOINTS (Mobile-First Adjustments)
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  body {
+    font-size: 13px;
+  }
+
+  .kpi-card {
+    padding: 12px;
+  }
+
+  thead th, tbody td {
+    padding: 10px 12px;
+  }
+
+  .attendance-btn {
+    min-height: 44px; /* Touch-optimized height */
+    font-size: 13px;
+  }
+}
