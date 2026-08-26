@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- jsPDF & AutoTable for Direct Client PDF Downloads -->
+    <!-- jsPDF & AutoTable for PDF Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
@@ -22,14 +22,13 @@
                             gold: '#f59e0b',
                             goldDark: '#d97706',
                             blue: '#2563eb',
-                            blueDark: '#1d4ed8',
                             steel: '#0f172a',
                             deep: '#020617'
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
                     }
                 }
             }
@@ -39,11 +38,9 @@
         .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #020617; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        .tab-active { background-color: #2563eb !important; color: #ffffff !important; }
         .glass-nav {
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
         }
         .hero-mesh {
             background: radial-gradient(circle at 50% 20%, rgba(37, 99, 235, 0.15), transparent 45%),
@@ -55,201 +52,146 @@
 <body class="h-full flex flex-col font-sans antialiased text-xs selection:bg-amber-500 selection:text-slate-950">
 
     <!-- ========================================================================= -->
-    <!-- 1. PUBLIC CORPORATE FACING WEBSITE                                        -->
+    <!-- 1. PUBLIC FACING WEBSITE                                                  -->
     <!-- ========================================================================= -->
     <div id="public-website-view" class="min-h-full flex flex-col justify-between">
         
-        <!-- Premium Fixed Glass Navbar -->
-        <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-slate-800/80 transition-all duration-300">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-                
-                <!-- Brand Signature -->
-                <a href="#hero" class="flex items-center space-x-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-blue-600 to-indigo-600 flex items-center justify-center font-black text-white text-base shadow-lg shadow-blue-900/30 group-hover:scale-105 transition">LM</div>
+        <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-amber-500 to-blue-600 flex items-center justify-center font-black text-white text-base shadow">LM</div>
                     <div>
                         <div class="flex items-center gap-1.5">
                             <span class="font-extrabold text-base tracking-tight text-white">Labour<span class="text-amber-400">Mitra</span></span>
-                            <span class="text-[9px] bg-slate-800 text-amber-300 border border-amber-500/30 px-1.5 py-0.5 rounded font-mono font-bold">ENTERPRISE</span>
+                            <span class="text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-1 py-0.5 rounded font-mono font-bold flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> CLOUD LIVE
+                            </span>
                         </div>
-                        <p class="text-[10px] text-slate-400 tracking-wider uppercase font-semibold">Industrial Workforce OS</p>
+                        <p class="text-[9px] text-slate-400 tracking-wider uppercase font-semibold">Industrial Workforce OS</p>
                     </div>
-                </a>
-
-                <!-- Desktop Navigation Links -->
-                <nav class="hidden lg:flex items-center space-x-7 font-medium text-slate-300 text-xs tracking-wide">
-                    <a href="#hero" class="hover:text-amber-400 transition">Home</a>
-                    <a href="#who-we-are" class="hover:text-amber-400 transition">Who We Are</a>
-                    <a href="#services" class="hover:text-amber-400 transition">Our Services</a>
-                    <a href="#workforce-platform" class="hover:text-amber-400 transition">Workforce Platform</a>
-                    <a href="#company-access" class="hover:text-amber-400 transition">Company Access</a>
-                </nav>
-
-                <!-- Dedicated Authentication Actions -->
-                <div class="hidden sm:flex items-center space-x-2.5">
-                    <button onclick="openLoginModal('COMPANY')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-2 rounded-lg transition shadow-md flex items-center gap-1.5">
-                        <i data-lucide="building" class="w-3.5 h-3.5"></i> Company Login
-                    </button>
-                    <button onclick="openLoginModal('CONTRACTOR')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-2 rounded-lg transition flex items-center gap-1.5">
-                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Contractor & Accountant
-                    </button>
-                    <button onclick="openLoginModal('SUPERVISOR')" class="bg-slate-900 hover:bg-slate-800 text-blue-400 border border-blue-900/60 font-bold px-3 py-2 rounded-lg transition flex items-center gap-1.5">
-                        <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Supervisor Portal
-                    </button>
                 </div>
 
-                <!-- Mobile Menu Trigger -->
-                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-400 hover:text-white">
-                    <i data-lucide="menu" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <!-- Mobile Dropdown Navigation -->
-            <div id="mobile-nav" class="hidden lg:hidden bg-slate-950 border-b border-slate-800 px-4 py-4 space-y-3">
-                <a href="#hero" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Home</a>
-                <a href="#who-we-are" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Who We Are</a>
-                <a href="#services" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Our Services</a>
-                <a href="#workforce-platform" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Workforce Platform</a>
-                <a href="#company-access" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-amber-400 py-1">Company Access</a>
-                <div class="pt-3 border-t border-slate-800 flex flex-col gap-2">
-                    <button onclick="openLoginModal('COMPANY'); toggleMobileMenu();" class="w-full bg-amber-500 text-slate-950 font-bold py-2 rounded-lg">Company Login</button>
-                    <button onclick="openLoginModal('CONTRACTOR'); toggleMobileMenu();" class="w-full bg-slate-800 text-white font-bold py-2 rounded-lg">Contractor & Accountant</button>
-                    <button onclick="openLoginModal('SUPERVISOR'); toggleMobileMenu();" class="w-full bg-slate-900 text-blue-400 border border-blue-900/60 font-bold py-2 rounded-lg">Supervisor Portal</button>
+                <div class="flex items-center space-x-2">
+                    <button onclick="window.openLoginModal('CONTRACTOR')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition shadow flex items-center gap-1">
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Contractor Login
+                    </button>
+                    <button onclick="window.openLoginModal('SUPERVISOR')" class="bg-slate-900 hover:bg-slate-800 text-blue-400 border border-blue-900/60 font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                        <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Supervisor Portal
+                    </button>
+                    <button onclick="window.openLoginModal('COMPANY')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                        <i data-lucide="building" class="w-3.5 h-3.5"></i> Client HR
+                    </button>
                 </div>
             </div>
         </header>
 
-        <!-- Hero Section -->
-        <section id="hero" class="relative pt-32 pb-20 md:pt-48 md:pb-32 px-4 sm:px-6 lg:px-8 hero-mesh flex flex-col justify-center border-b border-slate-800/80">
-            <div class="max-w-6xl mx-auto text-center space-y-7">
-                <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/30 px-3.5 py-1.5 rounded-full shadow-inner">
-                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                    <span class="text-[11px] font-bold text-amber-300 uppercase tracking-widest">Industrial Manpower Supply & Digital ERP</span>
+        <section class="relative pt-32 pb-20 px-4 hero-mesh flex flex-col justify-center border-b border-slate-800 text-center">
+            <div class="max-w-5xl mx-auto space-y-5">
+                <div class="inline-flex items-center gap-2 bg-slate-900 border border-amber-500/30 px-3 py-1 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-[11px] font-bold text-amber-300 uppercase tracking-widest">Firebase Cloud Synced Architecture</span>
                 </div>
 
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.08]">
-                    POWERING INDUSTRIES <br class="hidden sm:inline">
-                    <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent">WITH RELIABLE MANPOWER</span>
+                <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight">
+                    POWERING HEAVY INDUSTRIES <br>
+                    <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent">WITH LIVE CLOUD WORKFORCE ERP</span>
                 </h1>
 
-                <p class="text-slate-300 text-sm sm:text-base max-w-3xl mx-auto font-normal leading-relaxed">
-                    Reliable workforce solutions for heavy industrial operations — supported by dedicated client digital portals, automated attendance validation, PF/ESIC compliance, and single-click plant billing.
+                <p class="text-slate-300 text-sm max-w-2xl mx-auto font-normal">
+                    Multi-site attendance from supervisor mobile, instant contractor profit calculations, automated PF/ESIC compliances, and Form B/T statutory generator.
                 </p>
 
-                <div class="pt-4 flex flex-wrap justify-center items-center gap-4">
-                    <a href="#services" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-7 py-3.5 rounded-xl text-xs sm:text-sm shadow-xl shadow-blue-950 flex items-center gap-2 transition">
-                        EXPLORE OUR SERVICES <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </a>
-                    <a href="#company-access" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-7 py-3.5 rounded-xl text-xs sm:text-sm shadow-xl shadow-amber-950/40 flex items-center gap-2 transition">
-                        GET COMPANY ACCESS <i data-lucide="key" class="w-4 h-4"></i>
-                    </a>
-                </div>
-
-                <!-- Animated Dynamic Operational Statistics -->
-                <div class="pt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                    <div class="bg-slate-900/90 border border-slate-800/90 p-4 rounded-2xl backdrop-blur-sm">
-                        <p class="text-2xl sm:text-3xl font-black text-white" id="stat-hero-workers">450+</p>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold mt-1">Active Workforce</p>
+                <div class="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
+                    <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl">
+                        <p class="text-2xl font-black text-white" id="stat-hero-workers">0</p>
+                        <p class="text-[9px] text-slate-400 uppercase tracking-wider font-bold">Total Workers</p>
                     </div>
-                    <div class="bg-slate-900/90 border border-slate-800/90 p-4 rounded-2xl backdrop-blur-sm">
-                        <p class="text-2xl sm:text-3xl font-black text-amber-400" id="stat-hero-plants">4+</p>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold mt-1">Industrial Plants</p>
+                    <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl">
+                        <p class="text-2xl font-black text-amber-400" id="stat-hero-plants">0</p>
+                        <p class="text-[9px] text-slate-400 uppercase tracking-wider font-bold">Industrial Plants</p>
                     </div>
-                    <div class="bg-slate-900/90 border border-slate-800/90 p-4 rounded-2xl backdrop-blur-sm">
-                        <p class="text-2xl sm:text-3xl font-black text-emerald-400">24 / 7</p>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold mt-1">On-Site Supervision</p>
+                    <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl">
+                        <p class="text-2xl font-black text-emerald-400" id="stat-hero-shifts">0</p>
+                        <p class="text-[9px] text-slate-400 uppercase tracking-wider font-bold">Shifts Logged</p>
                     </div>
-                    <div class="bg-slate-900/90 border border-slate-800/90 p-4 rounded-2xl backdrop-blur-sm">
-                        <p class="text-2xl sm:text-3xl font-black text-blue-400">100%</p>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold mt-1">Digital Verification</p>
+                    <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl">
+                        <p class="text-2xl font-black text-blue-400" id="stat-hero-ot">0 Hrs</p>
+                        <p class="text-[9px] text-slate-400 uppercase tracking-wider font-bold">OT Hours Recorded</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Public Corporate Footer -->
-        <footer class="bg-slate-950 border-t border-slate-800 py-12 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-4">
-                <p>© 2026 Labour Mitra ERP Platform. All Rights Reserved.</p>
-                <div class="flex items-center gap-4">
-                    <!-- Bottom Master Admin Login -->
-                    <button onclick="openLoginModal('ADMIN')" class="text-slate-600 hover:text-amber-400 transition flex items-center gap-1 font-mono text-[10px]">
-                        <i data-lucide="shield" class="w-3 h-3"></i> Master Admin Terminal
-                    </button>
-                </div>
+        <footer class="bg-slate-950 border-t border-slate-800 py-6 px-4">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
+                <p>© 2026 Labour Mitra ERP Platform. Cloud Edition.</p>
+                <button onclick="window.openLoginModal('ADMIN')" class="text-slate-600 hover:text-amber-400 transition flex items-center gap-1 font-mono text-[10px]">
+                    <i data-lucide="shield" class="w-3 h-3"></i> Master Admin Terminal
+                </button>
             </div>
         </footer>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 2. AUTHENTICATION & PAYOUT VALIDATION MODALS                               -->
+    <!-- 2. AUTHENTICATION & ADVANCE MODALS                                        -->
     <!-- ========================================================================= -->
-    
-    <!-- Portal Login Modal -->
     <div id="login-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    <span id="modal-role-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500 text-slate-950 font-mono">COMPANY</span>
+                    <span id="modal-role-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500 text-slate-950 font-mono">CONTRACTOR</span>
                     <h3 class="font-bold text-sm text-white" id="modal-role-title">Portal Gateway</h3>
                 </div>
-                <button onclick="closeLoginModal()" class="text-slate-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button onclick="window.closeLoginModal()" class="text-slate-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
 
-            <form onsubmit="handleAuth(event)" class="space-y-3">
-                <input type="hidden" id="login-target-role" value="COMPANY">
+            <form onsubmit="window.handleAuth(event)" class="space-y-3">
+                <input type="hidden" id="login-target-role" value="CONTRACTOR">
                 <div>
                     <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1" id="login-id-label">Identifier</label>
-                    <input type="text" id="auth-id" required placeholder="Enter ID or Mobile" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                    <input type="text" id="auth-id" required placeholder="Mobile / Username" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Password</label>
                     <input type="password" id="auth-pass" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
                 </div>
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-lg text-xs transition shadow-md">
-                    Verify & Launch Portal
+                <div id="login-hint" class="text-[10px] text-slate-400 bg-slate-950 p-2 rounded border border-slate-800 font-mono">
+                    Default pass: <span class="text-amber-400">contractor123</span> (or <span class="text-amber-400">admin123</span>)
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-lg text-xs transition shadow">
+                    Verify & Access
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Payout Verification & Idempotency Lock Modal -->
-    <div id="payout-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl max-w-md w-full space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="font-bold text-sm text-white flex items-center gap-2">
-                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Pre-Payment Verification & Payout Desk
+    <!-- Advance / Khuraki Add Modal -->
+    <div id="advance-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl max-w-sm w-full space-y-3 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-sm text-white flex items-center gap-1.5">
+                    <i data-lucide="hand-coins" class="w-4 h-4 text-amber-400"></i> Add Khuraki / Advance
                 </h3>
-                <button onclick="closePayoutModal()" class="text-slate-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button onclick="window.closeAdvanceModal()" class="text-slate-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
-            
-            <div class="space-y-2.5 font-mono text-xs bg-slate-950 p-4 rounded-xl border border-slate-800">
-                <div class="flex justify-between text-slate-300">
-                    <span>Verified Labour Count:</span>
-                    <span class="text-white font-bold" id="payout-modal-count">0</span>
+            <form onsubmit="window.handleSaveAdvance(event)" class="space-y-3">
+                <input type="hidden" id="adv-worker-id">
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase font-bold">Worker Name</label>
+                    <input type="text" id="adv-worker-name" disabled class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-amber-400 font-bold">
                 </div>
-                <div class="flex justify-between text-slate-300">
-                    <span>Gross Earned Wages:</span>
-                    <span class="text-rose-400 font-bold" id="payout-modal-gross">₹0.00</span>
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase font-bold">Advance Amount (₹)</label>
+                    <input type="number" id="adv-amount" required min="1" placeholder="e.g. 1000" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
                 </div>
-                <div class="flex justify-between text-slate-300">
-                    <span>Khuraki / Advance Deducted:</span>
-                    <span class="text-amber-400 font-bold" id="payout-modal-advance">-₹0.00</span>
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase font-bold">Reason / Purpose</label>
+                    <input type="text" id="adv-reason" placeholder="Weekly rashan / medical" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
                 </div>
-                <div class="flex justify-between text-slate-300 border-t border-slate-800 pt-2 text-sm">
-                    <span class="text-emerald-400 font-bold">Net Payout Release:</span>
-                    <span class="text-emerald-400 font-bold" id="payout-modal-net">₹0.00</span>
-                </div>
-            </div>
-
-            <!-- Two-Way Payout Execution Actions -->
-            <div class="space-y-2 pt-1">
-                <button onclick="executeBankBulkExport()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg flex items-center justify-center gap-2 shadow">
-                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Generate Bank NEFT/Bulk Excel (CSV)
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded text-xs">
+                    Save to Cloud
                 </button>
-                <button onclick="executeCashVouchersPDF()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 font-bold py-2.5 rounded-lg flex items-center justify-center gap-2">
-                    <i data-lucide="receipt" class="w-4 h-4"></i> Generate Cash / Khuraki Receipts (PDF)
-                </button>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -258,7 +200,6 @@
     <!-- ========================================================================= -->
     <div id="authenticated-app" class="h-full flex overflow-hidden hidden">
         
-        <!-- Sidebar Navigation -->
         <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col flex-shrink-0 z-30">
             <div class="h-16 px-4 flex items-center justify-between border-b border-slate-800 bg-slate-950">
                 <div class="flex items-center gap-2">
@@ -268,60 +209,51 @@
                 <span id="user-role-tag" class="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">ROLE</span>
             </div>
 
-            <!-- Dynamic Sidebar Nav by Role -->
             <nav id="sidebar-nav" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-1 font-medium text-slate-300">
-                <!-- Injected Dynamically -->
             </nav>
 
-            <!-- User Session & Logout Footer -->
             <div class="p-3 border-t border-slate-800 bg-slate-950 flex items-center justify-between">
                 <div class="truncate mr-2">
-                    <p id="user-display-name" class="font-bold text-white leading-none truncate">Super Admin</p>
-                    <p id="user-display-scope" class="text-[9px] text-slate-400 mt-0.5 truncate">God View Mode</p>
+                    <p id="user-display-name" class="font-bold text-white leading-none truncate">User</p>
+                    <p id="user-display-scope" class="text-[9px] text-slate-400 mt-0.5 truncate">Scope</p>
                 </div>
-                <button onclick="performLogout()" title="Logout Session" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition flex-shrink-0">
+                <button onclick="window.performLogout()" title="Logout" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition">
                     <i data-lucide="log-out" class="w-4 h-4"></i>
                 </button>
             </div>
         </aside>
 
-        <!-- Main Workspace -->
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-            <!-- App Header -->
             <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 z-20">
+                <h2 id="current-view-title" class="font-bold text-sm text-white">Dashboard Matrix</h2>
                 <div class="flex items-center gap-3">
-                    <h2 id="current-view-title" class="font-bold text-sm text-white">Dashboard Matrix</h2>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="performLogout()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
+                    <!-- Global Monthly Pay-period Selector -->
+                    <div class="flex items-center gap-1.5 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-lg">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">Billing Cycle:</span>
+                        <input type="month" id="global-month-filter" onchange="window.onMonthFilterChange()" class="bg-transparent text-white text-xs focus:outline-none font-mono font-bold">
+                    </div>
+                    <button onclick="window.performLogout()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
                         <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
                     </button>
                 </div>
             </header>
 
-            <!-- Viewport Content Body -->
             <main class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
 
-                <!-- ------------------------------------------------------------- -->
-                <!-- A. CONTRACTOR & ACCOUNTANT DESK (Complete Operations)         -->
-                <!-- ------------------------------------------------------------- -->
+                <!-- CONTRACTOR PANEL -->
                 <div id="view-contractor-panel" class="view-panel space-y-6 hidden">
                     
-                    <!-- Commercial Profit & Loss Engine ("Apna Fayda" Live Matrix) -->
                     <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-blue-950 border border-slate-800 p-5 rounded-2xl space-y-4">
                         <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-800 pb-3">
                             <div>
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 font-mono">Commercial & Profit Engine</span>
-                                <h3 class="text-base font-black text-white mt-0.5">Contractor Real-Time Profit & Financial Dashboard</h3>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 font-mono">Real-Time Cloud Synced P&L Matrix</span>
+                                <h3 class="text-base font-black text-white mt-0.5">Contractor Commercial & Profit Dashboard</h3>
                             </div>
                             <div class="flex flex-wrap gap-2">
-                                <button onclick="openPayoutModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-1.5 rounded-lg text-xs flex items-center gap-1 shadow">
-                                    <i data-lucide="banknote" class="w-3.5 h-3.5"></i> Launch Payment & Bulk Payout Desk
+                                <button onclick="window.downloadFormBRegisterPDF()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
+                                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Form B Register
                                 </button>
-                                <button onclick="downloadFormBRegisterPDF()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-                                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Statutory Form B
-                                </button>
-                                <button onclick="downloadProfitLedgerPDF()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
+                                <button onclick="window.downloadProfitLedgerPDF()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
                                     <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> P&L Ledger PDF
                                 </button>
                             </div>
@@ -329,15 +261,15 @@
                         
                         <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-slate-300 font-mono">
                             <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
-                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Client Bill Receivable</p>
+                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Client Bill (Shift + OT)</p>
                                 <p class="text-lg font-black text-white mt-1" id="contractor-stat-billing">₹0.00</p>
                             </div>
                             <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
-                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Labour Wages Cost</p>
+                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Labour Earned Wages</p>
                                 <p class="text-lg font-black text-rose-400 mt-1" id="contractor-stat-wages">₹0.00</p>
                             </div>
                             <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
-                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Khuraki & Advances</p>
+                                <p class="text-[9px] text-slate-400 uppercase font-sans font-semibold">Khuraki Recovered</p>
                                 <p class="text-lg font-black text-amber-400 mt-1" id="contractor-stat-advance">₹0.00</p>
                             </div>
                             <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
@@ -345,91 +277,94 @@
                                 <p class="text-lg font-black text-slate-300 mt-1" id="contractor-stat-expenses">₹0.00</p>
                             </div>
                             <div class="bg-emerald-950/40 p-3 rounded-xl border border-emerald-800/40 col-span-2 sm:col-span-1">
-                                <p class="text-[9px] text-emerald-400 uppercase font-sans font-bold">Apna Fayda (Net Profit)</p>
+                                <p class="text-[9px] text-emerald-400 uppercase font-sans font-bold">Apna Fayda (Net Margin)</p>
                                 <p class="text-lg font-black text-emerald-400 mt-1" id="contractor-stat-profit">₹0.00</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Creation Action Modules (Forms) -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <!-- Add Forms -->
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
                         
-                        <!-- Form 1: Add Plant Contract -->
+                        <!-- 1. Add Plant -->
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
                             <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
                                 <i data-lucide="building-2" class="w-4 h-4 text-blue-400"></i> Register Plant Contract
                             </h4>
-                            <form onsubmit="handleAddPlant(event)" class="space-y-2">
-                                <input type="text" id="plant-name" required placeholder="Plant Name (e.g. NTPC Lara Unit-1)" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                <input type="text" id="client-name" required placeholder="Client Company (e.g. NTPC Ltd)" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input type="text" id="plant-loc" required placeholder="Location" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                    <input type="number" id="plant-client-rate" required placeholder="Client Billing Rate/Day" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
-                                </div>
-                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded text-xs">Save Plant Contract</button>
+                            <form onsubmit="window.handleAddPlant(event)" class="space-y-2">
+                                <input type="text" id="plant-name" required placeholder="Plant Name (e.g. NTPC Lara)" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                <input type="text" id="client-name" required placeholder="Client Company" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                <input type="text" id="plant-loc" required placeholder="Location" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                <input type="number" id="plant-client-rate" required placeholder="Client Rate / Shift (₹)" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
+                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded text-xs">Save Plant</button>
                             </form>
                         </div>
 
-                        <!-- Form 2: Create Supervisor -->
+                        <!-- 2. Create Supervisor -->
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
                             <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
-                                <i data-lucide="user-check" class="w-4 h-4 text-amber-400"></i> Create Site Supervisor
+                                <i data-lucide="user-check" class="w-4 h-4 text-amber-400"></i> Create Supervisor ID
                             </h4>
-                            <form onsubmit="handleAddSupervisor(event)" class="space-y-2">
+                            <form onsubmit="window.handleAddSupervisor(event)" class="space-y-2">
                                 <input type="text" id="sup-name" required placeholder="Supervisor Full Name" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                <input type="text" id="sup-mobile" required placeholder="Login Mobile Number / ID" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input type="password" id="sup-password" required placeholder="Access Password" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                    <select id="sup-plant-select" required class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                        <option value="">Assign Plant</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded text-xs">Create Supervisor ID</button>
+                                <input type="text" id="sup-mobile" required placeholder="Mobile / Login ID" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
+                                <input type="password" id="sup-password" required placeholder="Password" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                <select id="sup-plant-select" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                    <option value="">Assign Plant</option>
+                                </select>
+                                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded text-xs">Save Supervisor</button>
                             </form>
                         </div>
 
-                        <!-- Form 3: Register Labour & KYC + Passbook Select -->
+                        <!-- 3. Add Site Expense -->
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
                             <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
-                                <i data-lucide="user-plus" class="w-4 h-4 text-emerald-400"></i> Onboard Labour & KYC
+                                <i data-lucide="receipt" class="w-4 h-4 text-rose-400"></i> Add Site Expense
                             </h4>
-                            <form onsubmit="handleAddLabour(event)" class="space-y-2">
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input type="text" id="labour-name" required placeholder="Worker Name" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                    <select id="labour-plant-select" required class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                        <option value="">Select Plant</option>
-                                    </select>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input type="text" id="labour-category" required placeholder="Trade (Rigger/Fitter)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
-                                    <input type="number" id="labour-wage" required placeholder="Daily Wage (₹)" class="bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
-                                </div>
-                                
-                                <div class="bg-slate-950 p-2 rounded-lg border border-slate-800 space-y-1.5">
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <input type="text" id="labour-bank-acc" required placeholder="Bank A/C Number" class="bg-slate-900 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
-                                        <input type="text" id="labour-bank-ifsc" required placeholder="IFSC Code" class="bg-slate-900 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <label class="text-[9px] text-slate-400 flex-shrink-0">Passbook / Cheque:</label>
-                                        <input type="file" id="labour-passbook-file" accept="image/*,.pdf" class="w-full text-[9px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[9px] file:font-semibold file:bg-slate-800 file:text-slate-300">
-                                    </div>
-                                </div>
-
-                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded text-xs">Register Worker Profile</button>
+                            <form onsubmit="window.handleAddExpense(event)" class="space-y-2">
+                                <input type="text" id="exp-title" required placeholder="Expense (Fuel, Safety)" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white">
+                                <input type="number" id="exp-amount" required min="1" placeholder="Amount (₹)" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-xs text-white font-mono">
+                                <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 rounded text-xs">Save Expense</button>
                             </form>
                         </div>
+
+                        <!-- 4. Onboard Labour -->
+                        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
+                            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+                                <i data-lucide="user-plus" class="w-4 h-4 text-emerald-400"></i> Onboard Labour
+                            </h4>
+                            <form onsubmit="window.handleAddLabour(event)" class="space-y-2">
+                                <input type="text" id="labour-name" required placeholder="Worker Name" class="w-full bg-slate-950 border border-slate-800 p-1.5 rounded text-xs text-white">
+                                <select id="labour-plant-select" required class="w-full bg-slate-950 border border-slate-800 p-1.5 rounded text-xs text-white">
+                                    <option value="">Select Plant</option>
+                                </select>
+                                <div class="grid grid-cols-2 gap-1.5">
+                                    <input type="text" id="labour-category" required placeholder="Trade (Fitter)" class="bg-slate-950 border border-slate-800 p-1.5 rounded text-xs text-white">
+                                    <input type="number" id="labour-wage" required placeholder="Wage/Shift (₹)" class="bg-slate-950 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
+                                </div>
+                                <div class="grid grid-cols-2 gap-1.5">
+                                    <input type="text" id="labour-bank-acc" required placeholder="Bank A/C" class="bg-slate-950 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
+                                    <input type="text" id="labour-bank-ifsc" required placeholder="IFSC Code" class="bg-slate-950 border border-slate-800 p-1.5 rounded text-xs text-white font-mono">
+                                </div>
+                                <div class="flex items-center gap-1 text-[9px] text-slate-400">
+                                    <span>Photo:</span>
+                                    <input type="file" id="labour-photo" accept="image/*" class="w-full text-[9px]">
+                                </div>
+                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded text-xs">Save Labour</button>
+                            </form>
+                        </div>
+
                     </div>
 
-                    <!-- Registered Labour Directory -->
+                    <!-- Master Labour Table -->
                     <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                         <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
                             <div>
-                                <h4 class="font-bold text-white text-xs">Contractor Master Manpower Directory</h4>
-                                <p class="text-slate-400 text-[10px]">Active registered workforce synced with Supervisor field roster</p>
+                                <h4 class="font-bold text-white text-xs">Master Manpower Directory & Pay Matrix</h4>
+                                <p class="text-slate-400 text-[10px]">Cloud Synced Roster for Selected Billing Month</p>
                             </div>
-                            <button onclick="downloadMasterLabourPDF()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
-                                <i data-lucide="file-down" class="w-3.5 h-3.5"></i> Export Labour PDF
+                            <button onclick="window.downloadMasterLabourPDF()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
+                                <i data-lucide="file-down" class="w-3.5 h-3.5"></i> Export Master PDF
                             </button>
                         </div>
                         <div class="overflow-x-auto">
@@ -437,138 +372,93 @@
                                 <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
                                     <tr>
                                         <th class="p-3">Worker ID & Name</th>
-                                        <th class="p-3">Assigned Plant</th>
-                                        <th class="p-3">Category</th>
-                                        <th class="p-3">Daily Wage</th>
-                                        <th class="p-3">Bank Details</th>
-                                        <th class="p-3 text-right">Card / Slips</th>
+                                        <th class="p-3">Plant</th>
+                                        <th class="p-3">Rate / Shift</th>
+                                        <th class="p-3">Shifts Logged</th>
+                                        <th class="p-3">OT (Hrs)</th>
+                                        <th class="p-3">Gross Wages</th>
+                                        <th class="p-3">Khuraki Cut</th>
+                                        <th class="p-3">Net Payable</th>
+                                        <th class="p-3 text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="contractor-labour-table" class="divide-y divide-slate-800 text-slate-300">
-                                    <!-- Dynamic Rows -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- ------------------------------------------------------------- -->
-                <!-- B. SUPERVISOR TERMINAL (Mobile-First Attendance Only)         -->
-                <!-- ------------------------------------------------------------- -->
-                <div id="view-supervisor-panel" class="view-panel space-y-4 max-w-2xl mx-auto hidden">
-                    <div class="bg-gradient-to-tr from-blue-950 to-slate-900 border border-blue-800/40 p-4 rounded-2xl shadow-lg">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Supervisor Field Terminal</span>
-                                <h3 class="text-base font-black text-white mt-0.5" id="supervisor-plant-name">Assigned Plant</h3>
-                                <p class="text-[11px] text-slate-400">Mark daily shift (P / HD / A) for deployed manpower</p>
-                            </div>
-                            <span class="bg-blue-900/60 border border-blue-700 text-blue-200 text-xs px-2.5 py-1 rounded-lg font-mono font-bold">Shift Running</span>
+                <!-- SUPERVISOR PANEL -->
+                <div id="view-supervisor-panel" class="view-panel space-y-4 max-w-3xl mx-auto hidden">
+                    <div class="bg-gradient-to-tr from-blue-950 to-slate-900 border border-blue-800/40 p-4 rounded-2xl shadow flex flex-wrap justify-between items-center gap-2">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Supervisor Field Terminal</span>
+                            <h3 class="text-base font-black text-white" id="supervisor-plant-name">Assigned Plant</h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[10px] font-bold text-slate-300">Shift Date:</label>
+                            <input type="date" id="supervisor-shift-date" onchange="window.renderSupervisorView()" class="bg-slate-950 border border-slate-700 text-white text-xs px-2 py-1 rounded">
                         </div>
                     </div>
 
                     <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                         <div class="p-3 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
-                            <span class="font-bold text-white text-xs">Worker Shift Roster</span>
-                            <button onclick="markAllSupervisorPresent()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded text-[10px] font-bold">Mark All Present</button>
+                            <span class="font-bold text-white text-xs">Daily Shift & OT Marking Desk</span>
+                            <button onclick="window.markAllSupervisorPresent()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded text-[10px] font-bold">Mark All Present</button>
                         </div>
                         <div id="supervisor-attendance-roster" class="divide-y divide-slate-800 p-2 space-y-2">
-                            <!-- Populated strictly with workers assigned to this plant -->
                         </div>
                     </div>
-
-                    <button onclick="submitSupervisorShift()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg">
-                        <i data-lucide="send" class="w-4 h-4"></i> Lock & Transmit Shift to Contractor / Admin
-                    </button>
                 </div>
 
-                <!-- ------------------------------------------------------------- -->
-                <!-- C. CLIENT / COMPANY PORTAL (Isolated Client Scope)            -->
-                <!-- ------------------------------------------------------------- -->
+                <!-- CLIENT PORTAL -->
                 <div id="view-company-portal" class="view-panel space-y-6 hidden">
-                    <div class="bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-800 p-5 rounded-2xl flex flex-wrap justify-between items-center gap-4">
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex justify-between items-center">
                         <div>
                             <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Authorized Client Portal</span>
-                            <h3 class="text-lg font-black text-white mt-0.5" id="company-portal-name">Assigned Plant Site</h3>
-                            <p class="text-xs text-slate-400">Real-time workforce deployment & monthly shift records</p>
+                            <h3 class="text-base font-black text-white mt-0.5" id="company-portal-name">Assigned Plant Site</h3>
                         </div>
-                        <button onclick="downloadCompanyRosterPDF()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-2 rounded-lg text-xs flex items-center gap-1.5 shadow">
-                            <i data-lucide="file-down" class="w-3.5 h-3.5"></i> Download Shift Matrix PDF
-                        </button>
+                        <div class="flex items-center gap-2">
+                            <input type="date" id="company-view-date" onchange="window.renderCompanyView()" class="bg-slate-950 border border-slate-700 text-white text-xs px-2 py-1 rounded">
+                        </div>
                     </div>
 
                     <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-                        <div class="p-4 border-b border-slate-800 bg-slate-950">
-                            <h4 class="font-bold text-white text-xs">Deployed Workforce on Site</h4>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
-                                <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
-                                    <tr>
-                                        <th class="p-3">Worker ID & Name</th>
-                                        <th class="p-3">Trade Category</th>
-                                        <th class="p-3">Today's Shift Status</th>
-                                        <th class="p-3">Statutory Verification</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="company-labour-table" class="divide-y divide-slate-800 text-slate-300">
-                                    <!-- Populated dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3">Worker ID & Name</th>
+                                    <th class="p-3">Trade</th>
+                                    <th class="p-3">Shift Status</th>
+                                    <th class="p-3">OT (Hrs)</th>
+                                    <th class="p-3">Monthly Shifts Logged</th>
+                                </tr>
+                            </thead>
+                            <tbody id="company-labour-table" class="divide-y divide-slate-800 text-slate-300">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- ------------------------------------------------------------- -->
-                <!-- D. MASTER ADMIN (Supreme God-View & Overrides)                 -->
-                <!-- ------------------------------------------------------------- -->
+                <!-- ADMIN PANEL -->
                 <div id="view-admin-dashboard" class="view-panel space-y-6 hidden">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Total Managed Plants</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Managed Plants</p>
                             <p class="text-2xl font-black text-white mt-1" id="stat-plant-count">0</p>
                         </div>
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Registered Manpower</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Workforce Base</p>
                             <p class="text-2xl font-black text-blue-400 mt-1" id="stat-labour-count">0</p>
                         </div>
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Active Supervisors</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Supervisors</p>
                             <p class="text-2xl font-black text-amber-400 mt-1" id="stat-sup-count">0</p>
                         </div>
                         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Estimated Monthly Profit</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Total Net Profit</p>
                             <p class="text-2xl font-black text-emerald-400 mt-1" id="stat-net-profit">₹0.00</p>
-                        </div>
-                    </div>
-
-                    <!-- God View Table -->
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-                        <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
-                            <div>
-                                <h4 class="font-bold text-white text-xs">Master God-View: Plant & Supervisor Oversight</h4>
-                                <p class="text-slate-400 text-[10px]">Inspect, edit, and override entries from Contractor, Supervisor, and Company portals</p>
-                            </div>
-                            <button onclick="downloadMasterReportPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
-                                <i data-lucide="download" class="w-3.5 h-3.5"></i> Download Master Ledger PDF
-                            </button>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
-                                <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
-                                    <tr>
-                                        <th class="p-3">Plant Name</th>
-                                        <th class="p-3">Client Company</th>
-                                        <th class="p-3">Registered Labour</th>
-                                        <th class="p-3">Shift Status</th>
-                                        <th class="p-3">Est. Billing</th>
-                                        <th class="p-3 text-right">Master Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="admin-plants-table" class="divide-y divide-slate-800 text-slate-300">
-                                    <!-- Dynamic Rows -->
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -578,181 +468,278 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. REACTIVE STATE ENGINE & REFRESH PERSISTENCE SCRIPT                     -->
+    <!-- 4. FIREBASE SDK INTEGRATION & REALTIME LOGIC SCRIPT                       -->
     <!-- ========================================================================= -->
-    <script>
-        // Clean Reactive State
-        let APP_STATE = {
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            setDoc, 
+            deleteDoc, 
+            onSnapshot 
+        } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        // Your Exact Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1cm7-3U6cVZlYspfDRSZ2apbAhRB6iaE",
+            authDomain: "labour-mitra.firebaseapp.com",
+            projectId: "labour-mitra",
+            storageBucket: "labour-mitra.firebasestorage.app",
+            messagingSenderId: "958377540789",
+            appId: "1:958377540789:web:5ebf6b0b961359bd9d52fc",
+            measurementId: "G-NH6H28610T"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        // Global Reactive State
+        window.APP_STATE = {
             currentUserRole: null,
             currentSupervisor: null,
-            currentCompanyId: null,
+            currentCompanyPlantId: null,
+            selectedMonth: new Date().toISOString().slice(0, 7), // YYYY-MM
             plants: [],
             supervisors: [],
             labour: [],
-            attendance: {},
-            advances: {},
-            expenses: 3500
+            attendance: {}, // { [date]: { [workerId]: { status: 'P', ot: 2 } } }
+            advances: {},    // { [workerId]: [ { amount, reason, date } ] }
+            expenses: []     // [ { id, title, amount, date } ]
         };
 
-        // Window Load: Restore Session & State
-        window.addEventListener('DOMContentLoaded', () => {
-            loadStateFromStorage();
+        // Realtime Firestore Listeners Setup
+        function setupFirebaseListeners() {
+            // 1. Plants Listener
+            onSnapshot(collection(db, "plants"), (snapshot) => {
+                window.APP_STATE.plants = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                refreshUI();
+            });
+
+            // 2. Supervisors Listener
+            onSnapshot(collection(db, "supervisors"), (snapshot) => {
+                window.APP_STATE.supervisors = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                refreshUI();
+            });
+
+            // 3. Labour Master Listener
+            onSnapshot(collection(db, "labour"), (snapshot) => {
+                window.APP_STATE.labour = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                refreshUI();
+            });
+
+            // 4. Attendance Listener
+            onSnapshot(collection(db, "attendance"), (snapshot) => {
+                window.APP_STATE.attendance = {};
+                snapshot.docs.forEach(doc => {
+                    window.APP_STATE.attendance[doc.id] = doc.data();
+                });
+                refreshUI();
+            });
+
+            // 5. Advances Listener
+            onSnapshot(collection(db, "advances"), (snapshot) => {
+                window.APP_STATE.advances = {};
+                snapshot.docs.forEach(doc => {
+                    const data = doc.data();
+                    if (!window.APP_STATE.advances[data.workerId]) window.APP_STATE.advances[data.workerId] = [];
+                    window.APP_STATE.advances[data.workerId].push(data);
+                });
+                refreshUI();
+            });
+
+            // 6. Expenses Listener
+            onSnapshot(collection(db, "expenses"), (snapshot) => {
+                window.APP_STATE.expenses = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                refreshUI();
+            });
+        }
+
+        // Global Helper Functions
+        window.getWorkerMonthlyMetrics = function(workerId, wageRate) {
+            let shifts = 0;
+            let otHours = 0;
+            const targetMonth = window.APP_STATE.selectedMonth;
+
+            Object.keys(window.APP_STATE.attendance).forEach(date => {
+                if (date.startsWith(targetMonth)) {
+                    const record = window.APP_STATE.attendance[date][workerId];
+                    if (record) {
+                        const status = typeof record === 'string' ? record : record.status;
+                        const ot = typeof record === 'object' ? Number(record.ot || 0) : 0;
+
+                        if (status === 'P') shifts += 1;
+                        else if (status === 'HD') shifts += 0.5;
+
+                        otHours += ot;
+                    }
+                }
+            });
+
+            // Standard OT Rate = (Daily Wage / 8 hrs) * OT Hours
+            const hourlyRate = (Number(wageRate) / 8);
+            const otEarned = otHours * hourlyRate;
+            const shiftEarned = shifts * Number(wageRate);
+            const gross = shiftEarned + otEarned;
+
+            // Monthly Advance Cut
+            let advances = 0;
+            const advList = window.APP_STATE.advances[workerId] || [];
+            advList.forEach(a => {
+                if (a.date && a.date.startsWith(targetMonth)) {
+                    advances += Number(a.amount);
+                }
+            });
+
+            const net = Math.max(0, gross - advances);
+
+            return { shifts, otHours, shiftEarned, otEarned, gross, advances, net };
+        };
+
+        function refreshUI() {
             refreshPublicCounters();
-            checkAndRestoreSession();
+            const role = window.APP_STATE.currentUserRole;
+            if (role === 'CONTRACTOR') window.renderContractorView();
+            else if (role === 'SUPERVISOR') window.renderSupervisorView();
+            else if (role === 'COMPANY') window.renderCompanyView();
+            else if (role === 'ADMIN') window.renderAdminView();
             lucide.createIcons();
-        });
-
-        function saveStateToStorage() {
-            localStorage.setItem('LABOUR_MITRA_FINAL_STATE', JSON.stringify(APP_STATE));
-            refreshPublicCounters();
-        }
-
-        function loadStateFromStorage() {
-            const data = localStorage.getItem('LABOUR_MITRA_FINAL_STATE');
-            if (data) {
-                try {
-                    const parsed = JSON.parse(data);
-                    APP_STATE.plants = parsed.plants || [];
-                    APP_STATE.supervisors = parsed.supervisors || [];
-                    APP_STATE.labour = parsed.labour || [];
-                    APP_STATE.attendance = parsed.attendance || {};
-                    APP_STATE.advances = parsed.advances || {};
-                    APP_STATE.expenses = parsed.expenses || 3500;
-                } catch (e) {
-                    console.error("State parse error:", e);
-                }
-            }
-        }
-
-        // Session Retention on Refresh
-        function checkAndRestoreSession() {
-            const sessionRole = sessionStorage.getItem('LM_AUTH_ROLE');
-            const sessionSup = sessionStorage.getItem('LM_AUTH_SUP');
-            const sessionComp = sessionStorage.getItem('LM_AUTH_COMP');
-
-            if (sessionRole) {
-                APP_STATE.currentUserRole = sessionRole;
-                if (sessionSup) {
-                    try { APP_STATE.currentSupervisor = JSON.parse(sessionSup); } catch (e) {}
-                }
-                if (sessionComp) {
-                    APP_STATE.currentCompanyId = sessionComp;
-                }
-
-                // Show authenticated view directly
-                document.getElementById('public-website-view').classList.add('hidden');
-                document.getElementById('authenticated-app').classList.remove('hidden');
-
-                setupRoleWorkspace(sessionRole);
-            }
         }
 
         function refreshPublicCounters() {
-            const workerCountEl = document.getElementById('stat-hero-workers');
-            const plantCountEl = document.getElementById('stat-hero-plants');
-            if (workerCountEl) workerCountEl.innerText = Math.max(APP_STATE.labour.length, 450) + "+";
-            if (plantCountEl) plantCountEl.innerText = Math.max(APP_STATE.plants.length, 4) + "+";
+            const wEl = document.getElementById('stat-hero-workers');
+            const pEl = document.getElementById('stat-hero-plants');
+            const sEl = document.getElementById('stat-hero-shifts');
+            const otEl = document.getElementById('stat-hero-ot');
+
+            if (wEl) wEl.innerText = window.APP_STATE.labour.length;
+            if (pEl) pEl.innerText = window.APP_STATE.plants.length;
+
+            let totalShifts = 0;
+            let totalOt = 0;
+
+            Object.keys(window.APP_STATE.attendance).forEach(d => {
+                Object.values(window.APP_STATE.attendance[d]).forEach(val => {
+                    const st = typeof val === 'string' ? val : val.status;
+                    const ot = typeof val === 'object' ? Number(val.ot || 0) : 0;
+                    if (st === 'P') totalShifts += 1;
+                    if (st === 'HD') totalShifts += 0.5;
+                    totalOt += ot;
+                });
+            });
+
+            if (sEl) sEl.innerText = totalShifts;
+            if (otEl) otEl.innerText = totalOt + " Hrs";
         }
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-nav');
-            menu.classList.toggle('hidden');
+        // Window Init
+        window.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            const currentMonth = today.slice(0, 7);
+
+            document.getElementById('supervisor-shift-date').value = today;
+            document.getElementById('company-view-date').value = today;
+            document.getElementById('global-month-filter').value = currentMonth;
+
+            setupFirebaseListeners();
+            checkSession();
+        });
+
+        function checkSession() {
+            const role = sessionStorage.getItem('LM_AUTH_ROLE');
+            if (role) {
+                window.APP_STATE.currentUserRole = role;
+                const sup = sessionStorage.getItem('LM_AUTH_SUP');
+                if (sup) window.APP_STATE.currentSupervisor = JSON.parse(sup);
+                window.APP_STATE.currentCompanyPlantId = sessionStorage.getItem('LM_AUTH_COMP_PLANT');
+
+                document.getElementById('public-website-view').classList.add('hidden');
+                document.getElementById('authenticated-app').classList.remove('hidden');
+                setupWorkspace(role);
+            }
         }
 
-        // Modal Handlers
-        function openLoginModal(role) {
+        window.onMonthFilterChange = function() {
+            window.APP_STATE.selectedMonth = document.getElementById('global-month-filter').value;
+            refreshUI();
+        };
+
+        // Modals & Authentication
+        window.openLoginModal = function(role) {
             document.getElementById('login-target-role').value = role;
             document.getElementById('modal-role-badge').innerText = role;
-            document.getElementById('modal-role-title').innerText = role + " Portal Gateway";
+            document.getElementById('modal-role-title').innerText = role + " Access";
             
-            const label = document.getElementById('login-id-label');
-            if (role === 'COMPANY') {
-                label.innerText = "Company ID (e.g. COMP-0001)";
-            } else if (role === 'SUPERVISOR') {
-                label.innerText = "Supervisor Mobile / ID";
-            } else if (role === 'CONTRACTOR') {
-                label.innerText = "Contractor Access Key";
-            } else {
-                label.innerText = "Master Admin Key";
-            }
+            const hint = document.getElementById('login-hint');
+            if (role === 'ADMIN') hint.innerHTML = 'Password: <span class="text-amber-400">admin123</span>';
+            else if (role === 'CONTRACTOR') hint.innerHTML = 'Password: <span class="text-amber-400">contractor123</span>';
+            else if (role === 'SUPERVISOR') hint.innerHTML = 'Enter registered mobile & password';
+            else hint.innerHTML = 'Client Password: <span class="text-amber-400">client123</span>';
 
             document.getElementById('login-modal').classList.remove('hidden');
             lucide.createIcons();
-        }
+        };
 
-        function closeLoginModal() {
+        window.closeLoginModal = function() {
             document.getElementById('login-modal').classList.add('hidden');
-        }
+        };
 
-        function openPayoutModal() {
-            let totalGross = 0;
-            let totalAdv = 0;
-            
-            APP_STATE.labour.forEach(w => {
-                const earned = (Number(w.wage) * 26);
-                const adv = APP_STATE.advances[w.id] || 1500;
-                totalGross += earned;
-                totalAdv += adv;
-            });
-
-            const totalNet = Math.max(0, totalGross - totalAdv);
-
-            document.getElementById('payout-modal-count').innerText = APP_STATE.labour.length + " Workers";
-            document.getElementById('payout-modal-gross').innerText = "₹" + totalGross.toLocaleString('en-IN');
-            document.getElementById('payout-modal-advance').innerText = "-₹" + totalAdv.toLocaleString('en-IN');
-            document.getElementById('payout-modal-net').innerText = "₹" + totalNet.toLocaleString('en-IN');
-
-            document.getElementById('payout-modal').classList.remove('hidden');
-            lucide.createIcons();
-        }
-
-        function closePayoutModal() {
-            document.getElementById('payout-modal').classList.add('hidden');
-        }
-
-        // Auth Router
-        function handleAuth(e) {
+        window.handleAuth = function(e) {
             e.preventDefault();
             const role = document.getElementById('login-target-role').value;
             const authId = document.getElementById('auth-id').value.trim();
+            const pass = document.getElementById('auth-pass').value;
 
-            APP_STATE.currentUserRole = role;
-            sessionStorage.setItem('LM_AUTH_ROLE', role);
-
-            if (role === 'SUPERVISOR') {
-                const matchedSup = APP_STATE.supervisors.find(s => s.mobile === authId) || APP_STATE.supervisors[0];
-                APP_STATE.currentSupervisor = matchedSup || { name: 'Field Supervisor', plantId: APP_STATE.plants[0]?.id };
-                sessionStorage.setItem('LM_AUTH_SUP', JSON.stringify(APP_STATE.currentSupervisor));
-            } else if (role === 'COMPANY') {
-                APP_STATE.currentCompanyId = authId || 'COMP-0001';
-                sessionStorage.setItem('LM_AUTH_COMP', APP_STATE.currentCompanyId);
+            if (role === 'ADMIN' && pass !== 'admin123') {
+                alert("Incorrect Admin Password! (Use: admin123)");
+                return;
+            }
+            if (role === 'CONTRACTOR' && pass !== 'contractor123') {
+                alert("Incorrect Contractor Password! (Use: contractor123)");
+                return;
+            }
+            if (role === 'COMPANY' && pass !== 'client123') {
+                alert("Incorrect Client Password! (Use: client123)");
+                return;
             }
 
-            closeLoginModal();
+            if (role === 'SUPERVISOR') {
+                const matchedSup = window.APP_STATE.supervisors.find(s => s.mobile === authId && s.password === pass);
+                if (!matchedSup) {
+                    alert("Invalid Supervisor Mobile or Password! Please create in Contractor desk.");
+                    return;
+                }
+                window.APP_STATE.currentSupervisor = matchedSup;
+                sessionStorage.setItem('LM_AUTH_SUP', JSON.stringify(matchedSup));
+            }
 
+            if (role === 'COMPANY') {
+                window.APP_STATE.currentCompanyPlantId = window.APP_STATE.plants[0]?.id || null;
+                sessionStorage.setItem('LM_AUTH_COMP_PLANT', window.APP_STATE.currentCompanyPlantId);
+            }
+
+            window.APP_STATE.currentUserRole = role;
+            sessionStorage.setItem('LM_AUTH_ROLE', role);
+
+            window.closeLoginModal();
             document.getElementById('public-website-view').classList.add('hidden');
             document.getElementById('authenticated-app').classList.remove('hidden');
+            setupWorkspace(role);
+        };
 
-            setupRoleWorkspace(role);
-        }
-
-        function performLogout() {
-            APP_STATE.currentUserRole = null;
-            APP_STATE.currentSupervisor = null;
-            APP_STATE.currentCompanyId = null;
-            
-            // Clear Session on explicit logout
-            sessionStorage.removeItem('LM_AUTH_ROLE');
-            sessionStorage.removeItem('LM_AUTH_SUP');
-            sessionStorage.removeItem('LM_AUTH_COMP');
-
+        window.performLogout = function() {
+            sessionStorage.clear();
+            window.APP_STATE.currentUserRole = null;
+            window.APP_STATE.currentSupervisor = null;
             document.getElementById('authenticated-app').classList.add('hidden');
             document.getElementById('public-website-view').classList.remove('hidden');
             refreshPublicCounters();
-        }
+        };
 
-        // Workspace Setup by Role
-        function setupRoleWorkspace(role) {
+        function setupWorkspace(role) {
             const nav = document.getElementById('sidebar-nav');
             const roleTag = document.getElementById('user-role-tag');
             const userName = document.getElementById('user-display-name');
@@ -763,548 +750,551 @@
 
             if (role === 'CONTRACTOR') {
                 userName.innerText = "Contractor & Accountant";
-                userScope.innerText = "Full Business & Labour Master";
+                userScope.innerText = "Cloud P&L Master Desk";
                 nav.innerHTML = `
-                    <button onclick="renderContractorView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
-                        <i data-lucide="calculator" class="w-4 h-4"></i> Commercials & Operations
+                    <button onclick="window.renderContractorView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
+                        <i data-lucide="calculator" class="w-4 h-4"></i> Contractor Dashboard
                     </button>
                 `;
-                renderContractorView();
+                window.renderContractorView();
             } else if (role === 'SUPERVISOR') {
-                userName.innerText = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.name : "Field Supervisor";
-                userScope.innerText = "Assigned Site Attendance";
+                userName.innerText = window.APP_STATE.currentSupervisor ? window.APP_STATE.currentSupervisor.name : "Site Supervisor";
+                userScope.innerText = "Field Shift & OT Desk";
                 nav.innerHTML = `
-                    <button onclick="renderSupervisorView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
+                    <button onclick="window.renderSupervisorView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
                         <i data-lucide="calendar-check" class="w-4 h-4"></i> Shift Attendance
                     </button>
                 `;
-                renderSupervisorView();
+                window.renderSupervisorView();
             } else if (role === 'COMPANY') {
-                userName.innerText = "Client HR Desk";
-                userScope.innerText = "ID: " + APP_STATE.currentCompanyId;
+                userName.innerText = "Client HR Executive";
+                userScope.innerText = "Shift Inspection";
                 nav.innerHTML = `
-                    <button onclick="renderCompanyView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-amber-500 text-slate-950 font-bold text-left">
-                        <i data-lucide="building" class="w-4 h-4"></i> Company Attendance
+                    <button onclick="window.renderCompanyView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-amber-500 text-slate-950 font-bold text-left">
+                        <i data-lucide="building" class="w-4 h-4"></i> Plant Shift Roster
                     </button>
                 `;
-                renderCompanyView();
+                window.renderCompanyView();
             } else if (role === 'ADMIN') {
-                userName.innerText = "Master Admin";
-                userScope.innerText = "Supreme God-View";
+                userName.innerText = "Master Administrator";
+                userScope.innerText = "God View Mode";
                 nav.innerHTML = `
-                    <button onclick="renderAdminView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
-                        <i data-lucide="shield" class="w-4 h-4"></i> Master God View
+                    <button onclick="window.renderAdminView()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-blue-600 text-white font-bold text-left">
+                        <i data-lucide="shield" class="w-4 h-4"></i> Master Admin Desk
                     </button>
                 `;
-                renderAdminView();
+                window.renderAdminView();
             }
             lucide.createIcons();
         }
 
         // =========================================================================
-        // CONTRACTOR & ACCOUNTANT LOGIC (P&L, Plant, Supervisor, Labour)
+        // CONTRACTOR LOGIC
         // =========================================================================
-        function renderContractorView() {
+        window.renderContractorView = function() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('view-contractor-panel').classList.remove('hidden');
-            document.getElementById('current-view-title').innerText = "Contractor & Accountant Master Hub";
+            document.getElementById('current-view-title').innerText = "Contractor & Accountant Hub (" + window.APP_STATE.selectedMonth + ")";
 
-            const plantSelectLab = document.getElementById('labour-plant-select');
-            const plantSelectSup = document.getElementById('sup-plant-select');
-            
-            plantSelectLab.innerHTML = '<option value="">Select Plant</option>';
-            plantSelectSup.innerHTML = '<option value="">Assign Plant</option>';
+            const plantLab = document.getElementById('labour-plant-select');
+            const plantSup = document.getElementById('sup-plant-select');
+            plantLab.innerHTML = '<option value="">Select Plant</option>';
+            plantSup.innerHTML = '<option value="">Assign Plant</option>';
 
-            APP_STATE.plants.forEach(p => {
-                plantSelectLab.innerHTML += `<option value="${p.id}">${p.name} (${p.client})</option>`;
-                plantSelectSup.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+            window.APP_STATE.plants.forEach(p => {
+                plantLab.innerHTML += `<option value="${p.id}">${p.name} (${p.client})</option>`;
+                plantSup.innerHTML += `<option value="${p.id}">${p.name}</option>`;
             });
 
-            // Calculate Live Commercials & Profit (Apna Fayda)
             let totalBilling = 0;
             let totalWages = 0;
-            let totalAdvanceRecovered = 0;
+            let totalAdvances = 0;
 
-            APP_STATE.labour.forEach(w => {
-                const plant = APP_STATE.plants.find(p => p.id === w.plantId);
+            window.APP_STATE.labour.forEach(w => {
+                const metrics = window.getWorkerMonthlyMetrics(w.id, w.wage);
+                const plant = window.APP_STATE.plants.find(p => p.id === w.plantId);
                 const clientRate = plant ? Number(plant.clientRate) : (Number(w.wage) * 1.3);
-                totalBilling += (clientRate * 26);
-                totalWages += (Number(w.wage) * 26);
-                totalAdvanceRecovered += (APP_STATE.advances[w.id] || 1500);
+                const clientOtRate = (clientRate / 8);
+
+                totalBilling += (clientRate * metrics.shifts) + (clientOtRate * metrics.otHours);
+                totalWages += metrics.gross;
+                totalAdvances += metrics.advances;
             });
 
-            const expenses = APP_STATE.expenses || 3500;
-            const netProfit = totalBilling - (totalWages + expenses) + totalAdvanceRecovered;
+            const currentMonth = window.APP_STATE.selectedMonth;
+            const totalExpenses = window.APP_STATE.expenses
+                .filter(x => x.date && x.date.startsWith(currentMonth))
+                .reduce((acc, x) => acc + Number(x.amount), 0);
 
-            document.getElementById('contractor-stat-billing').innerText = "₹" + totalBilling.toLocaleString('en-IN');
-            document.getElementById('contractor-stat-wages').innerText = "₹" + totalWages.toLocaleString('en-IN');
-            document.getElementById('contractor-stat-advance').innerText = "₹" + totalAdvanceRecovered.toLocaleString('en-IN');
-            document.getElementById('contractor-stat-expenses').innerText = "₹" + expenses.toLocaleString('en-IN');
-            document.getElementById('contractor-stat-profit').innerText = "₹" + netProfit.toLocaleString('en-IN');
+            const netProfit = totalBilling - totalWages - totalExpenses;
+
+            document.getElementById('contractor-stat-billing').innerText = "₹" + Math.round(totalBilling).toLocaleString('en-IN');
+            document.getElementById('contractor-stat-wages').innerText = "₹" + Math.round(totalWages).toLocaleString('en-IN');
+            document.getElementById('contractor-stat-advance').innerText = "₹" + Math.round(totalAdvances).toLocaleString('en-IN');
+            document.getElementById('contractor-stat-expenses').innerText = "₹" + Math.round(totalExpenses).toLocaleString('en-IN');
+            document.getElementById('contractor-stat-profit').innerText = "₹" + Math.round(netProfit).toLocaleString('en-IN');
 
             const table = document.getElementById('contractor-labour-table');
             table.innerHTML = '';
 
-            if (APP_STATE.labour.length === 0) {
-                table.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No labour registered yet. Please onboard labour above.</td></tr>`;
+            if (window.APP_STATE.labour.length === 0) {
+                table.innerHTML = `<tr><td colspan="9" class="p-4 text-center text-slate-500 italic">No workers found in Cloud database.</td></tr>`;
             } else {
-                APP_STATE.labour.forEach(w => {
-                    const plant = APP_STATE.plants.find(p => p.id === w.plantId);
+                window.APP_STATE.labour.forEach(w => {
+                    const plant = window.APP_STATE.plants.find(p => p.id === w.plantId);
+                    const metrics = window.getWorkerMonthlyMetrics(w.id, w.wage);
+
                     table.innerHTML += `
                         <tr class="hover:bg-slate-800/40">
-                            <td class="p-3 font-bold text-white">${w.name} <span class="block text-[10px] font-mono text-slate-400">${w.id}</span></td>
+                            <td class="p-3 font-bold text-white flex items-center gap-2">
+                                ${w.photo ? `<img src="${w.photo}" class="w-7 h-7 rounded-full object-cover border border-slate-700">` : `<div class="w-7 h-7 rounded-full bg-slate-800 text-center leading-7 font-bold">${w.name[0]}</div>`}
+                                <div>
+                                    ${w.name}
+                                    <span class="block text-[10px] font-mono text-slate-400">${w.id} (${w.category})</span>
+                                </div>
+                            </td>
                             <td class="p-3 text-slate-300 font-semibold">${plant ? plant.name : 'Unassigned'}</td>
-                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 font-bold">${w.category}</span></td>
-                            <td class="p-3 font-mono font-bold text-white">₹${w.wage}/day</td>
-                            <td class="p-3 font-mono text-slate-300">${w.bankAcc} (${w.bankIfsc})</td>
-                            <td class="p-3 text-right">
-                                <button onclick="downloadWorkerIDCardPDF('${w.id}')" class="text-blue-400 hover:underline font-bold mr-2">PVC Gate Pass</button>
-                                <button onclick="downloadFormTWageSlipPDF('${w.id}')" class="text-amber-400 hover:underline font-bold">Form T Slip</button>
+                            <td class="p-3 font-mono">₹${w.wage}</td>
+                            <td class="p-3 font-bold text-blue-400 font-mono">${metrics.shifts} Shifts</td>
+                            <td class="p-3 font-bold text-amber-400 font-mono">${metrics.otHours}h</td>
+                            <td class="p-3 font-mono font-bold text-white">₹${Math.round(metrics.gross)}</td>
+                            <td class="p-3 font-mono text-amber-400">-₹${Math.round(metrics.advances)}</td>
+                            <td class="p-3 font-mono font-bold text-emerald-400">₹${Math.round(metrics.net)}</td>
+                            <td class="p-3 text-right space-x-2">
+                                <button onclick="window.openAdvanceModal('${w.id}', '${w.name}')" class="text-amber-400 hover:underline font-bold text-[11px]">+ Khuraki</button>
+                                <button onclick="window.downloadWorkerIDCardPDF('${w.id}')" class="text-blue-400 hover:underline font-bold text-[11px]">Gate Pass</button>
+                                <button onclick="window.downloadFormTWageSlipPDF('${w.id}')" class="text-emerald-400 hover:underline font-bold text-[11px]">Slip</button>
+                                <button onclick="window.deleteLabour('${w.id}')" class="text-rose-400 hover:underline font-bold text-[11px]">Delete</button>
                             </td>
                         </tr>
                     `;
                 });
             }
-        }
+        };
 
-        function handleAddPlant(e) {
+        // Cloud Database Writes
+        window.handleAddPlant = async function(e) {
             e.preventDefault();
-            const newPlant = {
-                id: 'PLANT-' + (APP_STATE.plants.length + 1).toString().padStart(3, '0'),
+            const plantId = 'PLANT-' + (window.APP_STATE.plants.length + 1).toString().padStart(3, '0');
+            const plantData = {
                 name: document.getElementById('plant-name').value,
                 client: document.getElementById('client-name').value,
                 location: document.getElementById('plant-loc').value,
-                clientRate: document.getElementById('plant-client-rate').value
+                clientRate: Number(document.getElementById('plant-client-rate').value)
             };
-            APP_STATE.plants.push(newPlant);
-            saveStateToStorage();
-            e.target.reset();
-            alert("New Plant Contract registered successfully!");
-            renderContractorView();
-        }
 
-        function handleAddSupervisor(e) {
+            await setDoc(doc(db, "plants", plantId), plantData);
+            e.target.reset();
+            alert("Plant saved to Firebase Cloud!");
+        };
+
+        window.handleAddSupervisor = async function(e) {
             e.preventDefault();
-            const newSup = {
-                id: 'SUP-' + (APP_STATE.supervisors.length + 1).toString().padStart(3, '0'),
+            const supId = 'SUP-' + (window.APP_STATE.supervisors.length + 1).toString().padStart(3, '0');
+            const supData = {
                 name: document.getElementById('sup-name').value,
                 mobile: document.getElementById('sup-mobile').value,
                 password: document.getElementById('sup-password').value,
                 plantId: document.getElementById('sup-plant-select').value
             };
-            APP_STATE.supervisors.push(newSup);
-            saveStateToStorage();
-            e.target.reset();
-            alert("Site Supervisor ID created and assigned to plant!");
-            renderContractorView();
-        }
 
-        function handleAddLabour(e) {
+            await setDoc(doc(db, "supervisors", supId), supData);
+            e.target.reset();
+            alert("Supervisor created & saved to Cloud!");
+        };
+
+        window.handleAddExpense = async function(e) {
             e.preventDefault();
-            if (APP_STATE.plants.length === 0) {
-                alert("Please add a plant contract first before onboarding labour.");
+            const expId = 'EXP-' + Date.now();
+            const expData = {
+                title: document.getElementById('exp-title').value,
+                amount: Number(document.getElementById('exp-amount').value),
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            await setDoc(doc(db, "expenses", expId), expData);
+            e.target.reset();
+            alert("Site Expense saved to Cloud!");
+        };
+
+        window.handleAddLabour = function(e) {
+            e.preventDefault();
+            if (window.APP_STATE.plants.length === 0) {
+                alert("Please add at least one plant first!");
                 return;
             }
-            const passbookInput = document.getElementById('labour-passbook-file');
-            const newWorker = {
-                id: 'LAB-' + (APP_STATE.labour.length + 1).toString().padStart(6, '0'),
-                name: document.getElementById('labour-name').value,
-                plantId: document.getElementById('labour-plant-select').value,
-                category: document.getElementById('labour-category').value,
-                wage: document.getElementById('labour-wage').value,
-                bankAcc: document.getElementById('labour-bank-acc').value,
-                bankIfsc: document.getElementById('labour-bank-ifsc').value,
-                hasPassbook: passbookInput.files.length > 0
+
+            const photoFile = document.getElementById('labour-photo').files[0];
+            const workerId = 'LAB-' + (window.APP_STATE.labour.length + 1).toString().padStart(5, '0');
+
+            const saveWorkerToCloud = async (photoBase64) => {
+                const workerData = {
+                    name: document.getElementById('labour-name').value,
+                    plantId: document.getElementById('labour-plant-select').value,
+                    category: document.getElementById('labour-category').value,
+                    wage: Number(document.getElementById('labour-wage').value),
+                    bankAcc: document.getElementById('labour-bank-acc').value,
+                    bankIfsc: document.getElementById('labour-bank-ifsc').value,
+                    photo: photoBase64 || null
+                };
+
+                await setDoc(doc(db, "labour", workerId), workerData);
+                e.target.reset();
+                alert("Labour registered & synced to Cloud!");
             };
-            APP_STATE.labour.push(newWorker);
-            saveStateToStorage();
+
+            if (photoFile) {
+                const reader = new FileReader();
+                reader.onload = () => saveWorkerToCloud(reader.result);
+                reader.readAsDataURL(photoFile);
+            } else {
+                saveWorkerToCloud(null);
+            }
+        };
+
+        window.deleteLabour = async function(workerId) {
+            if (confirm("Delete this worker from Firebase Cloud?")) {
+                await deleteDoc(doc(db, "labour", workerId));
+            }
+        };
+
+        // Advance / Khuraki Handling
+        window.openAdvanceModal = function(workerId, workerName) {
+            document.getElementById('adv-worker-id').value = workerId;
+            document.getElementById('adv-worker-name').value = workerName;
+            document.getElementById('advance-modal').classList.remove('hidden');
+        };
+
+        window.closeAdvanceModal = function() {
+            document.getElementById('advance-modal').classList.add('hidden');
+        };
+
+        window.handleSaveAdvance = async function(e) {
+            e.preventDefault();
+            const wId = document.getElementById('adv-worker-id').value;
+            const amount = Number(document.getElementById('adv-amount').value);
+            const reason = document.getElementById('adv-reason').value || "Khuraki";
+            const date = new Date().toISOString().split('T')[0];
+            const advId = 'ADV-' + Date.now();
+
+            await setDoc(doc(db, "advances", advId), {
+                workerId: wId,
+                amount,
+                reason,
+                date
+            });
+
+            window.closeAdvanceModal();
             e.target.reset();
-            alert("Labour registered and synced to Supervisor's site roster.");
-            renderContractorView();
-        }
+            alert("Khuraki Advance saved to Cloud!");
+        };
 
         // =========================================================================
-        // SUPERVISOR LOGIC (Syncs with Plant)
+        // SUPERVISOR DESK
         // =========================================================================
-        function renderSupervisorView() {
+        window.renderSupervisorView = function() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('view-supervisor-panel').classList.remove('hidden');
             document.getElementById('current-view-title').innerText = "Supervisor Site Terminal";
 
-            const currentSup = APP_STATE.currentSupervisor;
-            const assignedPlant = APP_STATE.plants.find(p => p.id === currentSup?.plantId) || APP_STATE.plants[0];
-            
-            document.getElementById('supervisor-plant-name').innerText = assignedPlant ? assignedPlant.name : "All Available Sites";
+            const currentSup = window.APP_STATE.currentSupervisor;
+            const assignedPlant = window.APP_STATE.plants.find(p => p.id === currentSup?.plantId) || window.APP_STATE.plants[0];
+            const date = document.getElementById('supervisor-shift-date').value;
 
-            const visibleWorkers = assignedPlant ? APP_STATE.labour.filter(w => w.plantId === assignedPlant.id) : APP_STATE.labour;
+            document.getElementById('supervisor-plant-name').innerText = assignedPlant ? assignedPlant.name : "All Sites";
 
+            const visibleWorkers = assignedPlant ? window.APP_STATE.labour.filter(w => w.plantId === assignedPlant.id) : window.APP_STATE.labour;
             const roster = document.getElementById('supervisor-attendance-roster');
             roster.innerHTML = '';
 
+            const dateRecords = window.APP_STATE.attendance[date] || {};
+
             if (visibleWorkers.length === 0) {
-                roster.innerHTML = '<p class="text-slate-500 text-center p-4">No labour assigned to this plant yet. Contractor needs to add labour under this plant contract.</p>';
+                roster.innerHTML = '<p class="text-slate-500 text-center p-4">No workers assigned to this plant.</p>';
             } else {
                 visibleWorkers.forEach(w => {
-                    const currentStatus = APP_STATE.attendance[w.id] || 'P';
+                    const record = dateRecords[w.id];
+                    const currentStatus = record ? (typeof record === 'string' ? record : record.status) : 'A';
+                    const currentOt = record ? (typeof record === 'object' ? Number(record.ot || 0) : 0) : 0;
+
                     roster.innerHTML += `
-                        <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="flex flex-wrap items-center justify-between p-2.5 rounded-lg bg-slate-950 border border-slate-800 gap-2">
                             <div>
                                 <p class="font-bold text-white">${w.name}</p>
                                 <p class="text-[10px] text-slate-400 font-mono">${w.id} | ${w.category}</p>
                             </div>
-                            <div class="flex gap-1" data-worker-id="${w.id}">
-                                <button onclick="setSupervisorShift('${w.id}', 'P', this)" class="px-2.5 py-1 rounded font-bold text-xs ${currentStatus === 'P' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'}">P</button>
-                                <button onclick="setSupervisorShift('${w.id}', 'HD', this)" class="px-2.5 py-1 rounded font-bold text-xs ${currentStatus === 'HD' ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-400'}">HD</button>
-                                <button onclick="setSupervisorShift('${w.id}', 'A', this)" class="px-2.5 py-1 rounded font-bold text-xs ${currentStatus === 'A' ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-400'}">A</button>
+                            <div class="flex items-center gap-2">
+                                <div class="flex gap-1">
+                                    <button onclick="window.setShiftStatus('${date}', '${w.id}', 'P', ${currentOt})" class="px-2.5 py-1 rounded font-bold text-xs ${currentStatus === 'P' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'}">P</button>
+                                    <button onclick="window.setShiftStatus('${date}', '${w.id}', 'HD', ${currentOt})" class="px-2.5 py-1 rounded font-bold text-xs ${currentStatus === 'HD' ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-400'}">HD</button>
+                                    <button onclick="window.setShiftStatus('${date}', '${w.id}', 'A', ${currentOt})" class="px-2.5 py-1 rounded font-bold text-xs ${currentStatus === 'A' ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-400'}">A</button>
+                                </div>
+                                <div class="flex items-center gap-1 bg-slate-900 border border-slate-700 px-2 py-0.5 rounded">
+                                    <span class="text-[9px] text-amber-400 font-bold">OT:</span>
+                                    <input type="number" min="0" max="16" value="${currentOt}" onchange="window.setShiftStatus('${date}', '${w.id}', '${currentStatus}', this.value)" class="w-10 bg-transparent text-white font-mono text-center text-xs focus:outline-none">
+                                    <span class="text-[9px] text-slate-400">h</span>
+                                </div>
                             </div>
                         </div>
                     `;
                 });
             }
-        }
+        };
 
-        function setSupervisorShift(workerId, status, btn) {
-            APP_STATE.attendance[workerId] = status;
-            const parent = btn.parentElement;
-            parent.querySelectorAll('button').forEach(b => b.className = "px-2.5 py-1 rounded font-bold text-xs bg-slate-800 text-slate-400");
-            if (status === 'P') btn.className = "px-2.5 py-1 rounded font-bold text-xs bg-emerald-600 text-white";
-            if (status === 'HD') btn.className = "px-2.5 py-1 rounded font-bold text-xs bg-amber-600 text-white";
-            if (status === 'A') btn.className = "px-2.5 py-1 rounded font-bold text-xs bg-rose-600 text-white";
-            saveStateToStorage();
-        }
+        window.setShiftStatus = async function(date, workerId, status, otValue) {
+            const currentDayDoc = window.APP_STATE.attendance[date] || {};
+            currentDayDoc[workerId] = {
+                status: status,
+                ot: Number(otValue || 0)
+            };
 
-        function markAllSupervisorPresent() {
-            APP_STATE.labour.forEach(w => APP_STATE.attendance[w.id] = 'P');
-            saveStateToStorage();
-            renderSupervisorView();
-        }
+            await setDoc(doc(db, "attendance", date), currentDayDoc);
+        };
 
-        function submitSupervisorShift() {
-            alert("Shift attendance locked and transmitted to Central Ledger.");
-        }
+        window.markAllSupervisorPresent = async function() {
+            const date = document.getElementById('supervisor-shift-date').value;
+            const currentSup = window.APP_STATE.currentSupervisor;
+            const assignedPlant = window.APP_STATE.plants.find(p => p.id === currentSup?.plantId);
+            const workers = assignedPlant ? window.APP_STATE.labour.filter(w => w.plantId === assignedPlant.id) : window.APP_STATE.labour;
+
+            const currentDayDoc = window.APP_STATE.attendance[date] || {};
+            workers.forEach(w => {
+                const prev = currentDayDoc[w.id];
+                currentDayDoc[w.id] = {
+                    status: 'P',
+                    ot: prev && typeof prev === 'object' ? Number(prev.ot || 0) : 0
+                };
+            });
+
+            await setDoc(doc(db, "attendance", date), currentDayDoc);
+        };
 
         // =========================================================================
-        // CLIENT / COMPANY LOGIC
+        // CLIENT & ADMIN LOGIC
         // =========================================================================
-        function renderCompanyView() {
+        window.renderCompanyView = function() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('view-company-portal').classList.remove('hidden');
-            document.getElementById('current-view-title').innerText = "Client Portal - " + (APP_STATE.currentCompanyId || 'COMP-0001');
 
+            const plant = window.APP_STATE.plants.find(p => p.id === window.APP_STATE.currentCompanyPlantId) || window.APP_STATE.plants[0];
+            document.getElementById('company-portal-name').innerText = plant ? `${plant.name} (${plant.client})` : "General Site";
+
+            const date = document.getElementById('company-view-date').value;
             const table = document.getElementById('company-labour-table');
             table.innerHTML = '';
 
-            if (APP_STATE.labour.length === 0) {
-                table.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500 italic">No workers currently deployed under this client contract.</td></tr>';
+            const workers = plant ? window.APP_STATE.labour.filter(w => w.plantId === plant.id) : window.APP_STATE.labour;
+            const dateRecords = window.APP_STATE.attendance[date] || {};
+
+            if (workers.length === 0) {
+                table.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">No workers deployed on site.</td></tr>';
             } else {
-                APP_STATE.labour.forEach(w => {
-                    const status = APP_STATE.attendance[w.id] || 'P';
+                workers.forEach(w => {
+                    const record = dateRecords[w.id];
+                    const status = record ? (typeof record === 'string' ? record : record.status) : 'Not Logged';
+                    const ot = record ? (typeof record === 'object' ? Number(record.ot || 0) : 0) : 0;
+                    const metrics = window.getWorkerMonthlyMetrics(w.id, w.wage);
+
                     table.innerHTML += `
                         <tr class="hover:bg-slate-800/40">
                             <td class="p-3 font-bold text-white">${w.name} <span class="block text-[10px] font-mono text-slate-400">${w.id}</span></td>
-                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 font-bold">${w.category}</span></td>
-                            <td class="p-3 font-bold ${status === 'P' ? 'text-emerald-400' : (status === 'HD' ? 'text-amber-400' : 'text-rose-400')}">
-                                ${status === 'P' ? 'Present (Full Day)' : (status === 'HD' ? 'Half Day' : 'Absent')}
-                            </td>
-                            <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[9px] font-bold">KYC Verified</span></td>
+                            <td class="p-3">${w.category}</td>
+                            <td class="p-3 font-bold ${status === 'P' ? 'text-emerald-400' : (status === 'HD' ? 'text-amber-400' : 'text-rose-400')}">${status}</td>
+                            <td class="p-3 font-mono font-bold text-amber-300">${ot} Hrs</td>
+                            <td class="p-3 font-mono font-bold text-blue-400">${metrics.shifts} Shifts</td>
                         </tr>
                     `;
                 });
             }
-        }
+        };
 
-        // =========================================================================
-        // MASTER ADMIN LOGIC
-        // =========================================================================
-        function renderAdminView() {
+        window.renderAdminView = function() {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('view-admin-dashboard').classList.remove('hidden');
-            document.getElementById('current-view-title').innerText = "Master Admin (God View)";
 
-            document.getElementById('stat-plant-count').innerText = APP_STATE.plants.length;
-            document.getElementById('stat-labour-count').innerText = APP_STATE.labour.length;
-            document.getElementById('stat-sup-count').innerText = APP_STATE.supervisors.length;
+            document.getElementById('stat-plant-count').innerText = window.APP_STATE.plants.length;
+            document.getElementById('stat-labour-count').innerText = window.APP_STATE.labour.length;
+            document.getElementById('stat-sup-count').innerText = window.APP_STATE.supervisors.length;
 
-            const table = document.getElementById('admin-plants-table');
-            table.innerHTML = '';
-
-            if (APP_STATE.plants.length === 0) {
-                table.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No plants recorded yet.</td></tr>';
-            } else {
-                APP_STATE.plants.forEach(p => {
-                    const plantWorkers = APP_STATE.labour.filter(w => w.plantId === p.id);
-                    table.innerHTML += `
-                        <tr class="hover:bg-slate-800/40">
-                            <td class="p-3 font-bold text-white">${p.name} <span class="block text-[10px] font-normal text-slate-400">${p.location}</span></td>
-                            <td class="p-3 text-slate-300 font-semibold">${p.client}</td>
-                            <td class="p-3 font-mono">${plantWorkers.length} Active</td>
-                            <td class="p-3 text-emerald-400 font-bold">Shift Running</td>
-                            <td class="p-3 font-mono">₹${plantWorkers.length * 22000} Est.</td>
-                            <td class="p-3 text-right">
-                                <button onclick="alert('Master Override executed for: ' + '${p.name}')" class="text-amber-400 hover:underline font-bold">Override Entry</button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-        }
+            let totalBilling = 0, totalWages = 0;
+            window.APP_STATE.labour.forEach(w => {
+                const m = window.getWorkerMonthlyMetrics(w.id, w.wage);
+                const p = window.APP_STATE.plants.find(x => x.id === w.plantId);
+                const clientRate = p ? Number(p.clientRate) : Number(w.wage) * 1.3;
+                totalBilling += (clientRate * m.shifts) + ((clientRate / 8) * m.otHours);
+                totalWages += m.gross;
+            });
+            const currentMonth = window.APP_STATE.selectedMonth;
+            const exp = window.APP_STATE.expenses.filter(x => x.date && x.date.startsWith(currentMonth)).reduce((a, b) => a + Number(b.amount), 0);
+            document.getElementById('stat-net-profit').innerText = "₹" + Math.round(totalBilling - totalWages - exp).toLocaleString('en-IN');
+        };
 
         // =========================================================================
-        // DIRECT PDF GENERATION MODULES (jsPDF)
+        // PDF STATUTORY GENERATORS (jsPDF)
         // =========================================================================
-        function executeBankBulkExport() {
-            let csvContent = "data:text/csv;charset=utf-8,Beneficiary_Name,Account_Number,IFSC_Code,Amount,Remarks\n";
-            
-            APP_STATE.labour.forEach(w => {
-                const earned = Number(w.wage) * 26;
-                const advance = APP_STATE.advances[w.id] || 1500;
-                const netPayable = Math.max(0, earned - advance);
-                csvContent += `"${w.name}","${w.bankAcc}","${w.bankIfsc}",${netPayable},"August 2026 Salary Payout"\n`;
-            });
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "LabourMitra_Bank_Bulk_Payout_Sheet.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            closePayoutModal();
-            alert("Bank Bulk Payout CSV generated successfully! Payout batch is now locked.");
-        }
-
-        function executeCashVouchersPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            doc.setFontSize(16);
-            doc.text("Labour Mitra ERP - Cash Payout & Khuraki Voucher", 14, 18);
-            doc.setFontSize(10);
-            doc.text("Official Cash Receipt with Worker Signature Ledger", 14, 25);
-
-            const tableData = APP_STATE.labour.map(w => {
-                const earned = Number(w.wage) * 26;
-                const advance = APP_STATE.advances[w.id] || 1500;
-                const netPayable = Math.max(0, earned - advance);
-                return [w.id, w.name, "Rs. " + earned, "-Rs. " + advance, "Rs. " + netPayable, "[ Signature / Thumb ]"];
-            });
-
-            doc.autoTable({
-                head: [['Worker ID', 'Name', 'Gross Wages', 'Advance Cut', 'Net Cash Paid', 'Receiver Signature']],
-                body: tableData.length > 0 ? tableData : [['N/A', 'No data', '0', '0', '0', '']],
-                startY: 32,
-                theme: 'grid'
-            });
-
-            doc.save("LabourMitra_Cash_Vouchers.pdf");
-            closePayoutModal();
-        }
-
-        function downloadFormBRegisterPDF() {
+        window.downloadFormBRegisterPDF = function() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape');
 
-            doc.setFontSize(15);
-            doc.text("FORM B - REGISTER OF EMPLOYEES", 14, 15);
-            doc.setFontSize(9);
-            doc.text("[Prescribed under Rule 78(1)(a)(i) of Contract Labour (R&A) Central Rules]", 14, 22);
+            doc.setFontSize(14);
+            doc.text("FORM B - REGISTER OF EMPLOYEES (MONTH: " + window.APP_STATE.selectedMonth + ")", 14, 15);
+            doc.setFontSize(8);
+            doc.text("[Prescribed under Rule 78(1)(a)(i) of Contract Labour (R&A) Central Rules]", 14, 20);
 
-            const tableData = APP_STATE.labour.map(w => {
-                const plant = APP_STATE.plants.find(p => p.id === w.plantId);
-                return [w.id, w.name, w.category, plant ? plant.name : 'Unassigned', "Rs. " + w.wage + "/day", w.bankAcc, w.bankIfsc, "Verified"];
+            const tableData = window.APP_STATE.labour.map(w => {
+                const plant = window.APP_STATE.plants.find(p => p.id === w.plantId);
+                const metrics = window.getWorkerMonthlyMetrics(w.id, w.wage);
+                return [w.id, w.name, w.category, plant ? plant.name : 'Unassigned', metrics.shifts + " Shifts", metrics.otHours + " Hrs", "Rs. " + w.wage, w.bankAcc, w.bankIfsc];
             });
 
             doc.autoTable({
-                head: [['Worker ID', 'Name of Employee', 'Designation / Trade', 'Assigned Plant Unit', 'Daily Wage', 'Bank A/C No', 'IFSC Code', 'KYC Status']],
-                body: tableData.length > 0 ? tableData : [['N/A', 'No data', 'N/A', 'N/A', '0', 'N/A', 'N/A', 'N/A']],
-                startY: 28,
+                head: [['Worker ID', 'Employee Name', 'Trade', 'Plant Site', 'Shifts', 'OT Hrs', 'Daily Wage', 'Bank A/C', 'IFSC']],
+                body: tableData.length > 0 ? tableData : [['N/A', 'No data', '', '', '', '', '', '', '']],
+                startY: 25,
                 theme: 'grid'
             });
 
-            doc.save("Statutory_Form_B_Register.pdf");
-        }
+            doc.save(`Statutory_Form_B_${window.APP_STATE.selectedMonth}.pdf`);
+        };
 
-        function downloadFormTWageSlipPDF(workerId) {
-            const worker = APP_STATE.labour.find(w => w.id === workerId);
+        window.downloadFormTWageSlipPDF = function(workerId) {
+            const worker = window.APP_STATE.labour.find(w => w.id === workerId);
             if (!worker) return;
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-
-            const plant = APP_STATE.plants.find(p => p.id === worker.plantId);
-            const gross = Number(worker.wage) * 26;
-            const adv = APP_STATE.advances[worker.id] || 1500;
-            const net = Math.max(0, gross - adv);
+            const plant = window.APP_STATE.plants.find(p => p.id === worker.plantId);
+            const m = window.getWorkerMonthlyMetrics(worker.id, worker.wage);
 
             doc.setFontSize(14);
-            doc.text("FORM T - WAGE SLIP", 14, 18);
-            doc.setFontSize(10);
-            doc.text("Labour Mitra ERP | Plant: " + (plant ? plant.name : 'Unit Site'), 14, 25);
+            doc.text("FORM T - STATUTORY WAGE SLIP", 14, 18);
+            doc.setFontSize(9);
+            doc.text("Labour Mitra Cloud ERP | Month: " + window.APP_STATE.selectedMonth + " | Plant: " + (plant ? plant.name : 'Unit Site'), 14, 24);
 
             doc.autoTable({
                 body: [
                     ['Worker ID', worker.id],
                     ['Worker Full Name', worker.name],
-                    ['Category / Trade', worker.category],
-                    ['Daily Wage Basis', "Rs. " + worker.wage],
-                    ['Total Payable Days', "26 Shifts"],
-                    ['Gross Earned Wages', "Rs. " + gross],
-                    ['Advance / Khuraki Recovery', "-Rs. " + adv],
-                    ['Net Payable Transferred', "Rs. " + net],
+                    ['Designation / Trade', worker.category],
+                    ['Daily Wage Basis', "Rs. " + worker.wage + " / shift"],
+                    ['Actual Logged Shifts', m.shifts + " Shifts"],
+                    ['Overtime Hours (OT)', m.otHours + " Hours (Rs. " + Math.round(m.otEarned) + ")"],
+                    ['Gross Earned Wages', "Rs. " + Math.round(m.gross)],
+                    ['Khuraki / Advance Deductions', "-Rs. " + Math.round(m.advances)],
+                    ['Net Disbursed Payable', "Rs. " + Math.round(m.net)],
                     ['Bank Account', worker.bankAcc + " (" + worker.bankIfsc + ")"],
-                    ['Payment Status', "Verified & Disbursed"]
+                    ['Disbursement Status', "Cloud Logged & Verified"]
                 ],
-                startY: 32,
-                theme: 'plain'
+                startY: 30,
+                theme: 'striped'
             });
 
-            doc.save(`WageSlip_${worker.id}.pdf`);
-        }
+            doc.save(`WageSlip_${worker.id}_${window.APP_STATE.selectedMonth}.pdf`);
+        };
 
-        function downloadWorkerIDCardPDF(workerId) {
-            const worker = APP_STATE.labour.find(w => w.id === workerId);
+        window.downloadWorkerIDCardPDF = function(workerId) {
+            const worker = window.APP_STATE.labour.find(w => w.id === workerId);
             if (!worker) return;
 
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: [85, 54]
-            });
-
-            const plant = APP_STATE.plants.find(p => p.id === worker.plantId);
+            const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [85, 54] });
+            const plant = window.APP_STATE.plants.find(p => p.id === worker.plantId);
 
             doc.setFillColor(15, 23, 42);
             doc.rect(0, 0, 85, 54, 'F');
 
             doc.setTextColor(245, 158, 11);
-            doc.setFontSize(9);
+            doc.setFontSize(8);
             doc.text("LABOUR MITRA ERP", 27, 8);
 
             doc.setTextColor(255, 255, 255);
-            doc.setFontSize(7);
-            doc.text("INDUSTRIAL GATE PASS", 26, 12);
+            doc.setFontSize(6.5);
+            doc.text("INDUSTRIAL GATE PASS", 28, 12);
 
-            doc.setDrawColor(245, 158, 11);
-            doc.rect(4, 15, 22, 26);
-            doc.setFontSize(6);
-            doc.text("PHOTO", 11, 29);
+            if (worker.photo) {
+                try {
+                    doc.addImage(worker.photo, 'JPEG', 4, 15, 22, 26);
+                } catch(e) {
+                    doc.rect(4, 15, 22, 26);
+                }
+            } else {
+                doc.setDrawColor(245, 158, 11);
+                doc.rect(4, 15, 22, 26);
+                doc.setFontSize(6);
+                doc.text("PHOTO", 11, 29);
+            }
 
-            doc.setFontSize(7);
+            doc.setFontSize(6.5);
             doc.text("ID: " + worker.id, 29, 18);
             doc.text("Name: " + worker.name, 29, 23);
             doc.text("Trade: " + worker.category, 29, 28);
-            doc.text("Plant: " + (plant ? plant.name.substring(0, 14) : 'General Unit'), 29, 33);
-            doc.text("Blood Grp: O+", 29, 38);
+            doc.text("Plant: " + (plant ? plant.name.substring(0, 16) : 'Unit Site'), 29, 33);
+            doc.text("Wage: Rs." + worker.wage, 29, 38);
 
             doc.setFillColor(37, 99, 235);
             doc.rect(0, 48, 85, 6, 'F');
             doc.setTextColor(255, 255, 255);
-            doc.setFontSize(5.5);
-            doc.text("DIGITALLY ENCRYPTED SECURITY PASS", 22, 52);
+            doc.setFontSize(5);
+            doc.text("DIGITALLY VERIFIED WORKFORCE PASS", 24, 52);
 
             doc.save(`GatePass_${worker.id}.pdf`);
-        }
+        };
 
-        function downloadProfitLedgerPDF() {
+        window.downloadProfitLedgerPDF = function() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
-            doc.setFontSize(16);
-            doc.text("Labour Mitra ERP - Commercial & Profit Ledger", 14, 18);
-            doc.setFontSize(10);
-            doc.text("Contractor & Accountant Statement | Live Financial Matrix", 14, 25);
+            doc.setFontSize(14);
+            doc.text("Contractor Commercial & Profit Ledger (" + window.APP_STATE.selectedMonth + ")", 14, 18);
 
-            const tableData = APP_STATE.plants.map(p => {
-                const workers = APP_STATE.labour.filter(w => w.plantId === p.id);
-                const billing = workers.length * 26 * Number(p.clientRate || 750);
-                const wages = workers.reduce((acc, w) => acc + (Number(w.wage) * 26), 0);
-                const profit = billing - wages;
-                return [p.name, p.client, workers.length.toString(), "Rs. " + billing, "Rs. " + wages, "Rs. " + profit];
+            const tableData = window.APP_STATE.plants.map(p => {
+                const workers = window.APP_STATE.labour.filter(w => w.plantId === p.id);
+                let plantShifts = 0, plantWages = 0, plantOt = 0;
+
+                workers.forEach(w => {
+                    const m = window.getWorkerMonthlyMetrics(w.id, w.wage);
+                    plantShifts += m.shifts;
+                    plantOt += m.otHours;
+                    plantWages += m.gross;
+                });
+
+                const clientRate = Number(p.clientRate || 0);
+                const billing = (plantShifts * clientRate) + (plantOt * (clientRate / 8));
+                const profit = billing - plantWages;
+
+                return [p.name, p.client, workers.length.toString(), plantShifts.toString(), plantOt + "h", "Rs. " + Math.round(billing), "Rs. " + Math.round(plantWages), "Rs. " + Math.round(profit)];
             });
 
             doc.autoTable({
-                head: [['Plant Name', 'Client', 'Labour Count', 'Gross Billing', 'Labour Wages', 'Net Margin (Fayda)']],
-                body: tableData.length > 0 ? tableData : [['N/A', 'No data', '0', 'Rs. 0', 'Rs. 0', 'Rs. 0']],
-                startY: 32,
+                head: [['Plant', 'Client', 'Workers', 'Shifts', 'OT', 'Billing', 'Wages Cost', 'Net Profit']],
+                body: tableData.length > 0 ? tableData : [['N/A', '', '', '', '', '0', '0', '0']],
+                startY: 25,
                 theme: 'grid'
             });
 
-            doc.save("Contractor_Profit_Ledger.pdf");
-        }
+            doc.save(`Contractor_P&L_${window.APP_STATE.selectedMonth}.pdf`);
+        };
 
-        function downloadMasterLabourPDF() {
+        window.downloadMasterLabourPDF = function() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
+            doc.setFontSize(14);
+            doc.text("Labour Mitra ERP - Master Banking & KYC Directory", 14, 18);
 
-            doc.setFontSize(16);
-            doc.text("Labour Mitra ERP - Master Labour & Banking Directory", 14, 18);
-            doc.setFontSize(10);
-            doc.text("Contractor KYC Ledger", 14, 25);
-
-            const tableData = APP_STATE.labour.map(w => {
-                const p = APP_STATE.plants.find(plant => plant.id === w.plantId);
+            const tableData = window.APP_STATE.labour.map(w => {
+                const p = window.APP_STATE.plants.find(x => x.id === w.plantId);
                 return [w.id, w.name, p ? p.name : 'Unassigned', w.category, "Rs. " + w.wage, w.bankAcc, w.bankIfsc];
             });
 
             doc.autoTable({
                 head: [['Worker ID', 'Name', 'Plant', 'Category', 'Wage', 'Bank A/C', 'IFSC']],
-                body: tableData.length > 0 ? tableData : [['N/A', 'No labour registered', 'N/A', 'N/A', '0', 'N/A', 'N/A']],
-                startY: 32,
+                body: tableData.length > 0 ? tableData : [['N/A', 'No data', '', '', '0', '', '']],
+                startY: 25,
                 theme: 'grid'
             });
 
-            doc.save("Labour_Master_Directory.pdf");
-        }
-
-        function downloadCompanyRosterPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            doc.setFontSize(16);
-            doc.text("Labour Mitra ERP - Client Shift Attendance Matrix", 14, 18);
-            doc.setFontSize(10);
-            doc.text("Client ID: " + (APP_STATE.currentCompanyId || 'COMP-0001'), 14, 25);
-
-            const tableData = APP_STATE.labour.map(w => {
-                const status = APP_STATE.attendance[w.id] || 'P';
-                return [w.id, w.name, w.category, status === 'P' ? 'Present' : (status === 'HD' ? 'Half Day' : 'Absent')];
-            });
-
-            doc.autoTable({
-                head: [['Worker ID', 'Full Name', 'Category', 'Shift Status']],
-                body: tableData.length > 0 ? tableData : [['N/A', 'No workers deployed', 'N/A', 'N/A']],
-                startY: 32,
-                theme: 'grid'
-            });
-
-            doc.save("Company_Shift_Attendance.pdf");
-        }
-
-        function downloadMasterReportPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            doc.setFontSize(16);
-            doc.text("Labour Mitra ERP - Master Plant Audit Report", 14, 18);
-            doc.setFontSize(10);
-            doc.text("Authority: Master Admin (God View)", 14, 25);
-
-            const tableData = APP_STATE.plants.map(p => {
-                const count = APP_STATE.labour.filter(w => w.plantId === p.id).length;
-                return [p.id, p.name, p.client, p.location, count.toString()];
-            });
-
-            doc.autoTable({
-                head: [['Plant ID', 'Plant Name', 'Client', 'Location', 'Labour Strength']],
-                body: tableData.length > 0 ? tableData : [['N/A', 'No records', 'N/A', 'N/A', '0']],
-                startY: 32,
-                theme: 'grid'
-            });
-
-            doc.save("Master_Plant_Audit_Report.pdf");
-        }
+            doc.save("Master_Labour_Directory.pdf");
+        };
     </script>
 </body>
 </html>
