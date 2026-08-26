@@ -1,13 +1,13 @@
 /* ==========================================================================
-   ManpowerPro ERP - Enterprise Production Stylesheet (style.css)
-   Designed for: Multi-Plant Operations, 5000+ Labour Scaling & Mobile First
+   Labour Mitra Enterprise OS - Production Stylesheet (style.css)
+   Tailored for: Industrial Manpower Supply, EPFO Compliance & 3-Sheet Ledger
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. ROOT DESIGN TOKENS & SYSTEM VARIABLES
+   1. ROOT DESIGN TOKENS & PALETTE
    -------------------------------------------------------------------------- */
 :root {
-  /* Neutral Slate Palette */
+  /* Neutral Slate Dark Base */
   --bg-app: #020617;          /* Slate 950 */
   --bg-surface: #0f172a;      /* Slate 900 */
   --bg-surface-elevated: #1e293b; /* Slate 800 */
@@ -15,17 +15,19 @@
   
   --border-subtle: #1e293b;   /* Slate 800 */
   --border-strong: #334155;   /* Slate 700 */
-  --border-focus: #3b82f6;    /* Blue 500 */
+  --border-focus: #f59e0b;    /* Amber 500 */
 
   --text-main: #f8fafc;       /* Slate 50 */
   --text-muted: #94a3b8;      /* Slate 400 */
   --text-faint: #64748b;      /* Slate 500 */
 
-  /* Semantic Action Colors */
-  --brand-blue: #2563eb;
-  --brand-blue-hover: #1d4ed8;
-  --brand-blue-subtle: rgba(37, 99, 235, 0.15);
+  /* Labour Mitra Brand Identity */
+  --lm-brown: #4a2411;
+  --lm-brown-dark: #33180a;
+  --lm-gold-start: #f59e0b;
+  --lm-gold-end: #d97706;
 
+  /* Semantic Action & Status Colors */
   --status-emerald: #10b981;
   --status-emerald-subtle: rgba(16, 185, 129, 0.15);
   
@@ -53,7 +55,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. BASE RESET & ACCESSIBILITY
+   2. BASE RESET & SCROLLBARS
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -66,18 +68,15 @@ html, body {
   background-color: var(--bg-app);
   color: var(--text-main);
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* --------------------------------------------------------------------------
-   3. HIGH-DENSITY ENTERPRISE SCROLLBARS
-   -------------------------------------------------------------------------- */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -94,171 +93,90 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   4. NAVIGATION & HEADER
+   3. BRAND BUTTONS & HEADER CLASSES
    -------------------------------------------------------------------------- */
-.header-glass {
-  background-color: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-subtle);
-  position: sticky;
-  top: 0;
-  z-index: 50;
+.lm-brown {
+  background-color: var(--lm-brown) !important;
 }
 
-.brand-badge {
-  background-color: var(--brand-blue-subtle);
-  color: #93c5fd;
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: var(--radius-xs);
-  font-family: var(--font-mono);
+.lm-brown-dark {
+  background-color: var(--lm-brown-dark) !important;
+}
+
+.lm-btn-gold {
+  background: linear-gradient(to bottom, var(--lm-gold-start), var(--lm-gold-end)) !important;
+  color: #0f172a !important;
+  font-weight: 800 !important;
+  border: none !important;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.lm-btn-gold:hover {
+  background: linear-gradient(to bottom, #fbbf24, #b45309) !important;
+  transform: translateY(-1px);
+}
+
+.lm-btn-gold:active {
+  transform: scale(0.97);
 }
 
 /* --------------------------------------------------------------------------
-   5. ANOMALY & FRAUD PREVENTION ALERT BANNER
-   -------------------------------------------------------------------------- */
-.anomaly-banner {
-  background-color: rgba(245, 158, 11, 0.08);
-  border-bottom: 1px solid rgba(245, 158, 11, 0.25);
-  color: #fde68a;
-  padding: 10px 16px;
-  font-size: 12px;
-}
-
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.98); }
-}
-
-.alert-pulse {
-  animation: pulse-subtle 2s infinite ease-in-out;
-}
-
-/* --------------------------------------------------------------------------
-   6. METRIC KPI CARDS & DATA PANELS
-   -------------------------------------------------------------------------- */
-.kpi-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  box-shadow: var(--shadow-card);
-  transition: transform var(--transition-fast), border-color var(--transition-fast);
-}
-
-.kpi-card:hover {
-  border-color: var(--border-strong);
-  transform: translateY(-2px);
-}
-
-.card-panel {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-}
-
-/* --------------------------------------------------------------------------
-   7. DATA TABLES & GRID DISPLAY
+   4. 30-DAY MUSTER GRID & HIGH-DENSITY DATA TABLES
    -------------------------------------------------------------------------- */
 .table-container {
   width: 100%;
   overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
 }
 
-table {
+.muster-grid {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
-}
-
-thead th {
-  background-color: var(--bg-surface-subtle);
-  color: var(--text-muted);
   font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-subtle);
 }
 
-tbody tr {
-  border-bottom: 1px solid var(--border-subtle);
-  transition: background-color var(--transition-fast);
+.muster-grid th, .muster-grid td {
+  border: 1px solid #cbd5e1;
+  text-align: center;
+  padding: 4px 2px;
+  white-space: nowrap;
 }
 
-tbody tr:hover {
-  background-color: rgba(30, 41, 59, 0.4);
-}
-
-tbody td {
-  padding: 14px 16px;
-  font-size: 12px;
-  color: var(--text-main);
-}
-
-/* --------------------------------------------------------------------------
-   8. STATUS PILLS & COMPLIANCE BADGES
-   -------------------------------------------------------------------------- */
-.badge-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
+.muster-grid thead th {
+  background-color: #fef08a;
+  color: #4a2411;
+  font-weight: 800;
   font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
 }
 
-.badge-operational {
-  background-color: var(--status-emerald-subtle);
-  color: var(--status-emerald);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.badge-pending {
-  background-color: var(--status-amber-subtle);
-  color: var(--status-amber);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.badge-alert {
-  background-color: var(--status-rose-subtle);
-  color: var(--status-rose);
-  border: 1px solid rgba(244, 63, 94, 0.3);
-}
-
-.badge-info {
-  background-color: var(--status-indigo-subtle);
-  color: #a5b4fc;
-  border: 1px solid rgba(99, 102, 241, 0.3);
+/* Sticky Column on Horizontal Scroll for Large Registers */
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background-color: #ffffff;
+  z-index: 10;
 }
 
 /* --------------------------------------------------------------------------
-   9. MOBILE-FIRST SUPERVISOR ATTENDANCE CONTROLS
+   5. MOBILE SUPERVISOR ATTENDANCE CONTROLS
    -------------------------------------------------------------------------- */
 .attendance-grid {
   display: flex;
-  gap: 6px;
+  gap: 4px;
 }
 
 .attendance-btn {
-  flex: 1;
-  min-width: 44px;
-  min-height: 38px;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
+  min-width: 36px;
+  min-height: 32px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
   font-weight: 800;
   border: none;
   cursor: pointer;
-  background-color: var(--bg-surface-elevated);
-  color: var(--text-muted);
+  background-color: #e2e8f0;
+  color: #334155;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -268,89 +186,86 @@ tbody td {
 }
 
 .attendance-btn:active {
-  transform: scale(0.94);
+  transform: scale(0.92);
 }
 
 .attendance-btn.active-p {
   background-color: var(--status-emerald) !important;
   color: #ffffff !important;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
 .attendance-btn.active-hd {
   background-color: var(--status-amber) !important;
   color: #ffffff !important;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
 }
 
 .attendance-btn.active-a {
   background-color: var(--status-rose) !important;
   color: #ffffff !important;
-  box-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.4);
 }
 
 /* --------------------------------------------------------------------------
-   10. FORMS, INPUTS & CONTROL ELEMENTS
+   6. MODALS, POPUPS & FORMS
    -------------------------------------------------------------------------- */
+.modal-backdrop {
+  background-color: rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.modal-box {
+  background-color: #fffbeb; /* Amber 50 */
+  border: 2px solid var(--lm-brown);
+  border-radius: var(--radius-lg);
+  color: #0f172a;
+}
+
 input, select, textarea {
-  background-color: var(--bg-surface-subtle);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-main);
-  border-radius: var(--radius-md);
-  padding: 10px 14px;
-  font-size: 13px;
-  width: 100%;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  background-color: #ffffff;
+  border: 1px solid #94a3b8;
+  color: #0f172a;
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 12px;
+  transition: border-color var(--transition-fast);
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
-}
-
-input::placeholder {
-  color: var(--text-faint);
+  border-color: var(--lm-gold-end);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25);
 }
 
 /* --------------------------------------------------------------------------
-   11. DATA MASKING & AUDIT LOG ROW
+   7. PRINT OPTIMIZATION (@media print)
    -------------------------------------------------------------------------- */
-.masked-data {
-  font-family: var(--font-mono);
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-}
-
-.audit-row {
-  background-color: var(--bg-surface-subtle);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-/* --------------------------------------------------------------------------
-   12. RESPONSIVE BREAKPOINTS (Mobile-First Adjustments)
-   -------------------------------------------------------------------------- */
-@media (max-width: 640px) {
+@media print {
   body {
-    font-size: 13px;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 9pt !important;
   }
 
-  .kpi-card {
-    padding: 12px;
+  aside, header, button, .no-print {
+    display: none !important;
   }
 
-  thead th, tbody td {
-    padding: 10px 12px;
+  .muster-grid {
+    width: 100% !important;
+    border-collapse: collapse !important;
   }
 
-  .attendance-btn {
-    min-height: 44px; /* Touch-optimized height */
-    font-size: 13px;
+  .muster-grid th, .muster-grid td {
+    border: 0.5pt solid #000000 !important;
+    color: #000000 !important;
+    padding: 2px !important;
+  }
+
+  .muster-grid thead th {
+    background-color: #f1f5f9 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
