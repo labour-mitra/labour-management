@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<html lang="hi" class="h-full bg-slate-950 text-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
     <!-- 1. PUBLIC PORTAL & LANDING PAGE                                           -->
     <!-- ========================================================================= -->
     <div id="public-website-view" class="min-h-full flex flex-col justify-between bg-slate-950 text-slate-100">
-        <header class="lm-brown text-white h-14 flex items-center justify-between px-6 border-b-2 border-amber-500 shadow-lg sticky top-0 z-50">
+        <header class="lm-brown text-white h-14 flex items-center justify-between px-4 sm:px-6 border-b-2 border-amber-500 shadow-lg sticky top-0 z-50">
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center font-black text-slate-950 text-base shadow">LM</div>
                 <div>
@@ -49,19 +49,25 @@
                         <span class="font-black text-sm tracking-tight text-white">Labour<span class="text-amber-400">Mitra</span></span>
                         <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.2 rounded font-mono font-bold">AES-256 SECURED</span>
                     </div>
-                    <p class="text-[9px] text-amber-200/70 tracking-wider uppercase font-semibold">Industrial Manpower Supply & Compliance Gateway</p>
+                    <p class="text-[9px] text-amber-200/70 tracking-wider uppercase font-semibold">Industrial Manpower Supply Gateway</p>
                 </div>
             </div>
             
             <div class="flex items-center space-x-2">
-                <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-3.5 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5">
-                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Contractor Login
+                <!-- LANGUAGE SWITCH BUTTON -->
+                <button onclick="toggleAppLanguage()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-2.5 py-1.5 rounded-lg shadow text-xs flex items-center gap-1 border border-amber-600">
+                    <i data-lucide="languages" class="w-3.5 h-3.5"></i>
+                    <span id="public-lang-btn-text">🌐 हिन्दी / ENG</span>
+                </button>
+
+                <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-3 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> <span data-i18n="contractorLogin">Contractor Login</span>
                 </button>
                 <button onclick="openLoginModal('SUPERVISOR')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5">
-                    <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Supervisor Terminal
+                    <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> <span data-i18n="supervisorTerminal">Supervisor Terminal</span>
                 </button>
-                <button onclick="openLoginModal('ADMIN')" class="bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 font-bold px-3 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5">
-                    <i data-lucide="building-2" class="w-3.5 h-3.5"></i> Master Admin
+                <button onclick="openLoginModal('ADMIN')" class="bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 font-bold px-2.5 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5">
+                    <i data-lucide="building-2" class="w-3.5 h-3.5"></i> Admin
                 </button>
             </div>
         </header>
@@ -70,21 +76,21 @@
             <div class="space-y-4 max-w-4xl mx-auto">
                 <div class="inline-flex items-center gap-2 bg-slate-900 border border-amber-500/40 px-3.5 py-1 rounded-full text-amber-300 font-mono text-[11px]">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>3-SHEET REPORTING • LIVE SUBMIT & LOCK • BULK NEFT • STATUTORY EPFO</span>
+                    <span data-i18n="taglineHero">3-SHEET REPORTING • LIVE SUBMIT & LOCK • BULK NEFT • STATUTORY EPFO</span>
                 </div>
                 <h1 class="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight leading-tight">
                     Industrial Manpower Supply, Muster & <br>
-                    <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent">3-Tier Statutory Payout Engine</span>
+                    <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent" data-i18n="heroSubtitle">3-Tier Statutory Payout Engine</span>
                 </h1>
-                <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto">
-                    Built for Heavy Industries, Manpower Contractors and Field Supervisors. Generates Pure Attendance Registers, Statutory PF Payout Sheets, Internal Advance Recovery Statements, and Official Client Tax Invoices.
+                <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto" data-i18n="heroDesc">
+                    ठेकेदारों, मुंशियों और भारी उद्योगों के लिए विशेष रूप से डिज़ाइन किया गया पोर्टल। 30-दिन हाज़िरी रजिस्टर, पीएफ शीट, खुराकी/एडवांस रिकवरी और कंपनी टैक्स इनवॉइस एक क्लिक में तैयार करें।
                 </p>
                 <div class="pt-2 flex justify-center gap-3">
                     <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-6 py-2.5 rounded-xl text-xs shadow-lg font-bold flex items-center gap-2">
-                        <i data-lucide="log-in" class="w-4 h-4"></i> Launch Contractor Workspace
+                        <i data-lucide="log-in" class="w-4 h-4"></i> <span data-i18n="launchContractor">ठेकेदार पोर्टल खोलें</span>
                     </button>
                     <button onclick="openLoginModal('SUPERVISOR')" class="bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-200 font-bold px-6 py-2.5 rounded-xl text-xs flex items-center gap-2">
-                        <i data-lucide="calendar-check-2" class="w-4 h-4 text-amber-400"></i> Mark Shift Attendance
+                        <i data-lucide="calendar-check-2" class="w-4 h-4 text-amber-400"></i> <span data-i18n="markAttendanceHero">हाज़िरी दर्ज करें</span>
                     </button>
                 </div>
             </div>
@@ -93,21 +99,21 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
                 <div class="bg-slate-900/90 border border-emerald-500/40 p-4 rounded-2xl space-y-1.5">
                     <div class="text-emerald-400 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="file-check-2" class="w-4 h-4"></i> 1. Pure Attendance Register
+                        <i data-lucide="file-check-2" class="w-4 h-4"></i> <span data-i18n="sheet1Title">1. Pure Attendance Register</span>
                     </div>
-                    <p class="text-slate-300 text-xs">Only 1-30 day P/HD/A grid, Total Present Days & OT for Plant HR submission.</p>
+                    <p class="text-slate-300 text-xs" data-i18n="sheet1Desc">Only 1-30 day P/HD/A grid, Total Present Days & OT for Plant HR submission.</p>
                 </div>
                 <div class="bg-slate-900/90 border border-blue-500/40 p-4 rounded-2xl space-y-1.5">
                     <div class="text-blue-400 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="landmark" class="w-4 h-4"></i> 2. Statutory Wage & 12% PF Sheet
+                        <i data-lucide="landmark" class="w-4 h-4"></i> <span data-i18n="sheet2Title">2. Statutory Wage & 12% PF Sheet</span>
                     </div>
-                    <p class="text-slate-300 text-xs">Official salary statement showing Gross Wage, 12% EE PF cut and Net bank transfer.</p>
+                    <p class="text-slate-300 text-xs" data-i18n="sheet2Desc">Official salary statement showing Gross Wage, 12% EE PF cut and Net bank transfer.</p>
                 </div>
                 <div class="bg-slate-900/90 border border-amber-500/40 p-4 rounded-2xl space-y-1.5">
                     <div class="text-amber-400 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="calculator" class="w-4 h-4"></i> 3. Internal Hisab-Kitab Sheet
+                        <i data-lucide="calculator" class="w-4 h-4"></i> <span data-i18n="sheet3Title">3. Internal Hisab-Kitab Sheet</span>
                     </div>
-                    <p class="text-slate-300 text-xs">Contractor private ledger: Wage minus PF, Khuraki advances, and Safety fines.</p>
+                    <p class="text-slate-300 text-xs" data-i18n="sheet3Desc">Contractor private ledger: Wage minus PF, Advance deductions, and Safety fines.</p>
                 </div>
             </div>
         </main>
@@ -121,7 +127,7 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 2. AUTHENTICATION & SECURITY MODALS                                       -->
+    <!-- 2. MODALS                                                                 -->
     <!-- ========================================================================= -->
     <div id="login-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-amber-50 border-2 border-[#4a2411] p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl text-slate-900">
@@ -136,17 +142,17 @@
             <form onsubmit="handleAuth(event)" class="space-y-3">
                 <input type="hidden" id="login-target-role" value="CONTRACTOR">
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Mobile / Login ID</label>
+                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1" data-i18n="mobileLoginLabel">Mobile / Login ID</label>
                     <input type="text" id="auth-id" required placeholder="Enter Login ID" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900 font-mono">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Password</label>
+                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1" data-i18n="passwordLabel">Password</label>
                     <input type="password" id="auth-pass" required placeholder="••••" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900">
                 </div>
                 <div id="login-hint" class="text-[10px] text-amber-900 bg-amber-100 p-2 rounded border border-amber-300 font-mono">
                     Contractor: <span class="font-bold">9826000001 / 123</span>
                 </div>
-                <button type="submit" id="auth-submit-btn" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow font-bold">Authenticate & Launch Desk</button>
+                <button type="submit" id="auth-submit-btn" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow font-bold" data-i18n="loginBtn">Authenticate & Launch Desk</button>
             </form>
         </div>
     </div>
@@ -156,7 +162,7 @@
         <div class="bg-amber-50 border-2 border-[#4a2411] p-5 rounded-2xl max-w-md w-full space-y-3 shadow-2xl text-slate-900">
             <div class="flex justify-between items-center border-b border-amber-300 pb-2">
                 <h3 class="font-bold text-sm text-[#4a2411] flex items-center gap-1.5">
-                    <i data-lucide="edit" class="w-4 h-4 text-amber-700"></i> Request Attendance Correction
+                    <i data-lucide="edit" class="w-4 h-4 text-amber-700"></i> <span data-i18n="reqCorrTitle">Request Attendance Correction</span>
                 </h3>
                 <button onclick="closeCorrectionModal()" class="font-bold text-slate-600">✕</button>
             </div>
@@ -165,33 +171,33 @@
                 <input type="hidden" id="corr-date">
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-[10px] uppercase font-bold text-slate-700">Date</label>
+                        <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="dateLabel">Date</label>
                         <input type="text" id="corr-date-display" disabled class="w-full bg-slate-200 border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
                     </div>
                     <div>
-                        <label class="text-[10px] uppercase font-bold text-slate-700">Worker Name</label>
+                        <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="workerNameLabel">Worker Name</label>
                         <input type="text" id="corr-name-display" disabled class="w-full bg-slate-200 border border-slate-400 p-1.5 rounded text-xs font-bold text-[#4a2411]">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-[10px] uppercase font-bold text-slate-700">New Status</label>
+                        <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="newStatusLabel">New Status</label>
                         <select id="corr-new-status" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-bold">
-                            <option value="P">P (Present Full Day)</option>
-                            <option value="HD">HD (Half Day)</option>
-                            <option value="A">A (Absent)</option>
+                            <option value="P">P (पूरा दिन / Present)</option>
+                            <option value="HD">HD (आधा दिन / Half Day)</option>
+                            <option value="A">A (गैरहाज़िर / Absent)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-[10px] uppercase font-bold text-slate-700">New OT (Hours)</label>
+                        <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="newOtLabel">New OT (घंटे / Hours)</label>
                         <input type="number" id="corr-new-ot" min="0" max="16" value="0" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
                     </div>
                 </div>
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700">Reason / कारण *</label>
+                    <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="reasonLabel">Reason / कारण *</label>
                     <textarea id="corr-reason" required rows="2" placeholder="कारण लिखें..." class="w-full bg-white border border-slate-400 p-2 rounded text-xs focus:outline-none focus:border-amber-600"></textarea>
                 </div>
-                <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Send Correction Request to Contractor</button>
+                <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold" data-i18n="sendCorrBtn">Send Correction Request to Contractor</button>
             </form>
         </div>
     </div>
@@ -200,24 +206,24 @@
     <div id="fine-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-amber-50 border-2 border-[#4a2411] p-5 rounded-2xl max-w-sm w-full space-y-3 shadow-2xl text-slate-900">
             <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                <h3 class="font-bold text-sm text-[#4a2411]">Add Safety / Damage Fine</h3>
+                <h3 class="font-bold text-sm text-[#4a2411]" data-i18n="addFineTitle">Add Safety / Damage Fine</h3>
                 <button onclick="closeFineModal()" class="font-bold">✕</button>
             </div>
             <form onsubmit="handleSaveFine(event)" class="space-y-3">
                 <input type="hidden" id="fine-worker-id">
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700">Worker Name</label>
+                    <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="workerNameLabel">Worker Name</label>
                     <input type="text" id="fine-worker-name" disabled class="w-full bg-slate-200 border border-slate-400 p-1.5 rounded text-xs font-bold text-[#4a2411]">
                 </div>
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700">Fine Amount (₹)</label>
+                    <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="fineAmtLabel">Fine Amount (₹)</label>
                     <input type="number" id="fine-amount" required min="1" placeholder="e.g. 200" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-mono font-bold text-rose-700">
                 </div>
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700">Reason / Penalty Type</label>
+                    <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="fineReasonLabel">Reason / Penalty Type</label>
                     <input type="text" id="fine-reason" required placeholder="No PPE / Helmet violation / Damage" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs">
                 </div>
-                <button type="submit" class="w-full bg-rose-700 hover:bg-rose-600 text-white py-2 rounded-lg text-xs shadow font-bold">Record Fine Deduction</button>
+                <button type="submit" class="w-full bg-rose-700 hover:bg-rose-600 text-white py-2 rounded-lg text-xs shadow font-bold" data-i18n="recordFineBtn">Record Fine Deduction</button>
             </form>
         </div>
     </div>
@@ -227,22 +233,28 @@
     <!-- ========================================================================= -->
     <div id="authenticated-app" class="h-full flex flex-col hidden bg-[#fdf8e2] text-slate-900">
         
-        <header class="lm-brown text-white h-11 flex items-center justify-between px-4 shadow-md border-b-2 border-amber-500 select-none z-40">
-            <div class="flex items-center space-x-3">
-                <span class="font-black text-amber-300 text-xs flex items-center gap-1.5">
-                    <span>🏛️</span> LABOUR MITRA ENTERPRISE
+        <header class="lm-brown text-white h-11 flex items-center justify-between px-3 sm:px-4 shadow-md border-b-2 border-amber-500 select-none z-40">
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <span class="font-black text-amber-300 text-xs flex items-center gap-1">
+                    <span>🏛️</span> LABOUR MITRA
                 </span>
-                <span id="user-topbar-firm" class="text-amber-100 text-xs font-bold border-l border-amber-700 pl-3">Firm Workspace</span>
+                <span id="user-topbar-firm" class="text-amber-100 text-xs font-bold border-l border-amber-700 pl-2 sm:pl-3 truncate max-w-[140px] sm:max-w-none">Firm Workspace</span>
             </div>
             
-            <div class="flex items-center space-x-3 text-xs font-mono">
-                <button id="contractor-notif-btn" onclick="showSection('cont-requests-sec')" class="hidden relative bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 px-2 py-1 rounded border border-amber-500/40 flex items-center gap-1">
+            <div class="flex items-center space-x-2 sm:space-x-3 text-xs font-mono">
+                <!-- LANGUAGE SWITCH BUTTON IN HEADER -->
+                <button onclick="toggleAppLanguage()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-2 py-0.5 rounded shadow text-[10px] sm:text-xs flex items-center gap-1 border border-amber-600">
+                    <i data-lucide="languages" class="w-3 h-3"></i>
+                    <span id="app-lang-btn-text">🌐 हिन्दी</span>
+                </button>
+
+                <button id="contractor-notif-btn" onclick="showSection('cont-requests-sec')" class="hidden relative bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 flex items-center gap-1">
                     <i data-lucide="bell" class="w-3.5 h-3.5"></i>
                     <span id="pending-request-count" class="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded-full">0</span>
                 </button>
                 
                 <span id="user-display-badge" class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40">USER</span>
-                <button onclick="performLogout()" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded shadow text-[11px]">Logout</button>
+                <button onclick="performLogout()" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2 py-0.5 rounded shadow text-[11px]" data-i18n="logoutBtn">Logout</button>
             </div>
         </header>
 
@@ -250,22 +262,22 @@
             <!-- Left Action Sidebar -->
             <aside class="w-64 bg-amber-100/80 border-r border-amber-300 flex flex-col flex-shrink-0 p-3 space-y-3 overflow-y-auto">
                 <div class="bg-white border-2 border-amber-400 p-3 rounded-lg shadow-sm space-y-2">
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-200 pb-1">Accounting Period</p>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-200 pb-1" data-i18n="accountingPeriod">Accounting Period</p>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Financial Year</label>
+                        <label class="block text-[10px] font-bold text-slate-700 mb-0.5" data-i18n="finYear">Financial Year</label>
                         <select id="global-fy-select" onchange="onPeriodChange()" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-bold text-slate-900">
                             <option value="2026-2027">FY 2026 - 2027</option>
                             <option value="2025-2026">FY 2025 - 2026</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Wage Month</label>
+                        <label class="block text-[10px] font-bold text-slate-700 mb-0.5" data-i18n="wageMonth">Wage Month</label>
                         <input type="month" id="global-month-filter" onchange="onPeriodChange()" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-mono font-bold text-slate-900">
                     </div>
                 </div>
 
                 <div class="space-y-1.5" id="lm-sidebar-actions">
-                    <!-- Injected dynamically -->
+                    <!-- Injected dynamically based on role and language -->
                 </div>
             </aside>
 
@@ -284,75 +296,185 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. CORE ENGINE & CYBER-SECURITY LOGIC                                     -->
+    <!-- 4. CORE TRANSLATION & LOGIC SCRIPT                                        -->
     <!-- ========================================================================= -->
     <script>
         // =========================================================================
-        // CYBER SECURITY MODULE: AES-GCM 256-BIT ENCRYPTION & SHA-256 HASHING
+        // DICTIONARY FOR HINDI & ENGLISH TRANSLATION
         // =========================================================================
+        const I18N = {
+            hi: {
+                langBtn: "🌐 हिन्दी",
+                contractorLogin: "ठेकेदार लॉगिन",
+                supervisorTerminal: "मुंशी / सुपरवाइज़र",
+                taglineHero: "3-शीट रिपोर्टिंग • लाइव हाज़िरी लॉक • बल्क बैंक NEFT • ईपीएफओ",
+                heroSubtitle: "3-स्तरीय वेतन व हिसाब-किताब सिस्टम",
+                heroDesc: "ठेकेदारों, मुंशियों और भारी उद्योगों के लिए विशेष रूप से डिज़ाइन किया गया पोर्टल। 30-दिन हाज़िरी रजिस्टर, पीएफ शीट, खुराकी/एडवांस रिकवरी और कंपनी टैक्स इनवॉइस एक क्लिक में तैयार करें।",
+                launchContractor: "ठेकेदार पोर्टल खोलें",
+                markAttendanceHero: "हाज़िरी दर्ज करें",
+                sheet1Title: "1. शुद्ध हाज़िरी रजिस्टर",
+                sheet1Desc: "1 से 30 तारीख की शुद्ध P/HD/A हाज़िरी और कुल OT घंटे।",
+                sheet2Title: "2. सरकारी 12% PF वेतन बिल",
+                sheet2Desc: "सकल वेतन, 12% PF कटौती और बैंक सैलरी स्टेटमेंट।",
+                sheet3Title: "3. ठेकेदार निजी हिसाब-किताब",
+                sheet3Desc: "वेतन ➔ PF ➔ एडवांस/खुराकी ➔ जुर्माना ➔ फाइनल नकद/बैंक पेआउट।",
+                mobileLoginLabel: "मोबाइल / लॉगिन आईडी",
+                passwordLabel: "पासवर्ड",
+                loginBtn: "लॉगिन करें",
+                accountingPeriod: "खाता अवधि",
+                finYear: "वित्तीय वर्ष",
+                wageMonth: "वेतन महीना",
+                logoutBtn: "लॉगआउट",
+                operations: "मुख्य कार्य (Operations)",
+                masterMuster: "📋 30-दिन मास्टर मस्टर",
+                advDesk: "💰 सुपरवाइज़र एडवांस डेस्क",
+                corrReqs: "🔔 हाज़िरी सुधार निवेदन",
+                onboardLabour: "➕ नया मज़दूर जोड़ें",
+                createSup: "👤 नया सुपरवाइज़र बनाएं",
+                manageLabour: "🗑️ मज़दूर सूची व डिलीट",
+                manageSup: "🗑️ सुपरवाइज़र सूची व डिलीट",
+                file1Head: "फ़ाइल 1: शुद्ध हाज़िरी",
+                file2Head: "फ़ाइल 2: सरकारी 12% PF",
+                file3Head: "फ़ाइल 3: निजी हिसाब-किताब",
+                invHead: "कंपनी बिल व बैंक NEFT",
+                pdf1Btn: "📄 1. हाज़िरी रजिस्टर (PDF)",
+                csv1Btn: "📊 1. हाज़िरी रजिस्टर (CSV)",
+                pdf2Btn: "📑 2. वेतन व PF शीट (PDF)",
+                csv2Btn: "📊 2. वेतन व PF शीट (CSV)",
+                pdf3Btn: "📋 3. फ़ाइनल हिसाब पेआउट (PDF)",
+                csv3Btn: "📊 3. फ़ाइनल हिसाब पेआउट (CSV)",
+                taxInvBtn: "🏢 कंपनी टैक्स इनवॉइस (PDF)",
+                neftBtn: "💳 बैंक Bulk NEFT (CSV)",
+                ecrBtn: "📥 EPFO ECR (.txt) फ़ाइल",
+                supMarkAtt: "📝 आज की हाज़िरी लगाएं",
+                supHistory: "📅 1-साल का हाज़िरी रिकॉर्ड",
+                supReqTrack: "📨 मेरे सुधार निवेदन",
+                markAllP: "सभी को P लगाएं",
+                lockSubmit: "हाज़िरी फ़ाइनल लॉक करें",
+                lockedBadge: "लॉक हो गया",
+                draftBadge: "कच्चा (Draft)",
+                reqCorrTitle: "हाज़िरी सुधार हेतु निवेदन भेजें",
+                dateLabel: "तारीख",
+                workerNameLabel: "मज़दूर का नाम",
+                newStatusLabel: "नया स्टेटस चुनें",
+                newOtLabel: "नया OT (घंटे)",
+                reasonLabel: "कारण लिखें *",
+                sendCorrBtn: "ठेकेदार को सुधार निवेदन भेजें",
+                addFineTitle: "जुर्माना / नुक़सान कटौती जोड़ें",
+                fineAmtLabel: "जुर्माना राशि (₹)",
+                fineReasonLabel: "जुर्माने का कारण / Safety Violation",
+                recordFineBtn: "जुर्माना दर्ज करें",
+                srNo: "क्र.",
+                code: "कोड",
+                name: "नाम",
+                trade: "ट्रेड / काम",
+                days: "दिन",
+                adv: "एडवांस",
+                fine: "जुर्माना",
+                inHand: "नेट इन-हैंड",
+                actions: "कार्य"
+            },
+            en: {
+                langBtn: "🌐 English",
+                contractorLogin: "Contractor Login",
+                supervisorTerminal: "Supervisor Terminal",
+                taglineHero: "3-SHEET REPORTING • LIVE SUBMIT & LOCK • BULK NEFT • STATUTORY EPFO",
+                heroSubtitle: "3-Tier Statutory Payout Engine",
+                heroDesc: "Enterprise OS for Manpower Suppliers and Heavy Plants. Generate Pure Attendance Registers, Statutory PF Sheets, Internal Advance Recovery and Client Invoices in 1-Click.",
+                launchContractor: "Launch Contractor Workspace",
+                markAttendanceHero: "Mark Shift Attendance",
+                sheet1Title: "1. Pure Attendance Register",
+                sheet1Desc: "Only 1-30 day P/HD/A grid, Total Present Days & OT for Plant HR submission.",
+                sheet2Title: "2. Statutory Wage & 12% PF Sheet",
+                sheet2Desc: "Official salary statement showing Gross Wage, 12% EE PF cut and Net bank transfer.",
+                sheet3Title: "3. Internal Hisab-Kitab Sheet",
+                sheet3Desc: "Contractor private ledger: Wage minus PF, Advance deductions, and Safety fines.",
+                mobileLoginLabel: "Mobile / Login ID",
+                passwordLabel: "Password",
+                loginBtn: "Authenticate & Launch",
+                accountingPeriod: "Accounting Period",
+                finYear: "Financial Year",
+                wageMonth: "Wage Month",
+                logoutBtn: "Logout",
+                operations: "Operations",
+                masterMuster: "📋 30-Day Master Muster",
+                advDesk: "💰 Supervisor Advance Desk",
+                corrReqs: "🔔 Correction Requests",
+                onboardLabour: "➕ Onboard Labour Profile",
+                createSup: "👤 Create Supervisor ID",
+                manageLabour: "🗑️ Manage / Delete Labour",
+                manageSup: "🗑️ Manage / Delete Supervisor",
+                file1Head: "File 1: Pure Attendance",
+                file2Head: "File 2: Statutory 12% PF",
+                file3Head: "File 3: Private Hisab-Kitab",
+                invHead: "Company Invoice & Bank",
+                pdf1Btn: "📄 1. Attendance Register (PDF)",
+                csv1Btn: "📊 1. Attendance Register (CSV)",
+                pdf2Btn: "📑 2. Wage & PF Sheet (PDF)",
+                csv2Btn: "📊 2. Wage & PF Sheet (CSV)",
+                pdf3Btn: "📋 3. Final Hisab Payout (PDF)",
+                csv3Btn: "📊 3. Final Hisab Payout (CSV)",
+                taxInvBtn: "🏢 Client Tax Invoice (PDF)",
+                neftBtn: "💳 Bulk Bank NEFT CSV",
+                ecrBtn: "📥 EPFO ECR (.txt) File",
+                supMarkAtt: "📝 Mark Shift Attendance",
+                supHistory: "📅 1-Year History Log",
+                supReqTrack: "📨 My Correction Requests",
+                markAllP: "Mark All Present",
+                lockSubmit: "Final Submit & Lock",
+                lockedBadge: "Locked",
+                draftBadge: "Draft",
+                reqCorrTitle: "Request Attendance Correction",
+                dateLabel: "Date",
+                workerNameLabel: "Worker Name",
+                newStatusLabel: "New Status",
+                newOtLabel: "New OT (Hours)",
+                reasonLabel: "Reason *",
+                sendCorrBtn: "Send Correction Request",
+                addFineTitle: "Add Safety / Damage Fine",
+                fineAmtLabel: "Fine Amount (₹)",
+                fineReasonLabel: "Reason / Penalty Type",
+                recordFineBtn: "Record Fine Deduction",
+                srNo: "Sr",
+                code: "Code",
+                name: "Name",
+                trade: "Trade",
+                days: "Days",
+                adv: "Adv",
+                fine: "Fine",
+                inHand: "In-Hand",
+                actions: "Actions"
+            }
+        };
+
+        let CURRENT_LANG = localStorage.getItem('LM_LANG') || 'hi';
+
+        function toggleAppLanguage() {
+            CURRENT_LANG = CURRENT_LANG === 'hi' ? 'en' : 'hi';
+            localStorage.setItem('LM_LANG', CURRENT_LANG);
+            applyLanguage();
+        }
+
+        function applyLanguage() {
+            const t = I18N[CURRENT_LANG];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerText = t[key];
+            });
+
+            const pubBtn = document.getElementById('public-lang-btn-text');
+            const appBtn = document.getElementById('app-lang-btn-text');
+            if (pubBtn) pubBtn.innerText = CURRENT_LANG === 'hi' ? '🌐 हिन्दी' : '🌐 English';
+            if (appBtn) appBtn.innerText = CURRENT_LANG === 'hi' ? '🌐 हिन्दी' : '🌐 English';
+
+            if (APP_STATE.currentUserRole) {
+                setupWorkspace(APP_STATE.currentUserRole);
+            }
+        }
+
         const SECURITY_ENGINE = {
             masterSecret: "LabourMitraEnterpriseOS2026AES256Key!",
             
-            async getCryptoKey() {
-                const enc = new TextEncoder();
-                const keyMaterial = await crypto.subtle.importKey(
-                    "raw",
-                    enc.encode(this.masterSecret),
-                    { name: "PBKDF2" },
-                    false,
-                    ["deriveKey"]
-                );
-                return crypto.subtle.deriveKey(
-                    {
-                        name: "PBKDF2",
-                        salt: enc.encode("LM_SALT_2026"),
-                        iterations: 100000,
-                        hash: "SHA-256"
-                    },
-                    keyMaterial,
-                    { name: "AES-GCM", length: 256 },
-                    false,
-                    ["encrypt", "decrypt"]
-                );
-            },
-
-            async encryptData(plainText) {
-                if (!plainText) return "";
-                try {
-                    const key = await this.getCryptoKey();
-                    const iv = crypto.getRandomValues(new Uint8Array(12));
-                    const enc = new TextEncoder();
-                    const encrypted = await crypto.subtle.encrypt(
-                        { name: "AES-GCM", iv: iv },
-                        key,
-                        enc.encode(plainText)
-                    );
-                    const ivArr = Array.from(iv);
-                    const encArr = Array.from(new Uint8Array(encrypted));
-                    return btoa(JSON.stringify({ i: ivArr, d: encArr }));
-                } catch(e) {
-                    return plainText;
-                }
-            },
-
-            async decryptData(cipherPackage) {
-                if (!cipherPackage) return "";
-                try {
-                    const parsed = JSON.parse(atob(cipherPackage));
-                    const key = await this.getCryptoKey();
-                    const iv = new Uint8Array(parsed.i);
-                    const data = new Uint8Array(parsed.d);
-                    const decrypted = await crypto.subtle.decrypt(
-                        { name: "AES-GCM", iv: iv },
-                        key,
-                        data
-                    );
-                    return new TextDecoder().decode(decrypted);
-                } catch(e) {
-                    return cipherPackage;
-                }
-            },
-
             async sha256(str) {
                 const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
                 return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -366,9 +488,6 @@
             }
         };
 
-        // =========================================================================
-        // APPLICATION STATE
-        // =========================================================================
         let APP_STATE = {
             currentUserRole: null,
             currentContractorId: null,
@@ -405,16 +524,17 @@
             APP_STATE.supervisorSelectedDate = today;
             document.getElementById('global-month-filter').value = APP_STATE.selectedMonth;
             loadLocalState();
+            applyLanguage();
             checkAndRestoreSession();
             lucide.createIcons();
         });
 
         function saveLocalState() {
-            localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V6', JSON.stringify(APP_STATE));
+            localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V8', JSON.stringify(APP_STATE));
         }
 
         function loadLocalState() {
-            const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V6');
+            const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V8');
             if (saved) {
                 try {
                     const p = JSON.parse(saved);
@@ -468,9 +588,6 @@
             }
         }
 
-        // =========================================================================
-        // METRICS COMPUTATION ENGINE
-        // =========================================================================
         function getWorkerMetrics(workerId, wageRate, isEpf) {
             let shifts = 0, otHours = 0;
             const month = APP_STATE.selectedMonth;
@@ -516,13 +633,11 @@
             return { shifts, otHours, shiftEarned, grossWages, eePf, erTotalPf, statutoryNet, advanceCut: advCut, fineCut, inHandFinal: inHandAfterAllDeductions };
         }
 
-        // =========================================================================
-        // SECURE AUTHENTICATION (SHA-256 & RATE LIMITING)
-        // =========================================================================
         function openLoginModal(role) {
+            const t = I18N[CURRENT_LANG];
             document.getElementById('login-target-role').value = role;
             document.getElementById('modal-role-badge').innerText = role;
-            document.getElementById('modal-role-title').innerText = role + " Access Gateway";
+            document.getElementById('modal-role-title').innerText = role === 'CONTRACTOR' ? t.contractorLogin : (role === 'SUPERVISOR' ? t.supervisorTerminal : 'Admin');
             const hint = document.getElementById('login-hint');
             if (role === 'ADMIN') hint.innerHTML = 'Plant Admin: <span class="font-bold">admin / admin123</span>';
             else if (role === 'CONTRACTOR') hint.innerHTML = 'Contractor: <span class="font-bold">9826000001 / 123</span>';
@@ -599,11 +714,12 @@
         }
 
         function setupWorkspace(role) {
+            const t = I18N[CURRENT_LANG];
             document.getElementById('user-display-badge').innerText = role;
             const actions = document.getElementById('lm-sidebar-actions');
 
             if (role === 'ADMIN') {
-                document.getElementById('user-topbar-firm').innerText = "Plant Principal Employer Desk";
+                document.getElementById('user-topbar-firm').innerText = "Plant Admin Desk";
                 document.getElementById('contractor-notif-btn').classList.add('hidden');
                 actions.innerHTML = `
                     <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Master Control</p>
@@ -616,42 +732,44 @@
                 document.getElementById('user-topbar-firm').innerText = firm ? firm.name : 'Contractor Workspace';
                 updateNotificationBadge();
                 actions.innerHTML = `
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Operations</p>
-                    <button onclick="renderContractorMusterWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📋 30-Day Master Muster</button>
-                    <button onclick="showSupervisorAdvanceDesk()" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow">💰 Supervisor Khuraki Desk</button>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">${t.operations}</p>
+                    <button onclick="renderContractorMusterWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.masterMuster}</button>
+                    <button onclick="showSupervisorAdvanceDesk()" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow">${t.advDesk}</button>
                     <button onclick="showSection('cont-requests-sec')" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow flex justify-between items-center">
-                        <span>🔔 Correction Requests</span>
+                        <span>${t.corrReqs}</span>
                         <span class="bg-rose-700 text-white text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold">${APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING').length}</span>
                     </button>
-                    <button onclick="showSection('cont-onboard-labour-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">➕ Onboard Labour Profile</button>
-                    <button onclick="showSection('cont-create-sup-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">👤 Create Munshi ID</button>
+                    <button onclick="showSection('cont-onboard-labour-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.onboardLabour}</button>
+                    <button onclick="showSection('cont-create-sup-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.createSup}</button>
+                    <button onclick="showManageLabourDesk()" class="w-full text-left px-3 py-2 rounded bg-rose-800 hover:bg-rose-700 text-white font-bold text-xs shadow">${t.manageLabour}</button>
+                    <button onclick="showManageSupervisorDesk()" class="w-full text-left px-3 py-2 rounded bg-rose-900 hover:bg-rose-800 text-white font-bold text-xs shadow">${t.manageSup}</button>
 
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">File 1: Pure Attendance</p>
-                    <button onclick="downloadPureAttendancePDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs">📄 1. Attendance Register (PDF)</button>
-                    <button onclick="downloadPureAttendanceExcel()" class="w-full text-left px-2.5 py-1.5 rounded bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs">📊 1. Attendance Register (CSV)</button>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">${t.file1Head}</p>
+                    <button onclick="downloadPureAttendancePDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs">${t.pdf1Btn}</button>
+                    <button onclick="downloadPureAttendanceExcel()" class="w-full text-left px-2.5 py-1.5 rounded bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs">${t.csv1Btn}</button>
 
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">File 2: Statutory 12% PF</p>
-                    <button onclick="downloadStatutoryWagePDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs">📑 2. Wage & PF Sheet (PDF)</button>
-                    <button onclick="downloadStatutoryWageExcel()" class="w-full text-left px-2.5 py-1.5 rounded bg-blue-800 hover:bg-blue-700 text-white font-bold text-xs">📊 2. Wage & PF Sheet (CSV)</button>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">${t.file2Head}</p>
+                    <button onclick="downloadStatutoryWagePDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs">${t.pdf2Btn}</button>
+                    <button onclick="downloadStatutoryWageExcel()" class="w-full text-left px-2.5 py-1.5 rounded bg-blue-800 hover:bg-blue-700 text-white font-bold text-xs">${t.csv2Btn}</button>
 
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">File 3: Private Hisab-Kitab</p>
-                    <button onclick="downloadInternalHisabPDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-[#4a2411] hover:bg-black text-amber-300 font-bold text-xs border border-amber-500">📋 3. Final Hisab Payout (PDF)</button>
-                    <button onclick="downloadInternalHisabExcel()" class="w-full text-left px-2.5 py-1.5 rounded bg-[#33180a] text-amber-200 font-bold text-xs border border-amber-500/50">📊 3. Final Hisab Payout (CSV)</button>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">${t.file3Head}</p>
+                    <button onclick="downloadInternalHisabPDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-[#4a2411] hover:bg-black text-amber-300 font-bold text-xs border border-amber-500">${t.pdf3Btn}</button>
+                    <button onclick="downloadInternalHisabExcel()" class="w-full text-left px-2.5 py-1.5 rounded bg-[#33180a] text-amber-200 font-bold text-xs border border-amber-500/50">${t.csv3Btn}</button>
 
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">Company Invoice & Bank</p>
-                    <button onclick="downloadCompanyBillingInvoicePDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-amber-600 hover:bg-amber-500 text-slate-950 font-black text-xs shadow">🏢 Client Tax Invoice (PDF)</button>
-                    <button onclick="downloadBankNeftCsv()" class="w-full text-left px-2.5 py-1.5 rounded bg-indigo-700 hover:bg-indigo-600 text-white font-bold text-xs">💳 Bulk Bank NEFT CSV</button>
-                    <button onclick="downloadEpfoEcrTextFile()" class="w-full text-left px-2.5 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">📥 EPFO ECR (.txt) File</button>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">${t.invHead}</p>
+                    <button onclick="downloadCompanyBillingInvoicePDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-amber-600 hover:bg-amber-500 text-slate-950 font-black text-xs shadow">${t.taxInvBtn}</button>
+                    <button onclick="downloadBankNeftCsv()" class="w-full text-left px-2.5 py-1.5 rounded bg-indigo-700 hover:bg-indigo-600 text-white font-bold text-xs">${t.neftBtn}</button>
+                    <button onclick="downloadEpfoEcrTextFile()" class="w-full text-left px-2.5 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">${t.ecrBtn}</button>
                 `;
                 renderContractorMusterWorkspace();
             } else if (role === 'SUPERVISOR') {
-                document.getElementById('user-topbar-firm').innerText = "Supervisor Mobile Terminal";
+                document.getElementById('user-topbar-firm').innerText = CURRENT_LANG === 'hi' ? "सुपरवाइज़र मोबाइल टर्मिनल" : "Supervisor Mobile Terminal";
                 document.getElementById('contractor-notif-btn').classList.add('hidden');
                 actions.innerHTML = `
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Field Terminal</p>
-                    <button onclick="renderSupervisorAttendanceDesk()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📝 Mark Shift Attendance</button>
-                    <button onclick="renderSupervisorHistoryLog()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📅 1-Year History Log</button>
-                    <button onclick="renderSupervisorRequestTracking()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📨 My Correction Requests</button>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">${t.operations}</p>
+                    <button onclick="renderSupervisorAttendanceDesk()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.supMarkAtt}</button>
+                    <button onclick="renderSupervisorHistoryLog()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.supHistory}</button>
+                    <button onclick="renderSupervisorRequestTracking()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.supReqTrack}</button>
                 `;
                 renderSupervisorAttendanceDesk();
             }
@@ -668,13 +786,14 @@
         // CONTRACTOR WORKSPACE & 30-DAY MUSTER
         // =========================================================================
         function renderContractorMusterWorkspace() {
+            const t = I18N[CURRENT_LANG];
             const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
             document.getElementById('workspace-notice-title').innerText = `${firm ? firm.name : 'Contractor Firm'} — Master Register (${APP_STATE.selectedMonth})`;
 
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
             const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
             const daysInMonth = new Date(year, month, 0).getDate();
-            const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const weekdays = CURRENT_LANG === 'hi' ? ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'] : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
             let dayHeaders = '', dayNameHeaders = '';
             for (let d = 1; d <= daysInMonth; d++) {
@@ -716,6 +835,7 @@
                             <button onclick="generateWorkerIdCardPDF('${w.id}')" class="bg-slate-200 hover:bg-slate-300 px-1.5 py-0.5 rounded text-[9px] font-bold">🪪 ID</button>
                             <button onclick="sendWorkerWhatsAppSummary('${w.id}')" class="bg-emerald-600 text-white hover:bg-emerald-500 px-1.5 py-0.5 rounded text-[9px] font-bold">📲 WA</button>
                             <button onclick="generateFndSettlementPDF('${w.id}')" class="bg-amber-700 text-white hover:bg-amber-600 px-1.5 py-0.5 rounded text-[9px] font-bold">FNF</button>
+                            <button onclick="deleteSingleLabour('${w.id}', '${w.name}')" class="bg-rose-700 hover:bg-rose-600 text-white px-1.5 py-0.5 rounded text-[9px] font-bold">🗑️ Del</button>
                         </td>
                     </tr>
                 `;
@@ -725,11 +845,10 @@
 
             const container = document.getElementById('workspace-main-container');
             container.innerHTML = `
-                <!-- Pending Correction Requests Section -->
                 <div id="cont-requests-sec" class="workspace-section bg-white border-2 border-amber-500 p-4 rounded-lg shadow-sm space-y-3 ${pendingReqs.length === 0 ? 'hidden' : ''}">
                     <div class="flex justify-between items-center border-b border-amber-300 pb-2">
                         <h4 class="font-bold text-[#4a2411] text-xs flex items-center gap-1.5">
-                            <i data-lucide="bell-ring" class="w-4 h-4 text-rose-600 animate-bounce"></i> Supervisor Attendance Correction Requests
+                            <i data-lucide="bell-ring" class="w-4 h-4 text-rose-600 animate-bounce"></i> ${t.corrReqs}
                         </h4>
                         <span class="bg-rose-600 text-white font-bold text-[10px] px-2 py-0.5 rounded">${pendingReqs.length} Pending</span>
                     </div>
@@ -742,7 +861,7 @@
                                     <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">कारण: "${SECURITY_ENGINE.sanitize(r.reason)}"</p>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button onclick="handleContractorRequestAction('${r.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Accept & Update Muster</button>
+                                    <button onclick="handleContractorRequestAction('${r.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Accept & Update</button>
                                     <button onclick="handleContractorRequestAction('${r.id}', 'REJECT')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Reject</button>
                                 </div>
                             </div>
@@ -750,37 +869,34 @@
                     </div>
                 </div>
 
-                <!-- Onboard Labour Form -->
                 <div id="cont-onboard-labour-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
-                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Onboard Labour & Assign Munshi (AES-256 Protected)</h4>
+                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">${t.onboardLabour}</h4>
                     <form onsubmit="handleAddLabour(event)" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        <input type="text" id="labour-name" required placeholder="Worker Name" class="border border-slate-400 p-1.5 rounded text-xs">
+                        <input type="text" id="labour-name" required placeholder="Worker Name / मज़दूर का नाम" class="border border-slate-400 p-1.5 rounded text-xs">
                         <select id="labour-sup-assign" class="border border-slate-400 p-1.5 rounded text-xs font-bold">
                             ${APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId).map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
                         </select>
                         <input type="text" id="labour-category" required placeholder="Trade (Fitter/Helper)" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="number" id="labour-wage" required placeholder="Daily Wage (₹)" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="number" id="labour-wage" required placeholder="Daily Wage / दैनिक वेतन (₹)" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
                         <input type="number" id="labour-client-rate" required placeholder="Client Charge Rate (₹)" value="600" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="text" id="labour-mobile" required placeholder="Mobile (WhatsApp)" maxlength="10" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="text" id="labour-uan" required placeholder="12-Digit UAN Number" maxlength="12" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="text" id="labour-mobile" required placeholder="Mobile No" maxlength="10" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="text" id="labour-uan" required placeholder="12-Digit UAN" maxlength="12" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
                         <input type="text" id="labour-bank-acc" required placeholder="Bank A/C No" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
                         <input type="text" id="labour-bank-ifsc" required placeholder="Bank IFSC" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">Save Encrypted Worker Profile</button>
+                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">Save Worker Profile</button>
                     </form>
                 </div>
 
-                <!-- Create Supervisor Form -->
                 <div id="cont-create-sup-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
-                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Create Site Munshi / Supervisor ID</h4>
+                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">${t.createSup}</h4>
                     <form onsubmit="handleAddSupervisor(event)" class="space-y-2 max-w-sm">
-                        <input type="text" id="sup-name" required placeholder="Supervisor Name" class="w-full border border-slate-400 p-1.5 rounded text-xs">
+                        <input type="text" id="sup-name" required placeholder="Supervisor Name / सुपरवाइज़र का नाम" class="w-full border border-slate-400 p-1.5 rounded text-xs">
                         <input type="text" id="sup-mobile" required placeholder="Mobile Login" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
                         <input type="password" id="sup-password" required placeholder="Password" class="w-full border border-slate-400 p-1.5 rounded text-xs">
-                        <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Create Supervisor (SHA-256)</button>
+                        <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Create Supervisor</button>
                     </form>
                 </div>
 
-                <!-- 30-Day Master Muster Table -->
                 <div class="bg-white border-2 border-amber-400 rounded-lg shadow-md overflow-hidden p-3 space-y-2">
                     <div class="text-center border-b border-amber-300 pb-2 flex flex-wrap justify-between items-center gap-2">
                         <div>
@@ -798,20 +914,20 @@
                         <table class="w-full text-xs muster-grid border-collapse">
                             <thead class="bg-amber-200 text-[#4a2411]">
                                 <tr>
-                                    <th rowspan="2" class="w-8">Sr</th>
-                                    <th rowspan="2" class="w-14">Code</th>
-                                    <th rowspan="2" class="w-36 text-left px-2">Name</th>
+                                    <th rowspan="2" class="w-8">${t.srNo}</th>
+                                    <th rowspan="2" class="w-14">${t.code}</th>
+                                    <th rowspan="2" class="w-36 text-left px-2">${t.name}</th>
                                     ${dayHeaders}
-                                    <th rowspan="2" class="w-10 bg-amber-300 font-black">Days</th>
-                                    <th rowspan="2" class="w-12 bg-amber-100 font-bold">Adv</th>
-                                    <th rowspan="2" class="w-12 bg-rose-100 font-bold">Fine</th>
-                                    <th rowspan="2" class="w-14 bg-emerald-200 font-black">In-Hand</th>
-                                    <th rowspan="2" class="w-24">Actions</th>
+                                    <th rowspan="2" class="w-10 bg-amber-300 font-black">${t.days}</th>
+                                    <th rowspan="2" class="w-12 bg-amber-100 font-bold">${t.adv}</th>
+                                    <th rowspan="2" class="w-12 bg-rose-100 font-bold">${t.fine}</th>
+                                    <th rowspan="2" class="w-14 bg-emerald-200 font-black">${t.inHand}</th>
+                                    <th rowspan="2" class="w-28">${t.actions}</th>
                                 </tr>
                                 <tr>${dayNameHeaders}</tr>
                             </thead>
                             <tbody>
-                                ${rows || '<tr><td colspan="40" class="p-4 text-slate-500 italic">No workers registered. Click "Onboard Labour Profile" above.</td></tr>'}
+                                ${rows || '<tr><td colspan="40" class="p-4 text-slate-500 italic">No workers registered.</td></tr>'}
                             </tbody>
                         </table>
                     </div>
@@ -822,10 +938,146 @@
         }
 
         // =========================================================================
+        // MANAGE & DELETE DESKS
+        // =========================================================================
+        function showManageLabourDesk() {
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.manageLabour;
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            const container = document.getElementById('workspace-main-container');
+
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h3 class="font-bold text-[#4a2411] text-xs uppercase">${t.manageLabour} (${myLabour.length})</h3>
+                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">Back to Muster</button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-amber-100 text-[#4a2411] uppercase font-bold text-[10px] border-b border-amber-300">
+                                <tr>
+                                    <th class="p-2">${t.code}</th>
+                                    <th class="p-2">${t.name}</th>
+                                    <th class="p-2">${t.trade}</th>
+                                    <th class="p-2">Daily Wage</th>
+                                    <th class="p-2">Supervisor</th>
+                                    <th class="p-2 text-right">${t.actions}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-amber-200">
+                                ${myLabour.map(w => {
+                                    const sup = APP_STATE.supervisors.find(s => s.id === w.supervisorId);
+                                    return `
+                                        <tr class="hover:bg-amber-50">
+                                            <td class="p-2 font-mono font-bold">${w.id}</td>
+                                            <td class="p-2 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</td>
+                                            <td class="p-2">${w.category}</td>
+                                            <td class="p-2 font-mono">₹${w.wage}/day</td>
+                                            <td class="p-2 text-slate-600">${sup ? sup.name : 'Unassigned'}</td>
+                                            <td class="p-2 text-right">
+                                                <button onclick="deleteSingleLabour('${w.id}', '${w.name}')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded shadow text-xs flex items-center gap-1 ml-auto">
+                                                    <i data-lucide="trash-2" class="w-3 h-3"></i> Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function deleteSingleLabour(workerId, workerName) {
+            if (confirm(`क्या आप सच में लेबर "${workerName}" (Code: ${workerId}) को हमेशा के लिए डिलीट करना चाहते हैं?`)) {
+                APP_STATE.labour = APP_STATE.labour.filter(w => w.id !== workerId);
+                delete APP_STATE.advances[workerId];
+                delete APP_STATE.fines[workerId];
+                saveLocalState();
+                alert(`Labour "${workerName}" डिलीट कर दिया गया!`);
+                renderContractorMusterWorkspace();
+            }
+        }
+
+        function showManageSupervisorDesk() {
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.manageSup;
+            const mySups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
+            const container = document.getElementById('workspace-main-container');
+
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h3 class="font-bold text-[#4a2411] text-xs uppercase">${t.manageSup} (${mySups.length})</h3>
+                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">Back to Muster</button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-amber-100 text-[#4a2411] uppercase font-bold text-[10px] border-b border-amber-300">
+                                <tr>
+                                    <th class="p-2">Supervisor ID</th>
+                                    <th class="p-2">${t.name}</th>
+                                    <th class="p-2">Mobile (Login)</th>
+                                    <th class="p-2">Mapped Labour Count</th>
+                                    <th class="p-2 text-right">${t.actions}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-amber-200">
+                                ${mySups.map(s => {
+                                    const mappedCount = APP_STATE.labour.filter(w => w.supervisorId === s.id).length;
+                                    return `
+                                        <tr class="hover:bg-amber-50">
+                                            <td class="p-2 font-mono font-bold">${s.id}</td>
+                                            <td class="p-2 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(s.name)}</td>
+                                            <td class="p-2 font-mono">${s.mobile}</td>
+                                            <td class="p-2 font-bold text-amber-800">${mappedCount} Workers</td>
+                                            <td class="p-2 text-right">
+                                                <button onclick="deleteSingleSupervisor('${s.id}', '${s.name}', ${mappedCount})" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded shadow text-xs flex items-center gap-1 ml-auto">
+                                                    <i data-lucide="trash-2" class="w-3 h-3"></i> Delete Supervisor
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function deleteSingleSupervisor(supId, supName, mappedCount) {
+            if (mappedCount > 0) {
+                if (!confirm(`Warning: Supervisor "${supName}" के अंडर ${mappedCount} लेबर मैप हैं। डिलीट करने पर वे अन-असाइंड हो जाएंगे। क्या आप आगे बढ़ना चाहते हैं?`)) {
+                    return;
+                }
+            } else {
+                if (!confirm(`क्या आप सच में Supervisor "${supName}" को डिलीट करना चाहते हैं?`)) {
+                    return;
+                }
+            }
+
+            APP_STATE.supervisors = APP_STATE.supervisors.filter(s => s.id !== supId);
+            APP_STATE.labour.forEach(w => {
+                if (w.supervisorId === supId) w.supervisorId = '';
+            });
+
+            saveLocalState();
+            alert(`Supervisor "${supName}" डिलीट कर दिया गया!`);
+            showManageSupervisorDesk();
+        }
+
+        // =========================================================================
         // SUPERVISOR ADVANCE DESK
         // =========================================================================
         function showSupervisorAdvanceDesk() {
-            document.getElementById('workspace-notice-title').innerText = "Supervisor-Wise Labour Advance / Khuraki Entry Desk";
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.advDesk;
             const mySups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
 
             const container = document.getElementById('workspace-main-container');
@@ -833,8 +1085,8 @@
                 <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-4">
                     <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-300 pb-3">
                         <div>
-                            <h3 class="font-black text-[#4a2411] text-sm">Select Munshi / Supervisor</h3>
-                            <p class="text-[11px] text-slate-600">Choose a site supervisor to disburse and record advances for their team.</p>
+                            <h3 class="font-black text-[#4a2411] text-sm">Select Site Supervisor</h3>
+                            <p class="text-[11px] text-slate-600">सुपरवाइज़र चुनें और मज़दूरों को दिए गए एडवांस की एंट्री करें।</p>
                         </div>
                         <div class="flex items-center gap-2">
                             <label class="font-bold text-xs">Supervisor:</label>
@@ -846,7 +1098,7 @@
                     </div>
 
                     <div id="adv-desk-workers-table-container">
-                        <p class="p-6 text-center text-slate-500 italic">Please select a supervisor from the dropdown above to load workers.</p>
+                        <p class="p-6 text-center text-slate-500 italic">Please select a supervisor from the dropdown above.</p>
                     </div>
                 </div>
             `;
@@ -855,7 +1107,7 @@
         function renderSupervisorLabourForAdvance(supId) {
             const container = document.getElementById('adv-desk-workers-table-container');
             if (!supId) {
-                container.innerHTML = `<p class="p-6 text-center text-slate-500 italic">Please select a supervisor from the dropdown above to load workers.</p>`;
+                container.innerHTML = `<p class="p-6 text-center text-slate-500 italic">Please select a supervisor from the dropdown above.</p>`;
                 return;
             }
 
@@ -876,7 +1128,7 @@
                                 <th class="p-2.5">Worker Name</th>
                                 <th class="p-2.5">Trade / Rate</th>
                                 <th class="p-2.5">Current Month Advance</th>
-                                <th class="p-2.5 text-right">Quick Khuraki Entry</th>
+                                <th class="p-2.5 text-right">Quick Advance Entry</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-amber-200">
@@ -909,7 +1161,7 @@
             if (!amount || amount <= 0) { alert("Please enter a valid amount!"); return; }
 
             if (!APP_STATE.advances[workerId]) APP_STATE.advances[workerId] = [];
-            APP_STATE.advances[workerId].push({ amount, date, reason: "Site Khuraki" });
+            APP_STATE.advances[workerId].push({ amount, date, reason: "Site Advance" });
 
             saveLocalState();
             input.value = '';
@@ -957,7 +1209,7 @@
                          `*Present Shifts:* ${m.shifts} Days | OT: ${m.otHours}h%0A` +
                          `*Gross Wages:* Rs. ${Math.round(m.grossWages)}%0A` +
                          `*12% PF Cut:* Rs. ${m.eePf}%0A` +
-                         `*Khuraki Advance Cut:* Rs. ${m.advanceCut}%0A` +
+                         `*Advance Cut:* Rs. ${m.advanceCut}%0A` +
                          `*Safety Fine Cut:* Rs. ${m.fineCut}%0A` +
                          `----------------------------%0A` +
                          `*FINAL IN-HAND PAYOUT:* Rs. ${Math.round(m.inHandFinal)}%0A` +
@@ -1026,7 +1278,7 @@
                 ['Total Shifts Worked', `${m.shifts} Shifts`],
                 ['Gross Wages Earned', `Rs. ${Math.round(m.grossWages)}`],
                 ['12% Employee PF Deduction', `Rs. ${m.eePf}`],
-                ['Total Khuraki / Advance Recovered', `Rs. ${m.advanceCut}`],
+                ['Total Advance Recovered', `Rs. ${m.advanceCut}`],
                 ['Safety & Mess Penalties', `Rs. ${m.fineCut}`],
                 ['FINAL NET AMOUNT PAID / DISCHARGED', `Rs. ${Math.round(m.inHandFinal)}`]
             ];
@@ -1048,10 +1300,8 @@
         }
 
         // =========================================================================
-        // 3 DISTINCT SHEETS EXPORTERS (PDF & CSV)
+        // 3 DISTINCT SHEETS EXPORTERS
         // =========================================================================
-
-        // SHEET 1: PURE ATTENDANCE REGISTER
         function downloadPureAttendancePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape', 'mm', 'a4');
@@ -1141,7 +1391,6 @@
             document.body.removeChild(link);
         }
 
-        // SHEET 2: STATUTORY WAGE & 12% PF PAYOUT SHEET
         function downloadStatutoryWagePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape', 'mm', 'a4');
@@ -1214,7 +1463,6 @@
             document.body.removeChild(link);
         }
 
-        // SHEET 3: CONTRACTOR INTERNAL HISAB-KITAB SHEET
         function downloadInternalHisabPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape', 'mm', 'a4');
@@ -1276,7 +1524,7 @@
 
         function downloadInternalHisabExcel() {
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-            let csv = "Sr_No,Emp_Code,Worker_Name,Trade,Shifts,OT_Hours,Gross_Wages,PF_12_Cut,Advance_Khuraki_Cut,Fine_Cut,Final_InHand_Payout,Bank_Account,Bank_IFSC\n";
+            let csv = "Sr_No,Emp_Code,Worker_Name,Trade,Shifts,OT_Hours,Gross_Wages,PF_12_Cut,Advance_Cut,Fine_Cut,Final_InHand_Payout,Bank_Account,Bank_IFSC\n";
 
             myLabour.forEach((w, idx) => {
                 const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
@@ -1292,9 +1540,6 @@
             document.body.removeChild(link);
         }
 
-        // =========================================================================
-        // CLIENT BILLING INVOICE (TAX INVOICE PDF)
-        // =========================================================================
         function downloadCompanyBillingInvoicePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('portrait', 'mm', 'a4');
@@ -1357,9 +1602,6 @@
             doc.save(`Company_Tax_Invoice_${APP_STATE.selectedMonth}.pdf`);
         }
 
-        // =========================================================================
-        // BANK NEFT & EPFO ECR EXPORTERS
-        // =========================================================================
         function downloadBankNeftCsv() {
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
             let csv = "Emp_Code,Name,Bank_Account,IFSC,Net_Amount\n";
@@ -1401,12 +1643,13 @@
         // SUPERVISOR WORKSPACE (ATTENDANCE DESK & LOGBOOK)
         // =========================================================================
         function renderSupervisorAttendanceDesk() {
+            const t = I18N[CURRENT_LANG];
             const date = APP_STATE.supervisorSelectedDate;
             const isLocked = APP_STATE.lockedDates[date] && APP_STATE.lockedDates[date].locked;
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
             if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
 
-            document.getElementById('workspace-notice-title').innerText = `Field Attendance Terminal — Date: ${date}`;
+            document.getElementById('workspace-notice-title').innerText = CURRENT_LANG === 'hi' ? `हाज़िरी टर्मिनल — तारीख: ${date}` : `Attendance Terminal — Date: ${date}`;
 
             let pCount = 0, hdCount = 0, aCount = 0, totalOt = 0;
             myLabour.forEach(w => {
@@ -1423,38 +1666,38 @@
             container.innerHTML = `
                 <div class="bg-white border-2 border-amber-400 p-3 rounded-lg shadow-sm flex flex-wrap items-center justify-between gap-3">
                     <div class="flex items-center gap-2">
-                        <label class="font-bold text-[#4a2411] text-xs">Shift Date:</label>
+                        <label class="font-bold text-[#4a2411] text-xs">${CURRENT_LANG === 'hi' ? 'शिफ्ट तारीख:' : 'Shift Date:'}</label>
                         <input type="date" value="${date}" onchange="changeSupervisorDate(this.value)" class="border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
                         ${isLocked ? 
-                            `<span class="bg-emerald-700 text-white font-bold text-[10px] px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Locked (${APP_STATE.lockedDates[date].timestamp})</span>` : 
-                            `<span class="bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded">Draft</span>`
+                            `<span class="bg-emerald-700 text-white font-bold text-[10px] px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> ${t.lockedBadge} (${APP_STATE.lockedDates[date].timestamp})</span>` : 
+                            `<span class="bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded">${t.draftBadge}</span>`
                         }
                     </div>
 
                     ${!isLocked ? `
                         <div class="flex gap-2">
-                            <button onclick="markAllSupervisorPresentToday('${date}')" class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs">Mark All P</button>
+                            <button onclick="markAllSupervisorPresentToday('${date}')" class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs">${t.markAllP}</button>
                             <button onclick="lockAndSubmitAttendance('${date}')" class="bg-emerald-700 hover:bg-emerald-600 text-white px-4 py-1.5 rounded font-black text-xs shadow flex items-center gap-1">
-                                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Final Submit & Lock
+                                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> ${t.lockSubmit}
                             </button>
                         </div>
                     ` : `
-                        <span class="text-xs text-rose-700 font-bold italic">Date Locked. Click "Request Edit" below to request correction.</span>
+                        <span class="text-xs text-rose-700 font-bold italic">${CURRENT_LANG === 'hi' ? 'तारीख लॉक हो चुकी है। बदलाव के लिए "सुधार निवेदन" भेजें।' : 'Date locked. Send correction request to edit.'}</span>
                     `}
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
-                    <div class="bg-white border border-amber-300 p-2 rounded"><p class="text-[9px] text-slate-500 font-bold">Total Strength</p><p class="text-sm font-black text-slate-900">${myLabour.length}</p></div>
-                    <div class="bg-emerald-100 border border-emerald-300 p-2 rounded"><p class="text-[9px] text-emerald-800 font-bold">Present (P)</p><p class="text-sm font-black text-emerald-700">${pCount}</p></div>
-                    <div class="bg-amber-100 border border-amber-300 p-2 rounded"><p class="text-[9px] text-amber-800 font-bold">Half Day (HD)</p><p class="text-sm font-black text-amber-700">${hdCount}</p></div>
-                    <div class="bg-rose-100 border border-rose-300 p-2 rounded"><p class="text-[9px] text-rose-800 font-bold">Absent (A)</p><p class="text-sm font-black text-rose-700">${aCount}</p></div>
-                    <div class="bg-blue-100 border border-blue-300 p-2 rounded"><p class="text-[9px] text-blue-800 font-bold">Total OT</p><p class="text-sm font-black text-blue-700">${totalOt}h</p></div>
+                    <div class="bg-white border border-amber-300 p-2 rounded"><p class="text-[9px] text-slate-500 font-bold">${CURRENT_LANG === 'hi' ? 'कुल मज़दूर' : 'Total Labour'}</p><p class="text-sm font-black text-slate-900">${myLabour.length}</p></div>
+                    <div class="bg-emerald-100 border border-emerald-300 p-2 rounded"><p class="text-[9px] text-emerald-800 font-bold">${CURRENT_LANG === 'hi' ? 'उपस्थित (P)' : 'Present (P)'}</p><p class="text-sm font-black text-emerald-700">${pCount}</p></div>
+                    <div class="bg-amber-100 border border-amber-300 p-2 rounded"><p class="text-[9px] text-amber-800 font-bold">${CURRENT_LANG === 'hi' ? 'आधा दिन (HD)' : 'Half Day (HD)'}</p><p class="text-sm font-black text-amber-700">${hdCount}</p></div>
+                    <div class="bg-rose-100 border border-rose-300 p-2 rounded"><p class="text-[9px] text-rose-800 font-bold">${CURRENT_LANG === 'hi' ? 'गैरहाज़िर (A)' : 'Absent (A)'}</p><p class="text-sm font-black text-rose-700">${aCount}</p></div>
+                    <div class="bg-blue-100 border border-blue-300 p-2 rounded"><p class="text-[9px] text-blue-800 font-bold">${CURRENT_LANG === 'hi' ? 'कुल OT घंटे' : 'Total OT'}</p><p class="text-sm font-black text-blue-700">${totalOt}h</p></div>
                 </div>
 
                 <div class="bg-white border border-amber-400 rounded-lg shadow overflow-hidden">
                     <div class="p-2.5 lm-brown text-white font-bold text-xs flex justify-between items-center">
-                        <span>Workforce Attendance Roster (${date})</span>
-                        <input type="text" onkeyup="filterSupervisorLabour(this.value)" placeholder="Search worker or trade..." class="p-1 px-2 text-xs rounded bg-white text-slate-900 border-none outline-none font-normal">
+                        <span>${CURRENT_LANG === 'hi' ? 'मज़दूर हाज़िरी सूची' : 'Workforce Roster'} (${date})</span>
+                        <input type="text" onkeyup="filterSupervisorLabour(this.value)" placeholder="${CURRENT_LANG === 'hi' ? 'नाम या काम से खोजें...' : 'Search worker...'}" class="p-1 px-2 text-xs rounded bg-white text-slate-900 border-none outline-none font-normal">
                     </div>
 
                     <div class="divide-y divide-amber-200 p-2 space-y-2 max-h-[500px] overflow-y-auto" id="sup-workers-list">
@@ -1484,7 +1727,7 @@
                                         ` : `
                                             <div class="flex items-center gap-2">
                                                 <span class="font-bold font-mono px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-100 text-emerald-800 border border-emerald-400' : st === 'HD' ? 'bg-amber-100 text-amber-800 border border-amber-400' : 'bg-rose-100 text-rose-800 border border-rose-400'}">${st} (${ot}h OT)</span>
-                                                <button onclick="openCorrectionModal('${date}', '${w.id}', '${w.name}', '${st}', ${ot})" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-1 rounded text-[10px] shadow">Request Edit</button>
+                                                <button onclick="openCorrectionModal('${date}', '${w.id}', '${w.name}', '${st}', ${ot})" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-1 rounded text-[10px] shadow">${CURRENT_LANG === 'hi' ? 'सुधार निवेदन' : 'Request Edit'}</button>
                                             </div>
                                         `}
                                     </div>
@@ -1521,11 +1764,12 @@
         }
 
         function lockAndSubmitAttendance(date) {
-            if (confirm(`Final Submit & Lock attendance for ${date}? You cannot directly edit once locked.`)) {
+            const msg = CURRENT_LANG === 'hi' ? `क्या आप तारीख ${date} की हाज़िरी पक्की (Lock) करना चाहते हैं?` : `Final Submit & Lock attendance for ${date}?`;
+            if (confirm(msg)) {
                 const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                 APP_STATE.lockedDates[date] = { locked: true, timestamp: `${date} ${now}` };
                 saveLocalState();
-                alert(`Attendance for ${date} submitted and locked!`);
+                alert(CURRENT_LANG === 'hi' ? `तारीख ${date} की हाज़िरी सफलतापूर्वक लॉक हो गई!` : `Attendance for ${date} submitted and locked!`);
                 renderSupervisorAttendanceDesk();
             }
         }
@@ -1541,7 +1785,8 @@
         }
 
         function renderSupervisorHistoryLog() {
-            document.getElementById('workspace-notice-title').innerText = "1-Year Manpower Attendance History Logbook";
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.supHistory;
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
             const dates = Object.keys(APP_STATE.attendance).sort().reverse();
 
@@ -1549,7 +1794,7 @@
             container.innerHTML = `
                 <div class="bg-white border-2 border-amber-400 rounded-lg shadow p-3 space-y-3">
                     <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                        <h3 class="font-bold text-[#4a2411] text-xs">Historical Day-by-Day Logs</h3>
+                        <h3 class="font-bold text-[#4a2411] text-xs">${t.supHistory}</h3>
                         <span class="text-[10px] font-mono font-bold text-slate-600">${dates.length} Recorded Days</span>
                     </div>
 
@@ -1557,13 +1802,13 @@
                         <table class="w-full text-left text-xs">
                             <thead class="bg-amber-100 text-[#4a2411] font-bold text-[10px] uppercase border-b border-amber-300">
                                 <tr>
-                                    <th class="p-2">Date</th>
-                                    <th class="p-2">Status</th>
-                                    <th class="p-2">Present</th>
-                                    <th class="p-2">Half Day</th>
-                                    <th class="p-2">Absent</th>
-                                    <th class="p-2">Total OT</th>
-                                    <th class="p-2 text-right">Action</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'तारीख' : 'Date'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'स्थिति' : 'Status'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'उपस्थित' : 'Present'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'आधा दिन' : 'Half Day'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'गैरहाज़िर' : 'Absent'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'कुल OT' : 'Total OT'}</th>
+                                    <th class="p-2 text-right">${t.actions}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-amber-200">
@@ -1584,7 +1829,7 @@
                                         return `
                                             <tr class="hover:bg-amber-50">
                                                 <td class="p-2 font-mono font-bold text-slate-900">${d}</td>
-                                                <td class="p-2"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${isL ? 'bg-emerald-700 text-white' : 'bg-amber-500 text-slate-950'}">${isL ? 'Locked' : 'Draft'}</span></td>
+                                                <td class="p-2"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${isL ? 'bg-emerald-700 text-white' : 'bg-amber-500 text-slate-950'}">${isL ? t.lockedBadge : t.draftBadge}</span></td>
                                                 <td class="p-2 font-mono font-bold text-emerald-700">${p}</td>
                                                 <td class="p-2 font-mono font-bold text-amber-700">${hd}</td>
                                                 <td class="p-2 font-mono font-bold text-rose-700">${a}</td>
@@ -1654,18 +1899,19 @@
             saveLocalState();
             closeCorrectionModal();
             e.target.reset();
-            alert("Correction request submitted to Contractor!");
+            alert(CURRENT_LANG === 'hi' ? "सुधार निवेदन ठेकेदार के पास भेज दिया गया है!" : "Correction request submitted to Contractor!");
             renderSupervisorRequestTracking();
         }
 
         function renderSupervisorRequestTracking() {
-            document.getElementById('workspace-notice-title').innerText = "My Attendance Correction Requests";
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.supReqTrack;
             const myRequests = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId).reverse();
 
             const container = document.getElementById('workspace-main-container');
             container.innerHTML = `
                 <div class="bg-white border-2 border-amber-400 rounded-lg shadow p-3 space-y-3">
-                    <h3 class="font-bold text-[#4a2411] text-xs border-b border-amber-300 pb-2">Status of Submitted Edits</h3>
+                    <h3 class="font-bold text-[#4a2411] text-xs border-b border-amber-300 pb-2">${t.supReqTrack}</h3>
                     <div class="divide-y divide-amber-200">
                         ${myRequests.length === 0 ? '<p class="p-4 text-center text-slate-500 italic">No correction requests sent.</p>' : 
                             myRequests.map(r => `
@@ -1746,11 +1992,9 @@
             saveLocalState();
             e.target.reset();
             alert("Supervisor created with SHA-256 password hash!");
+            setupWorkspace('CONTRACTOR');
         }
 
-        // =========================================================================
-        // ADMIN DESK
-        // =========================================================================
         function renderAdminWorkspace() {
             document.getElementById('workspace-notice-title').innerText = "Principal Employer Admin Dashboard";
             const container = document.getElementById('workspace-main-container');
