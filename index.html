@@ -54,7 +54,6 @@
             </div>
             
             <div class="flex items-center space-x-2">
-                <!-- LANGUAGE SWITCH BUTTON -->
                 <button onclick="toggleAppLanguage()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-2.5 py-1.5 rounded-lg shadow text-xs flex items-center gap-1 border border-amber-600">
                     <i data-lucide="languages" class="w-3.5 h-3.5"></i>
                     <span id="public-lang-btn-text">🌐 हिन्दी / ENG</span>
@@ -95,7 +94,6 @@
                 </div>
             </div>
 
-            <!-- 3 Sheets Overview Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
                 <div class="bg-slate-900/90 border border-emerald-500/40 p-4 rounded-2xl space-y-1.5">
                     <div class="text-emerald-400 font-bold text-sm flex items-center gap-1.5">
@@ -127,7 +125,7 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 2. MODALS                                                                 -->
+    <!-- 2. AUTHENTICATION & ACTION MODALS                                         -->
     <!-- ========================================================================= -->
     <div id="login-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-amber-50 border-2 border-[#4a2411] p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl text-slate-900">
@@ -197,7 +195,7 @@
                     <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="reasonLabel">Reason *</label>
                     <textarea id="corr-reason" required rows="2" placeholder="Reason..." class="w-full bg-white border border-slate-400 p-2 rounded text-xs focus:outline-none focus:border-amber-600"></textarea>
                 </div>
-                <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold" data-i18n="sendCorrBtn">Send Correction Request to Contractor</button>
+                <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold" data-i18n="sendCorrBtn">Send Correction Request</button>
             </form>
         </div>
     </div>
@@ -242,13 +240,12 @@
             </div>
             
             <div class="flex items-center space-x-2 sm:space-x-3 text-xs font-mono">
-                <!-- LANGUAGE SWITCH BUTTON IN HEADER -->
                 <button onclick="toggleAppLanguage()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-2 py-0.5 rounded shadow text-[10px] sm:text-xs flex items-center gap-1 border border-amber-600">
                     <i data-lucide="languages" class="w-3 h-3"></i>
                     <span id="app-lang-btn-text">🌐 English</span>
                 </button>
 
-                <button id="contractor-notif-btn" onclick="showSection('cont-requests-sec')" class="hidden relative bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 flex items-center gap-1">
+                <button id="contractor-notif-btn" onclick="showCorrectionRequestsDesk()" class="hidden relative bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 flex items-center gap-1">
                     <i data-lucide="bell" class="w-3.5 h-3.5"></i>
                     <span id="pending-request-count" class="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded-full">0</span>
                 </button>
@@ -296,12 +293,9 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. CORE TRANSLATION & LOGIC SCRIPT                                        -->
+    <!-- 4. CORE ENGINE SCRIPT                                                     -->
     <!-- ========================================================================= -->
     <script>
-        // =========================================================================
-        // FULL BILINGUAL DICTIONARY
-        // =========================================================================
         const I18N = {
             hi: {
                 langBtn: "🌐 हिन्दी",
@@ -373,8 +367,6 @@
                 fine: "जुर्माना",
                 inHand: "नेट इन-हैंड",
                 actions: "कार्य",
-                
-                // Dynamic Alerts & Modals in Hindi
                 confirmDelLabour: (name, code) => `क्या आप सच में लेबर "${name}" (कोड: ${code}) को हमेशा के लिए डिलीट करना चाहते हैं?`,
                 successDelLabour: (name) => `लेबर "${name}" सफलतापूर्वक डिलीट कर दिया गया!`,
                 confirmDelSupWarn: (name, count) => `चेतावनी: सुपरवाइज़र "${name}" के अंडर ${count} लेबर मैप हैं। डिलीट करने पर वे अन-असाइंड हो जाएंगे। क्या आप आगे बढ़ना चाहते हैं?`,
@@ -460,8 +452,6 @@
                 fine: "Fine",
                 inHand: "In-Hand",
                 actions: "Actions",
-
-                // Dynamic Alerts & Modals in English
                 confirmDelLabour: (name, code) => `Are you sure you want to permanently delete labour "${name}" (Code: ${code})?`,
                 successDelLabour: (name) => `Labour "${name}" deleted successfully!`,
                 confirmDelSupWarn: (name, count) => `Warning: Supervisor "${name}" has ${count} mapped workers. Deleting will unassign them. Do you want to proceed?`,
@@ -562,11 +552,11 @@
         });
 
         function saveLocalState() {
-            localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V9', JSON.stringify(APP_STATE));
+            localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V10', JSON.stringify(APP_STATE));
         }
 
         function loadLocalState() {
-            const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V9');
+            const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V10');
             if (saved) {
                 try {
                     const p = JSON.parse(saved);
@@ -756,7 +746,7 @@
                 actions.innerHTML = `
                     <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Master Control</p>
                     <button onclick="renderAdminWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">🏛️ 10 Contractors Matrix</button>
-                    <button onclick="showSection('admin-add-contractor-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">➕ Register Contractor Firm</button>
+                    <button onclick="showAdminAddContractorDesk()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">➕ Register Contractor Firm</button>
                 `;
                 renderAdminWorkspace();
             } else if (role === 'CONTRACTOR') {
@@ -767,12 +757,12 @@
                     <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">${t.operations}</p>
                     <button onclick="renderContractorMusterWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.masterMuster}</button>
                     <button onclick="showSupervisorAdvanceDesk()" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow">${t.advDesk}</button>
-                    <button onclick="showSection('cont-requests-sec')" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow flex justify-between items-center">
+                    <button onclick="showCorrectionRequestsDesk()" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow flex justify-between items-center">
                         <span>${t.corrReqs}</span>
                         <span class="bg-rose-700 text-white text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold">${APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING').length}</span>
                     </button>
-                    <button onclick="showSection('cont-onboard-labour-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.onboardLabour}</button>
-                    <button onclick="showSection('cont-create-sup-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.createSup}</button>
+                    <button onclick="showOnboardLabourDesk()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.onboardLabour}</button>
+                    <button onclick="showCreateSupervisorDesk()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.createSup}</button>
                     <button onclick="showManageLabourDesk()" class="w-full text-left px-3 py-2 rounded bg-rose-800 hover:bg-rose-700 text-white font-bold text-xs shadow">${t.manageLabour}</button>
                     <button onclick="showManageSupervisorDesk()" class="w-full text-left px-3 py-2 rounded bg-rose-900 hover:bg-rose-800 text-white font-bold text-xs shadow">${t.manageSup}</button>
 
@@ -808,14 +798,157 @@
             lucide.createIcons();
         }
 
-        function showSection(id) {
-            document.querySelectorAll('.workspace-section').forEach(s => s.classList.add('hidden'));
-            const el = document.getElementById(id);
-            if (el) el.classList.remove('hidden');
+        // =========================================================================
+        // DEDICATED DESK FUNCTIONS (LABOUR ONBOARD & SUPERVISOR CREATE)
+        // =========================================================================
+        function showOnboardLabourDesk() {
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.onboardLabour;
+            const container = document.getElementById('workspace-main-container');
+
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-5 rounded-lg shadow-sm space-y-4 max-w-2xl mx-auto">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h3 class="font-bold text-[#4a2411] text-xs uppercase flex items-center gap-1.5">
+                            <i data-lucide="user-plus" class="w-4 h-4 text-amber-700"></i> ${t.onboardLabour} (AES-256 Protected)
+                        </h3>
+                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
+                    </div>
+
+                    <form onsubmit="handleAddLabour(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'मज़दूर का पूरा नाम *' : 'Worker Full Name *'}</label>
+                            <input type="text" id="labour-name" required placeholder="e.g. Ramesh Sahu" class="w-full border border-slate-400 p-2 rounded text-xs">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र असाइन करें *' : 'Assign Supervisor *'}</label>
+                            <select id="labour-sup-assign" class="w-full border border-slate-400 p-2 rounded text-xs font-bold bg-amber-50">
+                                ${APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId).map(s => `<option value="${s.id}">${s.name} (${s.mobile})</option>`).join('')}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'काम / ट्रेड *' : 'Trade / Designation *'}</label>
+                            <input type="text" id="labour-category" required placeholder="e.g. Fitter / Helper / Welder" class="w-full border border-slate-400 p-2 rounded text-xs">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'दैनिक वेतन (Daily Wage ₹) *' : 'Daily Wage (₹) *'}</label>
+                            <input type="number" id="labour-wage" required min="100" placeholder="e.g. 450" class="w-full border border-slate-400 p-2 rounded text-xs font-mono font-bold text-slate-900">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'कंपनी चार्ज रेट (Client Charge ₹)' : 'Client Charge Rate (₹)'}</label>
+                            <input type="number" id="labour-client-rate" required min="100" value="600" class="w-full border border-slate-400 p-2 rounded text-xs font-mono font-bold text-slate-900">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'मोबाइल नंबर (10 अंक)' : 'Mobile Number (10 Digits)'}</label>
+                            <input type="text" id="labour-mobile" required placeholder="9826000000" maxlength="10" class="w-full border border-slate-400 p-2 rounded text-xs font-mono">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'UAN नंबर (12 अंक)' : '12-Digit UAN'}</label>
+                            <input type="text" id="labour-uan" required placeholder="100900112233" maxlength="12" class="w-full border border-slate-400 p-2 rounded text-xs font-mono">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'बैंक खाता संख्या *' : 'Bank A/C No *'}</label>
+                            <input type="text" id="labour-bank-acc" required placeholder="Account Number" class="w-full border border-slate-400 p-2 rounded text-xs font-mono">
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank IFSC *</label>
+                            <input type="text" id="labour-bank-ifsc" required placeholder="e.g. SBIN0001234" class="w-full border border-slate-400 p-2 rounded text-xs font-mono uppercase">
+                        </div>
+
+                        <button type="submit" class="sm:col-span-2 lm-btn-gold py-2.5 rounded-lg text-xs shadow-md font-bold mt-2">
+                            ${CURRENT_LANG === 'hi' ? 'मज़दूर प्रोफ़ाइल सुरक्षित सेव करें' : 'Save Encrypted Worker Profile'}
+                        </button>
+                    </form>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function showCreateSupervisorDesk() {
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.createSup;
+            const container = document.getElementById('workspace-main-container');
+
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-5 rounded-lg shadow-sm space-y-4 max-w-md mx-auto">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h3 class="font-bold text-[#4a2411] text-xs uppercase flex items-center gap-1.5">
+                            <i data-lucide="shield-alert" class="w-4 h-4 text-amber-700"></i> ${t.createSup}
+                        </h3>
+                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
+                    </div>
+
+                    <form onsubmit="handleAddSupervisor(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र का पूरा नाम *' : 'Supervisor Name *'}</label>
+                            <input type="text" id="sup-name" required placeholder="e.g. Vikram Singh" class="w-full border border-slate-400 p-2 rounded text-xs">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'मोबाइल नंबर (यह लॉगिन आईडी होगा) *' : 'Mobile Number (Login ID) *'}</label>
+                            <input type="text" id="sup-mobile" required placeholder="9000000001" maxlength="10" class="w-full border border-slate-400 p-2 rounded text-xs font-mono font-bold">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'पासवर्ड सेट करें *' : 'Set Password *'}</label>
+                            <input type="password" id="sup-password" required placeholder="••••" class="w-full border border-slate-400 p-2 rounded text-xs">
+                        </div>
+
+                        <button type="submit" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow-md font-bold mt-2">
+                            ${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र आईडी बनाएं' : 'Create Supervisor (SHA-256)'}
+                        </button>
+                    </form>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function showCorrectionRequestsDesk() {
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.corrReqs;
+            const pendingReqs = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING');
+            const container = document.getElementById('workspace-main-container');
+
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-500 p-4 rounded-lg shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h4 class="font-bold text-[#4a2411] text-xs flex items-center gap-1.5">
+                            <i data-lucide="bell-ring" class="w-4 h-4 text-rose-600 animate-bounce"></i> ${t.corrReqs}
+                        </h4>
+                        <span class="bg-rose-600 text-white font-bold text-[10px] px-2 py-0.5 rounded">${pendingReqs.length} Pending</span>
+                    </div>
+                    <div class="divide-y divide-amber-200">
+                        ${pendingReqs.length === 0 ? '<p class="p-6 text-center text-slate-500 italic">No pending correction requests.</p>' : 
+                            pendingReqs.map(r => `
+                                <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
+                                    <div>
+                                        <p class="font-bold text-slate-900">${r.workerName} (${r.workerId}) — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
+                                        <p class="text-[11px] text-slate-600">Correction: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-emerald-700">${r.newStatus} (${r.newOt}h OT)</span></p>
+                                        <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">Reason: "${SECURITY_ENGINE.sanitize(r.reason)}"</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button onclick="handleContractorRequestAction('${r.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Accept & Update</button>
+                                        <button onclick="handleContractorRequestAction('${r.id}', 'REJECT')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Reject</button>
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
         }
 
         // =========================================================================
-        // CONTRACTOR WORKSPACE & 30-DAY MUSTER
+        // CONTRACTOR MUSTER WORKSPACE
         // =========================================================================
         function renderContractorMusterWorkspace() {
             const t = I18N[CURRENT_LANG];
@@ -873,62 +1006,8 @@
                 `;
             });
 
-            const pendingReqs = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING');
-
             const container = document.getElementById('workspace-main-container');
             container.innerHTML = `
-                <div id="cont-requests-sec" class="workspace-section bg-white border-2 border-amber-500 p-4 rounded-lg shadow-sm space-y-3 ${pendingReqs.length === 0 ? 'hidden' : ''}">
-                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                        <h4 class="font-bold text-[#4a2411] text-xs flex items-center gap-1.5">
-                            <i data-lucide="bell-ring" class="w-4 h-4 text-rose-600 animate-bounce"></i> ${t.corrReqs}
-                        </h4>
-                        <span class="bg-rose-600 text-white font-bold text-[10px] px-2 py-0.5 rounded">${pendingReqs.length} Pending</span>
-                    </div>
-                    <div class="divide-y divide-amber-200">
-                        ${pendingReqs.map(r => `
-                            <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
-                                <div>
-                                    <p class="font-bold text-slate-900">${r.workerName} (${r.workerId}) — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
-                                    <p class="text-[11px] text-slate-600">Correction: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-emerald-700">${r.newStatus} (${r.newOt}h OT)</span></p>
-                                    <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">Reason: "${SECURITY_ENGINE.sanitize(r.reason)}"</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button onclick="handleContractorRequestAction('${r.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Accept & Update</button>
-                                    <button onclick="handleContractorRequestAction('${r.id}', 'REJECT')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Reject</button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <div id="cont-onboard-labour-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
-                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">${t.onboardLabour}</h4>
-                    <form onsubmit="handleAddLabour(event)" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        <input type="text" id="labour-name" required placeholder="${CURRENT_LANG === 'hi' ? 'मज़दूर का नाम' : 'Worker Name'}" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <select id="labour-sup-assign" class="border border-slate-400 p-1.5 rounded text-xs font-bold">
-                            ${APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId).map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
-                        </select>
-                        <input type="text" id="labour-category" required placeholder="${CURRENT_LANG === 'hi' ? 'काम / ट्रेड' : 'Trade (Fitter/Helper)'}" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="number" id="labour-wage" required placeholder="${CURRENT_LANG === 'hi' ? 'दैनिक वेतन (₹)' : 'Daily Wage (₹)'}" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="number" id="labour-client-rate" required placeholder="${CURRENT_LANG === 'hi' ? 'कंपनी चार्ज (₹)' : 'Client Charge Rate (₹)'}" value="600" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="text" id="labour-mobile" required placeholder="${CURRENT_LANG === 'hi' ? 'मोबाइल नंबर' : 'Mobile No'}" maxlength="10" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="text" id="labour-uan" required placeholder="12-Digit UAN" maxlength="12" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="text" id="labour-bank-acc" required placeholder="${CURRENT_LANG === 'hi' ? 'बैंक खाता संख्या' : 'Bank A/C No'}" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="text" id="labour-bank-ifsc" required placeholder="Bank IFSC" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">${CURRENT_LANG === 'hi' ? 'मज़दूर प्रोफ़ाइल सुरक्षित करें' : 'Save Worker Profile'}</button>
-                    </form>
-                </div>
-
-                <div id="cont-create-sup-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
-                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">${t.createSup}</h4>
-                    <form onsubmit="handleAddSupervisor(event)" class="space-y-2 max-w-sm">
-                        <input type="text" id="sup-name" required placeholder="${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र का नाम' : 'Supervisor Name'}" class="w-full border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="text" id="sup-mobile" required placeholder="${CURRENT_LANG === 'hi' ? 'मोबाइल नंबर (लॉगिन)' : 'Mobile Login'}" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="password" id="sup-password" required placeholder="${CURRENT_LANG === 'hi' ? 'पासवर्ड' : 'Password'}" class="w-full border border-slate-400 p-1.5 rounded text-xs">
-                        <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र बनाएं' : 'Create Supervisor'}</button>
-                    </form>
-                </div>
-
                 <div class="bg-white border-2 border-amber-400 rounded-lg shadow-md overflow-hidden p-3 space-y-2">
                     <div class="text-center border-b border-amber-300 pb-2 flex flex-wrap justify-between items-center gap-2">
                         <div>
@@ -959,7 +1038,7 @@
                                 <tr>${dayNameHeaders}</tr>
                             </thead>
                             <tbody>
-                                ${rows || '<tr><td colspan="40" class="p-4 text-slate-500 italic">No workers registered.</td></tr>'}
+                                ${rows || '<tr><td colspan="40" class="p-4 text-slate-500 italic">No workers registered. Click "+ Onboard Labour Profile" on sidebar.</td></tr>'}
                             </tbody>
                         </table>
                     </div>
@@ -982,7 +1061,7 @@
                 <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-3">
                     <div class="flex justify-between items-center border-b border-amber-300 pb-2">
                         <h3 class="font-bold text-[#4a2411] text-xs uppercase">${t.manageLabour} (${myLabour.length})</h3>
-                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर पर जाएं' : 'Back to Muster'}</button>
+                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -1045,7 +1124,7 @@
                 <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-3">
                     <div class="flex justify-between items-center border-b border-amber-300 pb-2">
                         <h3 class="font-bold text-[#4a2411] text-xs uppercase">${t.manageSup} (${mySups.length})</h3>
-                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर पर जाएं' : 'Back to Muster'}</button>
+                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -1676,7 +1755,7 @@
         }
 
         // =========================================================================
-        // SUPERVISOR WORKSPACE (ATTENDANCE DESK & LOGBOOK)
+        // SUPERVISOR WORKSPACE
         // =========================================================================
         function renderSupervisorAttendanceDesk() {
             const t = I18N[CURRENT_LANG];
@@ -1985,7 +2064,7 @@
             }
 
             saveLocalState();
-            renderContractorMusterWorkspace();
+            showCorrectionRequestsDesk();
         }
 
         async function handleAddLabour(e) {
@@ -2054,6 +2133,57 @@
                     </div>
                 </div>
             `;
+        }
+
+        function showAdminAddContractorDesk() {
+            document.getElementById('workspace-notice-title').innerText = "Register New Contractor Firm";
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-5 rounded-lg shadow-sm space-y-4 max-w-md mx-auto">
+                    <h3 class="font-bold text-[#4a2411] text-xs uppercase border-b border-amber-300 pb-2">Register Contractor Firm</h3>
+                    <form onsubmit="handleAdminAddContractor(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Firm Name</label>
+                            <input type="text" id="new-firm-name" required placeholder="e.g. BALAJI MANPOWER SUPPLIERS" class="w-full border border-slate-400 p-2 rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Owner Name</label>
+                            <input type="text" id="new-firm-owner" required placeholder="e.g. Ramesh Sahu" class="w-full border border-slate-400 p-2 rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Mobile Login</label>
+                            <input type="text" id="new-firm-mobile" required placeholder="9826000003" maxlength="10" class="w-full border border-slate-400 p-2 rounded text-xs font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Password</label>
+                            <input type="password" id="new-firm-pass" required placeholder="••••" class="w-full border border-slate-400 p-2 rounded text-xs">
+                        </div>
+                        <button type="submit" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow-md font-bold">Register Firm</button>
+                    </form>
+                </div>
+            `;
+        }
+
+        async function handleAdminAddContractor(e) {
+            e.preventDefault();
+            const pass = document.getElementById('new-firm-pass').value;
+            const passHash = await SECURITY_ENGINE.sha256(pass);
+
+            const newCont = {
+                id: 'CONT-' + (APP_STATE.contractors.length + 1).toString().padStart(3, '0'),
+                name: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-name').value.trim()),
+                owner: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-owner').value.trim()),
+                mobile: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-mobile').value.trim()),
+                gstin: '22AAAAA0000A1Z5',
+                passHash: passHash,
+                status: 'ACTIVE',
+                quota: 100
+            };
+
+            APP_STATE.contractors.push(newCont);
+            saveLocalState();
+            alert("Contractor Firm Registered Successfully!");
+            renderAdminWorkspace();
         }
     </script>
 </body>
