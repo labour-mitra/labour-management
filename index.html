@@ -32,42 +32,39 @@
         }
     </style>
 </head>
-<body class="h-full flex flex-col font-sans antialiased text-xs select-none">
+<body class="h-full flex flex-col font-sans antialiased text-xs select-text">
 
     <!-- ========================================================================= -->
     <!-- 1. MANPOWER SUPPLIER INDUSTRIAL PUBLIC PORTAL                             -->
     <!-- ========================================================================= -->
     <div id="public-website-view" class="min-h-full flex flex-col justify-between bg-slate-950 text-slate-100">
         
-        <!-- Industrial Top Header -->
         <header class="lm-brown text-white h-14 flex items-center justify-between px-6 border-b-2 border-amber-500 shadow-lg sticky top-0 z-50">
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center font-black text-slate-950 text-base shadow">LM</div>
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="font-black text-sm tracking-tight text-white">Labour<span class="text-amber-400">Mitra</span></span>
-                        <span class="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded font-mono font-bold">SUPPLIER OS</span>
+                        <span class="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded font-mono font-bold">ENTERPRISE OS</span>
                     </div>
-                    <p class="text-[9px] text-amber-200/70 tracking-wider uppercase font-semibold">Heavy Industry Manpower Supply & Compliance Gateway</p>
+                    <p class="text-[9px] text-amber-200/70 tracking-wider uppercase font-semibold">Industrial Manpower Supply & Compliance Gateway</p>
                 </div>
             </div>
             
             <div class="flex items-center space-x-2">
                 <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-3.5 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5 transition">
-                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Supplier / Contractor Login
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Supplier / Contractor
                 </button>
                 <button onclick="openLoginModal('SUPERVISOR')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5 transition">
                     <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Supervisor Terminal
                 </button>
                 <button onclick="openLoginModal('ADMIN')" class="bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 font-bold px-3 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5 transition">
-                    <i data-lucide="building-2" class="w-3.5 h-3.5"></i> Plant Management
+                    <i data-lucide="building-2" class="w-3.5 h-3.5"></i> Master Admin
                 </button>
             </div>
         </header>
 
-        <!-- Dynamic Hero Section -->
         <main class="flex-1 max-w-7xl mx-auto px-6 py-10 flex flex-col justify-center space-y-10">
-            
             <div class="text-center space-y-4 max-w-4xl mx-auto">
                 <div class="inline-flex items-center gap-2 bg-slate-900 border border-amber-500/40 px-3.5 py-1 rounded-full text-amber-300 font-mono text-[11px]">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -75,17 +72,17 @@
                 </div>
                 
                 <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight uppercase">
-                    Industrial Manpower Supply, Muster Roll <br>
-                    <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent">& 1-Click EPFO Statutory Compliance</span>
+                    Industrial Manpower Supply, Shift Muster <br>
+                    <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent">& Live Attendance Approval System</span>
                 </h1>
                 
                 <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
-                    Designed ground-up for Manpower Supply Contractors, Site Munshis, and Plant HR. Manage shift-wise attendance, daily cash advances (Khuraki), automatic 12% PF calculation, ECR upload files, and instant Form B & Master Payment Sheets.
+                    Built for Manpower Contractors and Field Supervisors: 1-Year Attendance Logbook, Secure Submit & Lock, Multi-Shift Overtime, Instant Correction Requests with Reason, and Statutory EPFO ECR / Form B export.
                 </p>
 
                 <div class="pt-2 flex flex-wrap justify-center gap-3">
                     <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-6 py-2.5 rounded-xl text-xs shadow-lg flex items-center gap-2">
-                        <i data-lucide="log-in" class="w-4 h-4"></i> Enter Contractor Dashboard
+                        <i data-lucide="log-in" class="w-4 h-4"></i> Contractor Workspace
                     </button>
                     <button onclick="openLoginModal('SUPERVISOR')" class="bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-200 font-bold px-6 py-2.5 rounded-xl text-xs flex items-center gap-2">
                         <i data-lucide="calendar-check-2" class="w-4 h-4 text-amber-400"></i> Mark Shift Attendance
@@ -93,50 +90,41 @@
                 </div>
             </div>
 
-            <!-- Manpower Trade Supply Strengths -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl hover:border-amber-500/50 transition space-y-1.5">
                     <div class="text-amber-400 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="wrench" class="w-4 h-4"></i> Skilled Workforce
+                        <i data-lucide="lock" class="w-4 h-4"></i> Submit & Lock Security
                     </div>
-                    <p class="text-slate-300 text-xs font-semibold">Fitters, Riggers, Certified Welders, Turners & Industrial Electricians.</p>
-                    <span class="text-[10px] text-amber-500/80 font-mono">UAN / PF Linked</span>
+                    <p class="text-slate-300 text-xs">Prevents tampering. Back-dated edits strictly require contractor approval.</p>
                 </div>
-
                 <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl hover:border-amber-500/50 transition space-y-1.5">
                     <div class="text-emerald-400 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="users" class="w-4 h-4"></i> Semi & Unskilled Labour
+                        <i data-lucide="history" class="w-4 h-4"></i> 1-Year History Log
                     </div>
-                    <p class="text-slate-300 text-xs font-semibold">Bulk Helpers, Material Handlers, Loading/Unloading Gangs & Cleaning Squads.</p>
-                    <span class="text-[10px] text-emerald-500/80 font-mono">Daily Khuraki Auto-Deduct</span>
+                    <p class="text-slate-300 text-xs">Check day-by-day manpower headcounts across all 365 days of the year.</p>
                 </div>
-
                 <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl hover:border-amber-500/50 transition space-y-1.5">
                     <div class="text-blue-400 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="file-check-2" class="w-4 h-4"></i> Statutory EPFO ECR
+                        <i data-lucide="file-check-2" class="w-4 h-4"></i> EPFO & 25% PF
                     </div>
-                    <p class="text-slate-300 text-xs font-semibold">12% EE PF + 13% Employer Share calculation with direct EPFO portal upload .txt export.</p>
-                    <span class="text-[10px] text-blue-500/80 font-mono">100% Audit Proof</span>
+                    <p class="text-slate-300 text-xs">Automated 12% EE deduction and direct ECR file (.txt) export for portal upload.</p>
                 </div>
-
                 <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl hover:border-amber-500/50 transition space-y-1.5">
                     <div class="text-amber-300 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Master Payment Sheet
+                        <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Master Muster Sheet
                     </div>
-                    <p class="text-slate-300 text-xs font-semibold">1 to 30 Day Muster Roll PDF generation with signature blocks for Plant HR approval[cite: 1].</p>
-                    <span class="text-[10px] text-amber-300 font-mono">1-Click Bank NEFT CSV</span>
+                    <p class="text-slate-300 text-xs">1 to 30 Day PDF Muster Roll for Plant HR verification and bank payouts[cite: 1].</p>
                 </div>
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="lm-brown text-amber-200/80 text-center py-3 text-[11px] border-t border-amber-600/40">
-            Labour Mitra Platform • Built for Heavy Industrial Plants & Manpower Supply Firms
+            Labour Mitra Platform • Heavy Industry Workforce Management OS
         </footer>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 2. AUTHENTICATION & ADVANCE MODALS                                        -->
+    <!-- 2. AUTHENTICATION & MODALS                                                -->
     <!-- ========================================================================= -->
     <div id="login-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-amber-50 border-2 border-[#4a2411] p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl text-slate-900">
@@ -152,14 +140,14 @@
                 <input type="hidden" id="login-target-role" value="CONTRACTOR">
                 <div>
                     <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Mobile / Login ID</label>
-                    <input type="text" id="auth-id" required placeholder="Enter Login ID" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-600 font-mono">
+                    <input type="text" id="auth-id" required placeholder="Enter Login ID" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900 font-mono">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Password</label>
-                    <input type="password" id="auth-pass" required placeholder="••••" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-600">
+                    <input type="password" id="auth-pass" required placeholder="••••" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900">
                 </div>
                 <div id="login-hint" class="text-[10px] text-amber-900 bg-amber-100 p-2 rounded border border-amber-300 font-mono">
-                    Contractor Demo: <span class="font-bold">9826000001 / 123</span>
+                    Contractor: <span class="font-bold">9826000001 / 123</span>
                 </div>
                 <button type="submit" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow font-bold">Verify & Launch Desk</button>
             </form>
@@ -168,11 +156,9 @@
 
     <!-- Khuraki Advance Modal -->
     <div id="advance-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-amber-50 border-2 border-[#4a2411] p-5 rounded-2xl max-w-sm w-full space-y-3 shadow-2xl">
+        <div class="bg-amber-50 border-2 border-[#4a2411] p-5 rounded-2xl max-w-sm w-full space-y-3 shadow-2xl text-slate-900">
             <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                <h3 class="font-bold text-sm text-[#4a2411] flex items-center gap-1.5">
-                    <i data-lucide="hand-coins" class="w-4 h-4 text-amber-600"></i> Add Daily Khuraki / Cash Advance
-                </h3>
+                <h3 class="font-bold text-sm text-[#4a2411]">Add Daily Khuraki / Advance</h3>
                 <button onclick="closeAdvanceModal()" class="font-bold text-slate-600">✕</button>
             </div>
             <form onsubmit="handleSaveAdvance(event)" class="space-y-3">
@@ -187,9 +173,54 @@
                 </div>
                 <div>
                     <label class="text-[10px] uppercase font-bold text-slate-700">Reason / Notes</label>
-                    <input type="text" id="adv-reason" placeholder="Weekly mess rashan / medical" class="w-full bg-white border border-slate-400 p-2 rounded text-xs">
+                    <input type="text" id="adv-reason" placeholder="Weekly rashan / medical" class="w-full bg-white border border-slate-400 p-2 rounded text-xs">
                 </div>
                 <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Save Khuraki Entry</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Attendance Correction Request Modal -->
+    <div id="correction-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-amber-50 border-2 border-[#4a2411] p-5 rounded-2xl max-w-md w-full space-y-3 shadow-2xl text-slate-900">
+            <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                <h3 class="font-bold text-sm text-[#4a2411] flex items-center gap-1.5">
+                    <i data-lucide="edit" class="w-4 h-4 text-amber-700"></i> Request Attendance Correction
+                </h3>
+                <button onclick="closeCorrectionModal()" class="font-bold text-slate-600">✕</button>
+            </div>
+            <form onsubmit="handleSendCorrectionRequest(event)" class="space-y-3">
+                <input type="hidden" id="corr-worker-id">
+                <input type="hidden" id="corr-date">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-700">Date</label>
+                        <input type="text" id="corr-date-display" disabled class="w-full bg-slate-200 border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-700">Worker Name</label>
+                        <input type="text" id="corr-name-display" disabled class="w-full bg-slate-200 border border-slate-400 p-1.5 rounded text-xs font-bold text-[#4a2411]">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-700">New Status</label>
+                        <select id="corr-new-status" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-bold">
+                            <option value="P">P (Present Full Day)</option>
+                            <option value="HD">HD (Half Day)</option>
+                            <option value="A">A (Absent)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-700">New OT (Hours)</label>
+                        <input type="number" id="corr-new-ot" min="0" max="16" value="0" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[10px] uppercase font-bold text-slate-700">कारण लिखें (Reason in Hindi/English) *</label>
+                    <textarea id="corr-reason" required rows="2" placeholder="उदा. गेट पास लेट मिला था / मुंशी से गलती से Absent लग गया था..." class="w-full bg-white border border-slate-400 p-2 rounded text-xs focus:outline-none focus:border-amber-600"></textarea>
+                </div>
+                <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Send Correction Request to Contractor</button>
             </form>
         </div>
     </div>
@@ -199,7 +230,6 @@
     <!-- ========================================================================= -->
     <div id="authenticated-app" class="h-full flex flex-col hidden bg-[#fdf8e2] text-slate-900">
         
-        <!-- PWD-Style Deep Brown Topbar -->
         <header class="lm-brown text-white h-11 flex items-center justify-between px-4 shadow-md border-b-2 border-amber-500 select-none z-40">
             <div class="flex items-center space-x-3">
                 <span class="font-black text-amber-300 text-xs flex items-center gap-1.5">
@@ -207,18 +237,22 @@
                 </span>
                 <span id="user-topbar-firm" class="text-amber-100 text-xs font-bold border-l border-amber-700 pl-3">Firm Workspace</span>
             </div>
+            
             <div class="flex items-center space-x-3 text-xs font-mono">
+                <!-- Notification Bell for Contractor -->
+                <button id="contractor-notif-btn" onclick="showSection('cont-requests-sec')" class="hidden relative bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 px-2 py-1 rounded border border-amber-500/40 flex items-center gap-1">
+                    <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+                    <span id="pending-request-count" class="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded-full">0</span>
+                </button>
+                
                 <span id="user-display-badge" class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40">USER</span>
                 <button onclick="performLogout()" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded shadow text-[11px]">Logout</button>
             </div>
         </header>
 
         <div class="flex-1 flex overflow-hidden">
-            
             <!-- Left Action Sidebar -->
             <aside class="w-64 bg-amber-100/80 border-r border-amber-300 flex flex-col flex-shrink-0 p-3 space-y-3 overflow-y-auto">
-                
-                <!-- Accounting Period Gateway -->
                 <div class="bg-white border-2 border-amber-400 p-3 rounded-lg shadow-sm space-y-2">
                     <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-200 pb-1">Accounting Period</p>
                     <div>
@@ -236,27 +270,26 @@
                 </div>
 
                 <div class="space-y-1.5" id="lm-sidebar-actions">
-                    <!-- Dynamic Sidebar Modules -->
+                    <!-- Injected dynamically -->
                 </div>
             </aside>
 
             <!-- Right Main Workspace -->
             <div class="flex-1 flex flex-col min-w-0 bg-[#fdf8e2] overflow-y-auto p-4 space-y-4">
-                
                 <div class="bg-amber-100 border border-amber-400 p-2.5 rounded-lg shadow-sm flex items-center justify-between text-[#4a2411]">
                     <span class="font-bold text-xs" id="workspace-notice-title">Active Manpower Supply Ledger</span>
                     <span class="text-[10px] font-mono font-bold" id="current-period-label">Period: April 2026</span>
                 </div>
 
                 <div id="workspace-main-container" class="space-y-4">
-                    <!-- Dynamic Views Injected Here -->
+                    <!-- Dynamic views injected here -->
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. CORE ENGINE & LOGICAL DATA STORE                                       -->
+    <!-- 4. CORE ENGINE & LOGIC SCRIPT                                             -->
     <!-- ========================================================================= -->
     <script>
         let APP_STATE = {
@@ -265,6 +298,7 @@
             currentSupervisor: null,
             selectedMonth: "2026-04",
             selectedFy: "2026-2027",
+            supervisorSelectedDate: "2026-04-01",
             contractors: [
                 { id: 'CONT-001', name: 'SHRI MELARAM BANJARE MANPOWER SUPPLIERS', owner: 'Melaram Banjare', mobile: '9826000001', password: '123', status: 'ACTIVE', quota: 100 },
                 { id: 'CONT-002', name: 'MAA SHARDA INDUSTRIAL SERVICES', owner: 'Ramesh Verma', mobile: '9826000002', password: '123', status: 'ACTIVE', quota: 50 }
@@ -284,11 +318,15 @@
                 { id: '9013', name: 'TUKESHWAR', contractorId: 'CONT-001', category: 'Helper', wage: 450, uan: '100900112241', bankAcc: '9182371239', bankIfsc: 'SBIN000123', isEpf: 'YES' },
                 { id: '9016', name: 'SURJIT SINGH', contractorId: 'CONT-001', category: 'Heavy Operator', wage: 650, uan: '100900112242', bankAcc: '9182371240', bankIfsc: 'SBIN000123', isEpf: 'YES' }
             ],
-            attendance: {},
+            attendance: {}, // { "2026-04-01": { "9000": { status: "P", ot: 2 } } }
+            lockedDates: {}, // { "2026-04-01": { locked: true, timestamp: "2026-04-01 19:30" } }
+            correctionRequests: [], // [{ id, date, workerId, workerName, oldStatus, oldOt, newStatus, newOt, reason, status: 'PENDING', timestamp }]
             advances: {}
         };
 
         window.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            APP_STATE.supervisorSelectedDate = today;
             document.getElementById('global-month-filter').value = APP_STATE.selectedMonth;
             loadLocalState();
             checkAndRestoreSession();
@@ -296,11 +334,11 @@
         });
 
         function saveLocalState() {
-            localStorage.setItem('LABOUR_MITRA_MANPOWER_OS_FINAL', JSON.stringify(APP_STATE));
+            localStorage.setItem('LM_ENTERPRISE_FINAL_STORE_V3', JSON.stringify(APP_STATE));
         }
 
         function loadLocalState() {
-            const saved = localStorage.getItem('LABOUR_MITRA_MANPOWER_OS_FINAL');
+            const saved = localStorage.getItem('LM_ENTERPRISE_FINAL_STORE_V3');
             if (saved) {
                 try {
                     const p = JSON.parse(saved);
@@ -308,6 +346,8 @@
                     APP_STATE.supervisors = p.supervisors || APP_STATE.supervisors;
                     APP_STATE.labour = p.labour || APP_STATE.labour;
                     APP_STATE.attendance = p.attendance || {};
+                    APP_STATE.lockedDates = p.lockedDates || {};
+                    APP_STATE.correctionRequests = p.correctionRequests || [];
                     APP_STATE.advances = p.advances || {};
                 } catch(e) {}
             }
@@ -337,10 +377,21 @@
         function refreshActiveView() {
             if (APP_STATE.currentUserRole === 'ADMIN') renderAdminWorkspace();
             else if (APP_STATE.currentUserRole === 'CONTRACTOR') renderContractorMusterWorkspace();
-            else if (APP_STATE.currentUserRole === 'SUPERVISOR') renderSupervisorWorkspace();
+            else if (APP_STATE.currentUserRole === 'SUPERVISOR') renderSupervisorAttendanceDesk();
+            updateNotificationBadge();
         }
 
-        // Metrics Engine: Shifts, OT, 12% EE PF, 13% ER PF
+        function updateNotificationBadge() {
+            if (APP_STATE.currentUserRole === 'CONTRACTOR') {
+                const btn = document.getElementById('contractor-notif-btn');
+                const pending = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING').length;
+                document.getElementById('pending-request-count').innerText = pending;
+                if (pending > 0) btn.classList.remove('hidden');
+                else btn.classList.add('hidden');
+            }
+        }
+
+        // Metrics Engine
         function getWorkerMetrics(workerId, wageRate, isEpf) {
             let shifts = 0, otHours = 0;
             const month = APP_STATE.selectedMonth;
@@ -385,8 +436,8 @@
             document.getElementById('modal-role-title').innerText = role + " Access Gateway";
             const hint = document.getElementById('login-hint');
             if (role === 'ADMIN') hint.innerHTML = 'Plant Admin: <span class="font-bold">admin / admin123</span>';
-            else if (role === 'CONTRACTOR') hint.innerHTML = 'Contractor Demo: <span class="font-bold">9826000001 / 123</span>';
-            else hint.innerHTML = 'Supervisor Demo: <span class="font-bold">9000000001 / 123</span>';
+            else if (role === 'CONTRACTOR') hint.innerHTML = 'Contractor: <span class="font-bold">9826000001 / 123</span>';
+            else hint.innerHTML = 'Supervisor: <span class="font-bold">9000000001 / 123</span>';
             document.getElementById('login-modal').classList.remove('hidden');
         }
 
@@ -401,11 +452,11 @@
             const pass = document.getElementById('auth-pass').value;
 
             if (role === 'ADMIN') {
-                if (authId !== 'admin' || pass !== 'admin123') { alert("Invalid Plant Admin Credentials! (admin / admin123)"); return; }
+                if (authId !== 'admin' || pass !== 'admin123') { alert("Invalid Plant Admin Credentials!"); return; }
             } else if (role === 'CONTRACTOR') {
                 const c = APP_STATE.contractors.find(x => x.mobile === authId && x.password === pass);
                 if (!c) { alert("Invalid Contractor Mobile/Password!"); return; }
-                if (c.status === 'BLOCKED') { alert("This contractor firm is deactivated by Plant Admin!"); return; }
+                if (c.status === 'BLOCKED') { alert("This contractor firm is blocked!"); return; }
                 APP_STATE.currentContractorId = c.id;
                 sessionStorage.setItem('LM_SESSION_CONT_ID', c.id);
             } else if (role === 'SUPERVISOR') {
@@ -441,38 +492,45 @@
             const actions = document.getElementById('lm-sidebar-actions');
 
             if (role === 'ADMIN') {
-                document.getElementById('user-topbar-firm').innerText = "Plant Principal Employer Admin";
+                document.getElementById('user-topbar-firm').innerText = "Plant Principal Employer Desk";
+                document.getElementById('contractor-notif-btn').classList.add('hidden');
                 actions.innerHTML = `
                     <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Master Control</p>
                     <button onclick="renderAdminWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">🏛️ 10 Contractors Matrix</button>
                     <button onclick="showSection('admin-add-contractor-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">➕ Register Contractor Firm</button>
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">Plant Audits</p>
-                    <button onclick="downloadMasterPaymentSheetPDF()" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow">📑 Consolidated Plant Muster</button>
                 `;
                 renderAdminWorkspace();
             } else if (role === 'CONTRACTOR') {
                 const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
                 document.getElementById('user-topbar-firm').innerText = firm ? firm.name : 'Contractor Workspace';
+                updateNotificationBadge();
                 actions.innerHTML = `
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Muster & Manpower</p>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Contractor Desk</p>
                     <button onclick="renderContractorMusterWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📋 30-Day Muster Roll</button>
-                    <button onclick="showSection('cont-onboard-labour-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">➕ Onboard Labour (UAN/Trade)</button>
-                    <button onclick="showSection('cont-create-sup-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">👤 Create Munshi / Supervisor</button>
+                    <button onclick="showSection('cont-requests-sec')" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow flex justify-between items-center">
+                        <span>🔔 Correction Requests</span>
+                        <span class="bg-rose-700 text-white text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold">${APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING').length}</span>
+                    </button>
+                    <button onclick="showSection('cont-onboard-labour-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">➕ Onboard Labour (UAN)</button>
+                    <button onclick="showSection('cont-create-sup-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">👤 Create Munshi ID</button>
                     <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">Company Submissions</p>
                     <button onclick="downloadMasterPaymentSheetPDF()" class="w-full text-left px-3 py-2 rounded bg-amber-600 hover:bg-amber-500 text-slate-950 font-black text-xs shadow">📑 Download Muster PDF</button>
-                    <button onclick="downloadBankNeftCsv()" class="w-full text-left px-3 py-2 rounded bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs">💳 Bank NEFT Excel (CSV)</button>
+                    <button onclick="downloadBankNeftCsv()" class="w-full text-left px-3 py-2 rounded bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs">💳 Bank NEFT CSV</button>
                     <button onclick="downloadEpfoEcrTextFile()" class="w-full text-left px-3 py-2 rounded bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs">📥 EPFO ECR (.txt)</button>
                 `;
                 renderContractorMusterWorkspace();
             } else if (role === 'SUPERVISOR') {
                 document.getElementById('user-topbar-firm').innerText = "Supervisor Mobile Terminal";
+                document.getElementById('contractor-notif-btn').classList.add('hidden');
                 actions.innerHTML = `
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Field Desk</p>
-                    <button onclick="renderSupervisorWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📝 Mark Shift Attendance</button>
-                    <button onclick="markAllSupervisorPresentToday()" class="w-full text-left px-3 py-2 rounded bg-blue-700 text-white font-bold text-xs">✔️ Mark All Present (P)</button>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Field Terminal</p>
+                    <button onclick="renderSupervisorAttendanceDesk()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📝 Mark Shift Attendance</button>
+                    <button onclick="renderSupervisorHistoryLog()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📅 1-Year Attendance History</button>
+                    <button onclick="renderSupervisorRequestTracking()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📨 My Correction Requests</button>
                 `;
-                renderSupervisorWorkspace();
+                renderSupervisorAttendanceDesk();
             }
+            lucide.createIcons();
         }
 
         function showSection(id) {
@@ -482,101 +540,212 @@
         }
 
         // =========================================================================
-        // 1. MASTER ADMIN GOD-VIEW WORKSPACE
+        // SUPERVISOR: ATTENDANCE DESK (WITH DATE SELECTOR & LOCKING)
         // =========================================================================
-        function renderAdminWorkspace() {
-            document.getElementById('workspace-notice-title').innerText = "Master Administrator Dashboard — 10 Contractor Firms Matrix";
+        function renderSupervisorAttendanceDesk() {
+            const date = APP_STATE.supervisorSelectedDate;
+            const isLocked = APP_STATE.lockedDates[date] && APP_STATE.lockedDates[date].locked;
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
 
-            let totalPlantWages = 0, totalPlantPf = 0, totalPlantWorkers = APP_STATE.labour.length;
-            APP_STATE.contractors.forEach(c => {
-                APP_STATE.labour.filter(w => w.contractorId === c.id).forEach(w => {
-                    const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
-                    totalPlantWages += m.grossWages;
-                    totalPlantPf += (m.eePf + m.erTotalPf);
-                });
+            document.getElementById('workspace-notice-title').innerText = `Field Attendance Desk — Selected Date: ${date}`;
+
+            let pCount = 0, hdCount = 0, aCount = 0, totalOt = 0;
+            myLabour.forEach(w => {
+                const rec = APP_STATE.attendance[date][w.id];
+                const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
+                const ot = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
+                if (st === 'P') pCount++;
+                else if (st === 'HD') hdCount++;
+                else aCount++;
+                totalOt += ot;
             });
 
             const container = document.getElementById('workspace-main-container');
             container.innerHTML = `
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold">Registered Supplier Firms</p>
-                        <p class="text-xl font-black text-[#4a2411] mt-0.5">${APP_STATE.contractors.length} Firms</p>
+                <!-- Date Picker & Lock Status Card -->
+                <div class="bg-white border-2 border-amber-400 p-3 rounded-lg shadow-sm flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <label class="font-bold text-[#4a2411] text-xs">Attendance Date:</label>
+                        <input type="date" value="${date}" onchange="changeSupervisorDate(this.value)" class="border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
+                        ${isLocked ? 
+                            `<span class="bg-emerald-700 text-white font-bold text-[10px] px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Submitted & Locked (${APP_STATE.lockedDates[date].timestamp})</span>` : 
+                            `<span class="bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded">Draft (Editable)</span>`
+                        }
                     </div>
-                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold">Deployed Workforce</p>
-                        <p class="text-xl font-black text-blue-700 mt-0.5">${totalPlantWorkers} Workers</p>
-                    </div>
-                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold">Monthly Plant Wages</p>
-                        <p class="text-xl font-black text-rose-700 mt-0.5">₹${Math.round(totalPlantWages).toLocaleString('en-IN')}</p>
-                    </div>
-                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold">EPFO Total PF (25%)</p>
-                        <p class="text-xl font-black text-emerald-700 mt-0.5">₹${Math.round(totalPlantPf).toLocaleString('en-IN')}</p>
-                    </div>
+
+                    ${!isLocked ? `
+                        <div class="flex gap-2">
+                            <button onclick="markAllSupervisorPresentToday('${date}')" class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs">Mark All P</button>
+                            <button onclick="lockAndSubmitAttendance('${date}')" class="bg-emerald-700 hover:bg-emerald-600 text-white px-4 py-1.5 rounded font-black text-xs shadow flex items-center gap-1">
+                                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Final Submit & Lock
+                            </button>
+                        </div>
+                    ` : `
+                        <span class="text-xs text-rose-700 font-bold italic">Date Locked. Click "Request Edit" below to submit changes.</span>
+                    `}
                 </div>
 
-                <div id="admin-add-contractor-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
-                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Register New Contractor Firm (ID/Password Generation)</h4>
-                    <form onsubmit="handleCreateContractor(event)" class="grid grid-cols-1 sm:grid-cols-5 gap-2">
-                        <input type="text" id="new-cont-name" required placeholder="Firm Name (e.g. Maa Sharda Services)" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="text" id="new-cont-owner" required placeholder="Owner Name" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="text" id="new-cont-mobile" required placeholder="Login Mobile ID" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="password" id="new-cont-pass" required placeholder="Access Password" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="number" id="new-cont-quota" required placeholder="Labour Quota" value="100" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">Save & Generate Contractor ID</button>
-                    </form>
+                <!-- Daily Summary Stats -->
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
+                    <div class="bg-white border border-amber-300 p-2 rounded"><p class="text-[9px] text-slate-500 font-bold">Total Strength</p><p class="text-sm font-black text-slate-900">${myLabour.length}</p></div>
+                    <div class="bg-emerald-100 border border-emerald-300 p-2 rounded"><p class="text-[9px] text-emerald-800 font-bold">Present (P)</p><p class="text-sm font-black text-emerald-700">${pCount}</p></div>
+                    <div class="bg-amber-100 border border-amber-300 p-2 rounded"><p class="text-[9px] text-amber-800 font-bold">Half Day (HD)</p><p class="text-sm font-black text-amber-700">${hdCount}</p></div>
+                    <div class="bg-rose-100 border border-rose-300 p-2 rounded"><p class="text-[9px] text-rose-800 font-bold">Absent (A)</p><p class="text-sm font-black text-rose-700">${aCount}</p></div>
+                    <div class="bg-blue-100 border border-blue-300 p-2 rounded"><p class="text-[9px] text-blue-800 font-bold">Total OT</p><p class="text-sm font-black text-blue-700">${totalOt} Hours</p></div>
                 </div>
 
-                <div class="bg-white border border-amber-300 rounded-lg shadow-sm overflow-hidden">
-                    <div class="p-3 lm-brown text-white font-bold text-xs flex justify-between items-center">
-                        <span>Master Contractor Ledger & Strength Control (${APP_STATE.selectedMonth})</span>
-                        <span class="text-amber-300 font-mono text-[11px]">${APP_STATE.contractors.length} Registered</span>
+                <!-- Worker List Container -->
+                <div class="bg-white border border-amber-400 rounded-lg shadow overflow-hidden">
+                    <div class="p-2.5 lm-brown text-white font-bold text-xs flex justify-between items-center">
+                        <span>Workforce Attendance Roster (${date})</span>
+                        <input type="text" onkeyup="filterSupervisorLabour(this.value)" placeholder="Search worker or trade..." class="p-1 px-2 text-xs rounded bg-white text-slate-900 border-none outline-none font-normal">
                     </div>
+
+                    <div class="divide-y divide-amber-200 p-2 space-y-2 max-h-[500px] overflow-y-auto" id="sup-workers-list">
+                        ${myLabour.map(w => {
+                            const rec = APP_STATE.attendance[date][w.id];
+                            const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
+                            const ot = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
+
+                            return `
+                                <div class="sup-worker-card flex items-center justify-between p-2 bg-amber-50/50 rounded border border-amber-200" data-name="${w.name.toLowerCase()}" data-trade="${w.category.toLowerCase()}">
+                                    <div>
+                                        <p class="font-bold text-slate-900">${w.name}</p>
+                                        <p class="text-[10px] font-mono text-slate-600">${w.id} • <span class="font-bold text-amber-800">${w.category}</span></p>
+                                    </div>
+                                    
+                                    <div class="flex items-center gap-2">
+                                        ${!isLocked ? `
+                                            <div class="flex gap-1 font-bold">
+                                                <button onclick="setShiftStatus('${date}', '${w.id}', 'P', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-600 text-white' : 'bg-slate-200'}">P</button>
+                                                <button onclick="setShiftStatus('${date}', '${w.id}', 'HD', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'HD' ? 'bg-amber-600 text-white' : 'bg-slate-200'}">HD</button>
+                                                <button onclick="setShiftStatus('${date}', '${w.id}', 'A', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'A' ? 'bg-rose-600 text-white' : 'bg-slate-200'}">A</button>
+                                            </div>
+                                            <div class="flex items-center gap-1 bg-white border border-slate-400 px-2 py-0.5 rounded">
+                                                <span class="text-[9px] font-bold">OT:</span>
+                                                <input type="number" min="0" max="16" value="${ot}" onchange="setShiftStatus('${date}', '${w.id}', '${st}', this.value)" class="w-8 font-mono text-center text-xs outline-none">h
+                                            </div>
+                                        ` : `
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-bold font-mono px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-100 text-emerald-800 border border-emerald-400' : st === 'HD' ? 'bg-amber-100 text-amber-800 border border-amber-400' : 'bg-rose-100 text-rose-800 border border-rose-400'}">${st} (${ot}h OT)</span>
+                                                <button onclick="openCorrectionModal('${date}', '${w.id}', '${w.name}', '${st}', ${ot})" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-1 rounded text-[10px] shadow">Request Edit</button>
+                                            </div>
+                                        `}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function changeSupervisorDate(newDate) {
+            APP_STATE.supervisorSelectedDate = newDate;
+            renderSupervisorAttendanceDesk();
+        }
+
+        function setShiftStatus(date, workerId, status, otVal) {
+            if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
+            APP_STATE.attendance[date][workerId] = { status, ot: Number(otVal || 0) };
+            saveLocalState();
+            renderSupervisorAttendanceDesk();
+        }
+
+        function markAllSupervisorPresentToday(date) {
+            if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
+            APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId).forEach(w => {
+                const cur = APP_STATE.attendance[date][w.id];
+                const ot = cur && typeof cur === 'object' ? cur.ot : 0;
+                APP_STATE.attendance[date][w.id] = { status: 'P', ot };
+            });
+            saveLocalState();
+            renderSupervisorAttendanceDesk();
+        }
+
+        function lockAndSubmitAttendance(date) {
+            if (confirm(`Are you sure you want to Final Submit & Lock attendance for ${date}? You won't be able to directly edit after locking.`)) {
+                const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                APP_STATE.lockedDates[date] = { locked: true, timestamp: `${date} ${now}` };
+                saveLocalState();
+                alert(`Attendance for ${date} has been submitted & locked!`);
+                renderSupervisorAttendanceDesk();
+            }
+        }
+
+        function filterSupervisorLabour(term) {
+            const val = term.toLowerCase();
+            document.querySelectorAll('.sup-worker-card').forEach(card => {
+                const name = card.getAttribute('data-name');
+                const trade = card.getAttribute('data-trade');
+                if (name.includes(val) || trade.includes(val)) card.classList.remove('hidden');
+                else card.classList.add('hidden');
+            });
+        }
+
+        // =========================================================================
+        // SUPERVISOR: 1-YEAR ATTENDANCE HISTORY LOGBOOK
+        // =========================================================================
+        function renderSupervisorHistoryLog() {
+            document.getElementById('workspace-notice-title').innerText = "1-Year Manpower Attendance History Logbook";
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            const dates = Object.keys(APP_STATE.attendance).sort().reverse();
+
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 rounded-lg shadow p-3 space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h3 class="font-bold text-[#4a2411] text-xs">Historical Day-by-Day Muster Logs</h3>
+                        <span class="text-[10px] font-mono font-bold text-slate-600">${dates.length} Recorded Days</span>
+                    </div>
+
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-amber-100 text-[#4a2411] uppercase text-[10px] border-b border-amber-300 font-bold">
+                            <thead class="bg-amber-100 text-[#4a2411] font-bold text-[10px] uppercase border-b border-amber-300">
                                 <tr>
-                                    <th class="p-2.5">Firm Name & Owner</th>
-                                    <th class="p-2.5">Login Mobile</th>
-                                    <th class="p-2.5">Password</th>
-                                    <th class="p-2.5">Status</th>
-                                    <th class="p-2.5">Workforce</th>
-                                    <th class="p-2.5">Monthly Wages</th>
-                                    <th class="p-2.5">Total PF</th>
-                                    <th class="p-2.5 text-right">Actions</th>
+                                    <th class="p-2">Date</th>
+                                    <th class="p-2">Status</th>
+                                    <th class="p-2">Present (P)</th>
+                                    <th class="p-2">Half Day (HD)</th>
+                                    <th class="p-2">Absent (A)</th>
+                                    <th class="p-2">Total OT</th>
+                                    <th class="p-2 text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-amber-200">
-                                ${APP_STATE.contractors.map(c => {
-                                    const cWorkers = APP_STATE.labour.filter(w => w.contractorId === c.id);
-                                    let cWages = 0, cPf = 0;
-                                    cWorkers.forEach(w => {
-                                        const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
-                                        cWages += m.grossWages;
-                                        cPf += (m.eePf + m.erTotalPf);
-                                    });
+                                ${dates.length === 0 ? '<tr><td colspan="7" class="p-4 text-center text-slate-500 italic">No attendance records found yet.</td></tr>' : 
+                                    dates.map(d => {
+                                        let p = 0, hd = 0, a = 0, ot = 0;
+                                        myLabour.forEach(w => {
+                                            const rec = APP_STATE.attendance[d][w.id];
+                                            const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
+                                            const o = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
+                                            if (st === 'P') p++;
+                                            else if (st === 'HD') hd++;
+                                            else a++;
+                                            ot += o;
+                                        });
+                                        const isL = APP_STATE.lockedDates[d] && APP_STATE.lockedDates[d].locked;
 
-                                    return `
-                                        <tr class="hover:bg-amber-50">
-                                            <td class="p-2.5 font-bold text-slate-900">${c.name} <span class="block text-[10px] font-normal text-slate-600">${c.owner} (${c.id})</span></td>
-                                            <td class="p-2.5 font-mono font-bold">${c.mobile}</td>
-                                            <td class="p-2.5 font-mono text-slate-600">${c.password}</td>
-                                            <td class="p-2.5">
-                                                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${c.status === 'BLOCKED' ? 'bg-rose-600 text-white' : 'bg-emerald-600 text-white'}">${c.status || 'ACTIVE'}</span>
-                                            </td>
-                                            <td class="p-2.5 font-mono font-bold text-blue-700">${cWorkers.length} / ${c.quota || 100}</td>
-                                            <td class="p-2.5 font-mono font-bold text-slate-900">₹${Math.round(cWages).toLocaleString('en-IN')}</td>
-                                            <td class="p-2.5 font-mono text-emerald-700 font-bold">₹${Math.round(cPf).toLocaleString('en-IN')}</td>
-                                            <td class="p-2.5 text-right space-x-1.5">
-                                                <button onclick="toggleBlockContractor('${c.id}')" class="text-amber-800 hover:underline font-bold text-[11px]">${c.status === 'BLOCKED' ? 'Unblock' : 'Block'}</button>
-                                                <button onclick="resetContractorPass('${c.id}')" class="text-blue-700 hover:underline font-bold text-[11px]">Pass Reset</button>
-                                                <button onclick="deleteContractor('${c.id}')" class="text-rose-700 hover:underline font-bold text-[11px]">Delete</button>
-                                            </td>
-                                        </tr>
-                                    `;
-                                }).join('')}
+                                        return `
+                                            <tr class="hover:bg-amber-50">
+                                                <td class="p-2 font-mono font-bold text-slate-900">${d}</td>
+                                                <td class="p-2">
+                                                    <span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${isL ? 'bg-emerald-700 text-white' : 'bg-amber-500 text-slate-950'}">${isL ? 'Locked' : 'Draft'}</span>
+                                                </td>
+                                                <td class="p-2 font-mono font-bold text-emerald-700">${p}</td>
+                                                <td class="p-2 font-mono font-bold text-amber-700">${hd}</td>
+                                                <td class="p-2 font-mono font-bold text-rose-700">${a}</td>
+                                                <td class="p-2 font-mono text-blue-700">${ot}h</td>
+                                                <td class="p-2 text-right">
+                                                    <button onclick="openDateFromHistory('${d}')" class="text-blue-700 hover:underline font-bold text-xs">View/Edit</button>
+                                                </td>
+                                            </tr>
+                                        `;
+                                    }).join('')
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -584,56 +753,116 @@
             `;
         }
 
-        function handleCreateContractor(e) {
-            e.preventDefault();
-            const newC = {
-                id: 'CONT-' + (APP_STATE.contractors.length + 1).toString().padStart(3, '0'),
-                name: document.getElementById('new-cont-name').value,
-                owner: document.getElementById('new-cont-owner').value,
-                mobile: document.getElementById('new-cont-mobile').value,
-                password: document.getElementById('new-cont-pass').value,
-                quota: Number(document.getElementById('new-cont-quota').value || 100),
-                status: 'ACTIVE'
-            };
-            APP_STATE.contractors.push(newC);
-            saveLocalState();
-            e.target.reset();
-            alert("New Contractor Firm registered in Labour Mitra!");
-            renderAdminWorkspace();
-        }
-
-        function toggleBlockContractor(id) {
-            const c = APP_STATE.contractors.find(x => x.id === id);
-            if (c) {
-                c.status = c.status === 'BLOCKED' ? 'ACTIVE' : 'BLOCKED';
-                saveLocalState();
-                renderAdminWorkspace();
-            }
-        }
-
-        function resetContractorPass(id) {
-            const newP = prompt("Enter new password for contractor:");
-            if (newP) {
-                const c = APP_STATE.contractors.find(x => x.id === id);
-                if (c) {
-                    c.password = newP;
-                    saveLocalState();
-                    alert("Password updated!");
-                    renderAdminWorkspace();
-                }
-            }
-        }
-
-        function deleteContractor(id) {
-            if (confirm("Delete this contractor firm?")) {
-                APP_STATE.contractors = APP_STATE.contractors.filter(x => x.id !== id);
-                saveLocalState();
-                renderAdminWorkspace();
-            }
+        function openDateFromHistory(date) {
+            APP_STATE.supervisorSelectedDate = date;
+            renderSupervisorAttendanceDesk();
         }
 
         // =========================================================================
-        // 2. CONTRACTOR WORKSPACE (30-DAY MUSTER GRID + LIVE KHURAKI)
+        // CORRECTION REQUESTS (SEND, TRACK & CONTRACTOR APPROVAL)
+        // =========================================================================
+        function openCorrectionModal(date, workerId, workerName, currentStatus, currentOt) {
+            document.getElementById('corr-worker-id').value = workerId;
+            document.getElementById('corr-date').value = date;
+            document.getElementById('corr-date-display').value = date;
+            document.getElementById('corr-name-display').value = workerName;
+            document.getElementById('corr-new-status').value = currentStatus;
+            document.getElementById('corr-new-ot').value = currentOt;
+            document.getElementById('correction-modal').classList.remove('hidden');
+        }
+
+        function closeCorrectionModal() {
+            document.getElementById('correction-modal').classList.add('hidden');
+        }
+
+        function handleSendCorrectionRequest(e) {
+            e.preventDefault();
+            const wId = document.getElementById('corr-worker-id').value;
+            const date = document.getElementById('corr-date').value;
+            const newStatus = document.getElementById('corr-new-status').value;
+            const newOt = Number(document.getElementById('corr-new-ot').value || 0);
+            const reason = document.getElementById('corr-reason').value.trim();
+
+            const worker = APP_STATE.labour.find(w => w.id === wId);
+            const oldRec = (APP_STATE.attendance[date] && APP_STATE.attendance[date][wId]) || 'A';
+            const oldStatus = typeof oldRec === 'string' ? oldRec : oldRec.status;
+            const oldOt = typeof oldRec === 'object' ? oldRec.ot : 0;
+
+            const newReq = {
+                id: 'REQ-' + Date.now().toString().slice(-6),
+                contractorId: APP_STATE.currentContractorId,
+                supervisorName: (APP_STATE.currentSupervisor && APP_STATE.currentSupervisor.name) || 'Field Munshi',
+                date,
+                workerId: wId,
+                workerName: worker ? worker.name : wId,
+                oldStatus,
+                oldOt,
+                newStatus,
+                newOt,
+                reason,
+                status: 'PENDING',
+                timestamp: new Date().toLocaleString('en-IN')
+            };
+
+            APP_STATE.correctionRequests.push(newReq);
+            saveLocalState();
+            closeCorrectionModal();
+            e.target.reset();
+            alert("Correction request submitted to Contractor!");
+            renderSupervisorRequestTracking();
+        }
+
+        function renderSupervisorRequestTracking() {
+            document.getElementById('workspace-notice-title').innerText = "My Attendance Correction Requests";
+            const myRequests = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId).reverse();
+
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 rounded-lg shadow p-3 space-y-3">
+                    <h3 class="font-bold text-[#4a2411] text-xs border-b border-amber-300 pb-2">Status of Submitted Edits</h3>
+                    <div class="divide-y divide-amber-200">
+                        ${myRequests.length === 0 ? '<p class="p-4 text-center text-slate-500 italic">No correction requests sent.</p>' : 
+                            myRequests.map(r => `
+                                <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
+                                    <div>
+                                        <p class="font-bold text-slate-900">${r.workerName} (${r.workerId}) — <span class="font-mono text-amber-800">${r.date}</span></p>
+                                        <p class="text-[11px] text-slate-600">Change: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-blue-700">${r.newStatus} (${r.newOt}h)</span></p>
+                                        <p class="text-[11px] text-slate-700 italic">"Reason: ${r.reason}"</p>
+                                    </div>
+                                    <div>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.status === 'APPROVED' ? 'bg-emerald-600 text-white' : r.status === 'REJECTED' ? 'bg-rose-600 text-white' : 'bg-amber-500 text-slate-950'}">${r.status}</span>
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // CONTRACTOR: CORRECTION REQUEST APPROVAL ACTION
+        // =========================================================================
+        function handleContractorRequestAction(reqId, action) {
+            const req = APP_STATE.correctionRequests.find(r => r.id === reqId);
+            if (!req) return;
+
+            if (action === 'APPROVE') {
+                if (!APP_STATE.attendance[req.date]) APP_STATE.attendance[req.date] = {};
+                APP_STATE.attendance[req.date][req.workerId] = { status: req.newStatus, ot: req.newOt };
+                req.status = 'APPROVED';
+                alert(`Request Approved! Attendance for ${req.workerName} on ${req.date} updated to ${req.newStatus}.`);
+            } else {
+                req.status = 'REJECTED';
+                alert(`Request Rejected!`);
+            }
+
+            saveLocalState();
+            renderContractorMusterWorkspace();
+        }
+
+        // =========================================================================
+        // CONTRACTOR WORKSPACE (30-DAY MUSTER + PENDING REQUESTS PANEL)
         // =========================================================================
         function renderContractorMusterWorkspace() {
             const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
@@ -657,12 +886,13 @@
                 for (let d = 1; d <= daysInMonth; d++) {
                     const dayStr = d.toString().padStart(2, '0');
                     const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
-                    const status = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const status = typeof rec === 'string' ? rec : rec.status;
 
                     if (status === 'P') presentCount += 1;
                     else if (status === 'HD') presentCount += 0.5;
 
-                    dayCells += `<td class="font-bold font-mono ${status === 'P' ? 'text-emerald-700 bg-emerald-50' : status === 'HD' ? 'text-amber-600 bg-amber-50' : status === 'A' ? 'text-rose-600 bg-rose-50' : ''}">${status}</td>`;
+                    dayCells += `<td class="font-bold font-mono ${status === 'P' ? 'text-emerald-700 bg-emerald-50' : status === 'HD' ? 'text-amber-600 bg-amber-50' : status === 'A' ? 'text-rose-600 bg-rose-50' : ''}">${status || ''}</td>`;
                 }
 
                 rows += `
@@ -679,8 +909,36 @@
                 `;
             });
 
+            const pendingReqs = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING');
+
             const container = document.getElementById('workspace-main-container');
             container.innerHTML = `
+                <!-- Pending Correction Requests Section -->
+                <div id="cont-requests-sec" class="workspace-section bg-white border-2 border-amber-500 p-4 rounded-lg shadow-sm space-y-3 ${pendingReqs.length === 0 ? 'hidden' : ''}">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h4 class="font-bold text-[#4a2411] text-xs flex items-center gap-1.5">
+                            <i data-lucide="bell-ring" class="w-4 h-4 text-rose-600 animate-bounce"></i> Pending Attendance Correction Requests
+                        </h4>
+                        <span class="bg-rose-600 text-white font-bold text-[10px] px-2 py-0.5 rounded">${pendingReqs.length} Pending</span>
+                    </div>
+                    <div class="divide-y divide-amber-200">
+                        ${pendingReqs.map(r => `
+                            <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
+                                <div>
+                                    <p class="font-bold text-slate-900">${r.workerName} (${r.workerId}) — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
+                                    <p class="text-[11px] text-slate-600">Proposed Change: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-emerald-700">${r.newStatus} (${r.newOt}h OT)</span></p>
+                                    <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">कारण: "${r.reason}"</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="handleContractorRequestAction('${r.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Accept & Update Muster</button>
+                                    <button onclick="handleContractorRequestAction('${r.id}', 'REJECT')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Reject</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Onboard Labour Form -->
                 <div id="cont-onboard-labour-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
                     <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Onboard Labour & Trade Mapping</h4>
                     <form onsubmit="handleAddLabour(event)" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -694,6 +952,7 @@
                     </form>
                 </div>
 
+                <!-- Create Supervisor Form -->
                 <div id="cont-create-sup-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
                     <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Create Site Munshi / Supervisor ID</h4>
                     <form onsubmit="handleAddSupervisor(event)" class="space-y-2 max-w-sm">
@@ -704,6 +963,7 @@
                     </form>
                 </div>
 
+                <!-- Exact 30-Day Muster Table -->
                 <div class="bg-white border-2 border-amber-400 rounded-lg shadow-md overflow-hidden p-3 space-y-2">
                     <div class="text-center border-b border-amber-300 pb-2 flex justify-between items-center">
                         <div>
@@ -733,6 +993,8 @@
                     </div>
                 </div>
             `;
+            updateNotificationBadge();
+            lucide.createIcons();
         }
 
         function handleAddLabour(e) {
@@ -798,62 +1060,154 @@
         }
 
         // =========================================================================
-        // 3. SUPERVISOR FIELD ATTENDANCE TERMINAL
+        // ADMIN WORKSPACE
         // =========================================================================
-        function renderSupervisorWorkspace() {
-            const today = new Date().toISOString().split('T')[0];
-            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-            if (!APP_STATE.attendance[today]) APP_STATE.attendance[today] = {};
+        function renderAdminWorkspace() {
+            document.getElementById('workspace-notice-title').innerText = "Master Administrator Dashboard — 10 Contractor Firms Matrix";
 
-            document.getElementById('workspace-notice-title').innerText = "Supervisor Mobile Attendance Terminal";
+            let totalPlantWages = 0, totalPlantPf = 0, totalPlantWorkers = APP_STATE.labour.length;
+            APP_STATE.contractors.forEach(c => {
+                APP_STATE.labour.filter(w => w.contractorId === c.id).forEach(w => {
+                    const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                    totalPlantWages += m.grossWages;
+                    totalPlantPf += (m.eePf + m.erTotalPf);
+                });
+            });
 
-            document.getElementById('workspace-main-container').innerHTML = `
-                <div class="bg-white border border-amber-400 rounded-lg shadow p-4 space-y-3 max-w-xl mx-auto">
-                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                        <h3 class="font-bold text-[#4a2411] text-xs">Mark Shift Attendance (${today})</h3>
-                        <button onclick="markAllSupervisorPresentToday()" class="lm-btn-gold px-2.5 py-1 rounded text-[10px]">Mark All P</button>
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold">Registered Supplier Firms</p>
+                        <p class="text-xl font-black text-[#4a2411] mt-0.5">${APP_STATE.contractors.length} Firms</p>
                     </div>
-                    <div class="divide-y divide-amber-200 space-y-2">
-                        ${myLabour.map(w => {
-                            const cur = APP_STATE.attendance[today][w.id] || '';
-                            return `
-                                <div class="flex justify-between items-center pt-2">
-                                    <div>
-                                        <p class="font-bold text-slate-900">${w.name}</p>
-                                        <p class="text-[10px] font-mono text-slate-500">${w.id} | ${w.category}</p>
-                                    </div>
-                                    <div class="flex gap-1 font-bold">
-                                        <button onclick="setDailyAttendance('${today}', '${w.id}', 'P')" class="px-2.5 py-1 rounded ${cur === 'P' ? 'bg-emerald-600 text-white' : 'bg-slate-200'}">P</button>
-                                        <button onclick="setDailyAttendance('${today}', '${w.id}', 'HD')" class="px-2.5 py-1 rounded ${cur === 'HD' ? 'bg-amber-600 text-white' : 'bg-slate-200'}">HD</button>
-                                        <button onclick="setDailyAttendance('${today}', '${w.id}', 'A')" class="px-2.5 py-1 rounded ${cur === 'A' ? 'bg-rose-600 text-white' : 'bg-slate-200'}">A</button>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
+                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold">Deployed Workforce</p>
+                        <p class="text-xl font-black text-blue-700 mt-0.5">${totalPlantWorkers} Workers</p>
                     </div>
+                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold">Monthly Plant Wages</p>
+                        <p class="text-xl font-black text-rose-700 mt-0.5">₹${Math.round(totalPlantWages).toLocaleString('en-IN')}</p>
+                    </div>
+                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
+                        <p class="text-[9px] text-slate-500 uppercase font-bold">EPFO Total PF (25%)</p>
+                        <p class="text-xl font-black text-emerald-700 mt-0.5">₹${Math.round(totalPlantPf).toLocaleString('en-IN')}</p>
+                    </div>
+                </div>
+
+                <div id="admin-add-contractor-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
+                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Register New Contractor Firm (ID/Password Generation)</h4>
+                    <form onsubmit="handleCreateContractor(event)" class="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                        <input type="text" id="new-cont-name" required placeholder="Firm Name" class="border border-slate-400 p-1.5 rounded text-xs">
+                        <input type="text" id="new-cont-owner" required placeholder="Owner Name" class="border border-slate-400 p-1.5 rounded text-xs">
+                        <input type="text" id="new-cont-mobile" required placeholder="Login Mobile ID" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="password" id="new-cont-pass" required placeholder="Access Password" class="border border-slate-400 p-1.5 rounded text-xs">
+                        <input type="number" id="new-cont-quota" required placeholder="Labour Quota" value="100" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">Save & Generate Contractor ID</button>
+                    </form>
+                </div>
+
+                <div class="bg-white border border-amber-300 rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-3 lm-brown text-white font-bold text-xs flex justify-between items-center">
+                        <span>Master Contractor Ledger (${APP_STATE.selectedMonth})</span>
+                        <span class="text-amber-300 font-mono text-[11px]">${APP_STATE.contractors.length} Registered</span>
+                    </div>
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-amber-100 text-[#4a2411] uppercase text-[10px] border-b border-amber-300 font-bold">
+                            <tr>
+                                <th class="p-2.5">Firm Name & Owner</th>
+                                <th class="p-2.5">Login Mobile</th>
+                                <th class="p-2.5">Password</th>
+                                <th class="p-2.5">Status</th>
+                                <th class="p-2.5">Workforce</th>
+                                <th class="p-2.5">Monthly Wages</th>
+                                <th class="p-2.5">Total PF</th>
+                                <th class="p-2.5 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-amber-200">
+                            ${APP_STATE.contractors.map(c => {
+                                const cWorkers = APP_STATE.labour.filter(w => w.contractorId === c.id);
+                                let cWages = 0, cPf = 0;
+                                cWorkers.forEach(w => {
+                                    const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                                    cWages += m.grossWages;
+                                    cPf += (m.eePf + m.erTotalPf);
+                                });
+
+                                return `
+                                    <tr class="hover:bg-amber-50">
+                                        <td class="p-2.5 font-bold text-slate-900">${c.name} <span class="block text-[10px] font-normal text-slate-600">${c.owner} (${c.id})</span></td>
+                                        <td class="p-2.5 font-mono font-bold">${c.mobile}</td>
+                                        <td class="p-2.5 font-mono text-slate-600">${c.password}</td>
+                                        <td class="p-2.5"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${c.status === 'BLOCKED' ? 'bg-rose-600 text-white' : 'bg-emerald-600 text-white'}">${c.status || 'ACTIVE'}</span></td>
+                                        <td class="p-2.5 font-mono font-bold text-blue-700">${cWorkers.length} / ${c.quota || 100}</td>
+                                        <td class="p-2.5 font-mono font-bold text-slate-900">₹${Math.round(cWages).toLocaleString('en-IN')}</td>
+                                        <td class="p-2.5 font-mono text-emerald-700 font-bold">₹${Math.round(cPf).toLocaleString('en-IN')}</td>
+                                        <td class="p-2.5 text-right space-x-1.5">
+                                            <button onclick="toggleBlockContractor('${c.id}')" class="text-amber-800 hover:underline font-bold text-[11px]">${c.status === 'BLOCKED' ? 'Unblock' : 'Block'}</button>
+                                            <button onclick="resetContractorPass('${c.id}')" class="text-blue-700 hover:underline font-bold text-[11px]">Pass Reset</button>
+                                            <button onclick="deleteContractor('${c.id}')" class="text-rose-700 hover:underline font-bold text-[11px]">Delete</button>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
                 </div>
             `;
         }
 
-        function setDailyAttendance(date, workerId, status) {
-            if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
-            APP_STATE.attendance[date][workerId] = status;
+        function handleCreateContractor(e) {
+            e.preventDefault();
+            const newC = {
+                id: 'CONT-' + (APP_STATE.contractors.length + 1).toString().padStart(3, '0'),
+                name: document.getElementById('new-cont-name').value,
+                owner: document.getElementById('new-cont-owner').value,
+                mobile: document.getElementById('new-cont-mobile').value,
+                password: document.getElementById('new-cont-pass').value,
+                quota: Number(document.getElementById('new-cont-quota').value || 100),
+                status: 'ACTIVE'
+            };
+            APP_STATE.contractors.push(newC);
             saveLocalState();
-            renderSupervisorWorkspace();
+            e.target.reset();
+            alert("Contractor Registered!");
+            renderAdminWorkspace();
         }
 
-        function markAllSupervisorPresentToday() {
-            const today = new Date().toISOString().split('T')[0];
-            if (!APP_STATE.attendance[today]) APP_STATE.attendance[today] = {};
-            APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId).forEach(w => {
-                APP_STATE.attendance[today][w.id] = 'P';
-            });
-            saveLocalState();
-            renderSupervisorWorkspace();
+        function toggleBlockContractor(id) {
+            const c = APP_STATE.contractors.find(x => x.id === id);
+            if (c) {
+                c.status = c.status === 'BLOCKED' ? 'ACTIVE' : 'BLOCKED';
+                saveLocalState();
+                renderAdminWorkspace();
+            }
+        }
+
+        function resetContractorPass(id) {
+            const newP = prompt("Enter new password for contractor:");
+            if (newP) {
+                const c = APP_STATE.contractors.find(x => x.id === id);
+                if (c) {
+                    c.password = newP;
+                    saveLocalState();
+                    alert("Password updated!");
+                    renderAdminWorkspace();
+                }
+            }
+        }
+
+        function deleteContractor(id) {
+            if (confirm("Delete this contractor firm?")) {
+                APP_STATE.contractors = APP_STATE.contractors.filter(x => x.id !== id);
+                saveLocalState();
+                renderAdminWorkspace();
+            }
         }
 
         // =========================================================================
-        // STATUTORY EXPORTERS (MUSTER PDF, BANK CSV & EPFO ECR)
+        // STATUTORY PDF, CSV & ECR EXPORTERS
         // =========================================================================
         function downloadMasterPaymentSheetPDF() {
             const { jsPDF } = window.jspdf;
@@ -887,10 +1241,11 @@
                 for (let d = 1; d <= daysInMonth; d++) {
                     const dayStr = d.toString().padStart(2, '0');
                     const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
-                    const status = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const status = typeof rec === 'string' ? rec : rec.status;
                     if (status === 'P') pCount += 1;
                     else if (status === 'HD') pCount += 0.5;
-                    row.push(status);
+                    row.push(status || '');
                 }
                 row.push(pCount.toString());
                 return row;
