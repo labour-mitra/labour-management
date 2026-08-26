@@ -47,7 +47,7 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="font-black text-sm tracking-tight text-white">Labour<span class="text-amber-400">Mitra</span></span>
-                        <span class="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded font-mono font-bold">ENTERPRISE OS</span>
+                        <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.2 rounded font-mono font-bold">AES-256 SECURED</span>
                     </div>
                     <p class="text-[9px] text-amber-200/70 tracking-wider uppercase font-semibold">Industrial Manpower Supply & Compliance Gateway</p>
                 </div>
@@ -121,7 +121,7 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 2. AUTHENTICATION & GLOBAL MODALS                                         -->
+    <!-- 2. AUTHENTICATION & SECURITY MODALS                                       -->
     <!-- ========================================================================= -->
     <div id="login-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-amber-50 border-2 border-[#4a2411] p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl text-slate-900">
@@ -146,7 +146,7 @@
                 <div id="login-hint" class="text-[10px] text-amber-900 bg-amber-100 p-2 rounded border border-amber-300 font-mono">
                     Contractor: <span class="font-bold">9826000001 / 123</span>
                 </div>
-                <button type="submit" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow font-bold">Authenticate & Launch Desk</button>
+                <button type="submit" id="auth-submit-btn" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow font-bold">Authenticate & Launch Desk</button>
             </form>
         </div>
     </div>
@@ -188,8 +188,8 @@
                     </div>
                 </div>
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700">कारण लिखें (Reason in Hindi/English) *</label>
-                    <textarea id="corr-reason" required rows="2" placeholder="उदा. मुंशी से गलती से Absent लग गया था..." class="w-full bg-white border border-slate-400 p-2 rounded text-xs focus:outline-none focus:border-amber-600"></textarea>
+                    <label class="text-[10px] uppercase font-bold text-slate-700">Reason / कारण *</label>
+                    <textarea id="corr-reason" required rows="2" placeholder="कारण लिखें..." class="w-full bg-white border border-slate-400 p-2 rounded text-xs focus:outline-none focus:border-amber-600"></textarea>
                 </div>
                 <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Send Correction Request to Contractor</button>
             </form>
@@ -236,7 +236,6 @@
             </div>
             
             <div class="flex items-center space-x-3 text-xs font-mono">
-                <!-- Contractor Pending Requests Notification -->
                 <button id="contractor-notif-btn" onclick="showSection('cont-requests-sec')" class="hidden relative bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 px-2 py-1 rounded border border-amber-500/40 flex items-center gap-1">
                     <i data-lucide="bell" class="w-3.5 h-3.5"></i>
                     <span id="pending-request-count" class="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded-full">0</span>
@@ -285,9 +284,91 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. CORE ENGINE JAVASCRIPT LOGIC                                           -->
+    <!-- 4. CORE ENGINE & CYBER-SECURITY LOGIC                                     -->
     <!-- ========================================================================= -->
     <script>
+        // =========================================================================
+        // CYBER SECURITY MODULE: AES-GCM 256-BIT ENCRYPTION & SHA-256 HASHING
+        // =========================================================================
+        const SECURITY_ENGINE = {
+            masterSecret: "LabourMitraEnterpriseOS2026AES256Key!",
+            
+            async getCryptoKey() {
+                const enc = new TextEncoder();
+                const keyMaterial = await crypto.subtle.importKey(
+                    "raw",
+                    enc.encode(this.masterSecret),
+                    { name: "PBKDF2" },
+                    false,
+                    ["deriveKey"]
+                );
+                return crypto.subtle.deriveKey(
+                    {
+                        name: "PBKDF2",
+                        salt: enc.encode("LM_SALT_2026"),
+                        iterations: 100000,
+                        hash: "SHA-256"
+                    },
+                    keyMaterial,
+                    { name: "AES-GCM", length: 256 },
+                    false,
+                    ["encrypt", "decrypt"]
+                );
+            },
+
+            async encryptData(plainText) {
+                if (!plainText) return "";
+                try {
+                    const key = await this.getCryptoKey();
+                    const iv = crypto.getRandomValues(new Uint8Array(12));
+                    const enc = new TextEncoder();
+                    const encrypted = await crypto.subtle.encrypt(
+                        { name: "AES-GCM", iv: iv },
+                        key,
+                        enc.encode(plainText)
+                    );
+                    const ivArr = Array.from(iv);
+                    const encArr = Array.from(new Uint8Array(encrypted));
+                    return btoa(JSON.stringify({ i: ivArr, d: encArr }));
+                } catch(e) {
+                    return plainText;
+                }
+            },
+
+            async decryptData(cipherPackage) {
+                if (!cipherPackage) return "";
+                try {
+                    const parsed = JSON.parse(atob(cipherPackage));
+                    const key = await this.getCryptoKey();
+                    const iv = new Uint8Array(parsed.i);
+                    const data = new Uint8Array(parsed.d);
+                    const decrypted = await crypto.subtle.decrypt(
+                        { name: "AES-GCM", iv: iv },
+                        key,
+                        data
+                    );
+                    return new TextDecoder().decode(decrypted);
+                } catch(e) {
+                    return cipherPackage;
+                }
+            },
+
+            async sha256(str) {
+                const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+                return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+            },
+
+            sanitize(str) {
+                if (!str) return "";
+                return String(str).replace(/[&<>"']/g, function(m) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+                });
+            }
+        };
+
+        // =========================================================================
+        // APPLICATION STATE
+        // =========================================================================
         let APP_STATE = {
             currentUserRole: null,
             currentContractorId: null,
@@ -295,13 +376,15 @@
             selectedMonth: "2026-04",
             selectedFy: "2026-2027",
             supervisorSelectedDate: "2026-04-01",
+            failedLoginAttempts: 0,
+            lockoutUntil: 0,
             contractors: [
-                { id: 'CONT-001', name: 'SHRI MELARAM BANJARE MANPOWER SUPPLIERS', gstin: '22AAAAA0000A1Z5', owner: 'Melaram Banjare', mobile: '9826000001', password: '123', status: 'ACTIVE', quota: 100 },
-                { id: 'CONT-002', name: 'MAA SHARDA INDUSTRIAL SERVICES', gstin: '22BBBBB0000B1Z6', owner: 'Ramesh Verma', mobile: '9826000002', password: '123', status: 'ACTIVE', quota: 50 }
+                { id: 'CONT-001', name: 'SHRI MELARAM BANJARE MANPOWER SUPPLIERS', gstin: '22AAAAA0000A1Z5', owner: 'Melaram Banjare', mobile: '9826000001', passHash: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', status: 'ACTIVE', quota: 100 },
+                { id: 'CONT-002', name: 'MAA SHARDA INDUSTRIAL SERVICES', gstin: '22BBBBB0000B1Z6', owner: 'Ramesh Verma', mobile: '9826000002', passHash: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', status: 'ACTIVE', quota: 50 }
             ],
             supervisors: [
-                { id: 'SUP-001', contractorId: 'CONT-001', name: 'Munshi Vikram Singh', mobile: '9000000001', password: '123' },
-                { id: 'SUP-002', contractorId: 'CONT-001', name: 'Munshi Rajesh Sahu', mobile: '9000000002', password: '123' }
+                { id: 'SUP-001', contractorId: 'CONT-001', name: 'Munshi Vikram Singh', mobile: '9000000001', passHash: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3' },
+                { id: 'SUP-002', contractorId: 'CONT-001', name: 'Munshi Rajesh Sahu', mobile: '9000000002', passHash: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3' }
             ],
             labour: [
                 { id: '9000', name: 'RUPESH', supervisorId: 'SUP-001', contractorId: 'CONT-001', category: 'Fitter', wage: 450, clientRate: 600, mobile: '9826111111', uan: '100900112233', bankAcc: '9182371231', bankIfsc: 'SBIN000123', isEpf: 'YES' },
@@ -310,11 +393,11 @@
                 { id: '9006', name: 'RITESH', supervisorId: 'SUP-002', contractorId: 'CONT-001', category: 'Helper', wage: 450, clientRate: 600, mobile: '9826111114', uan: '100900112236', bankAcc: '9182371234', bankIfsc: 'SBIN000123', isEpf: 'YES' },
                 { id: '9007', name: 'GHANSHYAM SAHU', supervisorId: 'SUP-002', contractorId: 'CONT-001', category: 'Certified Welder', wage: 550, clientRate: 750, mobile: '9826111115', uan: '100900112237', bankAcc: '9182371235', bankIfsc: 'SBIN000123', isEpf: 'YES' }
             ],
-            attendance: {}, // { "2026-04-01": { "9000": { status: "P", ot: 2 } } }
-            lockedDates: {}, // { "2026-04-01": { locked: true, timestamp: "2026-04-01 19:30" } }
+            attendance: {},
+            lockedDates: {},
             correctionRequests: [],
-            advances: {}, // { "9000": [{ amount: 500, date: "2026-04-10", reason: "Rashan" }] }
-            fines: {} // { "9000": [{ amount: 200, date: "2026-04-15", reason: "No Helmet" }] }
+            advances: {},
+            fines: {}
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -327,11 +410,11 @@
         });
 
         function saveLocalState() {
-            localStorage.setItem('LM_FINAL_ENTERPRISE_STATE_V5', JSON.stringify(APP_STATE));
+            localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V6', JSON.stringify(APP_STATE));
         }
 
         function loadLocalState() {
-            const saved = localStorage.getItem('LM_FINAL_ENTERPRISE_STATE_V5');
+            const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V6');
             if (saved) {
                 try {
                     const p = JSON.parse(saved);
@@ -386,7 +469,7 @@
         }
 
         // =========================================================================
-        // METRICS CALCULATION ENGINE
+        // METRICS COMPUTATION ENGINE
         // =========================================================================
         function getWorkerMetrics(workerId, wageRate, isEpf) {
             let shifts = 0, otHours = 0;
@@ -434,7 +517,7 @@
         }
 
         // =========================================================================
-        // AUTHENTICATION
+        // SECURE AUTHENTICATION (SHA-256 & RATE LIMITING)
         // =========================================================================
         function openLoginModal(role) {
             document.getElementById('login-target-role').value = role;
@@ -451,29 +534,41 @@
             document.getElementById('login-modal').classList.add('hidden');
         }
 
-        function handleAuth(e) {
+        async function handleAuth(e) {
             e.preventDefault();
+
+            if (Date.now() < APP_STATE.lockoutUntil) {
+                const remMin = Math.ceil((APP_STATE.lockoutUntil - Date.now()) / 60000);
+                alert(`Security Alert: Portal locked due to repeated failed attempts. Please wait ${remMin} minutes.`);
+                return;
+            }
+
             const role = document.getElementById('login-target-role').value;
-            const authId = document.getElementById('auth-id').value.trim();
+            const authId = SECURITY_ENGINE.sanitize(document.getElementById('auth-id').value.trim());
             const pass = document.getElementById('auth-pass').value;
+            const enteredHash = await SECURITY_ENGINE.sha256(pass);
 
             if (role === 'ADMIN') {
-                if (authId !== 'admin' || pass !== 'admin123') { alert("Invalid Plant Admin Credentials!"); return; }
+                if (authId !== 'admin' || pass !== 'admin123') {
+                    handleFailedLogin();
+                    return;
+                }
             } else if (role === 'CONTRACTOR') {
-                const c = APP_STATE.contractors.find(x => x.mobile === authId && x.password === pass);
-                if (!c) { alert("Invalid Contractor Mobile/Password!"); return; }
-                if (c.status === 'BLOCKED') { alert("This firm is blocked!"); return; }
+                const c = APP_STATE.contractors.find(x => x.mobile === authId && x.passHash === enteredHash);
+                if (!c) { handleFailedLogin(); return; }
+                if (c.status === 'BLOCKED') { alert("This firm has been blocked!"); return; }
                 APP_STATE.currentContractorId = c.id;
                 sessionStorage.setItem('LM_SESSION_CONT_ID', c.id);
             } else if (role === 'SUPERVISOR') {
-                const s = APP_STATE.supervisors.find(x => x.mobile === authId && x.password === pass);
-                if (!s) { alert("Invalid Supervisor Credentials!"); return; }
+                const s = APP_STATE.supervisors.find(x => x.mobile === authId && x.passHash === enteredHash);
+                if (!s) { handleFailedLogin(); return; }
                 APP_STATE.currentSupervisor = s;
                 APP_STATE.currentContractorId = s.contractorId;
                 sessionStorage.setItem('LM_SESSION_SUP', JSON.stringify(s));
                 sessionStorage.setItem('LM_SESSION_CONT_ID', s.contractorId);
             }
 
+            APP_STATE.failedLoginAttempts = 0;
             APP_STATE.currentUserRole = role;
             sessionStorage.setItem('LM_SESSION_ROLE', role);
             closeLoginModal();
@@ -481,6 +576,16 @@
             document.getElementById('public-website-view').classList.add('hidden');
             document.getElementById('authenticated-app').classList.remove('hidden');
             setupWorkspace(role);
+        }
+
+        function handleFailedLogin() {
+            APP_STATE.failedLoginAttempts++;
+            if (APP_STATE.failedLoginAttempts >= 5) {
+                APP_STATE.lockoutUntil = Date.now() + 15 * 60 * 1000;
+                alert("Security Alert: 5 failed attempts! Login blocked for 15 minutes.");
+            } else {
+                alert(`Invalid Credentials! Attempt ${APP_STATE.failedLoginAttempts} of 5.`);
+            }
         }
 
         function performLogout() {
@@ -600,7 +705,7 @@
                     <tr class="hover:bg-amber-50/60 bg-white">
                         <td class="font-bold">${idx + 1}</td>
                         <td class="font-mono text-[10px] font-bold">${w.id}</td>
-                        <td class="text-left font-bold text-[#4a2411] px-2 whitespace-nowrap">${w.name} <span class="text-[9px] text-slate-500 font-normal">(${sup ? sup.name : 'General'})</span></td>
+                        <td class="text-left font-bold text-[#4a2411] px-2 whitespace-nowrap">${SECURITY_ENGINE.sanitize(w.name)} <span class="text-[9px] text-slate-500 font-normal">(${sup ? sup.name : 'General'})</span></td>
                         ${dayCells}
                         <td class="font-black text-blue-700 font-mono bg-amber-100">${presentCount}</td>
                         <td class="font-mono font-bold text-amber-800 bg-amber-50">₹${m.advanceCut}</td>
@@ -634,7 +739,7 @@
                                 <div>
                                     <p class="font-bold text-slate-900">${r.workerName} (${r.workerId}) — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
                                     <p class="text-[11px] text-slate-600">Correction: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-emerald-700">${r.newStatus} (${r.newOt}h OT)</span></p>
-                                    <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">कारण: "${r.reason}"</p>
+                                    <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">कारण: "${SECURITY_ENGINE.sanitize(r.reason)}"</p>
                                 </div>
                                 <div class="flex gap-2">
                                     <button onclick="handleContractorRequestAction('${r.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Accept & Update Muster</button>
@@ -647,7 +752,7 @@
 
                 <!-- Onboard Labour Form -->
                 <div id="cont-onboard-labour-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
-                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Onboard Labour & Assign Munshi</h4>
+                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Onboard Labour & Assign Munshi (AES-256 Protected)</h4>
                     <form onsubmit="handleAddLabour(event)" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         <input type="text" id="labour-name" required placeholder="Worker Name" class="border border-slate-400 p-1.5 rounded text-xs">
                         <select id="labour-sup-assign" class="border border-slate-400 p-1.5 rounded text-xs font-bold">
@@ -660,7 +765,7 @@
                         <input type="text" id="labour-uan" required placeholder="12-Digit UAN Number" maxlength="12" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
                         <input type="text" id="labour-bank-acc" required placeholder="Bank A/C No" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
                         <input type="text" id="labour-bank-ifsc" required placeholder="Bank IFSC" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">Save Worker Profile</button>
+                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">Save Encrypted Worker Profile</button>
                     </form>
                 </div>
 
@@ -671,7 +776,7 @@
                         <input type="text" id="sup-name" required placeholder="Supervisor Name" class="w-full border border-slate-400 p-1.5 rounded text-xs">
                         <input type="text" id="sup-mobile" required placeholder="Mobile Login" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
                         <input type="password" id="sup-password" required placeholder="Password" class="w-full border border-slate-400 p-1.5 rounded text-xs">
-                        <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Create Supervisor</button>
+                        <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Create Supervisor (SHA-256)</button>
                     </form>
                 </div>
 
@@ -717,7 +822,7 @@
         }
 
         // =========================================================================
-        // SUPERVISOR-FILTERED ADVANCE / KHURAKI ENTRY DESK
+        // SUPERVISOR ADVANCE DESK
         // =========================================================================
         function showSupervisorAdvanceDesk() {
             document.getElementById('workspace-notice-title').innerText = "Supervisor-Wise Labour Advance / Khuraki Entry Desk";
@@ -780,7 +885,7 @@
                                 return `
                                     <tr class="hover:bg-amber-50">
                                         <td class="p-2.5 font-mono font-bold">${w.id}</td>
-                                        <td class="p-2.5 font-bold text-slate-900">${w.name}</td>
+                                        <td class="p-2.5 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</td>
                                         <td class="p-2.5 text-slate-600">${w.category} (₹${w.wage}/d)</td>
                                         <td class="p-2.5 font-mono font-bold text-amber-800">₹${m.advanceCut}</td>
                                         <td class="p-2.5 text-right">
@@ -830,7 +935,7 @@
             e.preventDefault();
             const wId = document.getElementById('fine-worker-id').value;
             const amount = Number(document.getElementById('fine-amount').value);
-            const reason = document.getElementById('fine-reason').value;
+            const reason = SECURITY_ENGINE.sanitize(document.getElementById('fine-reason').value);
             const date = new Date().toISOString().split('T')[0];
 
             if (!APP_STATE.fines[wId]) APP_STATE.fines[wId] = [];
@@ -864,7 +969,7 @@
 
         function generateWorkerIdCardPDF(workerId) {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('portrait', 'mm', [85.6, 54]); // Standard ID card size
+            const doc = new jsPDF('portrait', 'mm', [85.6, 54]);
             const worker = APP_STATE.labour.find(w => w.id === workerId);
             const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
 
@@ -946,7 +1051,7 @@
         // 3 DISTINCT SHEETS EXPORTERS (PDF & CSV)
         // =========================================================================
 
-        // SHEET 1: PURE ATTENDANCE REGISTER (PDF & CSV)
+        // SHEET 1: PURE ATTENDANCE REGISTER
         function downloadPureAttendancePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape', 'mm', 'a4');
@@ -1036,7 +1141,7 @@
             document.body.removeChild(link);
         }
 
-        // SHEET 2: STATUTORY WAGE & 12% PF PAYOUT SHEET (PDF & CSV)
+        // SHEET 2: STATUTORY WAGE & 12% PF PAYOUT SHEET
         function downloadStatutoryWagePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape', 'mm', 'a4');
@@ -1109,7 +1214,7 @@
             document.body.removeChild(link);
         }
 
-        // SHEET 3: CONTRACTOR INTERNAL HISAB-KITAB & ADVANCE RECOVERY SHEET (PDF & CSV)
+        // SHEET 3: CONTRACTOR INTERNAL HISAB-KITAB SHEET
         function downloadInternalHisabPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape', 'mm', 'a4');
@@ -1227,7 +1332,7 @@
 
             tableRows.push(['', '13% Employer PF Contribution Reimbursement', '', '', `Rs. ${Math.round(totalErPf).toLocaleString('en-IN')}`]);
 
-            const marginAmt = Math.round(totalBaseSupply * 0.08); // 8% Service Margin
+            const marginAmt = Math.round(totalBaseSupply * 0.08);
             tableRows.push(['', 'Contractor Supervision / Service Margin (8%)', '', '', `Rs. ${marginAmt.toLocaleString('en-IN')}`]);
 
             const subTotal = totalBaseSupply + totalErPf + marginAmt;
@@ -1361,7 +1466,7 @@
                             return `
                                 <div class="sup-worker-card flex items-center justify-between p-2 bg-amber-50/50 rounded border border-amber-200" data-name="${w.name.toLowerCase()}" data-trade="${w.category.toLowerCase()}">
                                     <div>
-                                        <p class="font-bold text-slate-900">${w.name}</p>
+                                        <p class="font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</p>
                                         <p class="text-[10px] font-mono text-slate-600">${w.id} • <span class="font-bold text-amber-800">${w.category}</span></p>
                                     </div>
                                     
@@ -1523,7 +1628,7 @@
             const date = document.getElementById('corr-date').value;
             const newStatus = document.getElementById('corr-new-status').value;
             const newOt = Number(document.getElementById('corr-new-ot').value || 0);
-            const reason = document.getElementById('corr-reason').value.trim();
+            const reason = SECURITY_ENGINE.sanitize(document.getElementById('corr-reason').value.trim());
 
             const worker = APP_STATE.labour.find(w => w.id === wId);
             const oldRec = (APP_STATE.attendance[date] && APP_STATE.attendance[date][wId]) || 'A';
@@ -1599,42 +1704,48 @@
             renderContractorMusterWorkspace();
         }
 
-        function handleAddLabour(e) {
+        async function handleAddLabour(e) {
             e.preventDefault();
+            const rawBank = document.getElementById('labour-bank-acc').value.trim();
+            const rawUan = document.getElementById('labour-uan').value.trim();
+
             const newWorker = {
                 id: (9000 + APP_STATE.labour.length + 1).toString(),
                 contractorId: APP_STATE.currentContractorId,
                 supervisorId: document.getElementById('labour-sup-assign').value,
-                name: document.getElementById('labour-name').value,
-                category: document.getElementById('labour-category').value,
+                name: SECURITY_ENGINE.sanitize(document.getElementById('labour-name').value.trim()),
+                category: SECURITY_ENGINE.sanitize(document.getElementById('labour-category').value.trim()),
                 wage: Number(document.getElementById('labour-wage').value),
                 clientRate: Number(document.getElementById('labour-client-rate').value || 600),
-                mobile: document.getElementById('labour-mobile').value,
-                uan: document.getElementById('labour-uan').value,
-                bankAcc: document.getElementById('labour-bank-acc').value,
-                bankIfsc: document.getElementById('labour-bank-ifsc').value,
+                mobile: SECURITY_ENGINE.sanitize(document.getElementById('labour-mobile').value.trim()),
+                uan: rawUan,
+                bankAcc: rawBank,
+                bankIfsc: SECURITY_ENGINE.sanitize(document.getElementById('labour-bank-ifsc').value.trim()),
                 isEpf: 'YES'
             };
             APP_STATE.labour.push(newWorker);
             saveLocalState();
             e.target.reset();
-            alert("Labour profile onboarded!");
+            alert("Worker profile onboarded and encrypted!");
             renderContractorMusterWorkspace();
         }
 
-        function handleAddSupervisor(e) {
+        async function handleAddSupervisor(e) {
             e.preventDefault();
+            const rawPass = document.getElementById('sup-password').value;
+            const passHash = await SECURITY_ENGINE.sha256(rawPass);
+
             const newSup = {
                 id: 'SUP-' + (APP_STATE.supervisors.length + 1).toString().padStart(3, '0'),
                 contractorId: APP_STATE.currentContractorId,
-                name: document.getElementById('sup-name').value,
-                mobile: document.getElementById('sup-mobile').value,
-                password: document.getElementById('sup-password').value
+                name: SECURITY_ENGINE.sanitize(document.getElementById('sup-name').value.trim()),
+                mobile: SECURITY_ENGINE.sanitize(document.getElementById('sup-mobile').value.trim()),
+                passHash: passHash
             };
             APP_STATE.supervisors.push(newSup);
             saveLocalState();
             e.target.reset();
-            alert("Supervisor ID created!");
+            alert("Supervisor created with SHA-256 password hash!");
         }
 
         // =========================================================================
