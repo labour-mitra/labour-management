@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Labour Mitra - Industrial Manpower Supply & EPFO Compliance OS</title>
+    <title>Labour Mitra - Industrial Manpower Supply & Compliance Enterprise OS</title>
     
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- jsPDF & AutoTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
@@ -35,10 +38,9 @@
 <body class="h-full flex flex-col font-sans antialiased text-xs select-text">
 
     <!-- ========================================================================= -->
-    <!-- 1. MANPOWER SUPPLIER INDUSTRIAL PUBLIC PORTAL                             -->
+    <!-- 1. PUBLIC PORTAL & LANDING PAGE                                           -->
     <!-- ========================================================================= -->
     <div id="public-website-view" class="min-h-full flex flex-col justify-between bg-slate-950 text-slate-100">
-        
         <header class="lm-brown text-white h-14 flex items-center justify-between px-6 border-b-2 border-amber-500 shadow-lg sticky top-0 z-50">
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center font-black text-slate-950 text-base shadow">LM</div>
@@ -52,37 +54,34 @@
             </div>
             
             <div class="flex items-center space-x-2">
-                <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-3.5 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5 transition">
-                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Supplier / Contractor
+                <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-3.5 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Contractor Login
                 </button>
-                <button onclick="openLoginModal('SUPERVISOR')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5 transition">
+                <button onclick="openLoginModal('SUPERVISOR')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5">
                     <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Supervisor Terminal
                 </button>
-                <button onclick="openLoginModal('ADMIN')" class="bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 font-bold px-3 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5 transition">
+                <button onclick="openLoginModal('ADMIN')" class="bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 font-bold px-3 py-1.5 rounded-lg shadow text-xs flex items-center gap-1.5">
                     <i data-lucide="building-2" class="w-3.5 h-3.5"></i> Master Admin
                 </button>
             </div>
         </header>
 
-        <main class="flex-1 max-w-7xl mx-auto px-6 py-10 flex flex-col justify-center space-y-10">
-            <div class="text-center space-y-4 max-w-4xl mx-auto">
+        <main class="flex-1 max-w-7xl mx-auto px-6 py-10 flex flex-col justify-center space-y-8 text-center">
+            <div class="space-y-4 max-w-4xl mx-auto">
                 <div class="inline-flex items-center gap-2 bg-slate-900 border border-amber-500/40 px-3.5 py-1 rounded-full text-amber-300 font-mono text-[11px]">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>1,000+ WORKFORCE DEPLOYMENT • STEEL • POWER • CEMENT • MINING</span>
+                    <span>3-SHEET REPORTING • LIVE SUBMIT & LOCK • BULK NEFT • STATUTORY EPFO</span>
                 </div>
-                
-                <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight uppercase">
-                    Industrial Manpower Supply, Shift Muster <br>
-                    <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent">& Live Attendance Approval System</span>
+                <h1 class="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight leading-tight">
+                    Industrial Manpower Supply, Muster & <br>
+                    <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent">3-Tier Statutory Payout Engine</span>
                 </h1>
-                
-                <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
-                    Built for Manpower Contractors and Field Supervisors: 1-Year Attendance Logbook, Secure Submit & Lock, Multi-Shift Overtime, Instant Correction Requests with Reason, and Statutory EPFO ECR / Form B export.
+                <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto">
+                    Built for Heavy Industries, Manpower Contractors and Field Supervisors. Generates Pure Attendance Registers, Statutory PF Payout Sheets, Internal Advance Recovery Statements, and Official Client Tax Invoices.
                 </p>
-
-                <div class="pt-2 flex flex-wrap justify-center gap-3">
-                    <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-6 py-2.5 rounded-xl text-xs shadow-lg flex items-center gap-2">
-                        <i data-lucide="log-in" class="w-4 h-4"></i> Contractor Workspace
+                <div class="pt-2 flex justify-center gap-3">
+                    <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-6 py-2.5 rounded-xl text-xs shadow-lg font-bold flex items-center gap-2">
+                        <i data-lucide="log-in" class="w-4 h-4"></i> Launch Contractor Workspace
                     </button>
                     <button onclick="openLoginModal('SUPERVISOR')" class="bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-200 font-bold px-6 py-2.5 rounded-xl text-xs flex items-center gap-2">
                         <i data-lucide="calendar-check-2" class="w-4 h-4 text-amber-400"></i> Mark Shift Attendance
@@ -90,41 +89,39 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl hover:border-amber-500/50 transition space-y-1.5">
-                    <div class="text-amber-400 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="lock" class="w-4 h-4"></i> Submit & Lock Security
-                    </div>
-                    <p class="text-slate-300 text-xs">Prevents tampering. Back-dated edits strictly require contractor approval.</p>
-                </div>
-                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl hover:border-amber-500/50 transition space-y-1.5">
+            <!-- 3 Sheets Overview Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+                <div class="bg-slate-900/90 border border-emerald-500/40 p-4 rounded-2xl space-y-1.5">
                     <div class="text-emerald-400 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="history" class="w-4 h-4"></i> 1-Year History Log
+                        <i data-lucide="file-check-2" class="w-4 h-4"></i> 1. Pure Attendance Register
                     </div>
-                    <p class="text-slate-300 text-xs">Check day-by-day manpower headcounts across all 365 days of the year.</p>
+                    <p class="text-slate-300 text-xs">Only 1-30 day P/HD/A grid, Total Present Days & OT for Plant HR submission.</p>
                 </div>
-                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl hover:border-amber-500/50 transition space-y-1.5">
+                <div class="bg-slate-900/90 border border-blue-500/40 p-4 rounded-2xl space-y-1.5">
                     <div class="text-blue-400 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="file-check-2" class="w-4 h-4"></i> EPFO & 25% PF
+                        <i data-lucide="landmark" class="w-4 h-4"></i> 2. Statutory Wage & 12% PF Sheet
                     </div>
-                    <p class="text-slate-300 text-xs">Automated 12% EE deduction and direct ECR file (.txt) export for portal upload.</p>
+                    <p class="text-slate-300 text-xs">Official salary statement showing Gross Wage, 12% EE PF cut and Net bank transfer.</p>
                 </div>
-                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl hover:border-amber-500/50 transition space-y-1.5">
-                    <div class="text-amber-300 font-bold text-sm flex items-center gap-1.5">
-                        <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Master Muster Sheet
+                <div class="bg-slate-900/90 border border-amber-500/40 p-4 rounded-2xl space-y-1.5">
+                    <div class="text-amber-400 font-bold text-sm flex items-center gap-1.5">
+                        <i data-lucide="calculator" class="w-4 h-4"></i> 3. Internal Hisab-Kitab Sheet
                     </div>
-                    <p class="text-slate-300 text-xs">1 to 30 Day PDF Muster Roll for Plant HR verification and bank payouts[cite: 1].</p>
+                    <p class="text-slate-300 text-xs">Contractor private ledger: Wage minus PF, Khuraki advances, and Safety fines.</p>
                 </div>
             </div>
         </main>
 
-        <footer class="lm-brown text-amber-200/80 text-center py-3 text-[11px] border-t border-amber-600/40">
-            Labour Mitra Platform • Heavy Industry Workforce Management OS
+        <footer class="lm-brown text-amber-200/90 text-center py-4 text-xs border-t border-amber-600/40 space-y-1">
+            <p class="font-bold">Labour Mitra Enterprise OS • Industrial Manpower Supply & Compliance Gateway</p>
+            <p class="text-slate-300 text-[11px]">
+                Designed & Developed by <span class="text-amber-400 font-bold">Er. Arun Banjare</span> | Mahasamund, Chhattisgarh
+            </p>
         </footer>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 2. AUTHENTICATION & MODALS                                                -->
+    <!-- 2. AUTHENTICATION & GLOBAL MODALS                                         -->
     <!-- ========================================================================= -->
     <div id="login-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-amber-50 border-2 border-[#4a2411] p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl text-slate-900">
@@ -149,38 +146,12 @@
                 <div id="login-hint" class="text-[10px] text-amber-900 bg-amber-100 p-2 rounded border border-amber-300 font-mono">
                     Contractor: <span class="font-bold">9826000001 / 123</span>
                 </div>
-                <button type="submit" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow font-bold">Verify & Launch Desk</button>
+                <button type="submit" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow font-bold">Authenticate & Launch Desk</button>
             </form>
         </div>
     </div>
 
-    <!-- Khuraki Advance Modal -->
-    <div id="advance-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-amber-50 border-2 border-[#4a2411] p-5 rounded-2xl max-w-sm w-full space-y-3 shadow-2xl text-slate-900">
-            <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                <h3 class="font-bold text-sm text-[#4a2411]">Add Daily Khuraki / Advance</h3>
-                <button onclick="closeAdvanceModal()" class="font-bold text-slate-600">✕</button>
-            </div>
-            <form onsubmit="handleSaveAdvance(event)" class="space-y-3">
-                <input type="hidden" id="adv-worker-id">
-                <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700">Worker Name & Code</label>
-                    <input type="text" id="adv-worker-name" disabled class="w-full bg-slate-200 border border-slate-400 p-2 rounded text-xs font-bold text-[#4a2411]">
-                </div>
-                <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700">Advance Amount (₹)</label>
-                    <input type="number" id="adv-amount" required min="1" placeholder="e.g. 500" class="w-full bg-white border border-slate-400 p-2 rounded text-xs font-mono">
-                </div>
-                <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700">Reason / Notes</label>
-                    <input type="text" id="adv-reason" placeholder="Weekly rashan / medical" class="w-full bg-white border border-slate-400 p-2 rounded text-xs">
-                </div>
-                <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Save Khuraki Entry</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Attendance Correction Request Modal -->
+    <!-- Supervisor Attendance Correction Modal -->
     <div id="correction-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-amber-50 border-2 border-[#4a2411] p-5 rounded-2xl max-w-md w-full space-y-3 shadow-2xl text-slate-900">
             <div class="flex justify-between items-center border-b border-amber-300 pb-2">
@@ -218,9 +189,35 @@
                 </div>
                 <div>
                     <label class="text-[10px] uppercase font-bold text-slate-700">कारण लिखें (Reason in Hindi/English) *</label>
-                    <textarea id="corr-reason" required rows="2" placeholder="उदा. गेट पास लेट मिला था / मुंशी से गलती से Absent लग गया था..." class="w-full bg-white border border-slate-400 p-2 rounded text-xs focus:outline-none focus:border-amber-600"></textarea>
+                    <textarea id="corr-reason" required rows="2" placeholder="उदा. मुंशी से गलती से Absent लग गया था..." class="w-full bg-white border border-slate-400 p-2 rounded text-xs focus:outline-none focus:border-amber-600"></textarea>
                 </div>
                 <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Send Correction Request to Contractor</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Fine / Penalty Deduction Modal -->
+    <div id="fine-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-amber-50 border-2 border-[#4a2411] p-5 rounded-2xl max-w-sm w-full space-y-3 shadow-2xl text-slate-900">
+            <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                <h3 class="font-bold text-sm text-[#4a2411]">Add Safety / Damage Fine</h3>
+                <button onclick="closeFineModal()" class="font-bold">✕</button>
+            </div>
+            <form onsubmit="handleSaveFine(event)" class="space-y-3">
+                <input type="hidden" id="fine-worker-id">
+                <div>
+                    <label class="text-[10px] uppercase font-bold text-slate-700">Worker Name</label>
+                    <input type="text" id="fine-worker-name" disabled class="w-full bg-slate-200 border border-slate-400 p-1.5 rounded text-xs font-bold text-[#4a2411]">
+                </div>
+                <div>
+                    <label class="text-[10px] uppercase font-bold text-slate-700">Fine Amount (₹)</label>
+                    <input type="number" id="fine-amount" required min="1" placeholder="e.g. 200" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-mono font-bold text-rose-700">
+                </div>
+                <div>
+                    <label class="text-[10px] uppercase font-bold text-slate-700">Reason / Penalty Type</label>
+                    <input type="text" id="fine-reason" required placeholder="No PPE / Helmet violation / Damage" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs">
+                </div>
+                <button type="submit" class="w-full bg-rose-700 hover:bg-rose-600 text-white py-2 rounded-lg text-xs shadow font-bold">Record Fine Deduction</button>
             </form>
         </div>
     </div>
@@ -239,7 +236,7 @@
             </div>
             
             <div class="flex items-center space-x-3 text-xs font-mono">
-                <!-- Notification Bell for Contractor -->
+                <!-- Contractor Pending Requests Notification -->
                 <button id="contractor-notif-btn" onclick="showSection('cont-requests-sec')" class="hidden relative bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 px-2 py-1 rounded border border-amber-500/40 flex items-center gap-1">
                     <i data-lucide="bell" class="w-3.5 h-3.5"></i>
                     <span id="pending-request-count" class="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded-full">0</span>
@@ -266,7 +263,6 @@
                         <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Wage Month</label>
                         <input type="month" id="global-month-filter" onchange="onPeriodChange()" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-mono font-bold text-slate-900">
                     </div>
-                    <button onclick="onPeriodChange()" class="w-full bg-[#4a2411] text-white hover:bg-black font-bold py-1.5 rounded text-xs shadow">Filter Ledger</button>
                 </div>
 
                 <div class="space-y-1.5" id="lm-sidebar-actions">
@@ -289,7 +285,7 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. CORE ENGINE & LOGIC SCRIPT                                             -->
+    <!-- 4. CORE ENGINE JAVASCRIPT LOGIC                                           -->
     <!-- ========================================================================= -->
     <script>
         let APP_STATE = {
@@ -300,28 +296,25 @@
             selectedFy: "2026-2027",
             supervisorSelectedDate: "2026-04-01",
             contractors: [
-                { id: 'CONT-001', name: 'SHRI MELARAM BANJARE MANPOWER SUPPLIERS', owner: 'Melaram Banjare', mobile: '9826000001', password: '123', status: 'ACTIVE', quota: 100 },
-                { id: 'CONT-002', name: 'MAA SHARDA INDUSTRIAL SERVICES', owner: 'Ramesh Verma', mobile: '9826000002', password: '123', status: 'ACTIVE', quota: 50 }
+                { id: 'CONT-001', name: 'SHRI MELARAM BANJARE MANPOWER SUPPLIERS', gstin: '22AAAAA0000A1Z5', owner: 'Melaram Banjare', mobile: '9826000001', password: '123', status: 'ACTIVE', quota: 100 },
+                { id: 'CONT-002', name: 'MAA SHARDA INDUSTRIAL SERVICES', gstin: '22BBBBB0000B1Z6', owner: 'Ramesh Verma', mobile: '9826000002', password: '123', status: 'ACTIVE', quota: 50 }
             ],
             supervisors: [
-                { id: 'SUP-001', contractorId: 'CONT-001', name: 'Munshi Vikram Singh', mobile: '9000000001', password: '123' }
+                { id: 'SUP-001', contractorId: 'CONT-001', name: 'Munshi Vikram Singh', mobile: '9000000001', password: '123' },
+                { id: 'SUP-002', contractorId: 'CONT-001', name: 'Munshi Rajesh Sahu', mobile: '9000000002', password: '123' }
             ],
             labour: [
-                { id: '9000', name: 'RUPESH', contractorId: 'CONT-001', category: 'Fitter', wage: 450, uan: '100900112233', bankAcc: '9182371231', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9004', name: 'DILEEP TANDAN', contractorId: 'CONT-001', category: 'Helper', wage: 450, uan: '100900112234', bankAcc: '9182371232', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9005', name: 'GOKUL YADAV', contractorId: 'CONT-001', category: 'Rigger', wage: 450, uan: '100900112235', bankAcc: '9182371233', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9006', name: 'RITESH', contractorId: 'CONT-001', category: 'Helper', wage: 450, uan: '100900112236', bankAcc: '9182371234', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9007', name: 'GHANSHYAM SAHU', contractorId: 'CONT-001', category: 'Certified Welder', wage: 550, uan: '100900112237', bankAcc: '9182371235', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9009', name: 'SANJAY DHRUW', contractorId: 'CONT-001', category: 'Helper', wage: 450, uan: '100900112238', bankAcc: '9182371236', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9011', name: 'VAKESH KUMAR', contractorId: 'CONT-001', category: 'Fitter', wage: 450, uan: '100900112239', bankAcc: '9182371237', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9012', name: 'JANAK RAM YADAV', contractorId: 'CONT-001', category: 'Rigger', wage: 450, uan: '100900112240', bankAcc: '9182371238', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9013', name: 'TUKESHWAR', contractorId: 'CONT-001', category: 'Helper', wage: 450, uan: '100900112241', bankAcc: '9182371239', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9016', name: 'SURJIT SINGH', contractorId: 'CONT-001', category: 'Heavy Operator', wage: 650, uan: '100900112242', bankAcc: '9182371240', bankIfsc: 'SBIN000123', isEpf: 'YES' }
+                { id: '9000', name: 'RUPESH', supervisorId: 'SUP-001', contractorId: 'CONT-001', category: 'Fitter', wage: 450, clientRate: 600, mobile: '9826111111', uan: '100900112233', bankAcc: '9182371231', bankIfsc: 'SBIN000123', isEpf: 'YES' },
+                { id: '9004', name: 'DILEEP TANDAN', supervisorId: 'SUP-001', contractorId: 'CONT-001', category: 'Helper', wage: 450, clientRate: 600, mobile: '9826111112', uan: '100900112234', bankAcc: '9182371232', bankIfsc: 'SBIN000123', isEpf: 'YES' },
+                { id: '9005', name: 'GOKUL YADAV', supervisorId: 'SUP-001', contractorId: 'CONT-001', category: 'Rigger', wage: 450, clientRate: 600, mobile: '9826111113', uan: '100900112235', bankAcc: '9182371233', bankIfsc: 'SBIN000123', isEpf: 'YES' },
+                { id: '9006', name: 'RITESH', supervisorId: 'SUP-002', contractorId: 'CONT-001', category: 'Helper', wage: 450, clientRate: 600, mobile: '9826111114', uan: '100900112236', bankAcc: '9182371234', bankIfsc: 'SBIN000123', isEpf: 'YES' },
+                { id: '9007', name: 'GHANSHYAM SAHU', supervisorId: 'SUP-002', contractorId: 'CONT-001', category: 'Certified Welder', wage: 550, clientRate: 750, mobile: '9826111115', uan: '100900112237', bankAcc: '9182371235', bankIfsc: 'SBIN000123', isEpf: 'YES' }
             ],
             attendance: {}, // { "2026-04-01": { "9000": { status: "P", ot: 2 } } }
             lockedDates: {}, // { "2026-04-01": { locked: true, timestamp: "2026-04-01 19:30" } }
-            correctionRequests: [], // [{ id, date, workerId, workerName, oldStatus, oldOt, newStatus, newOt, reason, status: 'PENDING', timestamp }]
-            advances: {}
+            correctionRequests: [],
+            advances: {}, // { "9000": [{ amount: 500, date: "2026-04-10", reason: "Rashan" }] }
+            fines: {} // { "9000": [{ amount: 200, date: "2026-04-15", reason: "No Helmet" }] }
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -334,11 +327,11 @@
         });
 
         function saveLocalState() {
-            localStorage.setItem('LM_ENTERPRISE_FINAL_STORE_V3', JSON.stringify(APP_STATE));
+            localStorage.setItem('LM_FINAL_ENTERPRISE_STATE_V5', JSON.stringify(APP_STATE));
         }
 
         function loadLocalState() {
-            const saved = localStorage.getItem('LM_ENTERPRISE_FINAL_STORE_V3');
+            const saved = localStorage.getItem('LM_FINAL_ENTERPRISE_STATE_V5');
             if (saved) {
                 try {
                     const p = JSON.parse(saved);
@@ -349,6 +342,7 @@
                     APP_STATE.lockedDates = p.lockedDates || {};
                     APP_STATE.correctionRequests = p.correctionRequests || [];
                     APP_STATE.advances = p.advances || {};
+                    APP_STATE.fines = p.fines || {};
                 } catch(e) {}
             }
         }
@@ -391,7 +385,9 @@
             }
         }
 
-        // Metrics Engine
+        // =========================================================================
+        // METRICS CALCULATION ENGINE
+        // =========================================================================
         function getWorkerMetrics(workerId, wageRate, isEpf) {
             let shifts = 0, otHours = 0;
             const month = APP_STATE.selectedMonth;
@@ -420,16 +416,26 @@
             }
 
             let advCut = 0;
-            const list = APP_STATE.advances[workerId] || [];
-            list.forEach(a => {
+            const advList = APP_STATE.advances[workerId] || [];
+            advList.forEach(a => {
                 if (a.date && a.date.startsWith(month)) advCut += Number(a.amount);
             });
 
-            const netInHand = Math.max(0, grossWages - eePf - advCut);
-            return { shifts, otHours, shiftEarned, grossWages, eePf, erTotalPf, advanceCut: advCut, netInHand };
+            let fineCut = 0;
+            const fineList = APP_STATE.fines[workerId] || [];
+            fineList.forEach(f => {
+                if (f.date && f.date.startsWith(month)) fineCut += Number(f.amount);
+            });
+
+            const statutoryNet = Math.max(0, grossWages - eePf);
+            const inHandAfterAllDeductions = Math.max(0, grossWages - eePf - advCut - fineCut);
+
+            return { shifts, otHours, shiftEarned, grossWages, eePf, erTotalPf, statutoryNet, advanceCut: advCut, fineCut, inHandFinal: inHandAfterAllDeductions };
         }
 
-        // Auth
+        // =========================================================================
+        // AUTHENTICATION
+        // =========================================================================
         function openLoginModal(role) {
             document.getElementById('login-target-role').value = role;
             document.getElementById('modal-role-badge').innerText = role;
@@ -456,7 +462,7 @@
             } else if (role === 'CONTRACTOR') {
                 const c = APP_STATE.contractors.find(x => x.mobile === authId && x.password === pass);
                 if (!c) { alert("Invalid Contractor Mobile/Password!"); return; }
-                if (c.status === 'BLOCKED') { alert("This contractor firm is blocked!"); return; }
+                if (c.status === 'BLOCKED') { alert("This firm is blocked!"); return; }
                 APP_STATE.currentContractorId = c.id;
                 sessionStorage.setItem('LM_SESSION_CONT_ID', c.id);
             } else if (role === 'SUPERVISOR') {
@@ -505,18 +511,32 @@
                 document.getElementById('user-topbar-firm').innerText = firm ? firm.name : 'Contractor Workspace';
                 updateNotificationBadge();
                 actions.innerHTML = `
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Contractor Desk</p>
-                    <button onclick="renderContractorMusterWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📋 30-Day Muster Roll</button>
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Operations</p>
+                    <button onclick="renderContractorMusterWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📋 30-Day Master Muster</button>
+                    <button onclick="showSupervisorAdvanceDesk()" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow">💰 Supervisor Khuraki Desk</button>
                     <button onclick="showSection('cont-requests-sec')" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow flex justify-between items-center">
                         <span>🔔 Correction Requests</span>
                         <span class="bg-rose-700 text-white text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold">${APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING').length}</span>
                     </button>
-                    <button onclick="showSection('cont-onboard-labour-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">➕ Onboard Labour (UAN)</button>
+                    <button onclick="showSection('cont-onboard-labour-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">➕ Onboard Labour Profile</button>
                     <button onclick="showSection('cont-create-sup-sec')" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">👤 Create Munshi ID</button>
-                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">Company Submissions</p>
-                    <button onclick="downloadMasterPaymentSheetPDF()" class="w-full text-left px-3 py-2 rounded bg-amber-600 hover:bg-amber-500 text-slate-950 font-black text-xs shadow">📑 Download Muster PDF</button>
-                    <button onclick="downloadBankNeftCsv()" class="w-full text-left px-3 py-2 rounded bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs">💳 Bank NEFT CSV</button>
-                    <button onclick="downloadEpfoEcrTextFile()" class="w-full text-left px-3 py-2 rounded bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs">📥 EPFO ECR (.txt)</button>
+
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">File 1: Pure Attendance</p>
+                    <button onclick="downloadPureAttendancePDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs">📄 1. Attendance Register (PDF)</button>
+                    <button onclick="downloadPureAttendanceExcel()" class="w-full text-left px-2.5 py-1.5 rounded bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs">📊 1. Attendance Register (CSV)</button>
+
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">File 2: Statutory 12% PF</p>
+                    <button onclick="downloadStatutoryWagePDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs">📑 2. Wage & PF Sheet (PDF)</button>
+                    <button onclick="downloadStatutoryWageExcel()" class="w-full text-left px-2.5 py-1.5 rounded bg-blue-800 hover:bg-blue-700 text-white font-bold text-xs">📊 2. Wage & PF Sheet (CSV)</button>
+
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">File 3: Private Hisab-Kitab</p>
+                    <button onclick="downloadInternalHisabPDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-[#4a2411] hover:bg-black text-amber-300 font-bold text-xs border border-amber-500">📋 3. Final Hisab Payout (PDF)</button>
+                    <button onclick="downloadInternalHisabExcel()" class="w-full text-left px-2.5 py-1.5 rounded bg-[#33180a] text-amber-200 font-bold text-xs border border-amber-500/50">📊 3. Final Hisab Payout (CSV)</button>
+
+                    <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1 pt-2">Company Invoice & Bank</p>
+                    <button onclick="downloadCompanyBillingInvoicePDF()" class="w-full text-left px-2.5 py-1.5 rounded bg-amber-600 hover:bg-amber-500 text-slate-950 font-black text-xs shadow">🏢 Client Tax Invoice (PDF)</button>
+                    <button onclick="downloadBankNeftCsv()" class="w-full text-left px-2.5 py-1.5 rounded bg-indigo-700 hover:bg-indigo-600 text-white font-bold text-xs">💳 Bulk Bank NEFT CSV</button>
+                    <button onclick="downloadEpfoEcrTextFile()" class="w-full text-left px-2.5 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">📥 EPFO ECR (.txt) File</button>
                 `;
                 renderContractorMusterWorkspace();
             } else if (role === 'SUPERVISOR') {
@@ -525,7 +545,7 @@
                 actions.innerHTML = `
                     <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">Field Terminal</p>
                     <button onclick="renderSupervisorAttendanceDesk()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📝 Mark Shift Attendance</button>
-                    <button onclick="renderSupervisorHistoryLog()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📅 1-Year Attendance History</button>
+                    <button onclick="renderSupervisorHistoryLog()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📅 1-Year History Log</button>
                     <button onclick="renderSupervisorRequestTracking()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">📨 My Correction Requests</button>
                 `;
                 renderSupervisorAttendanceDesk();
@@ -540,7 +560,740 @@
         }
 
         // =========================================================================
-        // SUPERVISOR: ATTENDANCE DESK (WITH DATE SELECTOR & LOCKING)
+        // CONTRACTOR WORKSPACE & 30-DAY MUSTER
+        // =========================================================================
+        function renderContractorMusterWorkspace() {
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            document.getElementById('workspace-notice-title').innerText = `${firm ? firm.name : 'Contractor Firm'} — Master Register (${APP_STATE.selectedMonth})`;
+
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
+            const daysInMonth = new Date(year, month, 0).getDate();
+            const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+            let dayHeaders = '', dayNameHeaders = '';
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateObj = new Date(year, month - 1, d);
+                dayHeaders += `<th class="w-6">${d}</th>`;
+                dayNameHeaders += `<th class="text-[8px] font-mono">${weekdays[dateObj.getDay()]}</th>`;
+            }
+
+            let rows = '';
+            myLabour.forEach((w, idx) => {
+                let dayCells = '', presentCount = 0;
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dayStr = d.toString().padStart(2, '0');
+                    const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
+                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const status = typeof rec === 'string' ? rec : rec.status;
+
+                    if (status === 'P') presentCount += 1;
+                    else if (status === 'HD') presentCount += 0.5;
+
+                    dayCells += `<td class="font-bold font-mono ${status === 'P' ? 'text-emerald-700 bg-emerald-50' : status === 'HD' ? 'text-amber-600 bg-amber-50' : status === 'A' ? 'text-rose-600 bg-rose-50' : ''}">${status || ''}</td>`;
+                }
+
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                const sup = APP_STATE.supervisors.find(s => s.id === w.supervisorId);
+
+                rows += `
+                    <tr class="hover:bg-amber-50/60 bg-white">
+                        <td class="font-bold">${idx + 1}</td>
+                        <td class="font-mono text-[10px] font-bold">${w.id}</td>
+                        <td class="text-left font-bold text-[#4a2411] px-2 whitespace-nowrap">${w.name} <span class="text-[9px] text-slate-500 font-normal">(${sup ? sup.name : 'General'})</span></td>
+                        ${dayCells}
+                        <td class="font-black text-blue-700 font-mono bg-amber-100">${presentCount}</td>
+                        <td class="font-mono font-bold text-amber-800 bg-amber-50">₹${m.advanceCut}</td>
+                        <td class="font-mono font-bold text-rose-700 bg-rose-50">₹${m.fineCut}</td>
+                        <td class="font-black font-mono text-emerald-800 bg-emerald-100">₹${Math.round(m.inHandFinal)}</td>
+                        <td class="p-1 space-x-1 whitespace-nowrap">
+                            <button onclick="openFineModal('${w.id}', '${w.name}')" class="bg-rose-100 text-rose-800 hover:bg-rose-200 px-1.5 py-0.5 rounded text-[9px] font-bold">+Fine</button>
+                            <button onclick="generateWorkerIdCardPDF('${w.id}')" class="bg-slate-200 hover:bg-slate-300 px-1.5 py-0.5 rounded text-[9px] font-bold">🪪 ID</button>
+                            <button onclick="sendWorkerWhatsAppSummary('${w.id}')" class="bg-emerald-600 text-white hover:bg-emerald-500 px-1.5 py-0.5 rounded text-[9px] font-bold">📲 WA</button>
+                            <button onclick="generateFndSettlementPDF('${w.id}')" class="bg-amber-700 text-white hover:bg-amber-600 px-1.5 py-0.5 rounded text-[9px] font-bold">FNF</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            const pendingReqs = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING');
+
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <!-- Pending Correction Requests Section -->
+                <div id="cont-requests-sec" class="workspace-section bg-white border-2 border-amber-500 p-4 rounded-lg shadow-sm space-y-3 ${pendingReqs.length === 0 ? 'hidden' : ''}">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h4 class="font-bold text-[#4a2411] text-xs flex items-center gap-1.5">
+                            <i data-lucide="bell-ring" class="w-4 h-4 text-rose-600 animate-bounce"></i> Supervisor Attendance Correction Requests
+                        </h4>
+                        <span class="bg-rose-600 text-white font-bold text-[10px] px-2 py-0.5 rounded">${pendingReqs.length} Pending</span>
+                    </div>
+                    <div class="divide-y divide-amber-200">
+                        ${pendingReqs.map(r => `
+                            <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
+                                <div>
+                                    <p class="font-bold text-slate-900">${r.workerName} (${r.workerId}) — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
+                                    <p class="text-[11px] text-slate-600">Correction: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-emerald-700">${r.newStatus} (${r.newOt}h OT)</span></p>
+                                    <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">कारण: "${r.reason}"</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="handleContractorRequestAction('${r.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Accept & Update Muster</button>
+                                    <button onclick="handleContractorRequestAction('${r.id}', 'REJECT')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Reject</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Onboard Labour Form -->
+                <div id="cont-onboard-labour-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
+                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Onboard Labour & Assign Munshi</h4>
+                    <form onsubmit="handleAddLabour(event)" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <input type="text" id="labour-name" required placeholder="Worker Name" class="border border-slate-400 p-1.5 rounded text-xs">
+                        <select id="labour-sup-assign" class="border border-slate-400 p-1.5 rounded text-xs font-bold">
+                            ${APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId).map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
+                        </select>
+                        <input type="text" id="labour-category" required placeholder="Trade (Fitter/Helper)" class="border border-slate-400 p-1.5 rounded text-xs">
+                        <input type="number" id="labour-wage" required placeholder="Daily Wage (₹)" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="number" id="labour-client-rate" required placeholder="Client Charge Rate (₹)" value="600" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="text" id="labour-mobile" required placeholder="Mobile (WhatsApp)" maxlength="10" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="text" id="labour-uan" required placeholder="12-Digit UAN Number" maxlength="12" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="text" id="labour-bank-acc" required placeholder="Bank A/C No" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="text" id="labour-bank-ifsc" required placeholder="Bank IFSC" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">Save Worker Profile</button>
+                    </form>
+                </div>
+
+                <!-- Create Supervisor Form -->
+                <div id="cont-create-sup-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
+                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Create Site Munshi / Supervisor ID</h4>
+                    <form onsubmit="handleAddSupervisor(event)" class="space-y-2 max-w-sm">
+                        <input type="text" id="sup-name" required placeholder="Supervisor Name" class="w-full border border-slate-400 p-1.5 rounded text-xs">
+                        <input type="text" id="sup-mobile" required placeholder="Mobile Login" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
+                        <input type="password" id="sup-password" required placeholder="Password" class="w-full border border-slate-400 p-1.5 rounded text-xs">
+                        <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Create Supervisor</button>
+                    </form>
+                </div>
+
+                <!-- 30-Day Master Muster Table -->
+                <div class="bg-white border-2 border-amber-400 rounded-lg shadow-md overflow-hidden p-3 space-y-2">
+                    <div class="text-center border-b border-amber-300 pb-2 flex flex-wrap justify-between items-center gap-2">
+                        <div>
+                            <h2 class="text-xs font-black text-[#4a2411] tracking-wider uppercase">Master Consolidated Register - ${APP_STATE.selectedMonth}</h2>
+                            <h3 class="text-sm font-black text-amber-900">${firm ? firm.name : 'Contractor Firm'}</h3>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="downloadPureAttendancePDF()" class="bg-emerald-700 hover:bg-emerald-600 text-white px-2.5 py-1 rounded text-xs font-bold shadow">1. Attendance PDF</button>
+                            <button onclick="downloadStatutoryWagePDF()" class="bg-blue-700 hover:bg-blue-600 text-white px-2.5 py-1 rounded text-xs font-bold shadow">2. PF Sheet PDF</button>
+                            <button onclick="downloadInternalHisabPDF()" class="bg-[#4a2411] hover:bg-black text-amber-300 px-2.5 py-1 rounded text-xs font-bold shadow">3. Hisab PDF</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs muster-grid border-collapse">
+                            <thead class="bg-amber-200 text-[#4a2411]">
+                                <tr>
+                                    <th rowspan="2" class="w-8">Sr</th>
+                                    <th rowspan="2" class="w-14">Code</th>
+                                    <th rowspan="2" class="w-36 text-left px-2">Name</th>
+                                    ${dayHeaders}
+                                    <th rowspan="2" class="w-10 bg-amber-300 font-black">Days</th>
+                                    <th rowspan="2" class="w-12 bg-amber-100 font-bold">Adv</th>
+                                    <th rowspan="2" class="w-12 bg-rose-100 font-bold">Fine</th>
+                                    <th rowspan="2" class="w-14 bg-emerald-200 font-black">In-Hand</th>
+                                    <th rowspan="2" class="w-24">Actions</th>
+                                </tr>
+                                <tr>${dayNameHeaders}</tr>
+                            </thead>
+                            <tbody>
+                                ${rows || '<tr><td colspan="40" class="p-4 text-slate-500 italic">No workers registered. Click "Onboard Labour Profile" above.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            updateNotificationBadge();
+            lucide.createIcons();
+        }
+
+        // =========================================================================
+        // SUPERVISOR-FILTERED ADVANCE / KHURAKI ENTRY DESK
+        // =========================================================================
+        function showSupervisorAdvanceDesk() {
+            document.getElementById('workspace-notice-title').innerText = "Supervisor-Wise Labour Advance / Khuraki Entry Desk";
+            const mySups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
+
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-300 pb-3">
+                        <div>
+                            <h3 class="font-black text-[#4a2411] text-sm">Select Munshi / Supervisor</h3>
+                            <p class="text-[11px] text-slate-600">Choose a site supervisor to disburse and record advances for their team.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="font-bold text-xs">Supervisor:</label>
+                            <select id="adv-desk-sup-select" onchange="renderSupervisorLabourForAdvance(this.value)" class="border-2 border-amber-500 p-1.5 rounded-lg text-xs font-bold bg-amber-50">
+                                <option value="">-- Choose Supervisor --</option>
+                                ${mySups.map(s => `<option value="${s.id}">${s.name} (${s.mobile})</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="adv-desk-workers-table-container">
+                        <p class="p-6 text-center text-slate-500 italic">Please select a supervisor from the dropdown above to load workers.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSupervisorLabourForAdvance(supId) {
+            const container = document.getElementById('adv-desk-workers-table-container');
+            if (!supId) {
+                container.innerHTML = `<p class="p-6 text-center text-slate-500 italic">Please select a supervisor from the dropdown above to load workers.</p>`;
+                return;
+            }
+
+            const supWorkers = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
+            const today = new Date().toISOString().split('T')[0];
+
+            if (supWorkers.length === 0) {
+                container.innerHTML = `<p class="p-6 text-center text-rose-600 font-bold">No workers mapped under this supervisor.</p>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead class="bg-amber-100 text-[#4a2411] uppercase font-bold text-[10px] border-b border-amber-300">
+                            <tr>
+                                <th class="p-2.5">Emp Code</th>
+                                <th class="p-2.5">Worker Name</th>
+                                <th class="p-2.5">Trade / Rate</th>
+                                <th class="p-2.5">Current Month Advance</th>
+                                <th class="p-2.5 text-right">Quick Khuraki Entry</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-amber-200">
+                            ${supWorkers.map(w => {
+                                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                                return `
+                                    <tr class="hover:bg-amber-50">
+                                        <td class="p-2.5 font-mono font-bold">${w.id}</td>
+                                        <td class="p-2.5 font-bold text-slate-900">${w.name}</td>
+                                        <td class="p-2.5 text-slate-600">${w.category} (₹${w.wage}/d)</td>
+                                        <td class="p-2.5 font-mono font-bold text-amber-800">₹${m.advanceCut}</td>
+                                        <td class="p-2.5 text-right">
+                                            <div class="inline-flex items-center gap-1.5">
+                                                <input type="number" id="adv-input-${w.id}" min="1" placeholder="₹ Amount" class="w-24 p-1 border border-slate-400 rounded text-xs font-mono font-bold text-slate-900">
+                                                <button onclick="saveQuickAdvance('${w.id}', '${today}')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded shadow text-xs">Save Entry</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function saveQuickAdvance(workerId, date) {
+            const input = document.getElementById(`adv-input-${workerId}`);
+            const amount = Number(input.value);
+            if (!amount || amount <= 0) { alert("Please enter a valid amount!"); return; }
+
+            if (!APP_STATE.advances[workerId]) APP_STATE.advances[workerId] = [];
+            APP_STATE.advances[workerId].push({ amount, date, reason: "Site Khuraki" });
+
+            saveLocalState();
+            input.value = '';
+            alert("Advance recorded successfully!");
+            const supId = document.getElementById('adv-desk-sup-select').value;
+            renderSupervisorLabourForAdvance(supId);
+        }
+
+        // =========================================================================
+        // FINES, WHATSAPP & ID CARD HELPERS
+        // =========================================================================
+        function openFineModal(workerId, workerName) {
+            document.getElementById('fine-worker-id').value = workerId;
+            document.getElementById('fine-worker-name').value = workerName;
+            document.getElementById('fine-modal').classList.remove('hidden');
+        }
+
+        function closeFineModal() {
+            document.getElementById('fine-modal').classList.add('hidden');
+        }
+
+        function handleSaveFine(e) {
+            e.preventDefault();
+            const wId = document.getElementById('fine-worker-id').value;
+            const amount = Number(document.getElementById('fine-amount').value);
+            const reason = document.getElementById('fine-reason').value;
+            const date = new Date().toISOString().split('T')[0];
+
+            if (!APP_STATE.fines[wId]) APP_STATE.fines[wId] = [];
+            APP_STATE.fines[wId].push({ amount, reason, date });
+
+            saveLocalState();
+            closeFineModal();
+            e.target.reset();
+            alert("Fine deduction recorded!");
+            renderContractorMusterWorkspace();
+        }
+
+        function sendWorkerWhatsAppSummary(workerId) {
+            const worker = APP_STATE.labour.find(w => w.id === workerId);
+            if (!worker) return;
+            const m = getWorkerMetrics(worker.id, worker.wage, worker.isEpf);
+            const text = `*LABOUR MITRA WAGE SUMMARY (%0AMonth: ${APP_STATE.selectedMonth})*%0A%0A` +
+                         `*Name:* ${worker.name} (Code: ${worker.id})%0A` +
+                         `*Present Shifts:* ${m.shifts} Days | OT: ${m.otHours}h%0A` +
+                         `*Gross Wages:* Rs. ${Math.round(m.grossWages)}%0A` +
+                         `*12% PF Cut:* Rs. ${m.eePf}%0A` +
+                         `*Khuraki Advance Cut:* Rs. ${m.advanceCut}%0A` +
+                         `*Safety Fine Cut:* Rs. ${m.fineCut}%0A` +
+                         `----------------------------%0A` +
+                         `*FINAL IN-HAND PAYOUT:* Rs. ${Math.round(m.inHandFinal)}%0A` +
+                         `*Bank:* ${worker.bankAcc} (${worker.bankIfsc})%0A%0A` +
+                         `_Issued by ${APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId)?.name || 'Contractor'}_`;
+
+            window.open(`https://wa.me/91${worker.mobile || '9826000000'}?text=${text}`, '_blank');
+        }
+
+        function generateWorkerIdCardPDF(workerId) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('portrait', 'mm', [85.6, 54]); // Standard ID card size
+            const worker = APP_STATE.labour.find(w => w.id === workerId);
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+
+            doc.setFillColor(74, 36, 17);
+            doc.rect(0, 0, 54, 14, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(7);
+            doc.text(firm ? firm.name.slice(0, 26) : "MANPOWER CONTRACTOR", 27, 6, { align: 'center' });
+            doc.setFontSize(6);
+            doc.text("PLANT GATE PASS / IDENTITY CARD", 27, 10, { align: 'center' });
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(8);
+            doc.text(worker.name, 27, 20, { align: 'center' });
+            doc.setFontSize(6.5);
+            doc.text(`TRADE: ${worker.category.toUpperCase()}`, 27, 24, { align: 'center' });
+
+            doc.setFontSize(6);
+            doc.text(`Emp Code : ${worker.id}`, 6, 32);
+            doc.text(`UAN No   : ${worker.uan || 'N/A'}`, 6, 36);
+            doc.text(`Mobile   : ${worker.mobile || 'N/A'}`, 6, 40);
+            doc.text(`Valid FY : ${APP_STATE.selectedFy}`, 6, 44);
+
+            doc.setFillColor(245, 158, 11);
+            doc.rect(0, 48, 54, 6, 'F');
+            doc.setFontSize(5);
+            doc.setTextColor(0, 0, 0);
+            doc.text("Labour Mitra Enterprise • Authorized Pass", 27, 52, { align: 'center' });
+
+            doc.save(`ID_Card_${worker.name}_${worker.id}.pdf`);
+        }
+
+        function generateFndSettlementPDF(workerId) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('portrait', 'mm', 'a4');
+            const worker = APP_STATE.labour.find(w => w.id === workerId);
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const m = getWorkerMetrics(worker.id, worker.wage, worker.isEpf);
+
+            doc.setFontSize(14);
+            doc.text("FULL & FINAL (FNF) SETTLEMENT DISCHARGE SLIP", 105, 20, { align: 'center' });
+            doc.setFontSize(10);
+            doc.text(`${firm ? firm.name : 'Contractor Firm'}`, 105, 26, { align: 'center' });
+            doc.line(20, 30, 190, 30);
+
+            doc.setFontSize(9);
+            doc.text(`Worker Name: ${worker.name}`, 20, 40);
+            doc.text(`Emp Code: ${worker.id}`, 140, 40);
+            doc.text(`Trade / Designation: ${worker.category}`, 20, 46);
+            doc.text(`UAN: ${worker.uan}`, 140, 46);
+            doc.text(`Settlement Month: ${APP_STATE.selectedMonth}`, 20, 52);
+
+            const tableData = [
+                ['Total Shifts Worked', `${m.shifts} Shifts`],
+                ['Gross Wages Earned', `Rs. ${Math.round(m.grossWages)}`],
+                ['12% Employee PF Deduction', `Rs. ${m.eePf}`],
+                ['Total Khuraki / Advance Recovered', `Rs. ${m.advanceCut}`],
+                ['Safety & Mess Penalties', `Rs. ${m.fineCut}`],
+                ['FINAL NET AMOUNT PAID / DISCHARGED', `Rs. ${Math.round(m.inHandFinal)}`]
+            ];
+
+            doc.autoTable({
+                head: [['Component', 'Amount / Value']],
+                body: tableData,
+                startY: 60,
+                theme: 'grid',
+                styles: { fontSize: 9 }
+            });
+
+            const finalY = doc.lastAutoTable.finalY + 20;
+            doc.text("Declaration: I have received all my due wages, PF and settlement in full. No dues remain.", 20, finalY);
+            doc.text("Signature / Thumb Impression of Worker", 20, finalY + 30);
+            doc.text("Authorized Signature of Contractor", 130, finalY + 30);
+
+            doc.save(`FNF_Settlement_${worker.name}_${worker.id}.pdf`);
+        }
+
+        // =========================================================================
+        // 3 DISTINCT SHEETS EXPORTERS (PDF & CSV)
+        // =========================================================================
+
+        // SHEET 1: PURE ATTENDANCE REGISTER (PDF & CSV)
+        function downloadPureAttendancePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape', 'mm', 'a4');
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+
+            const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
+            const daysInMonth = new Date(year, month, 0).getDate();
+            const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+            doc.setFontSize(13);
+            doc.text(`FORM T - PURE ATTENDANCE REGISTER - ${APP_STATE.selectedMonth}`, 14, 12);
+            doc.setFontSize(10);
+            doc.text(`${firm ? firm.name : 'Contractor Firm'} (Plant Attendance Submission)`, 14, 18);
+
+            const headRow1 = ['Sr No', 'Emp Code', 'Name'];
+            const headRow2 = ['', '', ''];
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                headRow1.push(d.toString());
+                const dateObj = new Date(year, month - 1, d);
+                headRow2.push(weekdays[dateObj.getDay()]);
+            }
+            headRow1.push('Present');
+            headRow2.push('');
+
+            const tableBody = myLabour.map((w, idx) => {
+                let row = [(idx + 1).toString(), w.id, w.name];
+                let pCount = 0;
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dayStr = d.toString().padStart(2, '0');
+                    const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
+                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const status = typeof rec === 'string' ? rec : rec.status;
+                    if (status === 'P') pCount += 1;
+                    else if (status === 'HD') pCount += 0.5;
+                    row.push(status || '');
+                }
+                row.push(pCount.toString());
+                return row;
+            });
+
+            doc.autoTable({
+                head: [headRow1, headRow2],
+                body: tableBody,
+                startY: 22,
+                theme: 'grid',
+                styles: { fontSize: 5.5, cellPadding: 0.8, halign: 'center' },
+                headStyles: { fillColor: [74, 36, 17], textColor: 255 },
+                columnStyles: { 2: { halign: 'left', cellWidth: 28 } }
+            });
+
+            doc.save(`1_Pure_Attendance_Register_${APP_STATE.selectedMonth}.pdf`);
+        }
+
+        function downloadPureAttendanceExcel() {
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
+            const daysInMonth = new Date(year, month, 0).getDate();
+
+            let csv = "Sr_No,Emp_Code,Worker_Name,";
+            for (let d = 1; d <= daysInMonth; d++) csv += `D_${d},`;
+            csv += "Total_Present_Days\n";
+
+            myLabour.forEach((w, idx) => {
+                let row = `${idx + 1},"${w.id}","${w.name}",`;
+                let pCount = 0;
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dayStr = d.toString().padStart(2, '0');
+                    const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
+                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const status = typeof rec === 'string' ? rec : rec.status;
+                    if (status === 'P') pCount += 1;
+                    else if (status === 'HD') pCount += 0.5;
+                    row += `${status || ''},`;
+                }
+                row += `${pCount}\n`;
+                csv += row;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `1_Pure_Attendance_Register_${APP_STATE.selectedMonth}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // SHEET 2: STATUTORY WAGE & 12% PF PAYOUT SHEET (PDF & CSV)
+        function downloadStatutoryWagePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape', 'mm', 'a4');
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+
+            doc.setFontSize(13);
+            doc.text(`STATUTORY WAGE & 12% PF PAYOUT REGISTER - ${APP_STATE.selectedMonth}`, 14, 12);
+            doc.setFontSize(9);
+            doc.text(`Contractor: ${firm ? firm.name : 'Contractor Firm'} | Official Wage Statement`, 14, 18);
+
+            let totalGross = 0, totalPf = 0, totalStatutoryNet = 0;
+
+            const tableData = myLabour.map((w, idx) => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                totalGross += m.grossWages;
+                totalPf += m.eePf;
+                totalStatutoryNet += m.statutoryNet;
+
+                return [
+                    (idx + 1).toString(),
+                    w.id,
+                    w.name,
+                    w.uan || 'N/A',
+                    w.category,
+                    "Rs. " + w.wage,
+                    `${m.shifts}d / ${m.otHours}h`,
+                    "Rs. " + Math.round(m.grossWages),
+                    "Rs. " + m.eePf,
+                    "Rs. " + Math.round(m.statutoryNet),
+                    w.bankAcc + "\n(" + w.bankIfsc + ")"
+                ];
+            });
+
+            tableData.push([
+                "", "", "TOTAL STATUTORY SUMMARY", "", "", "", "",
+                "Rs. " + Math.round(totalGross),
+                "Rs. " + Math.round(totalPf),
+                "Rs. " + Math.round(totalStatutoryNet),
+                ""
+            ]);
+
+            doc.autoTable({
+                head: [['Sr', 'Code', 'Worker Name', 'UAN Number', 'Trade', 'Rate', 'Shifts/OT', 'Gross Wages', '12% EE PF', 'Net Wage Payable', 'Bank Details']],
+                body: tableData,
+                startY: 23,
+                theme: 'grid',
+                styles: { fontSize: 6.5, cellPadding: 1.2 },
+                headStyles: { fillColor: [30, 58, 138], textColor: 255 }
+            });
+
+            doc.save(`2_Statutory_Wage_And_PF_Sheet_${APP_STATE.selectedMonth}.pdf`);
+        }
+
+        function downloadStatutoryWageExcel() {
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            let csv = "Sr_No,Emp_Code,Worker_Name,UAN,Trade,Daily_Wage,Shifts,OT_Hours,Gross_Wages,EE_PF_12_Cut,Statutory_Net_Payable,Bank_Account,Bank_IFSC\n";
+
+            myLabour.forEach((w, idx) => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                csv += `${idx + 1},"${w.id}","${w.name}","${w.uan}","${w.category}",${w.wage},${m.shifts},${m.otHours},${Math.round(m.grossWages)},${m.eePf},${Math.round(m.statutoryNet)},"${w.bankAcc}","${w.bankIfsc}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `2_Statutory_Wage_And_PF_Sheet_${APP_STATE.selectedMonth}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // SHEET 3: CONTRACTOR INTERNAL HISAB-KITAB & ADVANCE RECOVERY SHEET (PDF & CSV)
+        function downloadInternalHisabPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape', 'mm', 'a4');
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+
+            doc.setFontSize(13);
+            doc.text(`CONTRACTOR INTERNAL HISAB-KITAB & ADVANCE RECOVERY - ${APP_STATE.selectedMonth}`, 14, 12);
+            doc.setFontSize(9);
+            doc.text(`Firm: ${firm ? firm.name : 'Contractor Firm'} | Confidential Final In-Hand Payout`, 14, 18);
+
+            let totalGross = 0, totalPf = 0, totalAdv = 0, totalFine = 0, totalInHand = 0;
+
+            const tableData = myLabour.map((w, idx) => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                totalGross += m.grossWages;
+                totalPf += m.eePf;
+                totalAdv += m.advanceCut;
+                totalFine += m.fineCut;
+                totalInHand += m.inHandFinal;
+
+                return [
+                    (idx + 1).toString(),
+                    w.id,
+                    w.name,
+                    w.category,
+                    `${m.shifts}d / ${m.otHours}h`,
+                    "Rs. " + Math.round(m.grossWages),
+                    "Rs. " + m.eePf,
+                    "Rs. " + m.advanceCut,
+                    "Rs. " + m.fineCut,
+                    "Rs. " + Math.round(m.inHandFinal),
+                    w.bankAcc + "\n(" + w.bankIfsc + ")",
+                    "[ Signature ]"
+                ];
+            });
+
+            tableData.push([
+                "", "", "TOTAL HISAB SUMMARY", "", "",
+                "Rs. " + Math.round(totalGross),
+                "Rs. " + Math.round(totalPf),
+                "Rs. " + Math.round(totalAdv),
+                "Rs. " + Math.round(totalFine),
+                "Rs. " + Math.round(totalInHand),
+                "", ""
+            ]);
+
+            doc.autoTable({
+                head: [['Sr', 'Code', 'Worker Name', 'Trade', 'Shifts/OT', 'Gross Wage', 'PF 12%', 'Advance Cut', 'Fine Cut', 'Final In-Hand', 'Bank Details', 'Labour Sign']],
+                body: tableData,
+                startY: 23,
+                theme: 'grid',
+                styles: { fontSize: 6.5, cellPadding: 1.2 },
+                headStyles: { fillColor: [74, 36, 17], textColor: 255 }
+            });
+
+            doc.save(`3_Contractor_Internal_Hisab_${APP_STATE.selectedMonth}.pdf`);
+        }
+
+        function downloadInternalHisabExcel() {
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            let csv = "Sr_No,Emp_Code,Worker_Name,Trade,Shifts,OT_Hours,Gross_Wages,PF_12_Cut,Advance_Khuraki_Cut,Fine_Cut,Final_InHand_Payout,Bank_Account,Bank_IFSC\n";
+
+            myLabour.forEach((w, idx) => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                csv += `${idx + 1},"${w.id}","${w.name}","${w.category}",${m.shifts},${m.otHours},${Math.round(m.grossWages)},${m.eePf},${m.advanceCut},${m.fineCut},${Math.round(m.inHandFinal)},"${w.bankAcc}","${w.bankIfsc}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `3_Contractor_Internal_Hisab_${APP_STATE.selectedMonth}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // =========================================================================
+        // CLIENT BILLING INVOICE (TAX INVOICE PDF)
+        // =========================================================================
+        function downloadCompanyBillingInvoicePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('portrait', 'mm', 'a4');
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+
+            doc.setFontSize(14);
+            doc.text("MANPOWER SUPPLY TAX INVOICE", 105, 18, { align: 'center' });
+            doc.setFontSize(10);
+            doc.text(`${firm ? firm.name : 'Contractor Firm'}`, 105, 24, { align: 'center' });
+            doc.setFontSize(8);
+            doc.text(`GSTIN: ${firm ? firm.gstin : '22AAAAA0000A1Z5'} | Contact: ${firm ? firm.mobile : ''}`, 105, 29, { align: 'center' });
+            doc.line(14, 32, 196, 32);
+
+            doc.text(`Invoice No: INV-${Date.now().toString().slice(-6)}`, 14, 38);
+            doc.text(`Billing Month: ${APP_STATE.selectedMonth}`, 14, 43);
+            doc.text(`Billed To: Principal Employer / Plant Management`, 120, 38);
+
+            let totalBaseSupply = 0, totalErPf = 0;
+            const tradeMap = {};
+
+            myLabour.forEach(w => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                if (!tradeMap[w.category]) tradeMap[w.category] = { shifts: 0, rate: w.clientRate || (w.wage + 150) };
+                tradeMap[w.category].shifts += m.shifts;
+                totalBaseSupply += (m.shifts * (w.clientRate || (w.wage + 150)));
+                totalErPf += m.erTotalPf;
+            });
+
+            const tableRows = Object.keys(tradeMap).map((cat, idx) => {
+                const item = tradeMap[cat];
+                const amt = item.shifts * item.rate;
+                return [(idx + 1).toString(), `Manpower Supply - ${cat}`, `${item.shifts} Shifts`, `Rs. ${item.rate}`, `Rs. ${amt.toLocaleString('en-IN')}`];
+            });
+
+            tableRows.push(['', '13% Employer PF Contribution Reimbursement', '', '', `Rs. ${Math.round(totalErPf).toLocaleString('en-IN')}`]);
+
+            const marginAmt = Math.round(totalBaseSupply * 0.08); // 8% Service Margin
+            tableRows.push(['', 'Contractor Supervision / Service Margin (8%)', '', '', `Rs. ${marginAmt.toLocaleString('en-IN')}`]);
+
+            const subTotal = totalBaseSupply + totalErPf + marginAmt;
+            const gst18 = Math.round(subTotal * 0.18);
+            const grandTotal = subTotal + gst18;
+
+            doc.autoTable({
+                head: [['Sr', 'Service Description / Trade', 'Total Shifts', 'Billing Rate', 'Total Amount']],
+                body: tableRows,
+                startY: 48,
+                theme: 'grid',
+                styles: { fontSize: 8 }
+            });
+
+            const fY = doc.lastAutoTable.finalY + 8;
+            doc.setFontSize(9);
+            doc.text(`Sub-Total: Rs. ${subTotal.toLocaleString('en-IN')}`, 130, fY);
+            doc.text(`18% GST (9% CGST + 9% SGST): Rs. ${gst18.toLocaleString('en-IN')}`, 130, fY + 6);
+            doc.setFontSize(10);
+            doc.text(`GRAND TOTAL INVOICE VALUE: Rs. ${grandTotal.toLocaleString('en-IN')}`, 130, fY + 13);
+
+            doc.save(`Company_Tax_Invoice_${APP_STATE.selectedMonth}.pdf`);
+        }
+
+        // =========================================================================
+        // BANK NEFT & EPFO ECR EXPORTERS
+        // =========================================================================
+        function downloadBankNeftCsv() {
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            let csv = "Emp_Code,Name,Bank_Account,IFSC,Net_Amount\n";
+            myLabour.forEach(w => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                csv += `"${w.id}","${w.name}","${w.bankAcc}","${w.bankIfsc}",${Math.round(m.inHandFinal)}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Bulk_Bank_NEFT_${APP_STATE.selectedMonth}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadEpfoEcrTextFile() {
+            const myLab = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.isEpf !== 'NO');
+            if (myLab.length === 0) { alert("No EPFO registered labour found!"); return; }
+
+            let ecr = "";
+            myLab.forEach(w => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                const ncp = Math.max(0, 26 - m.shifts);
+                ecr += `${w.uan || '100000000000'}#~#${w.name}#~#${Math.round(m.grossWages)}#~#${Math.round(m.shiftEarned)}#~#${m.eePf}#~#${Math.round(m.shiftEarned * 0.0833)}#~#${Math.round(m.shiftEarned * 0.0367)}#~#${ncp}#~#0\n`;
+            });
+
+            const blob = new Blob([ecr], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `EPFO_ECR_${APP_STATE.selectedMonth}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // =========================================================================
+        // SUPERVISOR WORKSPACE (ATTENDANCE DESK & LOGBOOK)
         // =========================================================================
         function renderSupervisorAttendanceDesk() {
             const date = APP_STATE.supervisorSelectedDate;
@@ -548,7 +1301,7 @@
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
             if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
 
-            document.getElementById('workspace-notice-title').innerText = `Field Attendance Desk — Selected Date: ${date}`;
+            document.getElementById('workspace-notice-title').innerText = `Field Attendance Terminal — Date: ${date}`;
 
             let pCount = 0, hdCount = 0, aCount = 0, totalOt = 0;
             myLabour.forEach(w => {
@@ -563,14 +1316,13 @@
 
             const container = document.getElementById('workspace-main-container');
             container.innerHTML = `
-                <!-- Date Picker & Lock Status Card -->
                 <div class="bg-white border-2 border-amber-400 p-3 rounded-lg shadow-sm flex flex-wrap items-center justify-between gap-3">
                     <div class="flex items-center gap-2">
-                        <label class="font-bold text-[#4a2411] text-xs">Attendance Date:</label>
+                        <label class="font-bold text-[#4a2411] text-xs">Shift Date:</label>
                         <input type="date" value="${date}" onchange="changeSupervisorDate(this.value)" class="border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
                         ${isLocked ? 
-                            `<span class="bg-emerald-700 text-white font-bold text-[10px] px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Submitted & Locked (${APP_STATE.lockedDates[date].timestamp})</span>` : 
-                            `<span class="bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded">Draft (Editable)</span>`
+                            `<span class="bg-emerald-700 text-white font-bold text-[10px] px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Locked (${APP_STATE.lockedDates[date].timestamp})</span>` : 
+                            `<span class="bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded">Draft</span>`
                         }
                     </div>
 
@@ -582,20 +1334,18 @@
                             </button>
                         </div>
                     ` : `
-                        <span class="text-xs text-rose-700 font-bold italic">Date Locked. Click "Request Edit" below to submit changes.</span>
+                        <span class="text-xs text-rose-700 font-bold italic">Date Locked. Click "Request Edit" below to request correction.</span>
                     `}
                 </div>
 
-                <!-- Daily Summary Stats -->
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
                     <div class="bg-white border border-amber-300 p-2 rounded"><p class="text-[9px] text-slate-500 font-bold">Total Strength</p><p class="text-sm font-black text-slate-900">${myLabour.length}</p></div>
                     <div class="bg-emerald-100 border border-emerald-300 p-2 rounded"><p class="text-[9px] text-emerald-800 font-bold">Present (P)</p><p class="text-sm font-black text-emerald-700">${pCount}</p></div>
                     <div class="bg-amber-100 border border-amber-300 p-2 rounded"><p class="text-[9px] text-amber-800 font-bold">Half Day (HD)</p><p class="text-sm font-black text-amber-700">${hdCount}</p></div>
                     <div class="bg-rose-100 border border-rose-300 p-2 rounded"><p class="text-[9px] text-rose-800 font-bold">Absent (A)</p><p class="text-sm font-black text-rose-700">${aCount}</p></div>
-                    <div class="bg-blue-100 border border-blue-300 p-2 rounded"><p class="text-[9px] text-blue-800 font-bold">Total OT</p><p class="text-sm font-black text-blue-700">${totalOt} Hours</p></div>
+                    <div class="bg-blue-100 border border-blue-300 p-2 rounded"><p class="text-[9px] text-blue-800 font-bold">Total OT</p><p class="text-sm font-black text-blue-700">${totalOt}h</p></div>
                 </div>
 
-                <!-- Worker List Container -->
                 <div class="bg-white border border-amber-400 rounded-lg shadow overflow-hidden">
                     <div class="p-2.5 lm-brown text-white font-bold text-xs flex justify-between items-center">
                         <span>Workforce Attendance Roster (${date})</span>
@@ -666,11 +1416,11 @@
         }
 
         function lockAndSubmitAttendance(date) {
-            if (confirm(`Are you sure you want to Final Submit & Lock attendance for ${date}? You won't be able to directly edit after locking.`)) {
+            if (confirm(`Final Submit & Lock attendance for ${date}? You cannot directly edit once locked.`)) {
                 const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                 APP_STATE.lockedDates[date] = { locked: true, timestamp: `${date} ${now}` };
                 saveLocalState();
-                alert(`Attendance for ${date} has been submitted & locked!`);
+                alert(`Attendance for ${date} submitted and locked!`);
                 renderSupervisorAttendanceDesk();
             }
         }
@@ -685,9 +1435,6 @@
             });
         }
 
-        // =========================================================================
-        // SUPERVISOR: 1-YEAR ATTENDANCE HISTORY LOGBOOK
-        // =========================================================================
         function renderSupervisorHistoryLog() {
             document.getElementById('workspace-notice-title').innerText = "1-Year Manpower Attendance History Logbook";
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
@@ -697,7 +1444,7 @@
             container.innerHTML = `
                 <div class="bg-white border-2 border-amber-400 rounded-lg shadow p-3 space-y-3">
                     <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                        <h3 class="font-bold text-[#4a2411] text-xs">Historical Day-by-Day Muster Logs</h3>
+                        <h3 class="font-bold text-[#4a2411] text-xs">Historical Day-by-Day Logs</h3>
                         <span class="text-[10px] font-mono font-bold text-slate-600">${dates.length} Recorded Days</span>
                     </div>
 
@@ -707,9 +1454,9 @@
                                 <tr>
                                     <th class="p-2">Date</th>
                                     <th class="p-2">Status</th>
-                                    <th class="p-2">Present (P)</th>
-                                    <th class="p-2">Half Day (HD)</th>
-                                    <th class="p-2">Absent (A)</th>
+                                    <th class="p-2">Present</th>
+                                    <th class="p-2">Half Day</th>
+                                    <th class="p-2">Absent</th>
                                     <th class="p-2">Total OT</th>
                                     <th class="p-2 text-right">Action</th>
                                 </tr>
@@ -732,9 +1479,7 @@
                                         return `
                                             <tr class="hover:bg-amber-50">
                                                 <td class="p-2 font-mono font-bold text-slate-900">${d}</td>
-                                                <td class="p-2">
-                                                    <span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${isL ? 'bg-emerald-700 text-white' : 'bg-amber-500 text-slate-950'}">${isL ? 'Locked' : 'Draft'}</span>
-                                                </td>
+                                                <td class="p-2"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${isL ? 'bg-emerald-700 text-white' : 'bg-amber-500 text-slate-950'}">${isL ? 'Locked' : 'Draft'}</span></td>
                                                 <td class="p-2 font-mono font-bold text-emerald-700">${p}</td>
                                                 <td class="p-2 font-mono font-bold text-amber-700">${hd}</td>
                                                 <td class="p-2 font-mono font-bold text-rose-700">${a}</td>
@@ -758,9 +1503,6 @@
             renderSupervisorAttendanceDesk();
         }
 
-        // =========================================================================
-        // CORRECTION REQUESTS (SEND, TRACK & CONTRACTOR APPROVAL)
-        // =========================================================================
         function openCorrectionModal(date, workerId, workerName, currentStatus, currentOt) {
             document.getElementById('corr-worker-id').value = workerId;
             document.getElementById('corr-date').value = date;
@@ -791,7 +1533,6 @@
             const newReq = {
                 id: 'REQ-' + Date.now().toString().slice(-6),
                 contractorId: APP_STATE.currentContractorId,
-                supervisorName: (APP_STATE.currentSupervisor && APP_STATE.currentSupervisor.name) || 'Field Munshi',
                 date,
                 workerId: wId,
                 workerName: worker ? worker.name : wId,
@@ -825,7 +1566,7 @@
                             myRequests.map(r => `
                                 <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
                                     <div>
-                                        <p class="font-bold text-slate-900">${r.workerName} (${r.workerId}) — <span class="font-mono text-amber-800">${r.date}</span></p>
+                                        <p class="font-bold text-slate-900">${r.workerName} (${r.workerId}) — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
                                         <p class="text-[11px] text-slate-600">Change: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-blue-700">${r.newStatus} (${r.newOt}h)</span></p>
                                         <p class="text-[11px] text-slate-700 italic">"Reason: ${r.reason}"</p>
                                     </div>
@@ -840,9 +1581,6 @@
             `;
         }
 
-        // =========================================================================
-        // CONTRACTOR: CORRECTION REQUEST APPROVAL ACTION
-        // =========================================================================
         function handleContractorRequestAction(reqId, action) {
             const req = APP_STATE.correctionRequests.find(r => r.id === reqId);
             if (!req) return;
@@ -851,7 +1589,7 @@
                 if (!APP_STATE.attendance[req.date]) APP_STATE.attendance[req.date] = {};
                 APP_STATE.attendance[req.date][req.workerId] = { status: req.newStatus, ot: req.newOt };
                 req.status = 'APPROVED';
-                alert(`Request Approved! Attendance for ${req.workerName} on ${req.date} updated to ${req.newStatus}.`);
+                alert(`Request Approved! Muster updated for ${req.workerName}.`);
             } else {
                 req.status = 'REJECTED';
                 alert(`Request Rejected!`);
@@ -861,150 +1599,17 @@
             renderContractorMusterWorkspace();
         }
 
-        // =========================================================================
-        // CONTRACTOR WORKSPACE (30-DAY MUSTER + PENDING REQUESTS PANEL)
-        // =========================================================================
-        function renderContractorMusterWorkspace() {
-            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-            document.getElementById('workspace-notice-title').innerText = `${firm ? firm.name : 'Contractor Firm'} — Monthly Muster Register (${APP_STATE.selectedMonth})`;
-
-            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-            const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
-            const daysInMonth = new Date(year, month, 0).getDate();
-            const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-
-            let dayHeaders = '', dayNameHeaders = '';
-            for (let d = 1; d <= daysInMonth; d++) {
-                const dateObj = new Date(year, month - 1, d);
-                dayHeaders += `<th class="w-6">${d}</th>`;
-                dayNameHeaders += `<th class="text-[8px] font-mono">${weekdays[dateObj.getDay()]}</th>`;
-            }
-
-            let rows = '';
-            myLabour.forEach((w, idx) => {
-                let dayCells = '', presentCount = 0;
-                for (let d = 1; d <= daysInMonth; d++) {
-                    const dayStr = d.toString().padStart(2, '0');
-                    const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
-                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
-                    const status = typeof rec === 'string' ? rec : rec.status;
-
-                    if (status === 'P') presentCount += 1;
-                    else if (status === 'HD') presentCount += 0.5;
-
-                    dayCells += `<td class="font-bold font-mono ${status === 'P' ? 'text-emerald-700 bg-emerald-50' : status === 'HD' ? 'text-amber-600 bg-amber-50' : status === 'A' ? 'text-rose-600 bg-rose-50' : ''}">${status || ''}</td>`;
-                }
-
-                rows += `
-                    <tr class="hover:bg-amber-50/60 bg-white">
-                        <td class="font-bold">${idx + 1}</td>
-                        <td class="font-mono text-[10px] font-bold">${w.id}</td>
-                        <td class="text-left font-bold text-[#4a2411] px-2 whitespace-nowrap">${w.name} <span class="text-[9px] text-slate-500 font-normal">(${w.category})</span></td>
-                        ${dayCells}
-                        <td class="font-black text-blue-700 font-mono bg-amber-100">${presentCount}</td>
-                        <td class="p-1">
-                            <button onclick="openAdvanceModal('${w.id}', '${w.name}')" class="text-amber-800 hover:underline font-bold text-[10px]">+Khuraki</button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            const pendingReqs = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING');
-
-            const container = document.getElementById('workspace-main-container');
-            container.innerHTML = `
-                <!-- Pending Correction Requests Section -->
-                <div id="cont-requests-sec" class="workspace-section bg-white border-2 border-amber-500 p-4 rounded-lg shadow-sm space-y-3 ${pendingReqs.length === 0 ? 'hidden' : ''}">
-                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                        <h4 class="font-bold text-[#4a2411] text-xs flex items-center gap-1.5">
-                            <i data-lucide="bell-ring" class="w-4 h-4 text-rose-600 animate-bounce"></i> Pending Attendance Correction Requests
-                        </h4>
-                        <span class="bg-rose-600 text-white font-bold text-[10px] px-2 py-0.5 rounded">${pendingReqs.length} Pending</span>
-                    </div>
-                    <div class="divide-y divide-amber-200">
-                        ${pendingReqs.map(r => `
-                            <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
-                                <div>
-                                    <p class="font-bold text-slate-900">${r.workerName} (${r.workerId}) — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
-                                    <p class="text-[11px] text-slate-600">Proposed Change: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-emerald-700">${r.newStatus} (${r.newOt}h OT)</span></p>
-                                    <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">कारण: "${r.reason}"</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button onclick="handleContractorRequestAction('${r.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Accept & Update Muster</button>
-                                    <button onclick="handleContractorRequestAction('${r.id}', 'REJECT')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Reject</button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <!-- Onboard Labour Form -->
-                <div id="cont-onboard-labour-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
-                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Onboard Labour & Trade Mapping</h4>
-                    <form onsubmit="handleAddLabour(event)" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                        <input type="text" id="labour-name" required placeholder="Worker Full Name" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="text" id="labour-category" required placeholder="Trade (Fitter/Welder/Helper)" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="number" id="labour-wage" required placeholder="Daily Wage Rate (₹)" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="text" id="labour-uan" required placeholder="12-Digit UAN Number" maxlength="12" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="text" id="labour-bank-acc" required placeholder="Bank A/C No" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="text" id="labour-bank-ifsc" required placeholder="Bank IFSC" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">Save Worker Profile</button>
-                    </form>
-                </div>
-
-                <!-- Create Supervisor Form -->
-                <div id="cont-create-sup-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
-                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Create Site Munshi / Supervisor ID</h4>
-                    <form onsubmit="handleAddSupervisor(event)" class="space-y-2 max-w-sm">
-                        <input type="text" id="sup-name" required placeholder="Supervisor Name" class="w-full border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="text" id="sup-mobile" required placeholder="Mobile Login" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="password" id="sup-password" required placeholder="Password" class="w-full border border-slate-400 p-1.5 rounded text-xs">
-                        <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Create Supervisor</button>
-                    </form>
-                </div>
-
-                <!-- Exact 30-Day Muster Table -->
-                <div class="bg-white border-2 border-amber-400 rounded-lg shadow-md overflow-hidden p-3 space-y-2">
-                    <div class="text-center border-b border-amber-300 pb-2 flex justify-between items-center">
-                        <div>
-                            <h2 class="text-xs font-black text-[#4a2411] tracking-wider uppercase">Monthly Attendance Register - ${APP_STATE.selectedMonth}</h2>
-                            <h3 class="text-sm font-black text-amber-900">${firm ? firm.name : 'Contractor Firm'}</h3>
-                        </div>
-                        <button onclick="downloadMasterPaymentSheetPDF()" class="bg-amber-600 hover:bg-amber-500 text-slate-950 px-3 py-1.5 rounded-lg font-black text-xs shadow">Download Muster PDF</button>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-xs muster-grid border-collapse">
-                            <thead class="bg-amber-200 text-[#4a2411]">
-                                <tr>
-                                    <th rowspan="2" class="w-8">Sr</th>
-                                    <th rowspan="2" class="w-14">Emp Code</th>
-                                    <th rowspan="2" class="w-40 text-left px-2">Name</th>
-                                    ${dayHeaders}
-                                    <th rowspan="2" class="w-12 bg-amber-300 font-black">Present</th>
-                                    <th rowspan="2" class="w-12">Action</th>
-                                </tr>
-                                <tr>${dayNameHeaders}</tr>
-                            </thead>
-                            <tbody>
-                                ${rows || '<tr><td colspan="35" class="p-4 text-slate-500 italic">No workers registered. Click "Onboard Labour" above.</td></tr>'}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-            updateNotificationBadge();
-            lucide.createIcons();
-        }
-
         function handleAddLabour(e) {
             e.preventDefault();
             const newWorker = {
                 id: (9000 + APP_STATE.labour.length + 1).toString(),
                 contractorId: APP_STATE.currentContractorId,
+                supervisorId: document.getElementById('labour-sup-assign').value,
                 name: document.getElementById('labour-name').value,
                 category: document.getElementById('labour-category').value,
                 wage: Number(document.getElementById('labour-wage').value),
+                clientRate: Number(document.getElementById('labour-client-rate').value || 600),
+                mobile: document.getElementById('labour-mobile').value,
                 uan: document.getElementById('labour-uan').value,
                 bankAcc: document.getElementById('labour-bank-acc').value,
                 bankIfsc: document.getElementById('labour-bank-ifsc').value,
@@ -1032,273 +1637,28 @@
             alert("Supervisor ID created!");
         }
 
-        function openAdvanceModal(workerId, workerName) {
-            document.getElementById('adv-worker-id').value = workerId;
-            document.getElementById('adv-worker-name').value = workerName;
-            document.getElementById('advance-modal').classList.remove('hidden');
-        }
-
-        function closeAdvanceModal() {
-            document.getElementById('advance-modal').classList.add('hidden');
-        }
-
-        function handleSaveAdvance(e) {
-            e.preventDefault();
-            const wId = document.getElementById('adv-worker-id').value;
-            const amount = Number(document.getElementById('adv-amount').value);
-            const reason = document.getElementById('adv-reason').value || "Khuraki";
-            const date = new Date().toISOString().split('T')[0];
-
-            if (!APP_STATE.advances[wId]) APP_STATE.advances[wId] = [];
-            APP_STATE.advances[wId].push({ amount, reason, date });
-
-            saveLocalState();
-            closeAdvanceModal();
-            e.target.reset();
-            alert("Khuraki Advance recorded!");
-            renderContractorMusterWorkspace();
-        }
-
         // =========================================================================
-        // ADMIN WORKSPACE
+        // ADMIN DESK
         // =========================================================================
         function renderAdminWorkspace() {
-            document.getElementById('workspace-notice-title').innerText = "Master Administrator Dashboard — 10 Contractor Firms Matrix";
-
-            let totalPlantWages = 0, totalPlantPf = 0, totalPlantWorkers = APP_STATE.labour.length;
-            APP_STATE.contractors.forEach(c => {
-                APP_STATE.labour.filter(w => w.contractorId === c.id).forEach(w => {
-                    const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
-                    totalPlantWages += m.grossWages;
-                    totalPlantPf += (m.eePf + m.erTotalPf);
-                });
-            });
-
+            document.getElementById('workspace-notice-title').innerText = "Principal Employer Admin Dashboard";
             const container = document.getElementById('workspace-main-container');
             container.innerHTML = `
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold">Registered Supplier Firms</p>
-                        <p class="text-xl font-black text-[#4a2411] mt-0.5">${APP_STATE.contractors.length} Firms</p>
+                <div class="bg-white border border-amber-300 rounded-lg shadow p-4 space-y-3">
+                    <h3 class="font-black text-[#4a2411] text-sm">Contractor Firms Roster</h3>
+                    <div class="divide-y divide-amber-200">
+                        ${APP_STATE.contractors.map(c => `
+                            <div class="py-2 flex justify-between items-center">
+                                <div>
+                                    <p class="font-bold text-slate-900">${c.name} (${c.id})</p>
+                                    <p class="text-[11px] text-slate-600">Owner: ${c.owner} | Mobile: ${c.mobile} | Quota: ${c.quota || 100}</p>
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-600 text-white">${c.status}</span>
+                            </div>
+                        `).join('')}
                     </div>
-                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold">Deployed Workforce</p>
-                        <p class="text-xl font-black text-blue-700 mt-0.5">${totalPlantWorkers} Workers</p>
-                    </div>
-                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold">Monthly Plant Wages</p>
-                        <p class="text-xl font-black text-rose-700 mt-0.5">₹${Math.round(totalPlantWages).toLocaleString('en-IN')}</p>
-                    </div>
-                    <div class="bg-white border border-amber-300 p-3 rounded-lg shadow-sm">
-                        <p class="text-[9px] text-slate-500 uppercase font-bold">EPFO Total PF (25%)</p>
-                        <p class="text-xl font-black text-emerald-700 mt-0.5">₹${Math.round(totalPlantPf).toLocaleString('en-IN')}</p>
-                    </div>
-                </div>
-
-                <div id="admin-add-contractor-sec" class="workspace-section bg-white border border-amber-300 p-4 rounded-lg shadow-sm space-y-3 hidden">
-                    <h4 class="font-bold text-[#4a2411] uppercase text-xs border-b border-amber-200 pb-1">Register New Contractor Firm (ID/Password Generation)</h4>
-                    <form onsubmit="handleCreateContractor(event)" class="grid grid-cols-1 sm:grid-cols-5 gap-2">
-                        <input type="text" id="new-cont-name" required placeholder="Firm Name" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="text" id="new-cont-owner" required placeholder="Owner Name" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="text" id="new-cont-mobile" required placeholder="Login Mobile ID" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <input type="password" id="new-cont-pass" required placeholder="Access Password" class="border border-slate-400 p-1.5 rounded text-xs">
-                        <input type="number" id="new-cont-quota" required placeholder="Labour Quota" value="100" class="border border-slate-400 p-1.5 rounded text-xs font-mono">
-                        <button type="submit" class="lm-btn-gold col-span-full py-2 rounded-lg text-xs shadow font-bold">Save & Generate Contractor ID</button>
-                    </form>
-                </div>
-
-                <div class="bg-white border border-amber-300 rounded-lg shadow-sm overflow-hidden">
-                    <div class="p-3 lm-brown text-white font-bold text-xs flex justify-between items-center">
-                        <span>Master Contractor Ledger (${APP_STATE.selectedMonth})</span>
-                        <span class="text-amber-300 font-mono text-[11px]">${APP_STATE.contractors.length} Registered</span>
-                    </div>
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-amber-100 text-[#4a2411] uppercase text-[10px] border-b border-amber-300 font-bold">
-                            <tr>
-                                <th class="p-2.5">Firm Name & Owner</th>
-                                <th class="p-2.5">Login Mobile</th>
-                                <th class="p-2.5">Password</th>
-                                <th class="p-2.5">Status</th>
-                                <th class="p-2.5">Workforce</th>
-                                <th class="p-2.5">Monthly Wages</th>
-                                <th class="p-2.5">Total PF</th>
-                                <th class="p-2.5 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-amber-200">
-                            ${APP_STATE.contractors.map(c => {
-                                const cWorkers = APP_STATE.labour.filter(w => w.contractorId === c.id);
-                                let cWages = 0, cPf = 0;
-                                cWorkers.forEach(w => {
-                                    const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
-                                    cWages += m.grossWages;
-                                    cPf += (m.eePf + m.erTotalPf);
-                                });
-
-                                return `
-                                    <tr class="hover:bg-amber-50">
-                                        <td class="p-2.5 font-bold text-slate-900">${c.name} <span class="block text-[10px] font-normal text-slate-600">${c.owner} (${c.id})</span></td>
-                                        <td class="p-2.5 font-mono font-bold">${c.mobile}</td>
-                                        <td class="p-2.5 font-mono text-slate-600">${c.password}</td>
-                                        <td class="p-2.5"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${c.status === 'BLOCKED' ? 'bg-rose-600 text-white' : 'bg-emerald-600 text-white'}">${c.status || 'ACTIVE'}</span></td>
-                                        <td class="p-2.5 font-mono font-bold text-blue-700">${cWorkers.length} / ${c.quota || 100}</td>
-                                        <td class="p-2.5 font-mono font-bold text-slate-900">₹${Math.round(cWages).toLocaleString('en-IN')}</td>
-                                        <td class="p-2.5 font-mono text-emerald-700 font-bold">₹${Math.round(cPf).toLocaleString('en-IN')}</td>
-                                        <td class="p-2.5 text-right space-x-1.5">
-                                            <button onclick="toggleBlockContractor('${c.id}')" class="text-amber-800 hover:underline font-bold text-[11px]">${c.status === 'BLOCKED' ? 'Unblock' : 'Block'}</button>
-                                            <button onclick="resetContractorPass('${c.id}')" class="text-blue-700 hover:underline font-bold text-[11px]">Pass Reset</button>
-                                            <button onclick="deleteContractor('${c.id}')" class="text-rose-700 hover:underline font-bold text-[11px]">Delete</button>
-                                        </td>
-                                    </tr>
-                                `;
-                            }).join('')}
-                        </tbody>
-                    </table>
                 </div>
             `;
-        }
-
-        function handleCreateContractor(e) {
-            e.preventDefault();
-            const newC = {
-                id: 'CONT-' + (APP_STATE.contractors.length + 1).toString().padStart(3, '0'),
-                name: document.getElementById('new-cont-name').value,
-                owner: document.getElementById('new-cont-owner').value,
-                mobile: document.getElementById('new-cont-mobile').value,
-                password: document.getElementById('new-cont-pass').value,
-                quota: Number(document.getElementById('new-cont-quota').value || 100),
-                status: 'ACTIVE'
-            };
-            APP_STATE.contractors.push(newC);
-            saveLocalState();
-            e.target.reset();
-            alert("Contractor Registered!");
-            renderAdminWorkspace();
-        }
-
-        function toggleBlockContractor(id) {
-            const c = APP_STATE.contractors.find(x => x.id === id);
-            if (c) {
-                c.status = c.status === 'BLOCKED' ? 'ACTIVE' : 'BLOCKED';
-                saveLocalState();
-                renderAdminWorkspace();
-            }
-        }
-
-        function resetContractorPass(id) {
-            const newP = prompt("Enter new password for contractor:");
-            if (newP) {
-                const c = APP_STATE.contractors.find(x => x.id === id);
-                if (c) {
-                    c.password = newP;
-                    saveLocalState();
-                    alert("Password updated!");
-                    renderAdminWorkspace();
-                }
-            }
-        }
-
-        function deleteContractor(id) {
-            if (confirm("Delete this contractor firm?")) {
-                APP_STATE.contractors = APP_STATE.contractors.filter(x => x.id !== id);
-                saveLocalState();
-                renderAdminWorkspace();
-            }
-        }
-
-        // =========================================================================
-        // STATUTORY PDF, CSV & ECR EXPORTERS
-        // =========================================================================
-        function downloadMasterPaymentSheetPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('landscape', 'mm', 'a4');
-            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-            const myLabour = APP_STATE.currentUserRole === 'ADMIN' ? APP_STATE.labour : APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-
-            const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
-            const daysInMonth = new Date(year, month, 0).getDate();
-            const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-
-            doc.setFontSize(13);
-            doc.text(`Monthly Attendance Register - ${APP_STATE.selectedMonth}`, 14, 12);
-            doc.setFontSize(10);
-            doc.text(`${firm ? firm.name : 'Consolidated Manpower Matrix'}`, 14, 18);
-
-            const headRow1 = ['Sr No', 'Emp Code', 'Name'];
-            const headRow2 = ['', '', ''];
-
-            for (let d = 1; d <= daysInMonth; d++) {
-                headRow1.push(d.toString());
-                const dateObj = new Date(year, month - 1, d);
-                headRow2.push(weekdays[dateObj.getDay()]);
-            }
-            headRow1.push('Present');
-            headRow2.push('');
-
-            const tableBody = myLabour.map((w, idx) => {
-                let row = [(idx + 1).toString(), w.id, w.name];
-                let pCount = 0;
-                for (let d = 1; d <= daysInMonth; d++) {
-                    const dayStr = d.toString().padStart(2, '0');
-                    const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
-                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
-                    const status = typeof rec === 'string' ? rec : rec.status;
-                    if (status === 'P') pCount += 1;
-                    else if (status === 'HD') pCount += 0.5;
-                    row.push(status || '');
-                }
-                row.push(pCount.toString());
-                return row;
-            });
-
-            doc.autoTable({
-                head: [headRow1, headRow2],
-                body: tableBody,
-                startY: 22,
-                theme: 'grid',
-                styles: { fontSize: 5.5, cellPadding: 0.8, halign: 'center' },
-                headStyles: { fillColor: [74, 36, 17], textColor: 255 },
-                columnStyles: { 2: { halign: 'left', cellWidth: 28 } }
-            });
-
-            doc.save(`Monthly_Attendance_Register_${APP_STATE.selectedMonth}.pdf`);
-        }
-
-        function downloadBankNeftCsv() {
-            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-            let csv = "Emp_Code,Name,Bank_Account,IFSC,Net_Amount\n";
-            myLabour.forEach(w => {
-                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
-                csv += `"${w.id}","${w.name}","${w.bankAcc}","${w.bankIfsc}",${Math.round(m.netInHand)}\n`;
-            });
-
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `Bank_NEFT_Wages_${APP_STATE.selectedMonth}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function downloadEpfoEcrTextFile() {
-            const myLab = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.isEpf !== 'NO');
-            if (myLab.length === 0) { alert("No EPFO registered labour found!"); return; }
-
-            let ecr = "";
-            myLab.forEach(w => {
-                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
-                const ncp = Math.max(0, 26 - m.shifts);
-                ecr += `${w.uan || '100000000000'}#~#${w.name}#~#${Math.round(m.grossWages)}#~#${Math.round(m.shiftEarned)}#~#${m.eePf}#~#${Math.round(m.shiftEarned * 0.0833)}#~#${Math.round(m.shiftEarned * 0.0367)}#~#${ncp}#~#0\n`;
-            });
-
-            const blob = new Blob([ecr], { type: 'text/plain;charset=utf-8' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `EPFO_ECR_${APP_STATE.selectedMonth}.txt`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         }
     </script>
 </body>
