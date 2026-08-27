@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi" class="h-full bg-slate-950 text-slate-100">
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -124,20 +124,20 @@
             <!-- WHO CAN USE & KEY BENEFITS SECTION -->
             <div class="bg-slate-900/80 border border-amber-500/30 p-6 rounded-2xl space-y-4 text-left shadow-xl">
                 <h3 class="text-amber-400 font-black text-sm uppercase tracking-wider flex items-center gap-2">
-                    <i data-lucide="info" class="w-4 h-4"></i> इस पोर्टल के फायदे और उपयोग करने वाले (Who Can Use & Benefits)
+                    <i data-lucide="info" class="w-4 h-4"></i> <span data-i18n="benefitsTitle">इस पोर्टल के फायदे और उपयोग करने वाले (Who Can Use & Benefits)</span>
                 </h3>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-300">
                     <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-1">
-                        <p class="font-bold text-amber-300 text-xs">1. इंडस्ट्रियल ठेकेदार (Contractors)</p>
-                        <p>बिना किसी हिसाब की झंझट के लेबर अटेंडेंस, 12% PF कटौती, एडवांस अप्रूवल और इन-हैंड सैलरी मैनेज करें। सभी शीट्स 1-क्लिक में PDF/Excel पर डाउनलोड होती हैं।</p>
+                        <p class="font-bold text-amber-300 text-xs" data-i18n="ben1Head">1. इंडस्ट्रियल ठेकेदार (Contractors)</p>
+                        <p data-i18n="ben1Desc">बिना किसी हिसाब की झंझट के लेबर अटेंडेंस, 12% PF कटौती, एडवांस अप्रूवल और इन-हैंड सैलरी मैनेज करें। सभी शीट्स 1-क्लिक में PDF/Excel पर डाउनलोड होती हैं।</p>
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-1">
-                        <p class="font-bold text-amber-300 text-xs">2. मुंशी व सुपरवाइज़र (Supervisors)</p>
-                        <p>मोबाइल या टर्मिनल से रोज़ाना की शिफ्ट हाज़िरी (Present/Half-Day/Absent) और ओवरटाइम (OT) दर्ज करें। एडवांस भुगतान के लिए सीधे ठेकेदार को ऑनलाइन निवेदन भेजें।</p>
+                        <p class="font-bold text-amber-300 text-xs" data-i18n="ben2Head">2. मुंशी व सुपरवाइज़र (Supervisors)</p>
+                        <p data-i18n="ben2Desc">मोबाइल या टर्मिनल से रोज़ाना की शिफ्ट हाज़िरी (Present/Half-Day/Absent) और ओवरटाइम (OT) दर्ज करें। एडवांस भुगतान के लिए सीधे ठेकेदार को ऑनलाइन निवेदन भेजें।</p>
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-1">
-                        <p class="font-bold text-amber-300 text-xs">3. प्लांट प्रबंधन / HR (Principal Employer)</p>
-                        <p>EPFO और लेबर कंप्लायंस की पूरी पारदर्शिता। एक क्लिक में सभी ठेकेदारों के मस्टर रजिस्टर, ECR टेक्स्ट फाइल और टैक्स इनवॉइस वेरिफ़ाई और डाउनलोड करें।</p>
+                        <p class="font-bold text-amber-300 text-xs" data-i18n="ben3Head">3. प्लांट प्रबंधन / HR (Principal Employer)</p>
+                        <p data-i18n="ben3Desc">EPFO और लेबर कंप्लायंस की पूरी पारदर्शिता। एक क्लिक में सभी ठेकेदारों के मस्टर रजिस्टर, ECR टेक्स्ट फाइल और टैक्स इनवॉइस वेरिफ़ाई और डाउनलोड करें।</p>
                     </div>
                 </div>
             </div>
@@ -174,15 +174,15 @@
             <form onsubmit="handleAuth(event)" class="space-y-3">
                 <input type="hidden" id="login-target-role" value="CONTRACTOR">
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1" data-i18n="mobileLoginLabel">Mobile / Login ID</label>
-                    <input type="text" id="auth-id" required placeholder="Enter 10-digit Mobile" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900 font-mono">
+                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1" id="login-id-label">Mobile / Login ID</label>
+                    <input type="text" id="auth-id" required placeholder="Enter ID or Mobile" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900 font-mono">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1" data-i18n="passwordLabel">Password</label>
                     <input type="password" id="auth-pass" required placeholder="••••" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900">
                 </div>
                 <div id="login-hint" class="text-[10px] text-amber-900 bg-amber-100 p-2 rounded border border-amber-300 font-mono">
-                    Mobile Login: Enter 10-digit number.
+                    Enter your authorized credentials.
                 </div>
                 <button type="submit" id="auth-submit-btn" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow font-bold" data-i18n="loginBtn">Authenticate & Launch Desk</button>
             </form>
@@ -298,7 +298,7 @@
             <div class="flex items-center space-x-2 sm:space-x-3 text-xs font-mono">
                 <button onclick="toggleAppLanguage()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-2 py-0.5 rounded shadow text-[10px] sm:text-xs flex items-center gap-1 border border-amber-600">
                     <i data-lucide="languages" class="w-3 h-3"></i>
-                    <span id="app-lang-btn-text">🌐 English</span>
+                    <span id="app-lang-btn-text">🌐 हिन्दी</span>
                 </button>
 
                 <button id="contractor-notif-btn" onclick="showCorrectionRequestsDesk()" class="hidden relative bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 flex items-center gap-1">
@@ -367,101 +367,28 @@
         const dbRef = firebase.database().ref("labour_mitra/main_database");
 
         const I18N = {
-            hi: {
-                langBtn: "🌐 हिन्दी",
-                contractorLogin: "ठेकेदार लॉगिन",
-                supervisorTerminal: "मुंशी / सुपरवाइज़र",
-                taglineHero: "3-शीट रिपोर्टिंग • लाइव हाज़िरी लॉक • बल्क बैंक NEFT • ईपीएफओ",
-                heroSubtitle: "3-स्तरीय वेतन व हिसाब-किताब सिस्टम",
-                heroDesc: "ठेकेदारों, मुंशियों और भारी उद्योगों के लिए विशेष रूप से डिज़ाइन किया गया पोर्टल। 30-दिन हाज़िरी रजिस्टर, पीएफ शीट, एडवांस रिकवरी और कंपनी टैक्स इनवॉइस एक क्लिक में तैयार करें।",
-                launchContractor: "ठेकेदार पोर्टल खोलें",
-                markAttendanceHero: "हाज़िरी दर्ज करें",
-                sheet1Title: "1. शुद्ध हाज़िरी रजिस्टर",
-                sheet1Desc: "1 से 30 तारीख की शुद्ध P/HD/A हाज़िरी और कुल OT घंटे।",
-                sheet2Title: "2. सरकारी 12% PF वेतन बिल",
-                sheet2Desc: "सकल वेतन, 12% PF कटौती और बैंक सैलरी स्टेटमेंट।",
-                sheet3Title: "3. ठेकेदार निजी हिसाब-किताब",
-                sheet3Desc: "Gross Payment ➔ PF ➔ Total Payment ➔ Advance ➔ In-Hand Salary",
-                mobileLoginLabel: "मोबाइल / लॉगिन आईडी",
-                passwordLabel: "पासवर्ड",
-                loginBtn: "लॉगिन करें",
-                accountingPeriod: "खाता अवधि",
-                finYear: "वित्तीय वर्ष",
-                wageMonth: "वेतन महीना",
-                logoutBtn: "लॉगआउट",
-                operations: "मुख्य कार्य (Operations)",
-                masterMuster: "📋 30-दिन मास्टर मस्टर",
-                advDesk: "💰 सुपरवाइज़र एडवांस डेस्क",
-                advApprovals: "✅ एडवांस अप्रूवल डेस्क",
-                corrReqs: "🔔 हाज़िरी सुधार निवेदन",
-                onboardLabour: "➕ नया मज़दूर जोड़ें",
-                createSup: "👤 नया सुपरवाइज़र बनाएं",
-                manageLabour: "📋 मज़दूर सूची व आधार देखें",
-                manageSup: "🗑️ सुपरवाइज़र सूची व पासवर्ड रीसेट",
-                file1Head: "फ़ाइल 1: शुद्ध हाज़िरी",
-                file2Head: "फ़ाइल 2: सरकारी 12% PF",
-                file3Head: "फ़ाइल 3: निजी हिसाब-किताब",
-                invHead: "कंपनी बिल व बैंक NEFT",
-                pdf1Btn: "📄 1. हाज़िरी रजिस्टर (PDF)",
-                csv1Btn: "📊 1. हाज़िरी रजिस्टर (CSV)",
-                pdf2Btn: "📑 2. वेतन व PF शीट (PDF)",
-                csv2Btn: "📊 2. वेतन व PF शीट (CSV)",
-                pdf3Btn: "📋 3. फ़ाइनल हिसाब पेआउट (PDF)",
-                csv3Btn: "📊 3. फ़ाइनल हिसाब पेआउट (CSV)",
-                taxInvBtn: "🏢 कंपनी टैक्स इनवॉइस (PDF)",
-                neftBtn: "💳 बैंक Bulk NEFT (CSV)",
-                ecrBtn: "📥 EPFO ECR (.txt) फ़ाइल",
-                supMarkAtt: "📝 आज की हाज़िरी लगाएं",
-                supHistory: "📅 1-साल का हाज़िरी रिकॉर्ड",
-                supReqTrack: "📨 मेरे सुधार निवेदन",
-                markAllP: "सभी को P लगाएं",
-                lockSubmit: "हाज़िरी फ़ाइनल लॉक करें",
-                lockedBadge: "लॉक हो गया",
-                draftBadge: "कच्चा (Draft)",
-                reqCorrTitle: "हाज़िरी सुधार हेतु निवेदन भेजें",
-                dateLabel: "तारीख",
-                workerNameLabel: "मज़दूर का नाम",
-                newStatusLabel: "नया स्टेटस चुनें",
-                newOtLabel: "नया OT (घंटे)",
-                reasonLabel: "कारण लिखें *",
-                sendCorrBtn: "ठेकेदार को सुधार निवेदन भेजें",
-                srNo: "क्र.",
-                code: "कोड",
-                name: "नाम",
-                trade: "ट्रेड / काम",
-                days: "दिन",
-                adv: "एडवांस",
-                inHand: "इन-हैंड सैलरी",
-                actions: "कार्य",
-                confirmDelLabour: (name, code) => `क्या आप सच में लेबर "${name}" (कोड: ${code}) को हमेशा के लिए डिलीट करना चाहते हैं?`,
-                successDelLabour: (name) => `लेबर "${name}" सफलतापूर्वक डिलीट कर दिया गया!`,
-                confirmDelSupWarn: (name, count) => `चेतावनी: सुपरवाइज़र "${name}" के अंडर ${count} लेबर मैप हैं। डिलीट करने पर वे अन-असाइंड हो जाएंगे। क्या आप आगे बढ़ना चाहते हैं?`,
-                confirmDelSup: (name) => `क्या आप सच में सुपरवाइज़र "${name}" को डिलीट करना चाहते हैं?`,
-                successDelSup: (name) => `सुपरवाइज़र "${name}" सफलतापूर्वक डिलीट कर दिया गया!`,
-                confirmLockAtt: (date) => `क्या आप तारीख ${date} की हाज़िरी पक्की (Lock) करना चाहते हैं? इसके बाद सीधे बदलाव नहीं होगा।`,
-                successLockAtt: (date) => `तारीख ${date} की हाज़िरी सफलतापूर्वक लॉक हो गई!`,
-                successCorrSent: "सुधार निवेदन ठेकेदार के पास भेज दिया गया है!",
-                successAdvRecorded: "एडवांस सफलतापूर्वक दर्ज हो गया!",
-                successLabourOnboard: "मज़दूर प्रोफ़ाइल और आधार सफलतापूर्वक जुड़ गया!",
-                successSupCreated: "सुपरवाइज़र आईडी सफलतापूर्वक बन गई!",
-                reqApprovedMsg: (name) => `निवेदन स्वीकृत! ${name} की हाज़िरी मस्टर में अपडेट कर दी गई।`,
-                reqRejectedMsg: "सुधार निवेदन अस्वीकार कर दिया गया!"
-            },
             en: {
-                langBtn: "🌐 English",
+                langBtn: "🌐 हिन्दी",
                 contractorLogin: "Contractor Login",
                 supervisorTerminal: "Supervisor Terminal",
                 taglineHero: "3-SHEET REPORTING • LIVE SUBMIT & LOCK • BULK NEFT • STATUTORY EPFO",
                 heroSubtitle: "3-Tier Statutory Payout Engine",
-                heroDesc: "Enterprise OS for Manpower Suppliers and Heavy Plants. Generate Pure Attendance Registers, Statutory PF Sheets, Internal Advance Recovery and Client Invoices in 1-Click.",
+                heroDesc: "Enterprise OS for Manpower Suppliers and Heavy Plants. Generate Pure Attendance Registers, Statutory PF Sheets, Internal Advance Recovery and Client Invoices in 1-Click with zero EPFO compliance worries.",
                 launchContractor: "Launch Contractor Workspace",
                 markAttendanceHero: "Mark Shift Attendance",
                 sheet1Title: "1. Pure Attendance Register",
                 sheet1Desc: "Only 1-30 day P/HD/A grid, Total Present Days & OT for Plant HR submission.",
                 sheet2Title: "2. Statutory Wage & 12% PF Sheet",
-                sheet2Desc: "Official salary statement showing Gross Wage, 12% EE PF cut and Net bank transfer.",
+                sheet2Desc: "Official salary statement showing Gross Wage, 12% EE PF cut and Net bank transfer with zero EPFO hassle.",
                 sheet3Title: "3. Internal Hisab-Kitab Sheet",
-                sheet3Desc: "Gross Payment ➔ PF ➔ Total Payment ➔ Advance ➔ In-hand salary",
+                sheet3Desc: "Gross Payment ➔ PF ➔ Total Payment ➔ Advance ➔ In-hand salary ledger for contractors.",
+                benefitsTitle: "WHO CAN USE & BENEFITS",
+                ben1Head: "1. Industrial Contractors",
+                ben1Desc: "Manage labour attendance, 12% PF deductions, advance approvals, and in-hand salaries effortlessly. Download all sheets in 1-Click PDF/Excel.",
+                ben2Head: "2. Site Supervisors",
+                ben2Desc: "Record daily shift attendance (Present/Half-Day/Absent) and overtime (OT) via mobile or terminal. Send direct online advance requests to contractors.",
+                ben3Head: "3. Plant Management / HR",
+                ben3Desc: "Complete EPFO & labor compliance transparency. Verify and download contractor master registers, ECR text files, and tax invoices instantly.",
                 mobileLoginLabel: "Mobile / Login ID",
                 passwordLabel: "Password",
                 loginBtn: "Authenticate & Launch",
@@ -526,13 +453,100 @@
                 successSupCreated: "Supervisor created successfully!",
                 reqApprovedMsg: (name) => `Request Approved! Muster updated for ${name}.`,
                 reqRejectedMsg: "Correction Request Rejected!"
+            },
+            hi: {
+                langBtn: "🌐 English",
+                contractorLogin: "ठेकेदार लॉगिन",
+                supervisorTerminal: "मुंशी / सुपरवाइज़र",
+                taglineHero: "3-शीट रिपोर्टिंग • लाइव हाज़िरी लॉक • बल्क बैंक NEFT • ईपीएफओ",
+                heroSubtitle: "3-स्तरीय वेतन व हिसाब-किताब सिस्टम",
+                heroDesc: "ठेकेदारों, मुंशियों और भारी उद्योगों के लिए विशेष रूप से डिज़ाइन किया गया पोर्टल। 30-दिन हाज़िरी रजिस्टर, पीएफ शीट, एडवांस रिकवरी और कंपनी टैक्स इनवॉइस एक क्लिक में तैयार करें।",
+                launchContractor: "ठेकेदार पोर्टल खोलें",
+                markAttendanceHero: "हाज़िरी दर्ज करें",
+                sheet1Title: "1. शुद्ध हाज़िरी रजिस्टर",
+                sheet1Desc: "1 से 30 तारीख की शुद्ध P/HD/A हाज़िरी और कुल OT घंटे।",
+                sheet2Title: "2. सरकारी 12% PF वेतन बिल",
+                sheet2Desc: "सकल वेतन, 12% PF कटौती और बैंक सैलरी स्टेटमेंट।",
+                sheet3Title: "3. ठेकेदार निजी हिसाब-किताब",
+                sheet3Desc: "Gross Payment ➔ PF ➔ Total Payment ➔ Advance ➔ In-Hand Salary",
+                benefitsTitle: "इस पोर्टल के फायदे और उपयोग करने वाले (WHO CAN USE & BENEFITS)",
+                ben1Head: "1. इंडस्ट्रियल ठेकेदार (Contractors)",
+                ben1Desc: "बिना किसी हिसाब की झंझट के लेबर अटेंडेंस, 12% PF कटौती, एडवांस अप्रूवल और इन-हैंड सैलरी मैनेज करें। सभी शीट्स 1-क्लिक में PDF/Excel पर डाउनलोड होती हैं।",
+                ben2Head: "2. मुंशी व सुपरवाइज़र (Supervisors)",
+                ben2Desc: "मोबाइल या टर्मिनल से रोज़ाना की शिफ्ट हाज़िरी (Present/Half-Day/Absent) और ओवरटाइम (OT) दर्ज करें। एडवांस भुगतान के लिए सीधे ठेकेदार को ऑनलाइन निवेदन भेजें।",
+                ben3Head: "3. प्लांट प्रबंधन / HR (Principal Employer)",
+                ben3Desc: "EPFO और लेबर कंप्लायंस की पूरी पारदर्शिता। एक क्लिक में सभी ठेकेदारों के मस्टर रजिस्टर, ECR टेक्स्ट फाइल और टैक्स इनवॉइस वेरिफ़ाई और डाउनलोड करें।",
+                mobileLoginLabel: "मोबाइल / लॉगिन आईडी",
+                passwordLabel: "पासवर्ड",
+                loginBtn: "लॉगिन करें",
+                accountingPeriod: "खाता अवधि",
+                finYear: "वित्तीय वर्ष",
+                wageMonth: "वेतन महीना",
+                logoutBtn: "लॉगआउट",
+                operations: "मुख्य कार्य (Operations)",
+                masterMuster: "📋 30-दिन मास्टर मस्टर",
+                advDesk: "💰 सुपरवाइज़र एडवांस डेस्क",
+                advApprovals: "✅ एडवांस अप्रूवल डेस्क",
+                corrReqs: "🔔 हाज़िरी सुधार निवेदन",
+                onboardLabour: "➕ नया मज़दूर जोड़ें",
+                createSup: "👤 नया सुपरवाइज़र बनाएं",
+                manageLabour: "📋 मज़दूर सूची व आधार देखें",
+                manageSup: "🗑️ सुपरवाइज़र सूची व पासवर्ड रीसेट",
+                file1Head: "फ़ाइल 1: शुद्ध हाज़िरी",
+                file2Head: "फ़ाइल 2: सरकारी 12% PF",
+                file3Head: "फ़ाइल 3: निजी हिसाब-किताब",
+                invHead: "कंपनी बिल व बैंक NEFT",
+                pdf1Btn: "📄 1. हाज़िरी रजिस्टर (PDF)",
+                csv1Btn: "📊 1. हाज़िरी रजिस्टर (CSV)",
+                pdf2Btn: "📑 2. वेतन व PF शीट (PDF)",
+                csv2Btn: "📊 2. वेतन व PF शीट (CSV)",
+                pdf3Btn: "📋 3. फ़ाइनल हिसाब पेआउट (PDF)",
+                csv3Btn: "📊 3. फ़ाइनल हिसाब पेआउट (CSV)",
+                taxInvBtn: "🏢 कंपनी टैक्स इनवॉइस (PDF)",
+                neftBtn: "💳 बैंक Bulk NEFT (CSV)",
+                ecrBtn: "📥 EPFO ECR (.txt) फ़ाइल",
+                supMarkAtt: "📝 आज की हाज़िरी लगाएं",
+                supHistory: "📅 1-साल का हाज़िरी रिकॉर्ड",
+                supReqTrack: "📨 मेरे सुधार निवेदन",
+                markAllP: "सभी को P लगाएं",
+                lockSubmit: "हाज़िरी फ़ाइनल लॉक करें",
+                lockedBadge: "लॉक हो गया",
+                draftBadge: "कच्चा (Draft)",
+                reqCorrTitle: "हाज़िरी सुधार हेतु निवेदन भेजें",
+                dateLabel: "तारीख",
+                workerNameLabel: "मज़दूर का नाम",
+                newStatusLabel: "नया स्टेटस चुनें",
+                newOtLabel: "नया OT (घंटे)",
+                reasonLabel: "कारण लिखें *",
+                sendCorrBtn: "ठेकेदार को सुधार निवेदन भेजें",
+                srNo: "क्र.",
+                code: "कोड",
+                name: "नाम",
+                trade: "ट्रेड / काम",
+                days: "दिन",
+                adv: "एडवांस",
+                inHand: "इन-हैंड सैलरी",
+                actions: "कार्य",
+                confirmDelLabour: (name, code) => `क्या आप सच में लेबर "${name}" (कोड: ${code}) को हमेशा के लिए डिलीट करना चाहते हैं?`,
+                successDelLabour: (name) => `लेबर "${name}" सफलतापूर्वक डिलीट कर दिया गया!`,
+                confirmDelSupWarn: (name, count) => `चेतावनी: सुपरवाइज़र "${name}" के अंडर ${count} लेबर मैप हैं। डिलीट करने पर वे अन-असाइंड हो जाएंगे। क्या आप आगे बढ़ना चाहते हैं?`,
+                confirmDelSup: (name) => `क्या आप सच में सुपरवाइज़र "${name}" को डिलीट करना चाहते हैं?`,
+                successDelSup: (name) => `सुपरवाइज़र "${name}" सफलतापूर्वक डिलीट कर दिया गया!`,
+                confirmLockAtt: (date) => `क्या आप तारीख ${date} की हाज़िरी पक्की (Lock) करना चाहते हैं? इसके बाद सीधे बदलाव नहीं होगा।`,
+                successLockAtt: (date) => `तारीख ${date} की हाज़िरी सफलतापूर्वक लॉक हो गई!`,
+                successCorrSent: "सुधार निवेदन ठेकेदार के पास भेज दिया गया है!",
+                successAdvRecorded: "एडवांस सफलतापूर्वक दर्ज हो गया!",
+                successLabourOnboard: "मज़दूर प्रोफ़ाइल और आधार सफलतापूर्वक जुड़ गया!",
+                successSupCreated: "सुपरवाइज़र आईडी सफलतापूर्वक बन गई!",
+                reqApprovedMsg: (name) => `निवेदन स्वीकृत! ${name} की हाज़िरी मस्टर में अपडेट कर दी गई।`,
+                reqRejectedMsg: "सुधार निवेदन अस्वीकार कर दिया गया!"
             }
         };
 
-        let CURRENT_LANG = localStorage.getItem('LM_LANG') || 'hi';
+        let CURRENT_LANG = localStorage.getItem('LM_LANG') || 'en';
 
         function toggleAppLanguage() {
-            CURRENT_LANG = CURRENT_LANG === 'hi' ? 'en' : 'hi';
+            CURRENT_LANG = CURRENT_LANG === 'en' ? 'hi' : 'en';
             localStorage.setItem('LM_LANG', CURRENT_LANG);
             applyLanguage();
         }
@@ -546,8 +560,8 @@
 
             const pubBtn = document.getElementById('public-lang-btn-text');
             const appBtn = document.getElementById('app-lang-btn-text');
-            if (pubBtn) pubBtn.innerText = CURRENT_LANG === 'hi' ? '🌐 हिन्दी' : '🌐 English';
-            if (appBtn) appBtn.innerText = CURRENT_LANG === 'hi' ? '🌐 हिन्दी' : '🌐 English';
+            if (pubBtn) pubBtn.innerText = CURRENT_LANG === 'en' ? '🌐 हिन्दी' : '🌐 English';
+            if (appBtn) appBtn.innerText = CURRENT_LANG === 'en' ? '🌐 हिन्दी' : '🌐 English';
 
             if (APP_STATE.currentUserRole) {
                 setupWorkspace(APP_STATE.currentUserRole);
@@ -771,9 +785,18 @@
             document.getElementById('modal-role-badge').innerText = role;
             document.getElementById('modal-role-title').innerText = role === 'CONTRACTOR' ? t.contractorLogin : (role === 'SUPERVISOR' ? t.supervisorTerminal : 'Admin');
             const hint = document.getElementById('login-hint');
-            if (role === 'ADMIN') hint.innerHTML = 'Plant Admin: <span class="font-bold">admin / admin123</span>';
-            else if (role === 'CONTRACTOR') hint.innerHTML = 'Contractor Login: <span class="font-bold">Enter 10-digit Mobile & Password</span>';
-            else hint.innerHTML = 'Supervisor Login: <span class="font-bold">Enter 10-digit Mobile & Password</span>';
+            const idLabel = document.getElementById('login-id-label');
+            
+            if (role === 'ADMIN') {
+                idLabel.innerText = "Admin Email ID";
+                hint.innerHTML = 'Plant Admin: <span class="font-bold">Enter Firebase Auth Admin Email</span>';
+            } else if (role === 'CONTRACTOR') {
+                idLabel.innerText = "Mobile / Login ID";
+                hint.innerHTML = 'Contractor Login: <span class="font-bold">Enter 10-digit Mobile & Password</span>';
+            } else {
+                idLabel.innerText = "Mobile / Login ID";
+                hint.innerHTML = 'Supervisor Login: <span class="font-bold">Enter 10-digit Mobile & Password</span>';
+            }
             document.getElementById('login-modal').classList.remove('hidden');
         }
 
@@ -781,7 +804,7 @@
             document.getElementById('login-modal').classList.add('hidden');
         }
 
-        // --- AUTHENTICATION USING FIREBASE AUTH (MOBILE NUMBER LOGIN) ---
+        // --- UNIFIED FIREBASE AUTHENTICATION (ADMIN + CONTRACTOR + SUPERVISOR) ---
         async function handleAuth(e) {
             e.preventDefault();
 
@@ -795,24 +818,16 @@
             const authId = SECURITY_ENGINE.sanitize(document.getElementById('auth-id').value.trim());
             const pass = document.getElementById('auth-pass').value;
 
+            let loginEmail = authId;
+
             if (role === 'ADMIN') {
-                if (authId !== 'admin' || pass !== 'admin123') {
-                    handleFailedLogin();
-                    return;
-                }
-                APP_STATE.currentUserRole = role;
-                sessionStorage.setItem('LM_SESSION_ROLE', role);
-                closeLoginModal();
-                document.getElementById('public-website-view').classList.add('hidden');
-                document.getElementById('authenticated-app').classList.remove('hidden');
-                setupWorkspace(role);
-                return;
+                loginEmail = authId.includes('@') ? authId : `${authId}@learncad.com`;
+            } else {
+                loginEmail = `u_${authId}@labourmitra.com`;
             }
 
-            const virtualEmail = `u_${authId}@labourmitra.com`;
-
             try {
-                await firebase.auth().signInWithEmailAndPassword(virtualEmail, pass);
+                await firebase.auth().signInWithEmailAndPassword(loginEmail, pass);
 
                 if (role === 'CONTRACTOR') {
                     const c = APP_STATE.contractors.find(x => x.mobile === authId);
@@ -849,7 +864,7 @@
                 APP_STATE.lockoutUntil = Date.now() + 15 * 60 * 1000;
                 alert("Security Alert: 5 failed attempts! Login blocked for 15 minutes.");
             } else {
-                alert(`Invalid Mobile Number or Password! Attempt ${APP_STATE.failedLoginAttempts} of 5.`);
+                alert(`Invalid ID/Email or Password! Attempt ${APP_STATE.failedLoginAttempts} of 5.`);
             }
         }
 
