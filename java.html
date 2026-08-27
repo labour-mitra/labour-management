@@ -1,285 +1,66 @@
-package com.manpowerpro.erp;
+import android.os.Bundle;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.*;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.util.*;
-import java.util.stream.Collectors;
+public class MainActivity extends AppCompatActivity {
 
-@SpringBootApplication
-public class LabourMitraApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(LabourMitraApplication.class, args);
+    // Firebase Database Reference declare karein
+    private DatabaseReference databaseReference;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Firebase Database ka instance initialize karein
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        // 1. Data Save (Write) karne ka function call karein
+        saveDataToFirebase();
+
+        // 2. Data Read (Fetch) karne ka function call karein
+        readDataFromFirebase();
     }
-}
 
-// ============================================================================
-// 1. ENUMS
-// ============================================================================
-enum ShiftStatus { P, HD, A, PAID_LEAVE, UNPAID_LEAVE }
-enum WorkflowStatus { DRAFT, SUBMITTED, APPROVED, LOCKED }
-enum EmploymentStatus { ACTIVE, ON_LEAVE, SUSPENDED, TERMINATED }
-enum AccountStatus { ACTIVE, SUSPENDED, BLOCKED }
-enum RequestStatus { PENDING, APPROVED, REJECTED }
+    // --- Data Save Karne ka Method ---
+    private void saveDataToFirebase() {
+        // Aapke rules ke mutabiq 'labour_mitra' node ke andar data save hoga
+        String userId = "user_001";
+        
+        databaseReference.child("labour_mitra").child("users").child(userId).child("name").setValue("Arun Banjare")
+            .addOnSuccessListener(aVoid -> {
+                Toast.makeText(MainActivity.this, "Data Successfully Saved!", Toast.LENGTH_SHORT).show();
+            })
+            .addOnFailureListener(e -> {
+                Toast.makeText(MainActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+    }
 
-// ============================================================================
-// 2. JPA DATABASE ENTITIES
-// ============================================================================
-@Entity
-@Table(name = "contractor_firms")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class Contractor {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false, unique = true) private String contractorCode;
-    @Column(nullable = false) private String firmName;
-    private String ownerName;
-    @Column(nullable = false, unique = true) private String mobileNumber;
-    private String gstin;
-    private String encryptedPassword;
-    @Enumerated(EnumType.STRING) private AccountStatus status;
-}
+    // --- Data Read (Fetch) Karne ka Method ---
+    private void readDataFromFirebase() {
+        // 'labour_mitra' node se data read kiya ja raha hai
+        DatabaseReference userRef = databaseReference.child("labour_mitra").child("users").child("user_001").child("name");
 
-@Entity
-@Table(name = "supervisors")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class Supervisor {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false, unique = true) private String supervisorCode;
-    @Column(nullable = false) private String fullName;
-    @Column(nullable = false, unique = true) private String mobileNumber;
-    private String encryptedPassword;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "contractor_id")
-    private Contractor contractor;
-}
-
-@Entity
-@Table(name = "workers")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class Worker {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false, unique = true) private String workerId;
-    @Column(nullable = false) private String fullName;
-    private String mobileNumber;
-    private String bankAccount;
-    private String ifscCode;
-    private String uanNumber;
-    private boolean pfApplicable;
-    private String tradeCategory;
-    private BigDecimal dailyWage;
-    private BigDecimal clientBillingRate;
-    @Enumerated(EnumType.STRING) private EmploymentStatus status;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "contractor_id")
-    private Contractor contractor;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "supervisor_id")
-    private Supervisor supervisor;
-}
-
-@Entity
-@Table(name = "attendance_records")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class AttendanceRecord {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "worker_id")
-    private Worker worker;
-    private LocalDate attendanceDate;
-    @Enumerated(EnumType.STRING) private ShiftStatus status;
-    private Double otHours;
-}
-
-@Entity
-@Table(name = "worker_advances")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class AdvanceKhuraki {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "worker_id")
-    private Worker worker;
-    private BigDecimal amount;
-    private LocalDate advanceDate;
-    private String reason;
-    private String wageMonth;
-}
-
-@Entity
-@Table(name = "worker_fines")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class PenaltyDeduction {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "worker_id")
-    private Worker worker;
-    private BigDecimal amount;
-    private String wageMonth;
-}
-
-// ============================================================================
-// 3. REPOSITORIES
-// ============================================================================
-@Repository interface WorkerRepository extends JpaRepository<Worker, Long> {
-    List<Worker> findByContractorIdAndStatus(Long contractorId, EmploymentStatus status);
-}
-
-@Repository interface AttendanceRecordRepository extends JpaRepository<AttendanceRecord, Long> {
-    @Query("SELECT a FROM AttendanceRecord a WHERE a.worker.contractor.id = :cId AND a.attendanceDate BETWEEN :sDate AND :eDate")
-    List<AttendanceRecord> findMonthlyAttendance(@Param("cId") Long cId, @Param("sDate") LocalDate sDate, @Param("eDate") LocalDate eDate);
-}
-
-@Repository interface AdvanceKhurakiRepository extends JpaRepository<AdvanceKhuraki, Long> {
-    List<AdvanceKhuraki> findByWorkerContractorIdAndWageMonth(Long contractorId, String wageMonth);
-}
-
-@Repository interface PenaltyDeductionRepository extends JpaRepository<PenaltyDeduction, Long> {
-    List<PenaltyDeduction> findByWorkerIdAndWageMonth(Long workerId, String wageMonth);
-}
-
-// ============================================================================
-// 4. DTO (PAYROLL SUMMARY)
-// ============================================================================
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class WorkerPayrollSummaryDTO {
-    private String workerId;
-    private String fullName;
-    private String uanNumber;
-    private String tradeCategory;
-    private BigDecimal dailyWageRate;
-    private String bankAccount;
-    private String ifscCode;
-    private double presentShifts;
-    private double totalOtHours;
-    private BigDecimal grossWages;
-    private BigDecimal employeePf12Cut;
-    private BigDecimal statutoryNetPayable; // Sheet 2 (Gross - PF)
-    private BigDecimal advanceKhurakiCut;
-    private BigDecimal safetyPenaltyCut;
-    private BigDecimal finalInHandPayout;   // Sheet 3 (Gross - PF - Khuraki - Fine)
-}
-
-// ============================================================================
-// 5. SERVICE LOGIC (SHEETS, NEFT, ECR)
-// ============================================================================
-@Service
-@RequiredArgsConstructor
-class ManpowerPayrollService {
-    private final WorkerRepository workerRepo;
-    private final AttendanceRecordRepository attRepo;
-    private final AdvanceKhurakiRepository advRepo;
-    private final PenaltyDeductionRepository fineRepo;
-
-    @Transactional(readOnly = true)
-    public List<WorkerPayrollSummaryDTO> computeMonthlySummary(Long contractorId, String wageMonthStr) {
-        YearMonth ym = YearMonth.parse(wageMonthStr);
-        List<Worker> workers = workerRepo.findByContractorIdAndStatus(contractorId, EmploymentStatus.ACTIVE);
-        List<AttendanceRecord> attendance = attRepo.findMonthlyAttendance(contractorId, ym.atDay(1), ym.atEndOfMonth());
-        List<AdvanceKhuraki> advances = advRepo.findByWorkerContractorIdAndWageMonth(contractorId, wageMonthStr);
-
-        Map<Long, List<AttendanceRecord>> attMap = attendance.stream().collect(Collectors.groupingBy(a -> a.getWorker().getId()));
-        Map<Long, BigDecimal> advMap = advances.stream().collect(Collectors.groupingBy(a -> a.getWorker().getId(), Collectors.reducing(BigDecimal.ZERO, AdvanceKhuraki::getAmount, BigDecimal::add)));
-
-        List<WorkerPayrollSummaryDTO> list = new ArrayList<>();
-        for (Worker w : workers) {
-            List<AttendanceRecord> wAtt = attMap.getOrDefault(w.getId(), Collections.emptyList());
-            double shifts = 0.0, ot = 0.0;
-            for (AttendanceRecord a : wAtt) {
-                if (a.getStatus() == ShiftStatus.P) shifts += 1.0;
-                else if (a.getStatus() == ShiftStatus.HD) shifts += 0.5;
-                if (a.getOtHours() != null) ot += a.getOtHours();
+        userRef.addValueEventListener(newValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String name = dataSnapshot.getValue(String.class);
+                    // Log ya TextView par print kara sakte hain
+                    System.out.println("Fetched Name: " + name);
+                }
             }
 
-            BigDecimal shiftEarned = w.getDailyWage().multiply(BigDecimal.valueOf(shifts)).setScale(2, RoundingMode.HALF_UP);
-            BigDecimal otEarned = w.getDailyWage().divide(BigDecimal.valueOf(8), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(ot)).setScale(2, RoundingMode.HALF_UP);
-            BigDecimal gross = shiftEarned.add(otEarned);
-
-            BigDecimal eePf = w.isPfApplicable() ? shiftEarned.multiply(BigDecimal.valueOf(0.12)).setScale(0, RoundingMode.HALF_UP) : BigDecimal.ZERO;
-            BigDecimal statutoryNet = gross.subtract(eePf).max(BigDecimal.ZERO);
-
-            BigDecimal advCut = advMap.getOrDefault(w.getId(), BigDecimal.ZERO);
-            BigDecimal fineCut = fineRepo.findByWorkerIdAndWageMonth(w.getId(), wageMonthStr).stream().map(PenaltyDeduction::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-            BigDecimal finalInHand = gross.subtract(eePf).subtract(advCut).subtract(fineCut).max(BigDecimal.ZERO);
-
-            list.add(WorkerPayrollSummaryDTO.builder()
-                    .workerId(w.getWorkerId()).fullName(w.getFullName()).uanNumber(w.getUanNumber())
-                    .tradeCategory(w.getTradeCategory()).dailyWageRate(w.getDailyWage())
-                    .bankAccount(w.getBankAccount()).ifscCode(w.getIfscCode())
-                    .presentShifts(shifts).totalOtHours(ot).grossWages(gross)
-                    .employeePf12Cut(eePf).statutoryNetPayable(statutoryNet)
-                    .advanceKhurakiCut(advCut).safetyPenaltyCut(fineCut).finalInHandPayout(finalInHand)
-                    .build());
-        }
-        return list;
-    }
-
-    public String generateBankNeftCsv(Long contractorId, String wageMonth) {
-        List<WorkerPayrollSummaryDTO> list = computeMonthlySummary(contractorId, wageMonth);
-        StringBuilder csv = new StringBuilder("Beneficiary_Account_No,IFSC_Code,Beneficiary_Name,Amount\n");
-        for (WorkerPayrollSummaryDTO d : list) {
-            csv.append(String.format("\"%s\",\"%s\",\"%s\",%s\n", d.getBankAccount(), d.getIfscCode(), d.getFullName(), d.getFinalInHandPayout().setScale(0, RoundingMode.HALF_UP)));
-        }
-        return csv.toString();
-    }
-
-    public String generateEpfoEcrText(Long contractorId, String wageMonth) {
-        List<WorkerPayrollSummaryDTO> list = computeMonthlySummary(contractorId, wageMonth);
-        StringBuilder ecr = new StringBuilder();
-        for (WorkerPayrollSummaryDTO d : list) {
-            if (d.getUanNumber() != null && !d.getUanNumber().isEmpty()) {
-                int gross = d.getGrossWages().intValue();
-                int epfWage = d.getGrossWages().intValue();
-                int eePf = d.getEmployeePf12Cut().intValue();
-                int eps = (int) Math.round(epfWage * 0.0833);
-                ecr.append(String.format("%s#~#%s#~#%d#~#%d#~#%d#~#%d#~#%d#~#%d#~#0\n", d.getUanNumber(), d.getFullName(), gross, epfWage, eePf, eps, eePf - eps, Math.max(0, 26 - (int) d.getPresentShifts())));
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("Failed to read value: " + databaseError.toException());
             }
-        }
-        return ecr.toString();
-    }
-}
-
-// ============================================================================
-// 6. REST API CONTROLLER
-// ============================================================================
-@RestController
-@RequestMapping("/api/v1/contractor/payroll")
-@RequiredArgsConstructor
-@CrossOrigin(origins = "*")
-class ContractorPayrollController {
-    private final ManpowerPayrollService payrollService;
-
-    @GetMapping("/summary")
-    public ResponseEntity<List<WorkerPayrollSummaryDTO>> getSummary(@RequestParam Long contractorId, @RequestParam String wageMonth) {
-        return ResponseEntity.ok(payrollService.computeMonthlySummary(contractorId, wageMonth));
-    }
-
-    @GetMapping("/download/bank-neft")
-    public ResponseEntity<byte[]> downloadNeft(@RequestParam Long contractorId, @RequestParam String wageMonth) {
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Bulk_NEFT_" + wageMonth + ".csv")
-                .contentType(MediaType.parseMediaType("text/csv"))
-                .body(payrollService.generateBankNeftCsv(contractorId, wageMonth).getBytes());
-    }
-
-    @GetMapping("/download/epfo-ecr")
-    public ResponseEntity<byte[]> downloadEcr(@RequestParam Long contractorId, @RequestParam String wageMonth) {
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=EPFO_ECR_" + wageMonth + ".txt")
-                .contentType(MediaType.TEXT_PLAIN)
-                .body(payrollService.generateEpfoEcrText(contractorId, wageMonth).getBytes());
+        });
     }
 }
