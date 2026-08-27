@@ -785,7 +785,11 @@
                 `;
                 renderContractorMusterWorkspace();
             } else if (role === 'SUPERVISOR') {
-                document.getElementById('user-topbar-firm').innerText = CURRENT_LANG === 'hi' ? "सुपरवाइज़र मोबाइल टर्मिनल" : "Supervisor Mobile Terminal";
+                const supObj = APP_STATE.currentSupervisor;
+                const supName = supObj ? supObj.name : 'Supervisor';
+                const supId = supObj ? supObj.id : 'SUP';
+
+                document.getElementById('user-topbar-firm').innerText = `👤 ${supName} (${supId}) - Terminal`;
                 document.getElementById('contractor-notif-btn').classList.add('hidden');
                 actions.innerHTML = `
                     <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">${t.operations}</p>
