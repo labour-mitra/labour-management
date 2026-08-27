@@ -115,7 +115,7 @@
                     <div class="text-amber-400 font-bold text-sm flex items-center gap-1.5">
                         <i data-lucide="calculator" class="w-4 h-4"></i> <span data-i18n="sheet3Title">3. Internal Hisab-Kitab Sheet</span>
                     </div>
-                    <p class="text-slate-300 text-xs" data-i18n="sheet3Desc">Contractor private ledger: Wage minus PF, Advance deductions, and Safety fines.</p>
+                    <p class="text-slate-300 text-xs" data-i18n="sheet3Desc">Contractor private ledger: Wage minus PF, Advance deductions, and In-hand payout.</p>
                 </div>
             </div>
         </main>
@@ -204,28 +204,28 @@
         </div>
     </div>
 
-    <!-- Fine / Penalty Deduction Modal -->
-    <div id="fine-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <!-- Contractor Direct Advance Modal -->
+    <div id="contractor-adv-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-amber-50 border-2 border-[#4a2411] p-5 rounded-2xl max-w-sm w-full space-y-3 shadow-2xl text-slate-900">
             <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                <h3 class="font-bold text-sm text-[#4a2411]" data-i18n="addFineTitle">Add Safety / Damage Fine</h3>
-                <button onclick="closeFineModal()" class="font-bold">✕</button>
+                <h3 class="font-bold text-sm text-[#4a2411]">Direct Advance Disbursement (Contractor)</h3>
+                <button onclick="closeContractorAdvModal()" class="font-bold">✕</button>
             </div>
-            <form onsubmit="handleSaveFine(event)" class="space-y-3">
-                <input type="hidden" id="fine-worker-id">
+            <form onsubmit="handleContractorDirectAdvance(event)" class="space-y-3">
+                <input type="hidden" id="c-adv-worker-id">
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="workerNameLabel">Worker Name</label>
-                    <input type="text" id="fine-worker-name" disabled class="w-full bg-slate-200 border border-slate-400 p-1.5 rounded text-xs font-bold text-[#4a2411]">
+                    <label class="text-[10px] uppercase font-bold text-slate-700">Worker Name</label>
+                    <input type="text" id="c-adv-worker-name" disabled class="w-full bg-slate-200 border border-slate-400 p-1.5 rounded text-xs font-bold text-[#4a2411]">
                 </div>
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="fineAmtLabel">Fine Amount (₹)</label>
-                    <input type="number" id="fine-amount" required min="1" placeholder="e.g. 200" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-mono font-bold text-rose-700">
+                    <label class="text-[10px] uppercase font-bold text-slate-700">Advance Amount (₹)</label>
+                    <input type="number" id="c-adv-amount" required min="1" placeholder="e.g. 1000" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs font-mono font-bold text-amber-800">
                 </div>
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-700" data-i18n="fineReasonLabel">Reason / Penalty Type</label>
-                    <input type="text" id="fine-reason" required placeholder="No PPE / Helmet violation / Damage" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs">
+                    <label class="text-[10px] uppercase font-bold text-slate-700">Reason / Notes</label>
+                    <input type="text" id="c-adv-reason" required placeholder="Emergency / Festival Advance" class="w-full bg-white border border-slate-400 p-1.5 rounded text-xs" value="Direct Contractor Advance">
                 </div>
-                <button type="submit" class="w-full bg-rose-700 hover:bg-rose-600 text-white py-2 rounded-lg text-xs shadow font-bold" data-i18n="recordFineBtn">Record Fine Deduction</button>
+                <button type="submit" class="w-full lm-btn-gold py-2 rounded-lg text-xs shadow font-bold">Disburse & Approve Instantly</button>
             </form>
         </div>
     </div>
@@ -321,7 +321,7 @@
                 supervisorTerminal: "मुंशी / सुपरवाइज़र",
                 taglineHero: "3-शीट रिपोर्टिंग • लाइव हाज़िरी लॉक • बल्क बैंक NEFT • ईपीएफओ",
                 heroSubtitle: "3-स्तरीय वेतन व हिसाब-किताब सिस्टम",
-                heroDesc: "ठेकेदारों, मुंशियों और भारी उद्योगों के लिए विशेष रूप से डिज़ाइन किया गया पोर्टल। 30-दिन हाज़िरी रजिस्टर, पीएफ शीट, खुराकी/एडवांस रिकवरी और कंपनी टैक्स इनवॉइस एक क्लिक में तैयार करें।",
+                heroDesc: "ठेकेदारों, मुंशियों और भारी उद्योगों के लिए विशेष रूप से डिज़ाइन किया गया पोर्टल। 30-दिन हाज़िरी रजिस्टर, पीएफ शीट, एडवांस रिकवरी और कंपनी टैक्स इनवॉइस एक क्लिक में तैयार करें।",
                 launchContractor: "ठेकेदार पोर्टल खोलें",
                 markAttendanceHero: "हाज़िरी दर्ज करें",
                 sheet1Title: "1. शुद्ध हाज़िरी रजिस्टर",
@@ -329,7 +329,7 @@
                 sheet2Title: "2. सरकारी 12% PF वेतन बिल",
                 sheet2Desc: "सकल वेतन, 12% PF कटौती और बैंक सैलरी स्टेटमेंट।",
                 sheet3Title: "3. ठेकेदार निजी हिसाब-किताब",
-                sheet3Desc: "वेतन ➔ PF ➔ एडवांस ➔ जुर्माना ➔ फाइनल नकद/बैंक पेआउट।",
+                sheet3Desc: "Gross Payment ➔ PF ➔ Total Payment ➔ Advance ➔ In-Hand Salary",
                 mobileLoginLabel: "मोबाइल / लॉगिन आईडी",
                 passwordLabel: "पासवर्ड",
                 loginBtn: "लॉगिन करें",
@@ -340,6 +340,7 @@
                 operations: "मुख्य कार्य (Operations)",
                 masterMuster: "📋 30-दिन मास्टर मस्टर",
                 advDesk: "💰 सुपरवाइज़र एडवांस डेस्क",
+                advApprovals: "✅ एडवांस अप्रूवल डेस्क",
                 corrReqs: "🔔 हाज़िरी सुधार निवेदन",
                 onboardLabour: "➕ नया मज़दूर जोड़ें",
                 createSup: "👤 नया सुपरवाइज़र बनाएं",
@@ -372,18 +373,13 @@
                 newOtLabel: "नया OT (घंटे)",
                 reasonLabel: "कारण लिखें *",
                 sendCorrBtn: "ठेकेदार को सुधार निवेदन भेजें",
-                addFineTitle: "जुर्माना / नुक़सान कटौती जोड़ें",
-                fineAmtLabel: "जुर्माना राशि (₹)",
-                fineReasonLabel: "जुर्माने का कारण / Safety Violation",
-                recordFineBtn: "जुर्माना दर्ज करें",
                 srNo: "क्र.",
                 code: "कोड",
                 name: "नाम",
                 trade: "ट्रेड / काम",
                 days: "दिन",
                 adv: "एडवांस",
-                fine: "जुर्माना",
-                inHand: "नेट इन-हैंड",
+                inHand: "इन-हैंड सैलरी",
                 actions: "कार्य",
                 confirmDelLabour: (name, code) => `क्या आप सच में लेबर "${name}" (कोड: ${code}) को हमेशा के लिए डिलीट करना चाहते हैं?`,
                 successDelLabour: (name) => `लेबर "${name}" सफलतापूर्वक डिलीट कर दिया गया!`,
@@ -393,7 +389,6 @@
                 confirmLockAtt: (date) => `क्या आप तारीख ${date} की हाज़िरी पक्की (Lock) करना चाहते हैं? इसके बाद सीधे बदलाव नहीं होगा।`,
                 successLockAtt: (date) => `तारीख ${date} की हाज़िरी सफलतापूर्वक लॉक हो गई!`,
                 successCorrSent: "सुधार निवेदन ठेकेदार के पास भेज दिया गया है!",
-                successFineRecorded: "जुर्माना कटौती दर्ज कर ली गई है!",
                 successAdvRecorded: "एडवांस सफलतापूर्वक दर्ज हो गया!",
                 successLabourOnboard: "मज़दूर प्रोफ़ाइल सफलतापूर्वक जुड़ गई!",
                 successSupCreated: "सुपरवाइज़र आईडी सफलतापूर्वक बन गई!",
@@ -414,7 +409,7 @@
                 sheet2Title: "2. Statutory Wage & 12% PF Sheet",
                 sheet2Desc: "Official salary statement showing Gross Wage, 12% EE PF cut and Net bank transfer.",
                 sheet3Title: "3. Internal Hisab-Kitab Sheet",
-                sheet3Desc: "Contractor private ledger: Wage minus PF, Advance deductions, and Safety fines.",
+                sheet3Desc: "Gross Payment ➔ PF ➔ Total Payment ➔ Advance ➔ In-Hand Salary",
                 mobileLoginLabel: "Mobile / Login ID",
                 passwordLabel: "Password",
                 loginBtn: "Authenticate & Launch",
@@ -425,6 +420,7 @@
                 operations: "Operations",
                 masterMuster: "📋 30-Day Master Muster",
                 advDesk: "💰 Supervisor Advance Desk",
+                advApprovals: "✅ Advance Approvals Desk",
                 corrReqs: "🔔 Correction Requests",
                 onboardLabour: "➕ Onboard Labour Profile",
                 createSup: "👤 Create Supervisor ID",
@@ -457,18 +453,13 @@
                 newOtLabel: "New OT (Hours)",
                 reasonLabel: "Reason *",
                 sendCorrBtn: "Send Correction Request",
-                addFineTitle: "Add Safety / Damage Fine",
-                fineAmtLabel: "Fine Amount (₹)",
-                fineReasonLabel: "Reason / Penalty Type",
-                recordFineBtn: "Record Fine Deduction",
                 srNo: "Sr",
                 code: "Code",
                 name: "Name",
                 trade: "Trade",
                 days: "Days",
                 adv: "Adv",
-                fine: "Fine",
-                inHand: "In-Hand",
+                inHand: "In-Hand Salary",
                 actions: "Actions",
                 confirmDelLabour: (name, code) => `Are you sure you want to permanently delete labour "${name}" (Code: ${code})?`,
                 successDelLabour: (name) => `Labour "${name}" deleted successfully!`,
@@ -478,7 +469,6 @@
                 confirmLockAtt: (date) => `Are you sure you want to Final Submit & Lock attendance for ${date}? You cannot edit directly after locking.`,
                 successLockAtt: (date) => `Attendance for ${date} submitted and locked successfully!`,
                 successCorrSent: "Correction request submitted to Contractor successfully!",
-                successFineRecorded: "Fine deduction recorded successfully!",
                 successAdvRecorded: "Advance recorded successfully!",
                 successLabourOnboard: "Labour profile onboarded and encrypted!",
                 successSupCreated: "Supervisor created successfully!",
@@ -566,7 +556,7 @@
             if(monthInput) monthInput.value = APP_STATE.selectedMonth;
             
             loadLocalState();
-            initRealtimeSync(); // Firebase Realtime Synchronization Listeners
+            initRealtimeSync(); 
             
             applyLanguage();
             checkAndRestoreSession();
@@ -575,7 +565,6 @@
 
         // --- FIREBASE REAL-TIME LISTENERS ---
         function initRealtimeSync() {
-            // Listen to Supervisors Live
             dbRef.child("supervisors").on("value", (snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.val();
@@ -585,7 +574,6 @@
                 }
             });
 
-            // Listen to Labour Live
             dbRef.child("labour").on("value", (snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.val();
@@ -595,7 +583,6 @@
                 }
             });
 
-            // Listen to Attendance Live
             dbRef.child("attendance").on("value", (snapshot) => {
                 if (snapshot.exists()) {
                     APP_STATE.attendance = snapshot.val() || {};
@@ -604,10 +591,17 @@
                 }
             });
 
-            // Listen to Locked Dates Live
             dbRef.child("lockedDates").on("value", (snapshot) => {
                 if (snapshot.exists()) {
                     APP_STATE.lockedDates = snapshot.val() || {};
+                    saveLocalState();
+                    if(APP_STATE.currentUserRole) refreshActiveView();
+                }
+            });
+
+            dbRef.child("advances").on("value", (snapshot) => {
+                if (snapshot.exists()) {
+                    APP_STATE.advances = snapshot.val() || {};
                     saveLocalState();
                     if(APP_STATE.currentUserRole) refreshActiveView();
                 }
@@ -630,7 +624,6 @@
                     APP_STATE.lockedDates = p.lockedDates || {};
                     APP_STATE.correctionRequests = p.correctionRequests || [];
                     APP_STATE.advances = p.advances || {};
-                    APP_STATE.fines = p.fines || {};
                 } catch(e) {}
             }
         }
@@ -666,10 +659,18 @@
         function updateNotificationBadge() {
             if (APP_STATE.currentUserRole === 'CONTRACTOR') {
                 const btn = document.getElementById('contractor-notif-btn');
-                const pending = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING').length;
+                const pendingCorr = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING').length;
+                
+                let pendingAdv = 0;
+                Object.keys(APP_STATE.advances).forEach(wId => {
+                    const list = APP_STATE.advances[wId] || [];
+                    list.forEach(a => { if(a.status === 'PENDING') pendingAdv++; });
+                });
+
+                const totalPending = pendingCorr + pendingAdv;
                 const badgeCount = document.getElementById('pending-request-count');
-                if(badgeCount) badgeCount.innerText = pending;
-                if (pending > 0 && btn) btn.classList.remove('hidden');
+                if(badgeCount) badgeCount.innerText = totalPending;
+                if (totalPending > 0 && btn) btn.classList.remove('hidden');
                 else if(btn) btn.classList.add('hidden');
             }
         }
@@ -693,7 +694,7 @@
 
             const shiftEarned = shifts * Number(wageRate);
             const otEarned = otHours * (Number(wageRate) / 8);
-            const grossWages = shiftEarned + otEarned;
+            const grossWages = shiftEarned + otEarned; // Gross Payment
 
             let eePf = 0, erTotalPf = 0;
             if (isEpf !== 'NO') {
@@ -701,22 +702,19 @@
                 erTotalPf = Math.round(shiftEarned * 0.13);
             }
 
+            const totalPayment = Math.max(0, grossWages - eePf); // Total Payment after PF
+
             let advCut = 0;
             const advList = APP_STATE.advances[workerId] || [];
             advList.forEach(a => {
-                if (a.date && a.date.startsWith(month)) advCut += Number(a.amount);
+                if (a.date && a.date.startsWith(month) && a.status === 'APPROVED') {
+                    advCut += Number(a.amount);
+                }
             });
 
-            let fineCut = 0;
-            const fineList = APP_STATE.fines[workerId] || [];
-            fineList.forEach(f => {
-                if (f.date && f.date.startsWith(month)) fineCut += Number(f.amount);
-            });
+            const inHandFinal = Math.max(0, totalPayment - advCut); // In-Hand Salary
 
-            const statutoryNet = Math.max(0, grossWages - eePf);
-            const inHandAfterAllDeductions = Math.max(0, grossWages - eePf - advCut - fineCut);
-
-            return { shifts, otHours, shiftEarned, grossWages, eePf, erTotalPf, statutoryNet, advanceCut: advCut, fineCut, inHandFinal: inHandAfterAllDeductions };
+            return { shifts, otHours, shiftEarned, grossWages, eePf, erTotalPf, totalPayment, advanceCut: advCut, inHandFinal };
         }
 
         function openLoginModal(role) {
@@ -822,6 +820,10 @@
                     <p class="font-bold text-[#4a2411] uppercase text-[10px] border-b border-amber-300 pb-1">${t.operations}</p>
                     <button onclick="renderContractorMusterWorkspace()" class="w-full text-left px-3 py-2 rounded lm-btn-gold text-xs">${t.masterMuster}</button>
                     <button onclick="showSupervisorAdvanceDesk()" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow">${t.advDesk}</button>
+                    <button onclick="showAdvanceApprovalDesk()" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow flex justify-between items-center">
+                        <span>${t.advApprovals}</span>
+                        <span class="bg-rose-700 text-white text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold">${Object.values(APP_STATE.advances).flat().filter(a => a.status === 'PENDING').length}</span>
+                    </button>
                     <button onclick="showCorrectionRequestsDesk()" class="w-full text-left px-3 py-2 rounded bg-amber-600 text-slate-950 font-bold text-xs shadow flex justify-between items-center">
                         <span>${t.corrReqs}</span>
                         <span class="bg-rose-700 text-white text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold">${APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING').length}</span>
@@ -869,7 +871,7 @@
         }
 
         // =========================================================================
-        // DEDICATED DESK FUNCTIONS
+        // DEDICATED DESKS (ONBOARD & APPROVALS)
         // =========================================================================
         function showOnboardLabourDesk() {
             const t = I18N[CURRENT_LANG];
@@ -981,6 +983,72 @@
             lucide.createIcons();
         }
 
+        function showAdvanceApprovalDesk() {
+            document.getElementById('workspace-notice-title').innerText = "Supervisor Advance Approval Requests";
+            const container = document.getElementById('workspace-main-container');
+            
+            let allPending = [];
+            Object.keys(APP_STATE.advances).forEach(workerId => {
+                const list = APP_STATE.advances[workerId] || [];
+                list.forEach(adv => {
+                    if (adv.status === 'PENDING') {
+                        const worker = APP_STATE.labour.find(w => w.id === workerId);
+                        allPending.push({
+                            workerId,
+                            workerName: worker ? worker.name : workerId,
+                            ...adv
+                        });
+                    }
+                });
+            });
+
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-500 p-4 rounded-lg shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h4 class="font-bold text-[#4a2411] text-xs flex items-center gap-1.5">
+                            <i data-lucide="check-square" class="w-4 h-4 text-amber-700"></i> Pending Supervisor Advance Approvals
+                        </h4>
+                        <span class="bg-amber-600 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded">${allPending.length} Pending</span>
+                    </div>
+                    <div class="divide-y divide-amber-200">
+                        ${allPending.length === 0 ? '<p class="p-6 text-center text-slate-500 italic">No pending advance requests.</p>' : 
+                            allPending.map(item => `
+                                <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
+                                    <div>
+                                        <p class="font-bold text-slate-950">Worker: ${item.workerName} (${item.workerId}) — Supervisor: <span class="text-amber-800">${item.supervisor || 'Supervisor'}</span></p>
+                                        <p class="text-xs font-mono font-bold text-rose-700">Amount: ₹${item.amount} | Date: ${item.date}</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button onclick="handleAdvanceAction('${item.workerId}', '${item.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Approve & Deduct</button>
+                                        <button onclick="handleAdvanceAction('${item.workerId}', '${item.id}', 'REJECT')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Reject</button>
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function handleAdvanceAction(workerId, advId, action) {
+            const list = APP_STATE.advances[workerId] || [];
+            const adv = list.find(a => a.id === advId);
+            if (!adv) return;
+
+            if (action === 'APPROVE') {
+                adv.status = 'APPROVED';
+                alert("Advance Approved Successfully!");
+            } else {
+                adv.status = 'REJECTED';
+                alert("Advance Request Rejected.");
+            }
+
+            dbRef.child("advances").set(APP_STATE.advances);
+            saveLocalState();
+            showAdvanceApprovalDesk();
+        }
+
         function showCorrectionRequestsDesk() {
             const t = I18N[CURRENT_LANG];
             document.getElementById('workspace-notice-title').innerText = t.corrReqs;
@@ -1063,10 +1131,9 @@
                         ${dayCells}
                         <td class="font-black text-blue-700 font-mono bg-amber-100">${presentCount}</td>
                         <td class="font-mono font-bold text-amber-800 bg-amber-50">₹${m.advanceCut}</td>
-                        <td class="font-mono font-bold text-rose-700 bg-rose-50">₹${m.fineCut}</td>
                         <td class="font-black font-mono text-emerald-800 bg-emerald-100">₹${Math.round(m.inHandFinal)}</td>
                         <td class="p-1 space-x-1 whitespace-nowrap">
-                            <button onclick="openFineModal('${w.id}', '${w.name}')" class="bg-rose-100 text-rose-800 hover:bg-rose-200 px-1.5 py-0.5 rounded text-[9px] font-bold">+Fine</button>
+                            <button onclick="openContractorAdvModal('${w.id}', '${w.name}')" class="bg-amber-200 text-amber-900 hover:bg-amber-300 px-1.5 py-0.5 rounded text-[9px] font-bold">+Adv</button>
                             <button onclick="generateWorkerIdCardPDF('${w.id}')" class="bg-slate-200 hover:bg-slate-300 px-1.5 py-0.5 rounded text-[9px] font-bold">🪪 ID</button>
                             <button onclick="sendWorkerWhatsAppSummary('${w.id}')" class="bg-emerald-600 text-white hover:bg-emerald-500 px-1.5 py-0.5 rounded text-[9px] font-bold">📲 WA</button>
                             <button onclick="generateFndSettlementPDF('${w.id}')" class="bg-amber-700 text-white hover:bg-amber-600 px-1.5 py-0.5 rounded text-[9px] font-bold">FNF</button>
@@ -1101,9 +1168,8 @@
                                     ${dayHeaders}
                                     <th rowspan="2" class="w-10 bg-amber-300 font-black">${t.days}</th>
                                     <th rowspan="2" class="w-12 bg-amber-100 font-bold">${t.adv}</th>
-                                    <th rowspan="2" class="w-12 bg-rose-100 font-bold">${t.fine}</th>
                                     <th rowspan="2" class="w-14 bg-emerald-200 font-black">${t.inHand}</th>
-                                    <th rowspan="2" class="w-28">${t.actions}</th>
+                                    <th rowspan="2" class="w-32">${t.actions}</th>
                                 </tr>
                                 <tr>${dayNameHeaders}</tr>
                             </thead>
@@ -1177,11 +1243,8 @@
             if (confirm(t.confirmDelLabour(workerName, workerId))) {
                 APP_STATE.labour = APP_STATE.labour.filter(w => w.id !== workerId);
                 delete APP_STATE.advances[workerId];
-                delete APP_STATE.fines[workerId];
                 
-                // Sync to Firebase
                 dbRef.child("labour").set(APP_STATE.labour);
-                
                 saveLocalState();
                 alert(t.successDelLabour(workerName));
                 renderContractorMusterWorkspace();
@@ -1240,21 +1303,14 @@
         function deleteSingleSupervisor(supId, supName, mappedCount) {
             const t = I18N[CURRENT_LANG];
             if (mappedCount > 0) {
-                if (!confirm(t.confirmDelSupWarn(supName, mappedCount))) {
-                    return;
-                }
+                if (!confirm(t.confirmDelSupWarn(supName, mappedCount))) return;
             } else {
-                if (!confirm(t.confirmDelSup(supName))) {
-                    return;
-                }
+                if (!confirm(t.confirmDelSup(supName))) return;
             }
 
             APP_STATE.supervisors = APP_STATE.supervisors.filter(s => s.id !== supId);
-            APP_STATE.labour.forEach(w => {
-                if (w.supervisorId === supId) w.supervisorId = '';
-            });
+            APP_STATE.labour.forEach(w => { if (w.supervisorId === supId) w.supervisorId = ''; });
 
-            // Sync to Firebase
             dbRef.child("supervisors").set(APP_STATE.supervisors);
             dbRef.child("labour").set(APP_STATE.labour);
 
@@ -1264,7 +1320,7 @@
         }
 
         // =========================================================================
-        // SUPERVISOR ADVANCE DESK
+        // SUPERVISOR ADVANCE DESK & CONTRACTOR DIRECT ADVANCE
         // =========================================================================
         function showSupervisorAdvanceDesk() {
             const t = I18N[CURRENT_LANG];
@@ -1277,7 +1333,7 @@
                     <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-300 pb-3">
                         <div>
                             <h3 class="font-black text-[#4a2411] text-sm">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र चुनें' : 'Select Site Supervisor'}</h3>
-                            <p class="text-[11px] text-slate-600">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र चुनें और मज़दूरों को दिए गए एडवांस की एंट्री करें।' : 'Choose a site supervisor to disburse and record advances for their team.'}</p>
+                            <p class="text-[11px] text-slate-600">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र चुनें और मज़दूरों के एडवांस के लिए निवेदन भेजें।' : 'Choose supervisor to request advance disbursements.'}</p>
                         </div>
                         <div class="flex items-center gap-2">
                             <label class="font-bold text-xs">Supervisor:</label>
@@ -1318,23 +1374,24 @@
                                 <th class="p-2.5">Emp Code</th>
                                 <th class="p-2.5">Worker Name</th>
                                 <th class="p-2.5">Trade / Rate</th>
-                                <th class="p-2.5">${CURRENT_LANG === 'hi' ? 'वर्तमान माह का कुल एडवांस' : 'Current Month Advance'}</th>
-                                <th class="p-2.5 text-right">${CURRENT_LANG === 'hi' ? 'तुरंत एडवांस दर्ज करें' : 'Quick Advance Entry'}</th>
+                                <th class="p-2.5">${CURRENT_LANG === 'hi' ? 'कुल स्वीकृत एडवांस (Approved)' : 'Approved Advance'}</th>
+                                <th class="p-2.5 text-right">${CURRENT_LANG === 'hi' ? 'एडवांस निवेदन भेजें' : 'Request Advance'}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-amber-200">
                             ${supWorkers.map(w => {
                                 const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                                const pendingAdvList = (APP_STATE.advances[w.id] || []).filter(a => a.status === 'PENDING');
                                 return `
                                     <tr class="hover:bg-amber-50">
                                         <td class="p-2.5 font-mono font-bold">${w.id}</td>
                                         <td class="p-2.5 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</td>
                                         <td class="p-2.5 text-slate-600">${w.category} (₹${w.wage}/d)</td>
-                                        <td class="p-2.5 font-mono font-bold text-amber-800">₹${m.advanceCut}</td>
+                                        <td class="p-2.5 font-mono font-bold text-amber-800">₹${m.advanceCut} ${pendingAdvList.length > 0 ? `<span class="text-[9px] text-rose-600 bg-rose-100 px-1 rounded">(${pendingAdvList.length} Pending)</span>` : ''}</td>
                                         <td class="p-2.5 text-right">
                                             <div class="inline-flex items-center gap-1.5">
                                                 <input type="number" id="adv-input-${w.id}" min="1" placeholder="₹ Amount" class="w-24 p-1 border border-slate-400 rounded text-xs font-mono font-bold text-slate-900">
-                                                <button onclick="saveQuickAdvance('${w.id}', '${today}')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded shadow text-xs">${CURRENT_LANG === 'hi' ? 'सेव करें' : 'Save Entry'}</button>
+                                                <button onclick="saveQuickAdvance('${w.id}', '${today}')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded shadow text-xs">${CURRENT_LANG === 'hi' ? 'निवेदन भेजें' : 'Send Request'}</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -1347,49 +1404,60 @@
         }
 
         function saveQuickAdvance(workerId, date) {
-            const t = I18N[CURRENT_LANG];
             const input = document.getElementById(`adv-input-${workerId}`);
             const amount = Number(input.value);
             if (!amount || amount <= 0) { alert(CURRENT_LANG === 'hi' ? "कृपया सही राशि दर्ज करें!" : "Please enter a valid amount!"); return; }
 
             if (!APP_STATE.advances[workerId]) APP_STATE.advances[workerId] = [];
-            APP_STATE.advances[workerId].push({ amount, date, reason: "Site Advance" });
+            APP_STATE.advances[workerId].push({
+                id: 'ADV-' + Date.now().toString().slice(-6),
+                amount,
+                date,
+                reason: "Site Advance",
+                status: 'PENDING',
+                supervisor: APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.name : 'Supervisor'
+            });
 
+            dbRef.child("advances").set(APP_STATE.advances);
             saveLocalState();
             input.value = '';
-            alert(t.successAdvRecorded);
+            alert(CURRENT_LANG === 'hi' ? "एडवांस निवेदन ठेकेदार के पास स्वीकृति हेतु भेज दिया गया है!" : "Advance request sent to Contractor!");
             const supId = document.getElementById('adv-desk-sup-select').value;
             renderSupervisorLabourForAdvance(supId);
         }
 
-        // =========================================================================
-        // FINES, WHATSAPP & ID CARD HELPERS
-        // =========================================================================
-        function openFineModal(workerId, workerName) {
-            document.getElementById('fine-worker-id').value = workerId;
-            document.getElementById('fine-worker-name').value = workerName;
-            document.getElementById('fine-modal').classList.remove('hidden');
+        function openContractorAdvModal(workerId, workerName) {
+            document.getElementById('c-adv-worker-id').value = workerId;
+            document.getElementById('c-adv-worker-name').value = workerName;
+            document.getElementById('contractor-adv-modal').classList.remove('hidden');
         }
 
-        function closeFineModal() {
-            document.getElementById('fine-modal').classList.add('hidden');
+        function closeContractorAdvModal() {
+            document.getElementById('contractor-adv-modal').classList.add('hidden');
         }
 
-        function handleSaveFine(e) {
+        function handleContractorDirectAdvance(e) {
             e.preventDefault();
-            const t = I18N[CURRENT_LANG];
-            const wId = document.getElementById('fine-worker-id').value;
-            const amount = Number(document.getElementById('fine-amount').value);
-            const reason = SECURITY_ENGINE.sanitize(document.getElementById('fine-reason').value);
+            const workerId = document.getElementById('c-adv-worker-id').value;
+            const amount = Number(document.getElementById('c-adv-amount').value);
+            const reason = SECURITY_ENGINE.sanitize(document.getElementById('c-adv-reason').value);
             const date = new Date().toISOString().split('T')[0];
 
-            if (!APP_STATE.fines[wId]) APP_STATE.fines[wId] = [];
-            APP_STATE.fines[wId].push({ amount, reason, date });
+            if (!APP_STATE.advances[workerId]) APP_STATE.advances[workerId] = [];
+            APP_STATE.advances[workerId].push({
+                id: 'ADV-' + Date.now().toString().slice(-6),
+                amount,
+                date,
+                reason,
+                status: 'APPROVED', // Contractor direct entry is auto-approved
+                supervisor: 'Direct Contractor'
+            });
 
+            dbRef.child("advances").set(APP_STATE.advances);
             saveLocalState();
-            closeFineModal();
+            closeContractorAdvModal();
             e.target.reset();
-            alert(t.successFineRecorded);
+            alert("Direct Advance Disbursed and Approved Successfully!");
             renderContractorMusterWorkspace();
         }
 
@@ -1402,10 +1470,10 @@
                          `*Present Shifts:* ${m.shifts} Days | OT: ${m.otHours}h%0A` +
                          `*Gross Wages:* Rs. ${Math.round(m.grossWages)}%0A` +
                          `*12% PF Cut:* Rs. ${m.eePf}%0A` +
-                         `*Advance Cut:* Rs. ${m.advanceCut}%0A` +
-                         `*Safety Fine Cut:* Rs. ${m.fineCut}%0A` +
+                         `*Total Payment:* Rs. ${Math.round(m.totalPayment)}%0A` +
+                         `*Approved Advance:* Rs. ${m.advanceCut}%0A` +
                          `----------------------------%0A` +
-                         `*FINAL IN-HAND PAYOUT:* Rs. ${Math.round(m.inHandFinal)}%0A` +
+                         `*FINAL IN-HAND SALARY:* Rs. ${Math.round(m.inHandFinal)}%0A` +
                          `*Bank:* ${worker.bankAcc} (${worker.bankIfsc})%0A%0A` +
                          `_Issued by ${APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId)?.name || 'Contractor'}_`;
 
@@ -1469,11 +1537,11 @@
 
             const tableData = [
                 ['Total Shifts Worked', `${m.shifts} Shifts`],
-                ['Gross Wages Earned', `Rs. ${Math.round(m.grossWages)}`],
-                ['12% Employee PF Deduction', `Rs. ${m.eePf}`],
-                ['Total Advance Recovered', `Rs. ${m.advanceCut}`],
-                ['Safety & Mess Penalties', `Rs. ${m.fineCut}`],
-                ['FINAL NET AMOUNT PAID / DISCHARGED', `Rs. ${Math.round(m.inHandFinal)}`]
+                ['Gross Payment', `Rs. ${Math.round(m.grossWages)}`],
+                ['(-) 12% Employee PF Deduction', `Rs. ${m.eePf}`],
+                ['(=) Total Payment (Net Statutory)', `Rs. ${Math.round(m.totalPayment)}`],
+                ['(-) Approved Advance Deductions', `Rs. ${m.advanceCut}`],
+                ['(=) FINAL IN-HAND SALARY', `Rs. ${Math.round(m.inHandFinal)}`]
             ];
 
             doc.autoTable({
@@ -1493,7 +1561,7 @@
         }
 
         // =========================================================================
-        // 3 DISTINCT SHEETS EXPORTERS
+        // 3 DISTINCT SHEETS EXPORTERS (SHEET 3 FORMAT UPDATED)
         // =========================================================================
         function downloadPureAttendancePDF() {
             const { jsPDF } = window.jspdf;
@@ -1601,7 +1669,7 @@
                 const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
                 totalGross += m.grossWages;
                 totalPf += m.eePf;
-                totalStatutoryNet += m.statutoryNet;
+                totalStatutoryNet += m.totalPayment;
 
                 return [
                     (idx + 1).toString(),
@@ -1613,7 +1681,7 @@
                     `${m.shifts}d / ${m.otHours}h`,
                     "Rs. " + Math.round(m.grossWages),
                     "Rs. " + m.eePf,
-                    "Rs. " + Math.round(m.statutoryNet),
+                    "Rs. " + Math.round(m.totalPayment),
                     w.bankAcc + "\n(" + w.bankIfsc + ")"
                 ];
             });
@@ -1627,7 +1695,7 @@
             ]);
 
             doc.autoTable({
-                head: [['Sr', 'Code', 'Worker Name', 'UAN Number', 'Trade', 'Rate', 'Shifts/OT', 'Gross Wages', '12% EE PF', 'Net Wage Payable', 'Bank Details']],
+                head: [['Sr', 'Code', 'Worker Name', 'UAN Number', 'Trade', 'Rate', 'Shifts/OT', 'Gross Payment', '12% EE PF', 'Total Payment', 'Bank Details']],
                 body: tableData,
                 startY: 23,
                 theme: 'grid',
@@ -1640,11 +1708,11 @@
 
         function downloadStatutoryWageExcel() {
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-            let csv = "Sr_No,Emp_Code,Worker_Name,UAN,Trade,Daily_Wage,Shifts,OT_Hours,Gross_Wages,EE_PF_12_Cut,Statutory_Net_Payable,Bank_Account,Bank_IFSC\n";
+            let csv = "Sr_No,Emp_Code,Worker_Name,UAN,Trade,Daily_Wage,Shifts,OT_Hours,Gross_Payment,EE_PF_12_Cut,Total_Payment,Bank_Account,Bank_IFSC\n";
 
             myLabour.forEach((w, idx) => {
                 const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
-                csv += `${idx + 1},"${w.id}","${w.name}","${w.uan}","${w.category}",${w.wage},${m.shifts},${m.otHours},${Math.round(m.grossWages)},${m.eePf},${Math.round(m.statutoryNet)},"${w.bankAcc}","${w.bankIfsc}"\n`;
+                csv += `${idx + 1},"${w.id}","${w.name}","${w.uan}","${w.category}",${w.wage},${m.shifts},${m.otHours},${Math.round(m.grossWages)},${m.eePf},${Math.round(m.totalPayment)},"${w.bankAcc}","${w.bankIfsc}"\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1663,18 +1731,18 @@
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
 
             doc.setFontSize(13);
-            doc.text(`CONTRACTOR INTERNAL HISAB-KITAB & ADVANCE RECOVERY - ${APP_STATE.selectedMonth}`, 14, 12);
+            doc.text(`CONTRACTOR PRIVATE HISAB-KITAB (GROSS ➔ PF ➔ TOTAL ➔ ADVANCE ➔ IN-HAND) - ${APP_STATE.selectedMonth}`, 14, 12);
             doc.setFontSize(9);
             doc.text(`Firm: ${firm ? firm.name : 'Contractor Firm'} | Confidential Final In-Hand Payout`, 14, 18);
 
-            let totalGross = 0, totalPf = 0, totalAdv = 0, totalFine = 0, totalInHand = 0;
+            let totalGross = 0, totalPf = 0, totalPay = 0, totalAdv = 0, totalInHand = 0;
 
             const tableData = myLabour.map((w, idx) => {
                 const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
                 totalGross += m.grossWages;
                 totalPf += m.eePf;
+                totalPay += m.totalPayment;
                 totalAdv += m.advanceCut;
-                totalFine += m.fineCut;
                 totalInHand += m.inHandFinal;
 
                 return [
@@ -1685,8 +1753,8 @@
                     `${m.shifts}d / ${m.otHours}h`,
                     "Rs. " + Math.round(m.grossWages),
                     "Rs. " + m.eePf,
+                    "Rs. " + Math.round(m.totalPayment),
                     "Rs. " + m.advanceCut,
-                    "Rs. " + m.fineCut,
                     "Rs. " + Math.round(m.inHandFinal),
                     w.bankAcc + "\n(" + w.bankIfsc + ")",
                     "[ Signature ]"
@@ -1697,14 +1765,14 @@
                 "", "", "TOTAL HISAB SUMMARY", "", "",
                 "Rs. " + Math.round(totalGross),
                 "Rs. " + Math.round(totalPf),
+                "Rs. " + Math.round(totalPay),
                 "Rs. " + Math.round(totalAdv),
-                "Rs. " + Math.round(totalFine),
                 "Rs. " + Math.round(totalInHand),
                 "", ""
             ]);
 
             doc.autoTable({
-                head: [['Sr', 'Code', 'Worker Name', 'Trade', 'Shifts/OT', 'Gross Wage', 'PF 12%', 'Advance Cut', 'Fine Cut', 'Final In-Hand', 'Bank Details', 'Labour Sign']],
+                head: [['Sr', 'Code', 'Worker Name', 'Trade', 'Shifts/OT', 'Gross Payment', '(-) EPF', '(=) Total Payment', '(-) Advance', '(=) In-Hand Salary', 'Bank Details', 'Labour Sign']],
                 body: tableData,
                 startY: 23,
                 theme: 'grid',
@@ -1717,11 +1785,11 @@
 
         function downloadInternalHisabExcel() {
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-            let csv = "Sr_No,Emp_Code,Worker_Name,Trade,Shifts,OT_Hours,Gross_Wages,PF_12_Cut,Advance_Cut,Fine_Cut,Final_InHand_Payout,Bank_Account,Bank_IFSC\n";
+            let csv = "Sr_No,Emp_Code,Worker_Name,Trade,Shifts,OT_Hours,Gross_Payment,EPF_Cut,Total_Payment,Advance_Cut,InHand_Salary,Bank_Account,Bank_IFSC\n";
 
             myLabour.forEach((w, idx) => {
                 const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
-                csv += `${idx + 1},"${w.id}","${w.name}","${w.category}",${m.shifts},${m.otHours},${Math.round(m.grossWages)},${m.eePf},${m.advanceCut},${m.fineCut},${Math.round(m.inHandFinal)},"${w.bankAcc}","${w.bankIfsc}"\n`;
+                csv += `${idx + 1},"${w.id}","${w.name}","${w.category}",${m.shifts},${m.otHours},${Math.round(m.grossWages)},${m.eePf},${Math.round(m.totalPayment)},${m.advanceCut},${Math.round(m.inHandFinal)},"${w.bankAcc}","${w.bankIfsc}"\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1945,9 +2013,7 @@
             if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
             APP_STATE.attendance[date][workerId] = { status, ot: Number(otVal || 0) };
             
-            // Sync to Firebase Realtime Database
             dbRef.child("attendance").set(APP_STATE.attendance);
-
             saveLocalState();
             renderSupervisorAttendanceDesk();
         }
@@ -1962,9 +2028,7 @@
                 APP_STATE.attendance[date][w.id] = { status: 'P', ot };
             });
 
-            // Sync to Firebase Realtime Database
             dbRef.child("attendance").set(APP_STATE.attendance);
-
             saveLocalState();
             renderSupervisorAttendanceDesk();
         }
@@ -1975,9 +2039,7 @@
                 const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                 APP_STATE.lockedDates[date] = { locked: true, timestamp: `${date} ${now}` };
                 
-                // Sync to Firebase Realtime Database
                 dbRef.child("lockedDates").set(APP_STATE.lockedDates);
-
                 saveLocalState();
                 alert(t.successLockAtt(date));
                 renderSupervisorAttendanceDesk();
@@ -2155,9 +2217,7 @@
                 APP_STATE.attendance[req.date][req.workerId] = { status: req.newStatus, ot: req.newOt };
                 req.status = 'APPROVED';
                 
-                // Sync Attendance to Firebase
                 dbRef.child("attendance").set(APP_STATE.attendance);
-
                 alert(t.reqApprovedMsg(req.workerName));
             } else {
                 req.status = 'REJECTED';
@@ -2190,9 +2250,7 @@
             };
             APP_STATE.labour.push(newWorker);
 
-            // Sync to Firebase Realtime Database
             dbRef.child("labour").set(APP_STATE.labour);
-
             saveLocalState();
             e.target.reset();
             alert(t.successLabourOnboard);
@@ -2214,9 +2272,7 @@
             };
             APP_STATE.supervisors.push(newSup);
 
-            // Sync to Firebase Realtime Database
             dbRef.child("supervisors").set(APP_STATE.supervisors);
-
             saveLocalState();
             e.target.reset();
             alert(t.successSupCreated);
@@ -2282,7 +2338,7 @@
                 id: 'CONT-' + (APP_STATE.contractors.length + 1).toString().padStart(3, '0'),
                 name: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-name').value.trim()),
                 owner: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-owner').value.trim()),
-                mobile: SECURITY_ENGINNE.sanitize(document.getElementById('new-firm-mobile').value.trim()),
+                mobile: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-mobile').value.trim()),
                 gstin: '22AAAAA0000A1Z5',
                 passHash: passHash,
                 status: 'ACTIVE',
