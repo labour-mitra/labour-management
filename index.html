@@ -1765,7 +1765,11 @@
             const t = I18N[CURRENT_LANG];
             const date = APP_STATE.supervisorSelectedDate;
             const isLocked = APP_STATE.lockedDates[date] && APP_STATE.lockedDates[date].locked;
-            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            
+            // केवल उसी सुपरवाइज़र के मज़दूर दिखेंगे जो उससे मैप हैं!
+            const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
+            
             if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
 
             document.getElementById('workspace-notice-title').innerText = CURRENT_LANG === 'hi' ? `हाज़िरी टर्मिनल — तारीख: ${date}` : `Attendance Terminal — Date: ${date}`;
@@ -1873,7 +1877,9 @@
 
         function markAllSupervisorPresentToday(date) {
             if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
-            APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId).forEach(w => {
+            
+            const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
+            APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId).forEach(w => {
                 const cur = APP_STATE.attendance[date][w.id];
                 const ot = cur && typeof cur === 'object' ? cur.ot : 0;
                 APP_STATE.attendance[date][w.id] = { status: 'P', ot };
@@ -1906,7 +1912,9 @@
         function renderSupervisorHistoryLog() {
             const t = I18N[CURRENT_LANG];
             document.getElementById('workspace-notice-title').innerText = t.supHistory;
-            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            
+            const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
             const dates = Object.keys(APP_STATE.attendance).sort().reverse();
 
             const container = document.getElementById('workspace-main-container');
@@ -1935,7 +1943,7 @@
                                     dates.map(d => {
                                         let p = 0, hd = 0, a = 0, ot = 0;
                                         myLabour.forEach(w => {
-                                            const rec = APP_STATE.attendance[d][w.id];
+                                            const rec = APP_STATE.attendance[d] && APP_STATE.attendance[d][w.id];
                                             const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
                                             const o = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
                                             if (st === 'P') p++;
