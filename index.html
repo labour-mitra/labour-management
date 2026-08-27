@@ -119,7 +119,7 @@
         <footer class="lm-brown text-amber-200/90 text-center py-4 text-xs border-t border-amber-600/40 space-y-1">
             <p class="font-bold">Labour Mitra Enterprise OS • Industrial Manpower Supply & Compliance Gateway</p>
             <p class="text-slate-300 text-[11px]">
-                Designed & Developed by <span class="text-amber-400 font-bold">Er. Arun Banjare</span> | Mahasamund, Chhattisgarh
+                Designed & Developed by <span class="text-amber-400 font-bold">Arun Banjare</span> | Mahasamund, Chhattisgarh
             </p>
         </footer>
     </div>
@@ -586,10 +586,16 @@
             }
         }
 
+        // Bug Fixed: Auto-sync supervisor selected date when global wage month changes
         function onPeriodChange() {
             APP_STATE.selectedMonth = document.getElementById('global-month-filter').value;
             APP_STATE.selectedFy = document.getElementById('global-fy-select').value;
             document.getElementById('current-period-label').innerText = `Period: ${APP_STATE.selectedMonth} (FY: ${APP_STATE.selectedFy})`;
+            
+            // Sync supervisor date to new month if desynced
+            if (!APP_STATE.supervisorSelectedDate.startsWith(APP_STATE.selectedMonth)) {
+                APP_STATE.supervisorSelectedDate = `${APP_STATE.selectedMonth}-01`;
+            }
             refreshActiveView();
         }
 
@@ -616,7 +622,7 @@
 
             Object.keys(APP_STATE.attendance).forEach(date => {
                 if (date.startsWith(month)) {
-                    const rec = APP_STATE.attendance[date][workerId];
+                    const rec = APP_STATE.attendance[date]?.[workerId];
                     if (rec) {
                         const st = typeof rec === 'string' ? rec : rec.status;
                         const ot = typeof rec === 'object' ? Number(rec.ot || 0) : 0;
@@ -1053,7 +1059,7 @@
         }
 
         // =========================================================================
-        // MANAGE & DELETE DESKS
+        // MANAGE & DELETE DESKS (With Orphaned Attendance Cleanup Bug Fixed)
         // =========================================================================
         function showManageLabourDesk() {
             const t = I18N[CURRENT_LANG];
@@ -1112,6 +1118,14 @@
                 APP_STATE.labour = APP_STATE.labour.filter(w => w.id !== workerId);
                 delete APP_STATE.advances[workerId];
                 delete APP_STATE.fines[workerId];
+                
+                // Bug Fixed: Clean up attendance records for this deleted worker across all dates
+                Object.keys(APP_STATE.attendance).forEach(date => {
+                    if (APP_STATE.attendance[date] && APP_STATE.attendance[date][workerId]) {
+                        delete APP_STATE.attendance[date][workerId];
+                    }
+                });
+
                 saveLocalState();
                 alert(t.successDelLabour(workerName));
                 renderContractorMusterWorkspace();
@@ -1766,7 +1780,6 @@
             const date = APP_STATE.supervisorSelectedDate;
             const isLocked = APP_STATE.lockedDates[date] && APP_STATE.lockedDates[date].locked;
             
-            // केवल उसी सुपरवाइज़र के मज़दूर दिखेंगे जो उससे मैप हैं!
             const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
             
@@ -1837,7 +1850,7 @@
                                     </div>
                                     
                                     <div class="flex items-center gap-2">
-                                        ${!isLocked ? `
+                                        {!isLocked ? `
                                             <div class="flex gap-1 font-bold">
                                                 <button onclick="setShiftStatus('${date}', '${w.id}', 'P', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-600 text-white' : 'bg-slate-200'}">P</button>
                                                 <button onclick="setShiftStatus('${date}', '${w.id}', 'HD', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'HD' ? 'bg-amber-600 text-white' : 'bg-slate-200'}">HD</button>
@@ -2079,11 +2092,25 @@
             showCorrectionRequestsDesk();
         }
 
+        // Bug Fixed: Added Duplicate Mobile & UAN validation check before onboarding labour
         async function handleAddLabour(e) {
             e.preventDefault();
             const t = I18N[CURRENT_LANG];
             const rawBank = document.getElementById('labour-bank-acc').value.trim();
             const rawUan = document.getElementById('labour-uan').value.trim();
+            const mobile = SECURITY_ENGINE.sanitize(document.getElementById('labour-mobile').value.trim());
+
+            const existingByMobile = APP_STATE.labour.some(w => w.mobile === mobile);
+            const existingByUan = APP_STATE.labour.some(w => w.uan === rawUan);
+
+            if (existingByMobile) {
+                alert(CURRENT_LANG === 'hi' ? "यह मोबाइल नंबर पहले से रजिस्टर्ड है!" : "This mobile number is already registered!");
+                return;
+            }
+            if (existingByUan) {
+                alert(CURRENT_LANG === 'hi' ? "यह UAN नंबर पहले से रजिस्टर्ड है!" : "This UAN number is already registered!");
+                return;
+            }
 
             const newWorker = {
                 id: (9000 + APP_STATE.labour.length + 1).toString(),
@@ -2093,7 +2120,7 @@
                 category: SECURITY_ENGINE.sanitize(document.getElementById('labour-category').value.trim()),
                 wage: Number(document.getElementById('labour-wage').value),
                 clientRate: Number(document.getElementById('labour-client-rate').value || 600),
-                mobile: SECURITY_ENGINE.sanitize(document.getElementById('labour-mobile').value.trim()),
+                mobile: mobile,
                 uan: rawUan,
                 bankAcc: rawBank,
                 bankIfsc: SECURITY_ENGINE.sanitize(document.getElementById('labour-bank-ifsc').value.trim()),
@@ -2106,9 +2133,18 @@
             renderContractorMusterWorkspace();
         }
 
+        // Bug Fixed: Added Duplicate Mobile validation check before creating supervisor
         async function handleAddSupervisor(e) {
             e.preventDefault();
             const t = I18N[CURRENT_LANG];
+            const mobile = SECURITY_ENGINE.sanitize(document.getElementById('sup-mobile').value.trim());
+            const existingSup = APP_STATE.supervisors.some(s => s.mobile === mobile);
+
+            if (existingSup) {
+                alert(CURRENT_LANG === 'hi' ? "यह सुपरवाइज़र मोबाइल नंबर पहले से रजिस्टर्ड है!" : "This supervisor mobile number is already registered!");
+                return;
+            }
+
             const rawPass = document.getElementById('sup-password').value;
             const passHash = await SECURITY_ENGINE.sha256(rawPass);
 
@@ -2116,7 +2152,7 @@
                 id: 'SUP-' + (APP_STATE.supervisors.length + 1).toString().padStart(3, '0'),
                 contractorId: APP_STATE.currentContractorId,
                 name: SECURITY_ENGINE.sanitize(document.getElementById('sup-name').value.trim()),
-                mobile: SECURITY_ENGINE.sanitize(document.getElementById('sup-mobile').value.trim()),
+                mobile: mobile,
                 passHash: passHash
             };
             APP_STATE.supervisors.push(newSup);
