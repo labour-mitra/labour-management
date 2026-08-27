@@ -152,7 +152,7 @@
                     <input type="password" id="auth-pass" required placeholder="••••" class="w-full bg-white border border-slate-400 rounded-lg p-2.5 text-xs text-slate-900">
                 </div>
                 <div id="login-hint" class="text-[10px] text-amber-900 bg-amber-100 p-2 rounded border border-amber-300 font-mono">
-                    Contractor Mobile: <span class="font-bold">9826000001 / 123</span>
+                    First time? Register via Admin.
                 </div>
                 <button type="submit" id="auth-submit-btn" class="w-full lm-btn-gold py-2.5 rounded-lg text-xs shadow font-bold" data-i18n="loginBtn">Authenticate & Launch Desk</button>
             </form>
@@ -319,7 +319,7 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. CORE ENGINE SCRIPT (FIREBASE INTEGRATED)                               -->
+    <!-- 4. CORE ENGINE SCRIPT (FIREBASE INTEGRATED & CLEAN STATE)                 -->
     <!-- ========================================================================= -->
     <script>
         // Initialize Firebase
@@ -549,21 +549,9 @@
             supervisorSelectedDate: "2026-04-01",
             failedLoginAttempts: 0,
             lockoutUntil: 0,
-            contractors: [
-                { id: 'CONT-001', name: 'SHRI MELARAM BANJARE MANPOWER SUPPLIERS', gstin: '22AAAAA0000A1Z5', owner: 'Melaram Banjare', mobile: '9826000001', passHash: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', status: 'ACTIVE', quota: 100, pan: 'ABCDE1234F', address: 'Mahasamund Chhattisgarh', license: 'LIC-98260' },
-                { id: 'CONT-002', name: 'MAA SHARDA INDUSTRIAL SERVICES', gstin: '22BBBBB0000B1Z6', owner: 'Ramesh Verma', mobile: '9826000002', passHash: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', status: 'ACTIVE', quota: 50, pan: 'FGHIJ5678K', address: 'Raipur Chhattisgarh', license: 'LIC-55443' }
-            ],
-            supervisors: [
-                { id: 'SUP-001', contractorId: 'CONT-001', name: 'Munshi Vikram Singh', mobile: '9000000001', passHash: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3' },
-                { id: 'SUP-002', contractorId: 'CONT-001', name: 'Munshi Rajesh Sahu', mobile: '9000000002', passHash: 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3' }
-            ],
-            labour: [
-                { id: '9000', name: 'RUPESH', supervisorId: 'SUP-001', contractorId: 'CONT-001', category: 'Fitter', wage: 450, clientRate: 600, mobile: '9826111111', aadhar: '412356789012', uan: '100900112233', bankAcc: '9182371231', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9004', name: 'DILEEP TANDAN', supervisorId: 'SUP-001', contractorId: 'CONT-001', category: 'Helper', wage: 450, clientRate: 600, mobile: '9826111112', aadhar: '412356789013', uan: '100900112234', bankAcc: '9182371232', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9005', name: 'GOKUL YADAV', supervisorId: 'SUP-001', contractorId: 'CONT-001', category: 'Rigger', wage: 450, clientRate: 600, mobile: '9826111113', aadhar: '412356789014', uan: '100900112235', bankAcc: '9182371233', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9006', name: 'RITESH', supervisorId: 'SUP-002', contractorId: 'CONT-001', category: 'Helper', wage: 450, clientRate: 600, mobile: '9826111114', aadhar: '412356789015', uan: '100900112236', bankAcc: '9182371234', bankIfsc: 'SBIN000123', isEpf: 'YES' },
-                { id: '9007', name: 'GHANSHYAM SAHU', supervisorId: 'SUP-002', contractorId: 'CONT-001', category: 'Certified Welder', wage: 550, clientRate: 750, mobile: '9826111115', aadhar: '412356789016', uan: '100900112237', bankAcc: '9182371235', bankIfsc: 'SBIN000123', isEpf: 'YES' }
-            ],
+            contractors: [], // 👈 Clean State (No Dummy Data)
+            supervisors: [],  // 👈 Clean State
+            labour: [],       // 👈 Clean State
             attendance: {},
             lockedDates: {},
             correctionRequests: [],
@@ -590,66 +578,66 @@
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     APP_STATE.contractors = Array.isArray(data) ? data : Object.values(data);
-                    saveLocalState();
-                    if(APP_STATE.currentUserRole) refreshActiveView();
+                } else {
+                    APP_STATE.contractors = [];
                 }
+                saveLocalState();
+                if(APP_STATE.currentUserRole) refreshActiveView();
             });
 
             dbRef.child("supervisors").on("value", (snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     APP_STATE.supervisors = Array.isArray(data) ? data : Object.values(data);
-                    saveLocalState();
-                    if(APP_STATE.currentUserRole) refreshActiveView();
+                } else {
+                    APP_STATE.supervisors = [];
                 }
+                saveLocalState();
+                if(APP_STATE.currentUserRole) refreshActiveView();
             });
 
             dbRef.child("labour").on("value", (snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     APP_STATE.labour = Array.isArray(data) ? data : Object.values(data);
-                    saveLocalState();
-                    if(APP_STATE.currentUserRole) refreshActiveView();
+                } else {
+                    APP_STATE.labour = [];
                 }
+                saveLocalState();
+                if(APP_STATE.currentUserRole) refreshActiveView();
             });
 
             dbRef.child("attendance").on("value", (snapshot) => {
-                if (snapshot.exists()) {
-                    APP_STATE.attendance = snapshot.val() || {};
-                    saveLocalState();
-                    if(APP_STATE.currentUserRole) refreshActiveView();
-                }
+                APP_STATE.attendance = snapshot.val() || {};
+                saveLocalState();
+                if(APP_STATE.currentUserRole) refreshActiveView();
             });
 
             dbRef.child("lockedDates").on("value", (snapshot) => {
-                if (snapshot.exists()) {
-                    APP_STATE.lockedDates = snapshot.val() || {};
-                    saveLocalState();
-                    if(APP_STATE.currentUserRole) refreshActiveView();
-                }
+                APP_STATE.lockedDates = snapshot.val() || {};
+                saveLocalState();
+                if(APP_STATE.currentUserRole) refreshActiveView();
             });
 
             dbRef.child("advances").on("value", (snapshot) => {
-                if (snapshot.exists()) {
-                    APP_STATE.advances = snapshot.val() || {};
-                    saveLocalState();
-                    if(APP_STATE.currentUserRole) refreshActiveView();
-                }
+                APP_STATE.advances = snapshot.val() || {};
+                saveLocalState();
+                if(APP_STATE.currentUserRole) refreshActiveView();
             });
         }
 
         function saveLocalState() {
-            localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V11', JSON.stringify(APP_STATE));
+            localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V12', JSON.stringify(APP_STATE));
         }
 
         function loadLocalState() {
-            const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V11');
+            const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V12');
             if (saved) {
                 try {
                     const p = JSON.parse(saved);
-                    APP_STATE.contractors = p.contractors || APP_STATE.contractors;
-                    APP_STATE.supervisors = p.supervisors || APP_STATE.supervisors;
-                    APP_STATE.labour = p.labour || APP_STATE.labour;
+                    APP_STATE.contractors = p.contractors || [];
+                    APP_STATE.supervisors = p.supervisors || [];
+                    APP_STATE.labour = p.labour || [];
                     APP_STATE.attendance = p.attendance || {};
                     APP_STATE.lockedDates = p.lockedDates || {};
                     APP_STATE.correctionRequests = p.correctionRequests || [];
@@ -724,7 +712,7 @@
 
             const shiftEarned = shifts * Number(wageRate);
             const otEarned = otHours * (Number(wageRate) / 8);
-            const grossWages = shiftEarned + otEarned; // Gross Payment
+            const grossWages = shiftEarned + otEarned;
 
             let eePf = 0, erTotalPf = 0;
             if (isEpf !== 'NO') {
@@ -732,7 +720,7 @@
                 erTotalPf = Math.round(shiftEarned * 0.13);
             }
 
-            const totalPayment = Math.max(0, grossWages - eePf); // Total Payment after PF
+            const totalPayment = Math.max(0, grossWages - eePf);
 
             let advCut = 0;
             const advList = APP_STATE.advances[workerId] || [];
@@ -742,7 +730,7 @@
                 }
             });
 
-            const inHandFinal = Math.max(0, totalPayment - advCut); // In-Hand Salary
+            const inHandFinal = Math.max(0, totalPayment - advCut);
 
             return { shifts, otHours, shiftEarned, grossWages, eePf, erTotalPf, totalPayment, advanceCut: advCut, inHandFinal };
         }
@@ -754,8 +742,8 @@
             document.getElementById('modal-role-title').innerText = role === 'CONTRACTOR' ? t.contractorLogin : (role === 'SUPERVISOR' ? t.supervisorTerminal : 'Admin');
             const hint = document.getElementById('login-hint');
             if (role === 'ADMIN') hint.innerHTML = 'Plant Admin: <span class="font-bold">admin / admin123</span>';
-            else if (role === 'CONTRACTOR') hint.innerHTML = 'Contractor Mobile: <span class="font-bold">9826000001 / 123</span>';
-            else hint.innerHTML = 'Supervisor Mobile: <span class="font-bold">9000000001 / 123</span>';
+            else if (role === 'CONTRACTOR') hint.innerHTML = 'Contractor Mobile: <span class="font-bold">Registered Mobile / Pass</span>';
+            else hint.innerHTML = 'Supervisor Mobile: <span class="font-bold">Registered Mobile / Pass</span>';
             document.getElementById('login-modal').classList.remove('hidden');
         }
 
@@ -908,6 +896,8 @@
             document.getElementById('workspace-notice-title').innerText = t.onboardLabour;
             const container = document.getElementById('workspace-main-container');
 
+            const activeSups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
+
             container.innerHTML = `
                 <div class="bg-white border-2 border-amber-400 p-5 rounded-lg shadow-sm space-y-4 max-w-2xl mx-auto">
                     <div class="flex justify-between items-center border-b border-amber-300 pb-2">
@@ -916,6 +906,12 @@
                         </h3>
                         <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
                     </div>
+
+                    ${activeSups.length === 0 ? `
+                        <div class="p-4 bg-rose-50 border border-rose-300 rounded text-rose-800 text-xs text-center font-bold">
+                            ⚠️ ${CURRENT_LANG === 'hi' ? 'कृपया पहले बाईं ओर से "नया सुपरवाइज़र बनाएं" पर क्लिक करके सुपरवाइज़र जोड़ें।' : 'Please create a supervisor first using "Create Supervisor ID" on the sidebar.'}
+                        </div>
+                    ` : ''}
 
                     <form onsubmit="handleAddLabour(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
@@ -926,7 +922,7 @@
                         <div>
                             <label class="block text-[10px] font-bold text-slate-700 mb-0.5">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र असाइन करें *' : 'Assign Supervisor *'}</label>
                             <select id="labour-sup-assign" class="w-full border border-slate-400 p-2 rounded text-xs font-bold bg-amber-50">
-                                ${APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId).map(s => `<option value="${s.id}">${s.name} (${s.mobile})</option>`).join('')}
+                                ${activeSups.map(s => `<option value="${s.id}">${s.name} (${s.mobile})</option>`).join('')}
                             </select>
                         </div>
 
@@ -2023,39 +2019,41 @@
                     </div>
 
                     <div class="divide-y divide-amber-200 p-2 space-y-2 max-h-[500px] overflow-y-auto custom-scroll" id="sup-workers-list">
-                        ${myLabour.map(w => {
-                            const rec = APP_STATE.attendance[date][w.id];
-                            const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
-                            const ot = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
+                        ${myLabour.length === 0 ? '<p class="p-6 text-center text-slate-500 italic">No workers mapped to you by contractor yet.</p>' :
+                            myLabour.map(w => {
+                                const rec = APP_STATE.attendance[date][w.id];
+                                const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
+                                const ot = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
 
-                            return `
-                                <div class="sup-worker-card flex items-center justify-between p-2 bg-amber-50/50 rounded border border-amber-200" data-name="${w.name.toLowerCase()}" data-trade="${w.category.toLowerCase()}">
-                                    <div>
-                                        <p class="font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</p>
-                                        <p class="text-[10px] font-mono text-slate-600">${w.id} • <span class="font-bold text-amber-800">${w.category}</span></p>
+                                return `
+                                    <div class="sup-worker-card flex items-center justify-between p-2 bg-amber-50/50 rounded border border-amber-200" data-name="${w.name.toLowerCase()}" data-trade="${w.category.toLowerCase()}">
+                                        <div>
+                                            <p class="font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</p>
+                                            <p class="text-[10px] font-mono text-slate-600">${w.id} • <span class="font-bold text-amber-800">${w.category}</span></p>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-2">
+                                            ${!isLocked ? `
+                                                <div class="flex gap-1 font-bold">
+                                                    <button onclick="setShiftStatus('${date}', '${w.id}', 'P', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-600 text-white' : 'bg-slate-200'}">P</button>
+                                                    <button onclick="setShiftStatus('${date}', '${w.id}', 'HD', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'HD' ? 'bg-amber-600 text-white' : 'bg-slate-200'}">HD</button>
+                                                    <button onclick="setShiftStatus('${date}', '${w.id}', 'A', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'A' ? 'bg-rose-600 text-white' : 'bg-slate-200'}">A</button>
+                                                </div>
+                                                <div class="flex items-center gap-1 bg-white border border-slate-400 px-2 py-0.5 rounded">
+                                                    <span class="text-[9px] font-bold">OT:</span>
+                                                    <input type="number" min="0" max="16" value="${ot}" onchange="setShiftStatus('${date}', '${w.id}', '${st}', this.value)" class="w-8 font-mono text-center text-xs outline-none">h
+                                                </div>
+                                            ` : `
+                                                <div class="flex items-center gap-2">
+                                                    <span class="font-bold font-mono px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-100 text-emerald-800 border border-emerald-400' : st === 'HD' ? 'bg-amber-100 text-amber-800 border border-amber-400' : 'bg-rose-100 text-rose-800 border border-rose-400'}">${st} (${ot}h OT)</span>
+                                                    <button onclick="openCorrectionModal('${date}', '${w.id}', '${w.name}', '${st}', ${ot})" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-1 rounded text-[10px] shadow">${CURRENT_LANG === 'hi' ? 'सुधार निवेदन' : 'Request Edit'}</button>
+                                                </div>
+                                            `}
+                                        </div>
                                     </div>
-                                    
-                                    <div class="flex items-center gap-2">
-                                        ${!isLocked ? `
-                                            <div class="flex gap-1 font-bold">
-                                                <button onclick="setShiftStatus('${date}', '${w.id}', 'P', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-600 text-white' : 'bg-slate-200'}">P</button>
-                                                <button onclick="setShiftStatus('${date}', '${w.id}', 'HD', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'HD' ? 'bg-amber-600 text-white' : 'bg-slate-200'}">HD</button>
-                                                <button onclick="setShiftStatus('${date}', '${w.id}', 'A', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'A' ? 'bg-rose-600 text-white' : 'bg-slate-200'}">A</button>
-                                            </div>
-                                            <div class="flex items-center gap-1 bg-white border border-slate-400 px-2 py-0.5 rounded">
-                                                <span class="text-[9px] font-bold">OT:</span>
-                                                <input type="number" min="0" max="16" value="${ot}" onchange="setShiftStatus('${date}', '${w.id}', '${st}', this.value)" class="w-8 font-mono text-center text-xs outline-none">h
-                                            </div>
-                                        ` : `
-                                            <div class="flex items-center gap-2">
-                                                <span class="font-bold font-mono px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-100 text-emerald-800 border border-emerald-400' : st === 'HD' ? 'bg-amber-100 text-amber-800 border border-amber-400' : 'bg-rose-100 text-rose-800 border border-rose-400'}">${st} (${ot}h OT)</span>
-                                                <button onclick="openCorrectionModal('${date}', '${w.id}', '${w.name}', '${st}', ${ot})" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-1 rounded text-[10px] shadow">${CURRENT_LANG === 'hi' ? 'सुधार निवेदन' : 'Request Edit'}</button>
-                                            </div>
-                                        `}
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
+                                `;
+                            }).join('')
+                        }
                     </div>
                 </div>
             `;
@@ -2353,33 +2351,35 @@
                         <span class="bg-amber-100 text-amber-900 font-bold px-2.5 py-1 rounded text-xs">Total Firms: ${APP_STATE.contractors.length}</span>
                     </div>
                     <div class="space-y-3">
-                        ${APP_STATE.contractors.map(c => {
-                            const isBlocked = c.status === 'BLOCKED';
-                            const firmLabourCount = APP_STATE.labour.filter(w => w.contractorId === c.id).length;
-                            return `
-                                <div class="bg-amber-50/60 border border-amber-300 p-3 rounded-lg flex flex-wrap justify-between items-center gap-3">
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <h4 class="font-bold text-slate-900 text-sm">${c.name} (${c.id})</h4>
-                                            <span class="px-2 py-0.5 rounded text-[9px] font-bold ${isBlocked ? 'bg-rose-600 text-white' : 'bg-emerald-600 text-white'}">${c.status || 'ACTIVE'}</span>
+                        ${APP_STATE.contractors.length === 0 ? '<p class="p-6 text-center text-slate-500 italic">No contractor firms registered yet. Click "+ Register Contractor Firm" on the sidebar.</p>' :
+                            APP_STATE.contractors.map(c => {
+                                const isBlocked = c.status === 'BLOCKED';
+                                const firmLabourCount = APP_STATE.labour.filter(w => w.contractorId === c.id).length;
+                                return `
+                                    <div class="bg-amber-50/60 border border-amber-300 p-3 rounded-lg flex flex-wrap justify-between items-center gap-3">
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h4 class="font-bold text-slate-900 text-sm">${c.name} (${c.id})</h4>
+                                                <span class="px-2 py-0.5 rounded text-[9px] font-bold ${isBlocked ? 'bg-rose-600 text-white' : 'bg-emerald-600 text-white'}">${c.status || 'ACTIVE'}</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-600 mt-0.5">Owner: <span class="font-bold">${c.owner}</span> | Mobile: <span class="font-mono font-bold">${c.mobile}</span> | PAN: <span class="font-mono">${c.pan || 'N/A'}</span></p>
+                                            <p class="text-[11px] text-slate-600">Address: ${c.address || 'N/A'} | Licence: ${c.license || 'N/A'} | Mapped Workers: <span class="font-bold text-amber-800">${firmLabourCount}</span></p>
                                         </div>
-                                        <p class="text-[11px] text-slate-600 mt-0.5">Owner: <span class="font-bold">${c.owner}</span> | Mobile: <span class="font-mono font-bold">${c.mobile}</span> | PAN: <span class="font-mono">${c.pan || 'N/A'}</span></p>
-                                        <p class="text-[11px] text-slate-600">Address: ${c.address || 'N/A'} | Licence: ${c.license || 'N/A'} | Mapped Workers: <span class="font-bold text-amber-800">${firmLabourCount}</span></p>
+                                        <div class="flex flex-wrap gap-1.5 items-center">
+                                            <button onclick="adminDownloadAllSheets('${c.id}')" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-2.5 py-1.5 rounded text-xs shadow flex items-center gap-1">
+                                                <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i> 1-Click All Sheets PDF
+                                            </button>
+                                            <button onclick="adminToggleBlockContractor('${c.id}')" class="${isBlocked ? 'bg-emerald-700 hover:bg-emerald-600' : 'bg-amber-600 hover:bg-amber-500'} text-slate-950 font-bold px-2.5 py-1.5 rounded text-xs shadow">
+                                                ${isBlocked ? 'Unblock' : 'Block'}
+                                            </button>
+                                            <button onclick="adminDeleteContractor('${c.id}')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2.5 py-1.5 rounded text-xs shadow">
+                                                Delete
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="flex flex-wrap gap-1.5 items-center">
-                                        <button onclick="adminDownloadAllSheets('${c.id}')" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-2.5 py-1.5 rounded text-xs shadow flex items-center gap-1">
-                                            <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i> 1-Click All Sheets PDF
-                                        </button>
-                                        <button onclick="adminToggleBlockContractor('${c.id}')" class="${isBlocked ? 'bg-emerald-700 hover:bg-emerald-600' : 'bg-amber-600 hover:bg-amber-500'} text-slate-950 font-bold px-2.5 py-1.5 rounded text-xs shadow">
-                                            ${isBlocked ? 'Unblock' : 'Block'}
-                                        </button>
-                                        <button onclick="adminDeleteContractor('${c.id}')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2.5 py-1.5 rounded text-xs shadow">
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
+                                `;
+                            }).join('')
+                        }
                     </div>
                 </div>
             `;
@@ -2407,7 +2407,6 @@
         }
 
         function adminDownloadAllSheets(contId) {
-            // Temporarily switch context to this contractor to generate PDFs
             const prevContId = APP_STATE.currentContractorId;
             APP_STATE.currentContractorId = contId;
             
