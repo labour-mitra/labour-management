@@ -13,6 +13,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
+    <!-- Firebase App & Realtime Database SDK (v9 Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
     <style>
         .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: #0f172a; }
@@ -293,9 +297,23 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 4. CORE ENGINE SCRIPT                                                     -->
+    <!-- 4. CORE ENGINE SCRIPT (FIREBASE INTEGRATED)                               -->
     <!-- ========================================================================= -->
     <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1cm7-3U6cVZlYspfDRSZ2apbAhRB6iaE",
+            authDomain: "labour-mitra.firebaseapp.com",
+            databaseURL: "https://labour-mitra-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "labour-mitra",
+            storageBucket: "labour-mitra.firebasestorage.app",
+            messagingSenderId: "958377540789",
+            appId: "1:958377540789:web:5ebf6b0b961359bd9d52fc",
+            measurementId: "G-NH6H28610T"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const dbRef = firebase.database().ref("labour_mitra/main_database");
+
         const I18N = {
             hi: {
                 langBtn: "🌐 हिन्दी",
@@ -546,11 +564,55 @@
             APP_STATE.supervisorSelectedDate = today;
             const monthInput = document.getElementById('global-month-filter');
             if(monthInput) monthInput.value = APP_STATE.selectedMonth;
+            
             loadLocalState();
+            initRealtimeSync(); // Firebase Realtime Synchronization Listeners
+            
             applyLanguage();
             checkAndRestoreSession();
             lucide.createIcons();
         });
+
+        // --- FIREBASE REAL-TIME LISTENERS ---
+        function initRealtimeSync() {
+            // Listen to Supervisors Live
+            dbRef.child("supervisors").on("value", (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    APP_STATE.supervisors = Array.isArray(data) ? data : Object.values(data);
+                    saveLocalState();
+                    if(APP_STATE.currentUserRole) refreshActiveView();
+                }
+            });
+
+            // Listen to Labour Live
+            dbRef.child("labour").on("value", (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    APP_STATE.labour = Array.isArray(data) ? data : Object.values(data);
+                    saveLocalState();
+                    if(APP_STATE.currentUserRole) refreshActiveView();
+                }
+            });
+
+            // Listen to Attendance Live
+            dbRef.child("attendance").on("value", (snapshot) => {
+                if (snapshot.exists()) {
+                    APP_STATE.attendance = snapshot.val() || {};
+                    saveLocalState();
+                    if(APP_STATE.currentUserRole) refreshActiveView();
+                }
+            });
+
+            // Listen to Locked Dates Live
+            dbRef.child("lockedDates").on("value", (snapshot) => {
+                if (snapshot.exists()) {
+                    APP_STATE.lockedDates = snapshot.val() || {};
+                    saveLocalState();
+                    if(APP_STATE.currentUserRole) refreshActiveView();
+                }
+            });
+        }
 
         function saveLocalState() {
             localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V10', JSON.stringify(APP_STATE));
@@ -1116,6 +1178,10 @@
                 APP_STATE.labour = APP_STATE.labour.filter(w => w.id !== workerId);
                 delete APP_STATE.advances[workerId];
                 delete APP_STATE.fines[workerId];
+                
+                // Sync to Firebase
+                dbRef.child("labour").set(APP_STATE.labour);
+                
                 saveLocalState();
                 alert(t.successDelLabour(workerName));
                 renderContractorMusterWorkspace();
@@ -1187,6 +1253,10 @@
             APP_STATE.labour.forEach(w => {
                 if (w.supervisorId === supId) w.supervisorId = '';
             });
+
+            // Sync to Firebase
+            dbRef.child("supervisors").set(APP_STATE.supervisors);
+            dbRef.child("labour").set(APP_STATE.labour);
 
             saveLocalState();
             alert(t.successDelSup(supName));
@@ -1874,6 +1944,10 @@
         function setShiftStatus(date, workerId, status, otVal) {
             if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
             APP_STATE.attendance[date][workerId] = { status, ot: Number(otVal || 0) };
+            
+            // Sync to Firebase Realtime Database
+            dbRef.child("attendance").set(APP_STATE.attendance);
+
             saveLocalState();
             renderSupervisorAttendanceDesk();
         }
@@ -1887,6 +1961,10 @@
                 const ot = cur && typeof cur === 'object' ? cur.ot : 0;
                 APP_STATE.attendance[date][w.id] = { status: 'P', ot };
             });
+
+            // Sync to Firebase Realtime Database
+            dbRef.child("attendance").set(APP_STATE.attendance);
+
             saveLocalState();
             renderSupervisorAttendanceDesk();
         }
@@ -1896,6 +1974,10 @@
             if (confirm(t.confirmLockAtt(date))) {
                 const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                 APP_STATE.lockedDates[date] = { locked: true, timestamp: `${date} ${now}` };
+                
+                // Sync to Firebase Realtime Database
+                dbRef.child("lockedDates").set(APP_STATE.lockedDates);
+
                 saveLocalState();
                 alert(t.successLockAtt(date));
                 renderSupervisorAttendanceDesk();
@@ -2072,6 +2154,10 @@
                 if (!APP_STATE.attendance[req.date]) APP_STATE.attendance[req.date] = {};
                 APP_STATE.attendance[req.date][req.workerId] = { status: req.newStatus, ot: req.newOt };
                 req.status = 'APPROVED';
+                
+                // Sync Attendance to Firebase
+                dbRef.child("attendance").set(APP_STATE.attendance);
+
                 alert(t.reqApprovedMsg(req.workerName));
             } else {
                 req.status = 'REJECTED';
@@ -2103,6 +2189,10 @@
                 isEpf: 'YES'
             };
             APP_STATE.labour.push(newWorker);
+
+            // Sync to Firebase Realtime Database
+            dbRef.child("labour").set(APP_STATE.labour);
+
             saveLocalState();
             e.target.reset();
             alert(t.successLabourOnboard);
@@ -2123,6 +2213,10 @@
                 passHash: passHash
             };
             APP_STATE.supervisors.push(newSup);
+
+            // Sync to Firebase Realtime Database
+            dbRef.child("supervisors").set(APP_STATE.supervisors);
+
             saveLocalState();
             e.target.reset();
             alert(t.successSupCreated);
@@ -2188,7 +2282,7 @@
                 id: 'CONT-' + (APP_STATE.contractors.length + 1).toString().padStart(3, '0'),
                 name: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-name').value.trim()),
                 owner: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-owner').value.trim()),
-                mobile: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-mobile').value.trim()),
+                mobile: SECURITY_ENGINNE.sanitize(document.getElementById('new-firm-mobile').value.trim()),
                 gstin: '22AAAAA0000A1Z5',
                 passHash: passHash,
                 status: 'ACTIVE',
