@@ -1,3 +1,5 @@
+package com.example.labourmitra; // Aapka package name yahan aayega
+
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Firebase Database Reference declare karein
+    // Firebase Database Reference declare kar rahe hain
     private DatabaseReference databaseReference;
 
     @Override
@@ -18,47 +20,51 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Firebase Database ka instance initialize karein
+        // Firebase Database ka instance initialize kar rahe hain
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        // 1. Data Save (Write) karne ka function call karein
+        // 1. Database mein data save karne ke liye function call kiya
         saveDataToFirebase();
 
-        // 2. Data Read (Fetch) karne ka function call karein
+        // 2. Database se data read (fetch) karne ke liye function call kiya
         readDataFromFirebase();
     }
 
-    // --- Data Save Karne ka Method ---
+    // --- Data Save (Write) Karne ka Method ---
     private void saveDataToFirebase() {
-        // Aapke rules ke mutabiq 'labour_mitra' node ke andar data save hoga
+        // 'labour_mitra' node ke andar 'users' aur fir user ki ID banakar data save hoga
         String userId = "user_001";
         
         databaseReference.child("labour_mitra").child("users").child(userId).child("name").setValue("Arun Banjare")
             .addOnSuccessListener(aVoid -> {
+                // Jab data successfully save ho jayega
                 Toast.makeText(MainActivity.this, "Data Successfully Saved!", Toast.LENGTH_SHORT).show();
             })
             .addOnFailureListener(e -> {
+                // Agar save karte waqt koi error aaya
                 Toast.makeText(MainActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             });
     }
 
     // --- Data Read (Fetch) Karne ka Method ---
     private void readDataFromFirebase() {
-        // 'labour_mitra' node se data read kiya ja raha hai
+        // 'labour_mitra' node ke andar se specific user ka naam read kiya ja raha hai
         DatabaseReference userRef = databaseReference.child("labour_mitra").child("users").child("user_001").child("name");
 
-        userRef.addValueEventListener(newValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                // Check kar rahe hain ki data wahan exist karta hai ya nahi
                 if (dataSnapshot.exists()) {
                     String name = dataSnapshot.getValue(String.class);
-                    // Log ya TextView par print kara sakte hain
+                    // Console ya log mein print kara kar dekh sakte hain
                     System.out.println("Fetched Name: " + name);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                // Agar read karte waqt koi error aaye
                 System.out.println("Failed to read value: " + databaseError.toException());
             }
         });
