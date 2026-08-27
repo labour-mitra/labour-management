@@ -120,11 +120,19 @@
             </div>
         </main>
 
-        <footer class="lm-brown text-amber-200/90 text-center py-4 text-xs border-t border-amber-600/40 space-y-1">
+        <!-- FOOTER WITH ER ARUN BANJARE PHOTO & FRAME -->
+        <footer class="lm-brown text-amber-200/90 text-center py-4 text-xs border-t border-amber-600/40 space-y-1.5">
             <p class="font-bold">Labour Mitra Enterprise OS • Industrial Manpower Supply & Compliance Gateway</p>
-            <p class="text-slate-300 text-[11px]">
-                Designed & Developed by <span class="text-amber-400 font-bold">Arun Banjare</span> | Mahasamund, Chhattisgarh
-            </p>
+            
+            <div class="flex flex-col items-center justify-center pt-1 space-y-1">
+                <!-- गोल फ्रेम जिसमें आपकी ER ARUN BANJARE.jpg फोटो दिखेगी -->
+                <div class="w-12 h-12 rounded-full border-2 border-amber-400 p-0.5 shadow-lg bg-slate-900 overflow-hidden flex items-center justify-center">
+                    <img src="ER ARUN BANJARE.jpg" alt="Er. Arun Banjare" class="w-full h-full rounded-full object-cover object-top">
+                </div>
+                <p class="text-slate-300 text-[11px]">
+                    Designed & Developed by <span class="text-amber-400 font-bold">Er. Arun Banjare</span> (Civil Engineer & Web Developer) | Mahasamund, Chhattisgarh
+                </p>
+            </div>
         </footer>
     </div>
 
@@ -549,9 +557,9 @@
             supervisorSelectedDate: "2026-04-01",
             failedLoginAttempts: 0,
             lockoutUntil: 0,
-            contractors: [], // 👈 Clean State (No Dummy Data)
-            supervisors: [],  // 👈 Clean State
-            labour: [],       // 👈 Clean State
+            contractors: [],
+            supervisors: [],
+            labour: [],
             attendance: {},
             lockedDates: {},
             correctionRequests: [],
@@ -2485,8 +2493,8 @@
             APP_STATE.contractors.push(newCont);
             dbRef.child("contractors").set(APP_STATE.contractors);
             saveLocalState();
-            alert("Contractor Firm Registered Successfully!");
             renderAdminWorkspace();
+            alert("Contractor Firm Registered Successfully!");
         }
     </script>
 </body>
