@@ -809,7 +809,6 @@
                 return;
             }
 
-            // For Contractor and Supervisor, login via Firebase Auth using virtual email format (mobile@labourmitra.com)
             const virtualEmail = `u_${authId}@labourmitra.com`;
 
             try {
@@ -1036,7 +1035,6 @@
             const virtualEmail = `u_${mobile}@labourmitra.com`;
 
             try {
-                // Save login credentials directly in Firebase Authentication Dashboard
                 await firebase.auth().createUserWithEmailAndPassword(virtualEmail, pass);
 
                 const newSup = {
@@ -1428,8 +1426,6 @@
 
             const sup = APP_STATE.supervisors.find(s => s.id === supId);
             if (sup) {
-                // Note: Updating password in Firebase Auth via admin SDK requires backend function, 
-                // here we update in database state successfully.
                 closeResetSupModal();
                 alert("Supervisor password update requested successfully!");
             }
@@ -2530,7 +2526,6 @@
             const virtualEmail = `u_${mobile}@labourmitra.com`;
 
             try {
-                // Save login credentials securely in Firebase Authentication
                 await firebase.auth().createUserWithEmailAndPassword(virtualEmail, pass);
 
                 const newCont = {
