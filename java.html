@@ -1,4 +1,4 @@
-package com.example.labourmitra; // Aapka package name yahan aayega
+package com.example.labourmitra; // Aapka package name
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -32,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
 
     // --- Data Save (Write) Karne ka Method ---
     private void saveDataToFirebase() {
-        // 'labour_mitra' node ke andar 'users' aur fir user ki ID banakar data save hoga
+        // 'labour_mitra' -> 'main_database' node ke andar user ka data save hoga
         String userId = "user_001";
         
-        databaseReference.child("labour_mitra").child("users").child(userId).child("name").setValue("Arun Banjare")
+        databaseReference.child("labour_mitra").child("main_database").child("users").child(userId).child("name").setValue("Arun Banjare")
             .addOnSuccessListener(aVoid -> {
                 // Jab data successfully save ho jayega
-                Toast.makeText(MainActivity.this, "Data Successfully Saved!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Data Successfully Saved to Main Database!", Toast.LENGTH_SHORT).show();
             })
             .addOnFailureListener(e -> {
                 // Agar save karte waqt koi error aaya
@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     // --- Data Read (Fetch) Karne ka Method ---
     private void readDataFromFirebase() {
-        // 'labour_mitra' node ke andar se specific user ka naam read kiya ja raha hai
-        DatabaseReference userRef = databaseReference.child("labour_mitra").child("users").child("user_001").child("name");
+        // 'labour_mitra' -> 'main_database' node ke andar se specific user ka naam read kiya ja raha hai
+        DatabaseReference userRef = databaseReference.child("labour_mitra").child("main_database").child("users").child("user_001").child("name");
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     String name = dataSnapshot.getValue(String.class);
                     // Console ya log mein print kara kar dekh sakte hain
-                    System.out.println("Fetched Name: " + name);
+                    System.out.println("Fetched Name from Main Database: " + name);
                 }
             }
 
