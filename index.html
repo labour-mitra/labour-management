@@ -79,14 +79,14 @@
             <div class="space-y-4 max-w-4xl mx-auto">
                 <div class="inline-flex items-center gap-2 bg-slate-900 border border-amber-500/40 px-3.5 py-1 rounded-full text-amber-300 font-mono text-[11px]">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span data-i18n="taglineHero">3-SHEET REPORTING • LIVE SUBMIT & LOCK • BULK NEFT • STATUTORY EPFO</span>
+                    <span data-i18n="taglineHero">3-SHEET REPORTING • LIVE SUBMIT & LOCK • BULK NEFT • ZERO EPFO HASSLE</span>
                 </div>
                 <h1 class="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight leading-tight">
                     Industrial Manpower Supply, Muster & <br>
                     <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent" data-i18n="heroSubtitle">3-Tier Statutory Payout Engine</span>
                 </h1>
                 <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto" data-i18n="heroDesc">
-                    Enterprise OS for Manpower Suppliers and Heavy Plants. Generate Pure Attendance Registers, Statutory PF Sheets, Internal Advance Recovery and Client Invoices in 1-Click.
+                    Enterprise OS for Manpower Suppliers and Heavy Plants. Generate Pure Attendance Registers, Statutory PF Sheets, Internal Advance Recovery and Client Invoices in 1-Click with zero EPFO compliance worries.
                 </p>
                 <div class="pt-2 flex justify-center gap-3">
                     <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-6 py-2.5 rounded-xl text-xs shadow-lg font-bold flex items-center gap-2">
@@ -98,39 +98,61 @@
                 </div>
             </div>
 
+            <!-- 3 Core Sheets Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
-                <div class="bg-slate-900/90 border border-emerald-500/40 p-4 rounded-2xl space-y-1.5">
+                <div class="bg-slate-900/90 border border-emerald-500/40 p-4 rounded-2xl space-y-1.5 shadow-md">
                     <div class="text-emerald-400 font-bold text-sm flex items-center gap-1.5">
                         <i data-lucide="file-check-2" class="w-4 h-4"></i> <span data-i18n="sheet1Title">1. Pure Attendance Register</span>
                     </div>
                     <p class="text-slate-300 text-xs" data-i18n="sheet1Desc">Only 1-30 day P/HD/A grid, Total Present Days & OT for Plant HR submission.</p>
                 </div>
-                <div class="bg-slate-900/90 border border-blue-500/40 p-4 rounded-2xl space-y-1.5">
+                <div class="bg-slate-900/90 border border-blue-500/40 p-4 rounded-2xl space-y-1.5 shadow-md">
                     <div class="text-blue-400 font-bold text-sm flex items-center gap-1.5">
                         <i data-lucide="landmark" class="w-4 h-4"></i> <span data-i18n="sheet2Title">2. Statutory Wage & 12% PF Sheet</span>
                     </div>
-                    <p class="text-slate-300 text-xs" data-i18n="sheet2Desc">Official salary statement showing Gross Wage, 12% EE PF cut and Net bank transfer.</p>
+                    <p class="text-slate-300 text-xs" data-i18n="sheet2Desc">Official salary statement showing Gross Wage, 12% EE PF cut and Net bank transfer with zero EPFO hassle.</p>
                 </div>
-                <div class="bg-slate-900/90 border border-amber-500/40 p-4 rounded-2xl space-y-1.5">
+                <div class="bg-slate-900/90 border border-amber-500/40 p-4 rounded-2xl space-y-1.5 shadow-md">
                     <div class="text-amber-400 font-bold text-sm flex items-center gap-1.5">
                         <i data-lucide="calculator" class="w-4 h-4"></i> <span data-i18n="sheet3Title">3. Internal Hisab-Kitab Sheet</span>
                     </div>
-                    <p class="text-slate-300 text-xs" data-i18n="sheet3Desc">Gross Payment ➔ PF ➔ Total Payment ➔ Advance ➔ In-hand salary.</p>
+                    <p class="text-slate-300 text-xs" data-i18n="sheet3Desc">Gross Payment ➔ PF ➔ Total Payment ➔ Advance ➔ In-hand salary ledger for contractors.</p>
+                </div>
+            </div>
+
+            <!-- WHO CAN USE & KEY BENEFITS SECTION -->
+            <div class="bg-slate-900/80 border border-amber-500/30 p-6 rounded-2xl space-y-4 text-left shadow-xl">
+                <h3 class="text-amber-400 font-black text-sm uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="info" class="w-4 h-4"></i> इस पोर्टल के फायदे और उपयोग करने वाले (Who Can Use & Benefits)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-300">
+                    <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-1">
+                        <p class="font-bold text-amber-300 text-xs">1. इंडस्ट्रियल ठेकेदार (Contractors)</p>
+                        <p>बिना किसी हिसाब की झंझट के लेबर अटेंडेंस, 12% PF कटौती, एडवांस अप्रूवल और इन-हैंड सैलरी मैनेज करें। सभी शीट्स 1-क्लिक में PDF/Excel पर डाउनलोड होती हैं।</p>
+                    </div>
+                    <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-1">
+                        <p class="font-bold text-amber-300 text-xs">2. मुंशी व सुपरवाइज़र (Supervisors)</p>
+                        <p>मोबाइल या टर्मिनल से रोज़ाना की शिफ्ट हाज़िरी (Present/Half-Day/Absent) और ओवरटाइम (OT) दर्ज करें। एडवांस भुगतान के लिए सीधे ठेकेदार को ऑनलाइन निवेदन भेजें।</p>
+                    </div>
+                    <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-1">
+                        <p class="font-bold text-amber-300 text-xs">3. प्लांट प्रबंधन / HR (Principal Employer)</p>
+                        <p>EPFO और लेबर कंप्लायंस की पूरी पारदर्शिता। एक क्लिक में सभी ठेकेदारों के मस्टर रजिस्टर, ECR टेक्स्ट फाइल और टैक्स इनवॉइस वेरिफ़ाई और डाउनलोड करें।</p>
+                    </div>
                 </div>
             </div>
         </main>
 
-        <!-- FOOTER WITH ER ARUN BANJARE PHOTO & FRAME -->
-        <footer class="lm-brown text-amber-200/90 text-center py-4 text-xs border-t border-amber-600/40 space-y-1.5">
+        <!-- FOOTER WITH ER. ARUN BANJARE SQUARE PHOTO FRAME -->
+        <footer class="lm-brown text-amber-200/90 text-center py-5 text-xs border-t border-amber-600/40 space-y-2">
             <p class="font-bold">Labour Mitra Enterprise OS • Industrial Manpower Supply & Compliance Gateway</p>
             
-            <div class="flex flex-col items-center justify-center pt-1 space-y-1">
-                <!-- गोल फ्रेम जिसमें आपकी ER ARUN BANJARE.jpg फोटो दिखेगी -->
-                <div class="w-12 h-12 rounded-full border-2 border-amber-400 p-0.5 shadow-lg bg-slate-900 overflow-hidden flex items-center justify-center">
-                    <img src="ER ARUN BANJARE.jpg" alt="Er. Arun Banjare" class="w-full h-full rounded-full object-cover object-top">
+            <div class="flex flex-col items-center justify-center pt-1 space-y-1.5">
+                <!-- डिब्बे के आकार (Square/Box Shape) में बड़ी फोटो फ्रेम -->
+                <div class="w-20 h-24 rounded-lg border-2 border-amber-400 p-1 shadow-2xl bg-slate-900 overflow-hidden flex items-center justify-center">
+                    <img src="ER ARUN BANJARE.jpg" alt="Er. Arun Banjare" class="w-full h-full rounded object-cover object-top">
                 </div>
-                <p class="text-slate-300 text-[11px]">
-                    Designed & Developed by <span class="text-amber-400 font-bold">Er. Arun Banjare</span> (Civil Engineer & Web Developer) | Mahasamund, Chhattisgarh
+                <p class="text-slate-200 text-xs font-semibold">
+                    Designed & Developed by <span class="text-amber-400 font-black">Er. Arun Banjare</span> (Civil Engineer & Web Developer) | Mahasamund, Chhattisgarh
                 </p>
             </div>
         </footer>
