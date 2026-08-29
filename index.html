@@ -87,7 +87,7 @@
                     <span class="bg-gradient-to-r from-amber-400 via-amber-200 to-white bg-clip-text text-transparent" data-i18n="heroSubtitle">3-Tier Statutory Payout Engine</span>
                 </h1>
                 <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto" data-i18n="heroDesc">
-                    Enterprise OS for Manpower Suppliers and Heavy Plants. Generate Pure Attendance Registers, Statutory PF Sheets, Internal Advance Recovery and Client Invoices in 1-Click with zero EPFO compliance worries.
+                    Enterprise OS for Manpower Suppliers and Heavy Plants. Generate Pure Attendance Registers, Statutory PF Sheets, Internal Advance Recovery, Bank Letter & Payment Sheet, and Client Invoices in 1-Click.
                 </p>
                 <div class="pt-2 flex justify-center gap-3">
                     <button onclick="openLoginModal('CONTRACTOR')" class="lm-btn-gold px-6 py-2.5 rounded-xl text-xs shadow-lg font-bold flex items-center gap-2">
@@ -133,7 +133,7 @@
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-1">
                         <p class="font-bold text-amber-300 text-xs" data-i18n="ben2Head">2. मुंशी व सुपरवाइज़र (Supervisors)</p>
-                        <p data-i18n="ben2Desc">मोबाइल या टर्मिनल से रोज़ाना की शिफ्ट हाज़िरी (Present/Half-Day/Absent) और ओवरटाइम (OT) दर्ज करें।</p>
+                        <p data-i18n="ben2Desc">मोबाइल या टर्मिनल से रोज़ाना की शिफ्ट हाज़िरी और ओवरटाइम (OT) दर्ज करें। ऑनलाइन एडवांस निवेदन भेजें।</p>
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 space-y-1">
                         <p class="font-bold text-amber-300 text-xs" data-i18n="ben3Head">3. प्लांट प्रबंधन / HR (Principal Employer)</p>
@@ -149,7 +149,7 @@
             
             <div class="flex flex-col items-center justify-center pt-1 space-y-1.5">
                 <div class="w-20 h-24 rounded-lg border-2 border-amber-400 p-1 shadow-2xl bg-slate-900 overflow-hidden flex items-center justify-center">
-                    <img src="ER ARUN BANJARE.jpg" alt="Arun Banjare" class="w-full h-full rounded object-cover object-top">
+                    <img src="ER ARUN BANJARE.jpg" alt="Er. Arun Banjare" class="w-full h-full rounded object-cover object-top">
                 </div>
                 <p class="text-slate-200 text-xs font-semibold">
                     Designed & Developed by <span class="text-amber-400 font-black">Arun Banjare</span> (Civil Engineer & Web Developer) | Mahasamund, Chhattisgarh
@@ -635,7 +635,7 @@
             lucide.createIcons();
         });
 
-        // --- FIREBASE REAL-TIME LISTENERS (WITH CORRECTION REQUESTS SYNC) ---
+        // --- FIREBASE REAL-TIME LISTENERS ---
         function initRealtimeSync() {
             dbRef.child("contractors").on("value", (snapshot) => {
                 if (snapshot.exists()) {
@@ -687,26 +687,14 @@
                 saveLocalState();
                 if(APP_STATE.currentUserRole) refreshActiveView();
             });
-
-            dbRef.child("correctionRequests").on("value", (snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    APP_STATE.correctionRequests = Array.isArray(data) ? data : Object.values(data);
-                } else {
-                    APP_STATE.correctionRequests = [];
-                }
-                saveLocalState();
-                updateNotificationBadge();
-                if(APP_STATE.currentUserRole) refreshActiveView();
-            });
         }
 
         function saveLocalState() {
-            localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V15', JSON.stringify(APP_STATE));
+            localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V14', JSON.stringify(APP_STATE));
         }
 
         function loadLocalState() {
-            const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V15');
+            const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V14');
             if (saved) {
                 try {
                     const p = JSON.parse(saved);
@@ -1773,29 +1761,1089 @@
             lucide.createIcons();
         }
 
-        async function handleContractorRequestAction(reqId, action) {
+        // =========================================================================
+        // CONTRACTOR MUSTER WORKSPACE (WITH PUNCHING NO DISPLAY)
+        // =========================================================================
+        function renderContractorMusterWorkspace() {
             const t = I18N[CURRENT_LANG];
-            const req = APP_STATE.correctionRequests.find(r => r.id === reqId);
-            if (!req) return;
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            document.getElementById('workspace-notice-title').innerText = `${firm ? firm.name : 'Contractor Firm'} — Master Register (${APP_STATE.selectedMonth})`;
 
-            if (action === 'APPROVE') {
-                if (!APP_STATE.attendance[req.date]) APP_STATE.attendance[req.date] = {};
-                APP_STATE.attendance[req.date][req.workerId] = { status: req.newStatus, ot: req.newOt };
-                req.status = 'APPROVED';
-                
-                await dbRef.child("attendance").set(APP_STATE.attendance);
-                alert(t.reqApprovedMsg(req.workerName));
-            } else {
-                req.status = 'REJECTED';
-                alert(t.reqRejectedMsg);
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
+            const daysInMonth = new Date(year, month, 0).getDate();
+            const weekdays = CURRENT_LANG === 'hi' ? ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'] : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+            let dayHeaders = '', dayNameHeaders = '';
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateObj = new Date(year, month - 1, d);
+                dayHeaders += `<th class="w-6">${d}</th>`;
+                dayNameHeaders += `<th class="text-[8px] font-mono">${weekdays[dateObj.getDay()]}</th>`;
             }
 
-            await dbRef.child("correctionRequests").set(APP_STATE.correctionRequests);
-            saveLocalState();
-            showCorrectionRequestsDesk();
+            let rows = '';
+            myLabour.forEach((w, idx) => {
+                let dayCells = '', presentCount = 0;
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dayStr = d.toString().padStart(2, '0');
+                    const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
+                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const status = typeof rec === 'string' ? rec : rec.status;
+
+                    if (status === 'P') presentCount += 1;
+                    else if (status === 'HD') presentCount += 0.5;
+
+                    dayCells += `<td class="font-bold font-mono ${status === 'P' ? 'text-emerald-700 bg-emerald-50' : status === 'HD' ? 'text-amber-600 bg-amber-50' : status === 'A' ? 'text-rose-600 bg-rose-50' : ''}">${status || ''}</td>`;
+                }
+
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                const sup = APP_STATE.supervisors.find(s => s.id === w.supervisorId);
+
+                rows += `
+                    <tr class="hover:bg-amber-50/60 bg-white">
+                        <td class="font-bold">${idx + 1}</td>
+                        <td class="font-mono text-[10px] font-bold">${w.id}</td>
+                        <td class="font-mono text-[10px] font-bold text-blue-800 bg-blue-50/40">${w.punchingNo || 'N/A'}</td>
+                        <td class="text-left font-bold text-[#4a2411] px-2 whitespace-nowrap">${SECURITY_ENGINE.sanitize(w.name)} <span class="text-[9px] text-slate-500 font-normal">(${sup ? sup.name : 'General'})</span></td>
+                        ${dayCells}
+                        <td class="font-black text-blue-700 font-mono bg-amber-100">${presentCount}</td>
+                        <td class="font-mono font-bold text-amber-800 bg-amber-50">₹${m.advanceCut}</td>
+                        <td class="font-black font-mono text-emerald-800 bg-emerald-100">₹${Math.round(m.inHandFinal)}</td>
+                        <td class="p-1 space-x-1 whitespace-nowrap">
+                            <button onclick="openContractorAdvModal('${w.id}', '${w.name}')" class="bg-amber-200 text-amber-900 hover:bg-amber-300 px-1.5 py-0.5 rounded text-[9px] font-bold">+Adv</button>
+                            <button onclick="generateWorkerIdCardPDF('${w.id}')" class="bg-slate-200 hover:bg-slate-300 px-1.5 py-0.5 rounded text-[9px] font-bold">🪪 ID</button>
+                            <button onclick="sendWorkerWhatsAppSummary('${w.id}')" class="bg-emerald-600 text-white hover:bg-emerald-500 px-1.5 py-0.5 rounded text-[9px] font-bold">📲 WA</button>
+                            <button onclick="generateFndSettlementPDF('${w.id}')" class="bg-amber-700 text-white hover:bg-amber-600 px-1.5 py-0.5 rounded text-[9px] font-bold">FNF</button>
+                            <button onclick="deleteSingleLabour('${w.id}', '${w.name}')" class="bg-rose-700 hover:bg-rose-600 text-white px-1.5 py-0.5 rounded text-[9px] font-bold">🗑️ Del</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 rounded-lg shadow-md overflow-hidden p-3 space-y-2">
+                    <div class="text-center border-b border-amber-300 pb-2 flex flex-wrap justify-between items-center gap-2">
+                        <div>
+                            <h2 class="text-xs font-black text-[#4a2411] tracking-wider uppercase">Master Consolidated Register - ${APP_STATE.selectedMonth}</h2>
+                            <h3 class="text-sm font-black text-amber-900">${firm ? firm.name : 'Contractor Firm'}</h3>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="showLabourPaymentForBankDesk()" class="bg-amber-700 hover:bg-amber-600 text-amber-100 px-2.5 py-1 rounded text-xs font-bold shadow flex items-center gap-1 border border-amber-400">
+                                <span>🏦</span> Bank Payment Desk
+                            </button>
+                            <button onclick="downloadPureAttendancePDF()" class="bg-emerald-700 hover:bg-emerald-600 text-white px-2.5 py-1 rounded text-xs font-bold shadow">1. Attendance PDF</button>
+                            <button onclick="downloadStatutoryWagePDF()" class="bg-blue-700 hover:bg-blue-600 text-white px-2.5 py-1 rounded text-xs font-bold shadow">2. PF Sheet PDF</button>
+                            <button onclick="downloadInternalHisabPDF()" class="bg-[#4a2411] hover:bg-black text-amber-300 px-2.5 py-1 rounded text-xs font-bold shadow">3. Hisab PDF</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto custom-scroll">
+                        <table class="w-full text-xs muster-grid border-collapse">
+                            <thead class="bg-amber-200 text-[#4a2411]">
+                                <tr>
+                                    <th rowspan="2" class="w-8">${t.srNo}</th>
+                                    <th rowspan="2" class="w-14">${t.code}</th>
+                                    <th rowspan="2" class="w-16 bg-blue-100 text-blue-900 font-bold">${t.punchNo}</th>
+                                    <th rowspan="2" class="w-36 text-left px-2">${t.name}</th>
+                                    ${dayHeaders}
+                                    <th rowspan="2" class="w-10 bg-amber-300 font-black">${t.days}</th>
+                                    <th rowspan="2" class="w-12 bg-amber-100 font-bold">${t.adv}</th>
+                                    <th rowspan="2" class="w-14 bg-emerald-200 font-black">${t.inHand}</th>
+                                    <th rowspan="2" class="w-32">${t.actions}</th>
+                                </tr>
+                                <tr>${dayNameHeaders}</tr>
+                            </thead>
+                            <tbody>
+                                ${rows || '<tr><td colspan="41" class="p-4 text-slate-500 italic">No workers registered. Click "+ Onboard Labour Profile" on sidebar.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            updateNotificationBadge();
+            lucide.createIcons();
         }
 
-        async function handleSendCorrectionRequest(e) {
+        // =========================================================================
+        // MANAGE LABOUR DESK (WITH PUNCHING NUMBER DISPLAY)
+        // =========================================================================
+        function showManageLabourDesk() {
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.manageLabour;
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            const container = document.getElementById('workspace-main-container');
+
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h3 class="font-bold text-[#4a2411] text-xs uppercase">${t.manageLabour} (${myLabour.length})</h3>
+                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-amber-100 text-[#4a2411] uppercase font-bold text-[10px] border-b border-amber-300">
+                                <tr>
+                                    <th class="p-2">${t.code}</th>
+                                    <th class="p-2">Punching No</th>
+                                    <th class="p-2">${t.name}</th>
+                                    <th class="p-2">Bank Details</th>
+                                    <th class="p-2">${t.trade}</th>
+                                    <th class="p-2">Mobile</th>
+                                    <th class="p-2 text-right">${t.actions}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-amber-200">
+                                ${myLabour.map(w => `
+                                    <tr class="hover:bg-amber-50">
+                                        <td class="p-2 font-mono font-bold">${w.id}</td>
+                                        <td class="p-2 font-mono font-bold text-blue-800">${w.punchingNo || 'N/A'}</td>
+                                        <td class="p-2 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</td>
+                                        <td class="p-2 font-mono text-[11px] text-amber-900 font-bold">${w.bankName || 'SBI'} - ${w.bankAcc} (${w.bankIfsc})</td>
+                                        <td class="p-2">${w.category}</td>
+                                        <td class="p-2 font-mono">${w.mobile || 'N/A'}</td>
+                                        <td class="p-2 text-right">
+                                            <button onclick="deleteSingleLabour('${w.id}', '${w.name}')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded shadow text-xs flex items-center gap-1 ml-auto">
+                                                <i data-lucide="trash-2" class="w-3 h-3"></i> ${CURRENT_LANG === 'hi' ? 'डिलीट' : 'Delete'}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function deleteSingleLabour(workerId, workerName) {
+            const t = I18N[CURRENT_LANG];
+            if (confirm(t.confirmDelLabour(workerName, workerId))) {
+                APP_STATE.labour = APP_STATE.labour.filter(w => w.id !== workerId);
+                delete APP_STATE.advances[workerId];
+                
+                dbRef.child("labour").set(APP_STATE.labour);
+                saveLocalState();
+                alert(t.successDelLabour(workerName));
+                renderContractorMusterWorkspace();
+            }
+        }
+
+        function showManageSupervisorDesk() {
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.manageSup;
+            const mySups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
+            const container = document.getElementById('workspace-main-container');
+
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h3 class="font-bold text-[#4a2411] text-xs uppercase">${t.manageSup} (${mySups.length})</h3>
+                        <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-amber-100 text-[#4a2411] uppercase font-bold text-[10px] border-b border-amber-300">
+                                <tr>
+                                    <th class="p-2">Supervisor ID</th>
+                                    <th class="p-2">${t.name}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'मोबाइल (लॉगिन)' : 'Mobile (Login)'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'मैप किए गए मज़दूर' : 'Mapped Labour Count'}</th>
+                                    <th class="p-2 text-right">${t.actions}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-amber-200">
+                                ${mySups.map(s => {
+                                    const mappedCount = APP_STATE.labour.filter(w => w.supervisorId === s.id).length;
+                                    return `
+                                        <tr class="hover:bg-amber-50">
+                                            <td class="p-2 font-mono font-bold">${s.id}</td>
+                                            <td class="p-2 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(s.name)}</td>
+                                            <td class="p-2 font-mono">${s.mobile}</td>
+                                            <td class="p-2 font-bold text-amber-800">${mappedCount} ${CURRENT_LANG === 'hi' ? 'मज़दूर' : 'Workers'}</td>
+                                            <td class="p-2 text-right space-x-1">
+                                                <button onclick="openResetSupModal('${s.id}', '${s.name}')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-1 rounded shadow text-xs">🔑 Password</button>
+                                                <button onclick="deleteSingleSupervisor('${s.id}', '${s.name}', ${mappedCount})" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded shadow text-xs">🗑️ Delete</button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function openResetSupModal(supId, supName) {
+            document.getElementById('reset-sup-id').value = supId;
+            document.getElementById('reset-sup-name').value = supName;
+            document.getElementById('reset-sup-new-pass').value = '';
+            document.getElementById('reset-sup-modal').classList.remove('hidden');
+        }
+
+        function closeResetSupModal() {
+            document.getElementById('reset-sup-modal').classList.add('hidden');
+        }
+
+        async function handleResetSupervisorPassword(e) {
+            e.preventDefault();
+            const supId = document.getElementById('reset-sup-id').value;
+            const sup = APP_STATE.supervisors.find(s => s.id === supId);
+            if (sup) {
+                closeResetSupModal();
+                alert("Supervisor password update requested successfully!");
+            }
+        }
+
+        function deleteSingleSupervisor(supId, supName, mappedCount) {
+            const t = I18N[CURRENT_LANG];
+            if (mappedCount > 0) {
+                if (!confirm(t.confirmDelSupWarn(supName, mappedCount))) return;
+            } else {
+                if (!confirm(t.confirmDelSup(supName))) return;
+            }
+
+            APP_STATE.supervisors = APP_STATE.supervisors.filter(s => s.id !== supId);
+            APP_STATE.labour.forEach(w => { if (w.supervisorId === supId) w.supervisorId = ''; });
+
+            dbRef.child("supervisors").set(APP_STATE.supervisors);
+            dbRef.child("labour").set(APP_STATE.labour);
+
+            saveLocalState();
+            alert(t.successDelSup(supName));
+            showManageSupervisorDesk();
+        }
+
+        // =========================================================================
+        // SUPERVISOR ADVANCE DESK & CONTRACTOR DIRECT ADVANCE
+        // =========================================================================
+        function showSupervisorAdvanceDesk() {
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.advDesk;
+            const mySups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
+
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-300 pb-3">
+                        <div>
+                            <h3 class="font-black text-[#4a2411] text-sm">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र चुनें' : 'Select Site Supervisor'}</h3>
+                            <p class="text-[11px] text-slate-600">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र चुनें और मज़दूरों के एडवांस के लिए निवेदन भेजें।' : 'Choose supervisor to request advance disbursements.'}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="font-bold text-xs">Supervisor:</label>
+                            <select id="adv-desk-sup-select" onchange="renderSupervisorLabourForAdvance(this.value)" class="border-2 border-amber-500 p-1.5 rounded-lg text-xs font-bold bg-amber-50">
+                                <option value="">${CURRENT_LANG === 'hi' ? '-- सुपरवाइज़र चुनें --' : '-- Choose Supervisor --'}</option>
+                                ${mySups.map(s => `<option value="${s.id}">${s.name} (${s.mobile})</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="adv-desk-workers-table-container">
+                        <p class="p-6 text-center text-slate-500 italic">${CURRENT_LANG === 'hi' ? 'कृपया ऊपर दिए गए ड्रॉपडाउन से सुपरवाइज़र चुनें।' : 'Please select a supervisor from the dropdown above.'}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSupervisorLabourForAdvance(supId) {
+            const container = document.getElementById('adv-desk-workers-table-container');
+            if (!supId) {
+                container.innerHTML = `<p class="p-6 text-center text-slate-500 italic">${CURRENT_LANG === 'hi' ? 'कृपया ऊपर दिए गए ड्रॉपडाउन से सुपरवाइज़र चुनें।' : 'Please select a supervisor from the dropdown above.'}</p>`;
+                return;
+            }
+
+            const supWorkers = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
+            const today = new Date().toISOString().split('T')[0];
+
+            if (supWorkers.length === 0) {
+                container.innerHTML = `<p class="p-6 text-center text-rose-600 font-bold">${CURRENT_LANG === 'hi' ? 'इस सुपरवाइज़र के अंडर कोई मज़दूर मैप नहीं है।' : 'No workers mapped under this supervisor.'}</p>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead class="bg-amber-100 text-[#4a2411] uppercase font-bold text-[10px] border-b border-amber-300">
+                            <tr>
+                                <th class="p-2.5">Emp Code</th>
+                                <th class="p-2.5">Punch No</th>
+                                <th class="p-2.5">Worker Name</th>
+                                <th class="p-2.5">Trade / Rate</th>
+                                <th class="p-2.5">${CURRENT_LANG === 'hi' ? 'कुल स्वीकृत एडवांस (Approved)' : 'Approved Advance'}</th>
+                                <th class="p-2.5 text-right">${CURRENT_LANG === 'hi' ? 'एडवांस निवेदन भेजें' : 'Request Advance'}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-amber-200">
+                            ${supWorkers.map(w => {
+                                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                                const pendingAdvList = (APP_STATE.advances[w.id] || []).filter(a => a.status === 'PENDING');
+                                return `
+                                    <tr class="hover:bg-amber-50">
+                                        <td class="p-2.5 font-mono font-bold">${w.id}</td>
+                                        <td class="p-2.5 font-mono font-bold text-blue-800">${w.punchingNo || 'N/A'}</td>
+                                        <td class="p-2.5 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</td>
+                                        <td class="p-2.5 text-slate-600">${w.category} (₹${w.wage}/d)</td>
+                                        <td class="p-2.5 font-mono font-bold text-amber-800">₹${m.advanceCut} ${pendingAdvList.length > 0 ? `<span class="text-[9px] text-rose-600 bg-rose-100 px-1 rounded">(${pendingAdvList.length} Pending)</span>` : ''}</td>
+                                        <td class="p-2.5 text-right">
+                                            <div class="inline-flex items-center gap-1.5">
+                                                <input type="number" id="adv-input-${w.id}" min="1" placeholder="₹ Amount" class="w-24 p-1 border border-slate-400 rounded text-xs font-mono font-bold text-slate-900">
+                                                <button onclick="saveQuickAdvance('${w.id}', '${today}')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded shadow text-xs">${CURRENT_LANG === 'hi' ? 'निवेदन भेजें' : 'Send Request'}</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function saveQuickAdvance(workerId, date) {
+            const input = document.getElementById(`adv-input-${workerId}`);
+            const amount = Number(input.value);
+            if (!amount || amount <= 0) { alert(CURRENT_LANG === 'hi' ? "कृपया सही राशि दर्ज करें!" : "Please enter a valid amount!"); return; }
+
+            if (!APP_STATE.advances[workerId]) APP_STATE.advances[workerId] = [];
+            APP_STATE.advances[workerId].push({
+                id: 'ADV-' + Date.now().toString().slice(-6),
+                amount,
+                date,
+                reason: "Site Advance",
+                status: 'PENDING',
+                supervisor: APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.name : 'Supervisor'
+            });
+
+            dbRef.child("advances").set(APP_STATE.advances);
+            saveLocalState();
+            input.value = '';
+            alert(CURRENT_LANG === 'hi' ? "एडवांस निवेदन ठेकेदार के पास स्वीकृति हेतु भेज दिया गया है!" : "Advance request sent to Contractor!");
+            const supId = document.getElementById('adv-desk-sup-select').value;
+            renderSupervisorLabourForAdvance(supId);
+        }
+
+        function openContractorAdvModal(workerId, workerName) {
+            document.getElementById('c-adv-worker-id').value = workerId;
+            document.getElementById('c-adv-worker-name').value = workerName;
+            document.getElementById('contractor-adv-modal').classList.remove('hidden');
+        }
+
+        function closeContractorAdvModal() {
+            document.getElementById('contractor-adv-modal').classList.add('hidden');
+        }
+
+        function handleContractorDirectAdvance(e) {
+            e.preventDefault();
+            const workerId = document.getElementById('c-adv-worker-id').value;
+            const amount = Number(document.getElementById('c-adv-amount').value);
+            const reason = SECURITY_ENGINE.sanitize(document.getElementById('c-adv-reason').value);
+            const date = new Date().toISOString().split('T')[0];
+
+            if (!APP_STATE.advances[workerId]) APP_STATE.advances[workerId] = [];
+            APP_STATE.advances[workerId].push({
+                id: 'ADV-' + Date.now().toString().slice(-6),
+                amount,
+                date,
+                reason,
+                status: 'APPROVED', 
+                supervisor: 'Direct Contractor'
+            });
+
+            dbRef.child("advances").set(APP_STATE.advances);
+            saveLocalState();
+            closeContractorAdvModal();
+            e.target.reset();
+            alert("Direct Advance Disbursed and Approved Successfully!");
+            renderContractorMusterWorkspace();
+        }
+
+        function sendWorkerWhatsAppSummary(workerId) {
+            const worker = APP_STATE.labour.find(w => w.id === workerId);
+            if (!worker) return;
+            const m = getWorkerMetrics(worker.id, worker.wage, worker.isEpf);
+            const text = `*LABOUR MITRA WAGE SUMMARY (%0AMonth: ${APP_STATE.selectedMonth})*%0A%0A` +
+                         `*Name:* ${worker.name} (Code: ${worker.id})%0A` +
+                         `*Present Shifts:* ${m.shifts} Days | OT: ${m.otHours}h%0A` +
+                         `*Gross Payment:* Rs. ${Math.round(m.grossWages)}%0A` +
+                         `*12% EPF Cut:* Rs. ${m.eePf}%0A` +
+                         `*Total Payment:* Rs. ${Math.round(m.totalPayment)}%0A` +
+                         `*Approved Advance:* Rs. ${m.advanceCut}%0A` +
+                         `----------------------------%0A` +
+                         `*FINAL IN-HAND SALARY:* Rs. ${Math.round(m.inHandFinal)}%0A` +
+                         `*Bank:* ${worker.bankAcc} (${worker.bankIfsc})%0A%0A` +
+                         `_Issued by ${APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId)?.name || 'Contractor'}_`;
+
+            window.open(`https://wa.me/91${worker.mobile || '9826000000'}?text=${text}`, '_blank');
+        }
+
+        function generateWorkerIdCardPDF(workerId) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('portrait', 'mm', [85.6, 54]);
+            const worker = APP_STATE.labour.find(w => w.id === workerId);
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+
+            doc.setFillColor(74, 36, 17);
+            doc.rect(0, 0, 54, 14, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(7);
+            doc.text(firm ? firm.name.slice(0, 26) : "MANPOWER CONTRACTOR", 27, 6, { align: 'center' });
+            doc.setFontSize(6);
+            doc.text("PLANT GATE PASS / IDENTITY CARD", 27, 10, { align: 'center' });
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(8);
+            doc.text(worker.name, 27, 20, { align: 'center' });
+            doc.setFontSize(6.5);
+            doc.text(`TRADE: ${worker.category.toUpperCase()}`, 27, 24, { align: 'center' });
+
+            doc.setFontSize(6);
+            doc.text(`Emp Code : ${worker.id}`, 6, 32);
+            doc.text(`Punch No : ${worker.punchingNo || 'N/A'}`, 6, 36);
+            doc.text(`Mobile   : ${worker.mobile || 'N/A'}`, 6, 40);
+            doc.text(`Valid FY : ${APP_STATE.selectedFy}`, 6, 44);
+
+            doc.setFillColor(245, 158, 11);
+            doc.rect(0, 48, 54, 6, 'F');
+            doc.setFontSize(5);
+            doc.setTextColor(0, 0, 0);
+            doc.text("Labour Mitra Enterprise • Authorized Pass", 27, 52, { align: 'center' });
+
+            doc.save(`ID_Card_${worker.name}_${worker.id}.pdf`);
+        }
+
+        function generateFndSettlementPDF(workerId) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('portrait', 'mm', 'a4');
+            const worker = APP_STATE.labour.find(w => w.id === workerId);
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const m = getWorkerMetrics(worker.id, worker.wage, worker.isEpf);
+
+            doc.setFontSize(14);
+            doc.text("FULL & FINAL (FNF) SETTLEMENT DISCHARGE SLIP", 105, 20, { align: 'center' });
+            doc.setFontSize(10);
+            doc.text(`${firm ? firm.name : 'Contractor Firm'}`, 105, 26, { align: 'center' });
+            doc.line(20, 30, 190, 30);
+
+            doc.setFontSize(9);
+            doc.text(`Worker Name: ${worker.name}`, 20, 40);
+            doc.text(`Emp Code: ${worker.id} (Punch: ${worker.punchingNo || 'N/A'})`, 140, 40);
+            doc.text(`Trade: ${worker.category}`, 20, 46);
+            doc.text(`Settlement Month: ${APP_STATE.selectedMonth}`, 140, 46);
+
+            const tableData = [
+                ['Total Shifts Worked', `${m.shifts} Shifts`],
+                ['Gross Payment', `Rs. ${Math.round(m.grossWages)}`],
+                ['(-) EPF Deduction', `Rs. ${m.eePf}`],
+                ['(=) Total Payment', `Rs. ${Math.round(m.totalPayment)}`],
+                ['(-) Approved Advance Deductions', `Rs. ${m.advanceCut}`],
+                ['(=) FINAL IN-HAND SALARY', `Rs. ${Math.round(m.inHandFinal)}`]
+            ];
+
+            doc.autoTable({
+                head: [['Component', 'Amount / Value']],
+                body: tableData,
+                startY: 55,
+                theme: 'grid',
+                styles: { fontSize: 9 }
+            });
+
+            const finalY = doc.lastAutoTable.finalY + 20;
+            doc.text("Declaration: I have received all my due wages, PF and settlement in full. No dues remain.", 20, finalY);
+            doc.text("Signature / Thumb Impression of Worker", 20, finalY + 30);
+            doc.text("Authorized Signature of Contractor", 130, finalY + 30);
+
+            doc.save(`FNF_Settlement_${worker.name}_${worker.id}.pdf`);
+        }
+
+        // =========================================================================
+        // 3 DISTINCT SHEETS EXPORTERS
+        // =========================================================================
+        function downloadPureAttendancePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape', 'mm', 'a4');
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+
+            const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
+            const daysInMonth = new Date(year, month, 0).getDate();
+            const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+            doc.setFontSize(13);
+            doc.text(`FORM T - PURE ATTENDANCE REGISTER - ${APP_STATE.selectedMonth}`, 14, 12);
+            doc.setFontSize(10);
+            doc.text(`${firm ? firm.name : 'Contractor Firm'} (Plant Attendance Submission)`, 14, 18);
+
+            const headRow1 = ['Sr No', 'Emp Code', 'Punch', 'Name'];
+            const headRow2 = ['', '', '', ''];
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                headRow1.push(d.toString());
+                const dateObj = new Date(year, month - 1, d);
+                headRow2.push(weekdays[dateObj.getDay()]);
+            }
+            headRow1.push('Present');
+            headRow2.push('');
+
+            const tableBody = myLabour.map((w, idx) => {
+                let row = [(idx + 1).toString(), w.id, w.punchingNo || '', w.name];
+                let pCount = 0;
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dayStr = d.toString().padStart(2, '0');
+                    const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
+                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const status = typeof rec === 'string' ? rec : rec.status;
+                    if (status === 'P') pCount += 1;
+                    else if (status === 'HD') pCount += 0.5;
+                    row.push(status || '');
+                }
+                row.push(pCount.toString());
+                return row;
+            });
+
+            doc.autoTable({
+                head: [headRow1, headRow2],
+                body: tableBody,
+                startY: 22,
+                theme: 'grid',
+                styles: { fontSize: 5.5, cellPadding: 0.8, halign: 'center' },
+                headStyles: { fillColor: [74, 36, 17], textColor: 255 },
+                columnStyles: { 3: { halign: 'left', cellWidth: 26 } }
+            });
+
+            doc.save(`1_Pure_Attendance_Register_${APP_STATE.selectedMonth}.pdf`);
+        }
+
+        function downloadPureAttendanceExcel() {
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
+            const daysInMonth = new Date(year, month, 0).getDate();
+
+            let csv = "Sr_No,Emp_Code,Punching_No,Worker_Name,";
+            for (let d = 1; d <= daysInMonth; d++) csv += `D_${d},`;
+            csv += "Total_Present_Days\n";
+
+            myLabour.forEach((w, idx) => {
+                let row = `${idx + 1},"${w.id}","${w.punchingNo || ''}","${w.name}",`;
+                let pCount = 0;
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dayStr = d.toString().padStart(2, '0');
+                    const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
+                    const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+                    const status = typeof rec === 'string' ? rec : rec.status;
+                    if (status === 'P') pCount += 1;
+                    else if (status === 'HD') pCount += 0.5;
+                    row += `${status || ''},`;
+                }
+                row += `${pCount}\n`;
+                csv += row;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `1_Pure_Attendance_Register_${APP_STATE.selectedMonth}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadStatutoryWagePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape', 'mm', 'a4');
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+
+            doc.setFontSize(13);
+            doc.text(`STATUTORY WAGE & 12% PF PAYOUT REGISTER - ${APP_STATE.selectedMonth}`, 14, 12);
+            doc.setFontSize(9);
+            doc.text(`Contractor: ${firm ? firm.name : 'Contractor Firm'} | Official Wage Statement`, 14, 18);
+
+            let totalGross = 0, totalPf = 0, totalStatutoryNet = 0;
+
+            const tableData = myLabour.map((w, idx) => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                totalGross += m.grossWages;
+                totalPf += m.eePf;
+                totalStatutoryNet += m.totalPayment;
+
+                return [
+                    (idx + 1).toString(),
+                    w.id,
+                    w.name + (w.punchingNo ? ` (${w.punchingNo})` : ''),
+                    w.category,
+                    "Rs. " + w.wage,
+                    `${m.shifts}d / ${m.otHours}h`,
+                    "Rs. " + Math.round(m.grossWages),
+                    "Rs. " + m.eePf,
+                    "Rs. " + Math.round(m.totalPayment),
+                    w.bankAcc + "\n(" + w.bankIfsc + ")"
+                ];
+            });
+
+            tableData.push([
+                "", "", "TOTAL STATUTORY SUMMARY", "", "", "",
+                "Rs. " + Math.round(totalGross),
+                "Rs. " + Math.round(totalPf),
+                "Rs. " + Math.round(totalStatutoryNet),
+                ""
+            ]);
+
+            doc.autoTable({
+                head: [['Sr', 'Code', 'Worker Name', 'Trade', 'Rate', 'Shifts/OT', 'Gross Payment', '12% EE PF', 'Total Payment', 'Bank Details']],
+                body: tableData,
+                startY: 23,
+                theme: 'grid',
+                styles: { fontSize: 6.5, cellPadding: 1.2 },
+                headStyles: { fillColor: [30, 58, 138], textColor: 255 }
+            });
+
+            doc.save(`2_Statutory_Wage_And_PF_Sheet_${APP_STATE.selectedMonth}.pdf`);
+        }
+
+        function downloadStatutoryWageExcel() {
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            let csv = "Sr_No,Emp_Code,Punching_No,Worker_Name,Trade,Daily_Wage,Shifts,OT_Hours,Gross_Payment,EE_PF_12_Cut,Total_Payment,Bank_Account,Bank_IFSC\n";
+
+            myLabour.forEach((w, idx) => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                csv += `${idx + 1},"${w.id}","${w.punchingNo || ''}","${w.name}","${w.category}",${w.wage},${m.shifts},${m.otHours},${Math.round(m.grossWages)},${m.eePf},${Math.round(m.totalPayment)},"${w.bankAcc}","${w.bankIfsc}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `2_Statutory_Wage_And_PF_Sheet_${APP_STATE.selectedMonth}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadInternalHisabPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape', 'mm', 'a4');
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+
+            doc.setFontSize(13);
+            doc.text(`CONTRACTOR PRIVATE HISAB-KITAB (GROSS ➔ PF ➔ TOTAL ➔ ADVANCE ➔ IN-HAND) - ${APP_STATE.selectedMonth}`, 14, 12);
+            doc.setFontSize(9);
+            doc.text(`Firm: ${firm ? firm.name : 'Contractor Firm'} | Confidential Final In-Hand Payout`, 14, 18);
+
+            let totalGross = 0, totalPf = 0, totalPay = 0, totalAdv = 0, totalInHand = 0;
+
+            const tableData = myLabour.map((w, idx) => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                totalGross += m.grossWages;
+                totalPf += m.eePf;
+                totalPay += m.totalPayment;
+                totalAdv += m.advanceCut;
+                totalInHand += m.inHandFinal;
+
+                return [
+                    (idx + 1).toString(),
+                    w.id,
+                    w.name + (w.punchingNo ? ` (${w.punchingNo})` : ''),
+                    w.category,
+                    `${m.shifts}d / ${m.otHours}h`,
+                    "Rs. " + Math.round(m.grossWages),
+                    "Rs. " + m.eePf,
+                    "Rs. " + Math.round(m.totalPayment),
+                    "Rs. " + m.advanceCut,
+                    "Rs. " + Math.round(m.inHandFinal),
+                    w.bankAcc + "\n(" + w.bankIfsc + ")",
+                    "[ Signature ]"
+                ];
+            });
+
+            tableData.push([
+                "", "", "TOTAL HISAB SUMMARY", "", "",
+                "Rs. " + Math.round(totalGross),
+                "Rs. " + Math.round(totalPf),
+                "Rs. " + Math.round(totalPay),
+                "Rs. " + Math.round(totalAdv),
+                "Rs. " + Math.round(totalInHand),
+                "", ""
+            ]);
+
+            doc.autoTable({
+                head: [['Sr', 'Code', 'Worker Name', 'Trade', 'Shifts/OT', 'Gross Payment', '(-) EPF', '(=) Total Payment', '(-) Advance', '(=) In-Hand Salary', 'Bank Details', 'Labour Sign']],
+                body: tableData,
+                startY: 23,
+                theme: 'grid',
+                styles: { fontSize: 6.5, cellPadding: 1.2 },
+                headStyles: { fillColor: [74, 36, 17], textColor: 255 }
+            });
+
+            doc.save(`3_Contractor_Internal_Hisab_${APP_STATE.selectedMonth}.pdf`);
+        }
+
+        function downloadInternalHisabExcel() {
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            let csv = "Sr_No,Emp_Code,Punching_No,Worker_Name,Trade,Shifts,OT_Hours,Gross_Payment,EPF_Cut,Total_Payment,Advance_Cut,InHand_Salary,Bank_Account,Bank_IFSC\n";
+
+            myLabour.forEach((w, idx) => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                csv += `${idx + 1},"${w.id}","${w.punchingNo || ''}","${w.name}","${w.category}",${m.shifts},${m.otHours},${Math.round(m.grossWages)},${m.eePf},${Math.round(m.totalPayment)},${m.advanceCut},${Math.round(m.inHandFinal)},"${w.bankAcc}","${w.bankIfsc}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `3_Contractor_Internal_Hisab_${APP_STATE.selectedMonth}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadCompanyBillingInvoicePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('portrait', 'mm', 'a4');
+            const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+
+            doc.setFontSize(14);
+            doc.text("MANPOWER SUPPLY TAX INVOICE", 105, 18, { align: 'center' });
+            doc.setFontSize(10);
+            doc.text(`${firm ? firm.name : 'Contractor Firm'}`, 105, 24, { align: 'center' });
+            doc.setFontSize(8);
+            doc.text(`GSTIN: ${firm ? firm.gstin : '22AAAAA0000A1Z5'} | Contact: ${firm ? firm.mobile : ''}`, 105, 29, { align: 'center' });
+            doc.line(14, 32, 196, 32);
+
+            doc.text(`Invoice No: INV-${Date.now().toString().slice(-6)}`, 14, 38);
+            doc.text(`Billing Month: ${APP_STATE.selectedMonth}`, 14, 43);
+            doc.text(`Billed To: Principal Employer / Plant Management`, 120, 38);
+
+            let totalBaseSupply = 0, totalErPf = 0;
+            const tradeMap = {};
+
+            myLabour.forEach(w => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                if (!tradeMap[w.category]) tradeMap[w.category] = { shifts: 0, rate: w.clientRate || (w.wage + 150) };
+                tradeMap[w.category].shifts += m.shifts;
+                totalBaseSupply += (m.shifts * (w.clientRate || (w.wage + 150)));
+                totalErPf += m.erTotalPf;
+            });
+
+            const tableRows = Object.keys(tradeMap).map((cat, idx) => {
+                const item = tradeMap[cat];
+                const amt = item.shifts * item.rate;
+                return [(idx + 1).toString(), `Manpower Supply - ${cat}`, `${item.shifts} Shifts`, `Rs. ${item.rate}`, `Rs. ${amt.toLocaleString('en-IN')}`];
+            });
+
+            tableRows.push(['', '13% Employer PF Contribution Reimbursement', '', '', `Rs. ${Math.round(totalErPf).toLocaleString('en-IN')}`]);
+
+            const marginAmt = Math.round(totalBaseSupply * 0.08);
+            tableRows.push(['', 'Contractor Supervision / Service Margin (8%)', '', '', `Rs. ${marginAmt.toLocaleString('en-IN')}`]);
+
+            const subTotal = totalBaseSupply + totalErPf + marginAmt;
+            const gst18 = Math.round(subTotal * 0.18);
+            const grandTotal = subTotal + gst18;
+
+            doc.autoTable({
+                head: [['Sr', 'Service Description / Trade', 'Total Shifts', 'Billing Rate', 'Total Amount']],
+                body: tableRows,
+                startY: 48,
+                theme: 'grid',
+                styles: { fontSize: 8 }
+            });
+
+            const fY = doc.lastAutoTable.finalY + 8;
+            doc.setFontSize(9);
+            doc.text(`Sub-Total: Rs. ${subTotal.toLocaleString('en-IN')}`, 130, fY);
+            doc.text(`18% GST (9% CGST + 9% SGST): Rs. ${gst18.toLocaleString('en-IN')}`, 130, fY + 6);
+            doc.setFontSize(10);
+            doc.text(`GRAND TOTAL INVOICE VALUE: Rs. ${grandTotal.toLocaleString('en-IN')}`, 130, fY + 13);
+
+            doc.save(`Company_Tax_Invoice_${APP_STATE.selectedMonth}.pdf`);
+        }
+
+        function downloadBankNeftCsv() {
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+            let csv = "Emp_Code,Punching_No,Name,Bank_Account,IFSC,Net_Amount\n";
+            myLabour.forEach(w => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                csv += `"${w.id}","${w.punchingNo || ''}","${w.name}","${w.bankAcc}","${w.bankIfsc}",${Math.round(m.inHandFinal)}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Bulk_Bank_NEFT_${APP_STATE.selectedMonth}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadEpfoEcrTextFile() {
+            const myLab = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.isEpf !== 'NO');
+            if (myLab.length === 0) { alert("No EPFO registered labour found!"); return; }
+
+            let ecr = "";
+            myLab.forEach(w => {
+                const m = getWorkerMetrics(w.id, w.wage, w.isEpf);
+                const ncp = Math.max(0, 26 - m.shifts);
+                ecr += `100000000000#~#${w.name}#~#${Math.round(m.grossWages)}#~#${Math.round(m.shiftEarned)}#~#${m.eePf}#~#${Math.round(m.shiftEarned * 0.0833)}#~#${Math.round(m.shiftEarned * 0.0367)}#~#${ncp}#~#0\n`;
+            });
+
+            const blob = new Blob([ecr], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `EPFO_ECR_${APP_STATE.selectedMonth}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // =========================================================================
+        // SUPERVISOR WORKSPACE
+        // =========================================================================
+        function renderSupervisorAttendanceDesk() {
+            const t = I18N[CURRENT_LANG];
+            const date = APP_STATE.supervisorSelectedDate;
+            const isLocked = APP_STATE.lockedDates[date] && APP_STATE.lockedDates[date].locked;
+            
+            const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
+            
+            if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
+
+            document.getElementById('workspace-notice-title').innerText = CURRENT_LANG === 'hi' ? `हाज़िरी टर्मिनल — तारीख: ${date}` : `Attendance Terminal — Date: ${date}`;
+
+            let pCount = 0, hdCount = 0, aCount = 0, totalOt = 0;
+            myLabour.forEach(w => {
+                const rec = APP_STATE.attendance[date][w.id];
+                const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
+                const ot = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
+                if (st === 'P') pCount++;
+                else if (st === 'HD') hdCount++;
+                else aCount++;
+                totalOt += ot;
+            });
+
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 p-3 rounded-lg shadow-sm flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <label class="font-bold text-[#4a2411] text-xs">${CURRENT_LANG === 'hi' ? 'शिफ्ट तारीख:' : 'Shift Date:'}</label>
+                        <input type="date" value="${date}" onchange="changeSupervisorDate(this.value)" class="border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
+                        ${isLocked ? 
+                            `<span class="bg-emerald-700 text-white font-bold text-[10px] px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> ${t.lockedBadge} (${APP_STATE.lockedDates[date].timestamp})</span>` : 
+                            `<span class="bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded">${t.draftBadge}</span>`
+                        }
+                    </div>
+
+                    ${!isLocked ? `
+                        <div class="flex gap-2">
+                            <button onclick="markAllSupervisorPresentToday('${date}')" class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs">${t.markAllP}</button>
+                            <button onclick="lockAndSubmitAttendance('${date}')" class="bg-emerald-700 hover:bg-emerald-600 text-white px-4 py-1.5 rounded font-black text-xs shadow flex items-center gap-1">
+                                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> ${t.lockSubmit}
+                            </button>
+                        </div>
+                    ` : `
+                        <span class="text-xs text-rose-700 font-bold italic">${CURRENT_LANG === 'hi' ? 'तारीख लॉक हो चुकी है। बदलाव के लिए "सुधार निवेदन" भेजें।' : 'Date locked. Send correction request to edit.'}</span>
+                    `}
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
+                    <div class="bg-white border border-amber-300 p-2 rounded"><p class="text-[9px] text-slate-500 font-bold">${CURRENT_LANG === 'hi' ? 'कुल मज़दूर' : 'Total Labour'}</p><p class="text-sm font-black text-slate-900">${myLabour.length}</p></div>
+                    <div class="bg-emerald-100 border border-emerald-300 p-2 rounded"><p class="text-[9px] text-emerald-800 font-bold">${CURRENT_LANG === 'hi' ? 'उपस्थित (P)' : 'Present (P)'}</p><p class="text-sm font-black text-emerald-700">${pCount}</p></div>
+                    <div class="bg-amber-100 border border-amber-300 p-2 rounded"><p class="text-[9px] text-amber-800 font-bold">${CURRENT_LANG === 'hi' ? 'आधा दिन (HD)' : 'Half Day (HD)'}</p><p class="text-sm font-black text-amber-700">${hdCount}</p></div>
+                    <div class="bg-rose-100 border border-rose-300 p-2 rounded"><p class="text-[9px] text-rose-800 font-bold">${CURRENT_LANG === 'hi' ? 'गैरहाज़िर (A)' : 'Absent (A)'}</p><p class="text-sm font-black text-rose-700">${aCount}</p></div>
+                    <div class="bg-blue-100 border border-blue-300 p-2 rounded"><p class="text-[9px] text-blue-800 font-bold">${CURRENT_LANG === 'hi' ? 'कुल OT घंटे' : 'Total OT'}</p><p class="text-sm font-black text-blue-700">${totalOt}h</p></div>
+                </div>
+
+                <div class="bg-white border border-amber-400 rounded-lg shadow overflow-hidden">
+                    <div class="p-2.5 lm-brown text-white font-bold text-xs flex justify-between items-center">
+                        <span>${CURRENT_LANG === 'hi' ? 'मज़दूर हाज़िरी सूची' : 'Workforce Roster'} (${date})</span>
+                        <input type="text" onkeyup="filterSupervisorLabour(this.value)" placeholder="${CURRENT_LANG === 'hi' ? 'नाम या काम से खोजें...' : 'Search worker...'}" class="p-1 px-2 text-xs rounded bg-white text-slate-900 border-none outline-none font-normal">
+                    </div>
+
+                    <div class="divide-y divide-amber-200 p-2 space-y-2 max-h-[500px] overflow-y-auto custom-scroll" id="sup-workers-list">
+                        ${myLabour.length === 0 ? '<p class="p-6 text-center text-slate-500 italic">No workers mapped to you by contractor yet.</p>' :
+                            myLabour.map(w => {
+                                const rec = APP_STATE.attendance[date][w.id];
+                                const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
+                                const ot = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
+
+                                return `
+                                    <div class="sup-worker-card flex items-center justify-between p-2 bg-amber-50/50 rounded border border-amber-200" data-name="${w.name.toLowerCase()}" data-trade="${w.category.toLowerCase()}">
+                                        <div>
+                                            <p class="font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</p>
+                                            <p class="text-[10px] font-mono text-slate-600">${w.id} • ${w.punchingNo ? `<span class="text-blue-700 font-bold">Punch: ${w.punchingNo}</span> • ` : ''}<span class="font-bold text-amber-800">${w.category}</span></p>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-2">
+                                            ${!isLocked ? `
+                                                <div class="flex gap-1 font-bold">
+                                                    <button onclick="setShiftStatus('${date}', '${w.id}', 'P', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-600 text-white' : 'bg-slate-200'}">P</button>
+                                                    <button onclick="setShiftStatus('${date}', '${w.id}', 'HD', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'HD' ? 'bg-amber-600 text-white' : 'bg-slate-200'}">HD</button>
+                                                    <button onclick="setShiftStatus('${date}', '${w.id}', 'A', ${ot})" class="px-2.5 py-1 rounded text-xs ${st === 'A' ? 'bg-rose-600 text-white' : 'bg-slate-200'}">A</button>
+                                                </div>
+                                                <div class="flex items-center gap-1 bg-white border border-slate-400 px-2 py-0.5 rounded">
+                                                    <span class="text-[9px] font-bold">OT:</span>
+                                                    <input type="number" min="0" max="16" value="${ot}" onchange="setShiftStatus('${date}', '${w.id}', '${st}', this.value)" class="w-8 font-mono text-center text-xs outline-none">h
+                                                </div>
+                                            ` : `
+                                                <div class="flex items-center gap-2">
+                                                    <span class="font-bold font-mono px-2.5 py-1 rounded text-xs ${st === 'P' ? 'bg-emerald-100 text-emerald-800 border border-emerald-400' : st === 'HD' ? 'bg-amber-100 text-amber-800 border border-amber-400' : 'bg-rose-100 text-rose-800 border border-rose-400'}">${st} (${ot}h OT)</span>
+                                                    <button onclick="openCorrectionModal('${date}', '${w.id}', '${w.name}', '${st}', ${ot})" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-1 rounded text-[10px] shadow">${CURRENT_LANG === 'hi' ? 'सुधार निवेदन' : 'Request Edit'}</button>
+                                                </div>
+                                            `}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')
+                        }
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function changeSupervisorDate(newDate) {
+            APP_STATE.supervisorSelectedDate = newDate;
+            renderSupervisorAttendanceDesk();
+        }
+
+        function setShiftStatus(date, workerId, status, otVal) {
+            if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
+            APP_STATE.attendance[date][workerId] = { status, ot: Number(otVal || 0) };
+            
+            dbRef.child("attendance").set(APP_STATE.attendance);
+            saveLocalState();
+            renderSupervisorAttendanceDesk();
+        }
+
+        function markAllSupervisorPresentToday(date) {
+            if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
+            
+            const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
+            APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId).forEach(w => {
+                const cur = APP_STATE.attendance[date][w.id];
+                const ot = cur && typeof cur === 'object' ? cur.ot : 0;
+                APP_STATE.attendance[date][w.id] = { status: 'P', ot };
+            });
+
+            dbRef.child("attendance").set(APP_STATE.attendance);
+            saveLocalState();
+            renderSupervisorAttendanceDesk();
+        }
+
+        function lockAndSubmitAttendance(date) {
+            const t = I18N[CURRENT_LANG];
+            if (confirm(t.confirmLockAtt(date))) {
+                const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                APP_STATE.lockedDates[date] = { locked: true, timestamp: `${date} ${now}` };
+                
+                dbRef.child("lockedDates").set(APP_STATE.lockedDates);
+                saveLocalState();
+                alert(t.successLockAtt(date));
+                renderSupervisorAttendanceDesk();
+            }
+        }
+
+        function filterSupervisorLabour(term) {
+            const val = term.toLowerCase();
+            document.querySelectorAll('.sup-worker-card').forEach(card => {
+                const name = card.getAttribute('data-name');
+                const trade = card.getAttribute('data-trade');
+                if (name.includes(val) || trade.includes(val)) card.classList.remove('hidden');
+                else card.classList.add('hidden');
+            });
+        }
+
+        function renderSupervisorHistoryLog() {
+            const t = I18N[CURRENT_LANG];
+            document.getElementById('workspace-notice-title').innerText = t.supHistory;
+            
+            const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
+            const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
+            const dates = Object.keys(APP_STATE.attendance).sort().reverse();
+
+            const container = document.getElementById('workspace-main-container');
+            container.innerHTML = `
+                <div class="bg-white border-2 border-amber-400 rounded-lg shadow p-3 space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-300 pb-2">
+                        <h3 class="font-bold text-[#4a2411] text-xs">${t.supHistory}</h3>
+                        <span class="text-[10px] font-mono font-bold text-slate-600">${dates.length} Recorded Days</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-amber-100 text-[#4a2411] font-bold text-[10px] uppercase border-b border-amber-300">
+                                <tr>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'तारीख' : 'Date'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'स्थिति' : 'Status'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'उपस्थित' : 'Present'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'आधा दिन' : 'Half Day'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'गैरहाज़िर' : 'Absent'}</th>
+                                    <th class="p-2">${CURRENT_LANG === 'hi' ? 'कुल OT' : 'Total OT'}</th>
+                                    <th class="p-2 text-right">${t.actions}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-amber-200">
+                                ${dates.length === 0 ? '<tr><td colspan="7" class="p-4 text-center text-slate-500 italic">No attendance records found yet.</td></tr>' : 
+                                    dates.map(d => {
+                                        let p = 0, hd = 0, a = 0, ot = 0;
+                                        myLabour.forEach(w => {
+                                            const rec = APP_STATE.attendance[d] && APP_STATE.attendance[d][w.id];
+                                            const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
+                                            const o = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
+                                            if (st === 'P') p++;
+                                            else if (st === 'HD') hd++;
+                                            else a++;
+                                            ot += o;
+                                        });
+                                        const isL = APP_STATE.lockedDates[d] && APP_STATE.lockedDates[d].locked;
+
+                                        return `
+                                            <tr class="hover:bg-amber-50">
+                                                <td class="p-2 font-mono font-bold text-slate-900">${d}</td>
+                                                <td class="p-2"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${isL ? 'bg-emerald-700 text-white' : 'bg-amber-500 text-slate-950'}">${isL ? t.lockedBadge : t.draftBadge}</span></td>
+                                                <td class="p-2 font-mono font-bold text-emerald-700">${p}</td>
+                                                <td class="p-2 font-mono font-bold text-amber-700">${hd}</td>
+                                                <td class="p-2 font-mono font-bold text-rose-700">${a}</td>
+                                                <td class="p-2 font-mono text-blue-700">${ot}h</td>
+                                                <td class="p-2 text-right">
+                                                    <button onclick="openDateFromHistory('${d}')" class="text-blue-700 hover:underline font-bold text-xs">${CURRENT_LANG === 'hi' ? 'देखें/बदलें' : 'View/Edit'}</button>
+                                                </td>
+                                            </tr>
+                                        `;
+                                    }).join('')
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openDateFromHistory(date) {
+            APP_STATE.supervisorSelectedDate = date;
+            renderSupervisorAttendanceDesk();
+        }
+
+        function openCorrectionModal(date, workerId, workerName, currentStatus, currentOt) {
+            document.getElementById('corr-worker-id').value = workerId;
+            document.getElementById('corr-date').value = date;
+            document.getElementById('corr-date-display').value = date;
+            document.getElementById('corr-name-display').value = workerName;
+            document.getElementById('corr-new-status').value = currentStatus;
+            document.getElementById('corr-new-ot').value = currentOt;
+            document.getElementById('correction-modal').classList.remove('hidden');
+        }
+
+        function closeCorrectionModal() {
+            document.getElementById('correction-modal').classList.add('hidden');
+        }
+
+        function handleSendCorrectionRequest(e) {
             e.preventDefault();
             const t = I18N[CURRENT_LANG];
             const wId = document.getElementById('corr-worker-id').value;
@@ -1825,10 +2873,7 @@
             };
 
             APP_STATE.correctionRequests.push(newReq);
-            
-            await dbRef.child("correctionRequests").set(APP_STATE.correctionRequests);
             saveLocalState();
-            
             closeCorrectionModal();
             e.target.reset();
             alert(t.successCorrSent);
@@ -1862,6 +2907,27 @@
                     </div>
                 </div>
             `;
+        }
+
+        function handleContractorRequestAction(reqId, action) {
+            const t = I18N[CURRENT_LANG];
+            const req = APP_STATE.correctionRequests.filter(r => r.id === reqId)[0];
+            if (!req) return;
+
+            if (action === 'APPROVE') {
+                if (!APP_STATE.attendance[req.date]) APP_STATE.attendance[req.date] = {};
+                APP_STATE.attendance[req.date][req.workerId] = { status: req.newStatus, ot: req.newOt };
+                req.status = 'APPROVED';
+                
+                dbRef.child("attendance").set(APP_STATE.attendance);
+                alert(t.reqApprovedMsg(req.workerName));
+            } else {
+                req.status = 'REJECTED';
+                alert(t.reqRejectedMsg);
+            }
+
+            saveLocalState();
+            showCorrectionRequestsDesk();
         }
 
         // =========================================================================
@@ -2015,6 +3081,7 @@
             `;
         }
 
+        // --- REGISTER CONTRACTOR & SAVE IN FIREBASE AUTH ---
         async function handleAdminAddContractor(e) {
             e.preventDefault();
             const mobile = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-mobile').value.trim());
