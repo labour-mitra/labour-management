@@ -1,4 +1,4 @@
-package com.example.labourmitra; // Aapka package name
+package com.example.labourmitra;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -10,63 +10,174 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
-    // Firebase Database Reference declare kar rahe hain
-    private DatabaseReference databaseReference;
+    // Firebase Database Root Reference (labour_mitra/main_database)
+    private DatabaseReference mainDbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Firebase Database ka instance initialize kar rahe hain
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        // Firebase Realtime Database path initialize kar rahe hain
+        mainDbRef = FirebaseDatabase.getInstance().getReference("labour_mitra/main_database");
 
-        // 1. Database mein data save karne ke liye function call kiya
-        saveDataToFirebase();
-
-        // 2. Database se data read (fetch) karne ke liye function call kiya
-        readDataFromFirebase();
+        // Example: Correction requests ko contractor ke liye realtime sunna
+        // listenToCorrectionRequests("CONT-001");
     }
 
-    // --- Data Save (Write) Karne ka Method ---
-    private void saveDataToFirebase() {
-        // 'labour_mitra' -> 'main_database' node ke andar user ka data save hoga
-        String userId = "user_001";
-        
-        databaseReference.child("labour_mitra").child("main_database").child("users").child(userId).child("name").setValue("Arun Banjare")
-            .addOnSuccessListener(aVoid -> {
-                // Jab data successfully save ho jayega
-                Toast.makeText(MainActivity.this, "Data Successfully Saved to Main Database!", Toast.LENGTH_SHORT).show();
-            })
-            .addOnFailureListener(e -> {
-                // Agar save karte waqt koi error aaya
-                Toast.makeText(MainActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
-    }
-
-    // --- Data Read (Fetch) Karne ka Method ---
-    private void readDataFromFirebase() {
-        // 'labour_mitra' -> 'main_database' node ke andar se specific user ka naam read kiya ja raha hai
-        DatabaseReference userRef = databaseReference.child("labour_mitra").child("main_database").child("users").child("user_001").child("name");
-
-        userRef.addValueEventListener(new ValueEventListener() {
+    // =========================================================================
+    // 1. SUPERVISOR PASSWORD RESET / UPDATE METHOD
+    // =========================================================================
+    /**
+     * Jab Contractor kisi Supervisor ka password change/reset karega:
+     * Yeh method database me 'supervisors' node ke andar us Supervisor ka password update karega.
+     */
+    public void resetSupervisorPassword(String supervisorId, String newPassword) {
+        mainDbRef.child("supervisors").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Check kar rahe hain ki data wahan exist karta hai ya nahi
                 if (dataSnapshot.exists()) {
-                    String name = dataSnapshot.getValue(String.class);
-                    // Console ya log mein print kara kar dekh sakte hain
-                    System.out.println("Fetched Name from Main Database: " + name);
+                    boolean found = false;
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String id = snapshot.child("id").getValue(String.class);
+                        if (id != null && id.equals(supervisorId)) {
+                            // Password update kar rahe hain
+                            snapshot.getRef().child("password").setValue(newPassword)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(MainActivity.this, "सुपरवाइज़र पासवर्ड सफलतापूर्वक अपडेट हो गया!", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(MainActivity.this, "पासवर्ड अपडेट विफल: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        Toast.makeText(MainActivity.this, "Supervisor ID नहीं मिली!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Agar read karte waqt koi error aaye
-                System.out.println("Failed to read value: " + databaseError.toException());
+                Toast.makeText(MainActivity.this, "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // =========================================================================
+    // 2. SUPERVISOR LOGIN VERIFICATION METHOD (NEW PASSWORD CHECK)
+    // =========================================================================
+    /**
+     * Supervisor Login ke waqt database password verify karne ka method:
+     */
+    public void verifySupervisorLogin(String mobile, String enteredPassword, SupervisorLoginCallback callback) {
+        mainDbRef.child("supervisors").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    boolean matched = false;
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String dbMobile = snapshot.child("mobile").getValue(String.class);
+                        String dbPass = snapshot.child("password").getValue(String.class);
+
+                        if (dbMobile != null && dbMobile.equals(mobile)) {
+                            if (dbPass != null && dbPass.equals(enteredPassword)) {
+                                matched = true;
+                                String supName = snapshot.child("name").getValue(String.class);
+                                String contId = snapshot.child("contractorId").getValue(String.class);
+                                callback.onSuccess(supName, contId);
+                            }
+                            break;
+                        }
+                    }
+                    if (!matched) {
+                        callback.onFailure("अमान्य मोबाइल नंबर या पासवर्ड!");
+                    }
+                } else {
+                    callback.onFailure("डेटाबेस में कोई सुपरवाइज़र रिकॉर्ड नहीं मिला!");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onFailure("Database Error: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    // =========================================================================
+    // 3. ATTENDANCE CORRECTION REQUEST BHEJNE KA METHOD
+    // =========================================================================
+    /**
+     * Jab Supervisor kisi worker ki locked attendance me correction request bhejega:
+     */
+    public void sendAttendanceCorrectionRequest(String supervisorId, String contractorId, String workerId, String workerName, String date, String oldStatus, int oldOt, String newStatus, int newOt, String reason) {
+        String reqId = "REQ-" + System.currentTimeMillis();
+
+        Map<String, Object> reqData = new HashMap<>();
+        reqData.put("id", reqId);
+        reqData.put("supervisorId", supervisorId);
+        reqData.put("contractorId", contractorId);
+        reqData.put("workerId", workerId);
+        reqData.put("workerName", workerName);
+        reqData.put("date", date);
+        reqData.put("oldStatus", oldStatus);
+        reqData.put("oldOt", oldOt);
+        reqData.put("newStatus", newStatus);
+        reqData.put("newOt", newOt);
+        reqData.put("reason", reason);
+        reqData.put("status", "PENDING");
+
+        mainDbRef.child("correctionRequests").child(reqId).setValue(reqData)
+            .addOnSuccessListener(aVoid -> {
+                Toast.makeText(MainActivity.this, "सुधार निवेदन ठेकेदार को भेजा गया!", Toast.LENGTH_SHORT).show();
+            })
+            .addOnFailureListener(e -> {
+                Toast.makeText(MainActivity.this, "निवेदन विफल: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+    }
+
+    // =========================================================================
+    // 4. CONTRACTOR REALTIME CORRECTION REQUEST LISTENER
+    // =========================================================================
+    /**
+     * Contractor side par pending requests ko realtime listen karne ke liye:
+     */
+    public void listenToCorrectionRequests(String contractorId) {
+        mainDbRef.child("correctionRequests").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    int pendingCount = 0;
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String cId = snapshot.child("contractorId").getValue(String.class);
+                        String status = snapshot.child("status").getValue(String.class);
+
+                        if (contractorId.equals(cId) && "PENDING".equals(status)) {
+                            pendingCount++;
+                        }
+                    }
+                    // pendingCount ko aap apne Notification badge ya UI me set kar sakte hain
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle read error
+            }
+        });
+    }
+
+    // Callback Interface for Login
+    public interface SupervisorLoginCallback {
+        void onSuccess(String supervisorName, String contractorId);
+        void onFailure(String errorMessage);
     }
 }
