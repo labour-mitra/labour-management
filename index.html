@@ -3813,46 +3813,84 @@
             document.getElementById('workspace-notice-title').innerText = "Register New Contractor Firm";
             const container = document.getElementById('workspace-main-container');
             container.innerHTML = `
-                <div class="bg-white border-2 border-amber-400 p-5 rounded-lg shadow-sm space-y-4 max-w-lg mx-auto">
-                    <h3 class="font-bold text-[#4a2411] text-xs uppercase border-b border-amber-300 pb-2">Register Contractor Firm</h3>
+                <div class="bg-white border-2 border-amber-400 p-5 rounded-lg shadow-sm space-y-4 max-w-xl mx-auto">
+                    <h3 class="font-bold text-[#4a2411] text-xs uppercase border-b border-amber-300 pb-2 flex items-center justify-between">
+                        <span>Register Contractor Firm</span>
+                        <span class="text-[10px] text-slate-500 font-mono">Contractor & Client Company Mapping</span>
+                    </h3>
+                    
                     <form onsubmit="handleAdminAddContractor(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div class="sm:col-span-2">
-                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Firm Name *</label>
-                            <input type="text" id="new-firm-name" required placeholder="e.g. BALAJI MANPOWER SUPPLIERS" class="w-full border border-slate-400 p-2 rounded text-xs">
+                        <!-- CONTRACTOR FIRM DETAILS -->
+                        <div class="sm:col-span-2 bg-amber-50 p-2.5 rounded border border-amber-200">
+                            <p class="text-[10px] font-black text-[#4a2411] uppercase mb-2">1. ठेकेदार फर्म की जानकारी (Contractor Details)</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <div class="sm:col-span-2">
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Contractor Firm Name *</label>
+                                    <input type="text" id="new-firm-name" required placeholder="e.g. BALAJI MANPOWER SUPPLIERS" class="w-full border border-slate-400 p-1.5 rounded text-xs bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Owner / Contractor Name *</label>
+                                    <input type="text" id="new-firm-owner" required placeholder="Ramesh Sahu" class="w-full border border-slate-400 p-1.5 rounded text-xs bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Mobile Login (10 Digits) *</label>
+                                    <input type="text" id="new-firm-mobile" required placeholder="9826000003" maxlength="10" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono font-bold bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Contractor Bank Name *</label>
+                                    <input type="text" id="new-firm-bank-name" required value="State Bank of India" class="w-full border border-slate-400 p-1.5 rounded text-xs bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank Account No *</label>
+                                    <input type="text" id="new-firm-bank-acc" required placeholder="300012345678" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono font-bold bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank IFSC Code *</label>
+                                    <input type="text" id="new-firm-bank-ifsc" required placeholder="SBIN0001234" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono uppercase bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Contractor GSTIN</label>
+                                    <input type="text" id="new-firm-gstin" value="22AAAAA0000A1Z5" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono uppercase bg-white">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Contractor Office Address *</label>
+                                    <input type="text" id="new-firm-address" required placeholder="Mahasamund, Chhattisgarh" class="w-full border border-slate-400 p-1.5 rounded text-xs bg-white">
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Owner Name *</label>
-                            <input type="text" id="new-firm-owner" required placeholder="Ramesh Sahu" class="w-full border border-slate-400 p-2 rounded text-xs">
+
+                        <!-- CLIENT COMPANY DETAILS -->
+                        <div class="sm:col-span-2 bg-blue-50/70 p-2.5 rounded border border-blue-200">
+                            <p class="text-[10px] font-black text-blue-900 uppercase mb-2">2. कंपनी / प्लांट विवरण जहां लेबर जाएगी (Client Details)</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <div class="sm:col-span-2">
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Client Company Name * (बिल में Billed To का नाम)</label>
+                                    <input type="text" id="new-client-name" required placeholder="e.g. M/s Jindal Steel & Power Ltd." class="w-full border border-blue-400 p-1.5 rounded text-xs font-bold bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Client Company GSTIN *</label>
+                                    <input type="text" id="new-client-gstin" required placeholder="e.g. 22BBBBB1111B1Z2" class="w-full border border-blue-400 p-1.5 rounded text-xs font-mono uppercase bg-white font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Work Order / PO Number</label>
+                                    <input type="text" id="new-client-po" placeholder="e.g. WO/PLANT/2026/089" value="WO/PLANT/2026/089" class="w-full border border-blue-400 p-1.5 rounded text-xs font-mono bg-white">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Client Plant / Site Address *</label>
+                                    <input type="text" id="new-client-address" required placeholder="e.g. Industrial Area, Growth Centre, Raipur (C.G.)" class="w-full border border-blue-400 p-1.5 rounded text-xs bg-white">
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Mobile Login (10 Digits) *</label>
-                            <input type="text" id="new-firm-mobile" required placeholder="9826000003" maxlength="10" class="w-full border border-slate-400 p-2 rounded text-xs font-mono font-bold">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Contractor Bank Name *</label>
-                            <input type="text" id="new-firm-bank-name" required placeholder="State Bank of India" value="State Bank of India" class="w-full border border-slate-400 p-2 rounded text-xs">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank Account No *</label>
-                            <input type="text" id="new-firm-bank-acc" required placeholder="300012345678" class="w-full border border-slate-400 p-2 rounded text-xs font-mono font-bold">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank IFSC Code *</label>
-                            <input type="text" id="new-firm-bank-ifsc" required placeholder="SBIN0001234" class="w-full border border-slate-400 p-2 rounded text-xs font-mono uppercase">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">GSTIN</label>
-                            <input type="text" id="new-firm-gstin" value="22AAAAA0000A1Z5" class="w-full border border-slate-400 p-2 rounded text-xs font-mono uppercase">
-                        </div>
-                        <div class="sm:col-span-2">
-                            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Office Address *</label>
-                            <input type="text" id="new-firm-address" required placeholder="Mahasamund, Chhattisgarh" class="w-full border border-slate-400 p-2 rounded text-xs">
-                        </div>
+
+                        <!-- LOGIN PASSWORD -->
                         <div class="sm:col-span-2">
                             <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Password *</label>
-                            <input type="password" id="new-firm-pass" required placeholder="••••" class="w-full border border-slate-400 p-2 rounded text-xs">
+                            <input type="password" id="new-firm-pass" required placeholder="••••" class="w-full border border-slate-400 p-1.5 rounded text-xs bg-white">
                         </div>
-                        <button type="submit" class="sm:col-span-2 lm-btn-gold py-2.5 rounded-lg text-xs shadow-md font-bold mt-2">Register Firm & Save in Firebase Auth</button>
+
+                        <button type="submit" class="sm:col-span-2 lm-btn-gold py-2.5 rounded-lg text-xs shadow-md font-bold mt-1">
+                            Register Firm & Save in Firebase Auth
+                        </button>
                     </form>
                 </div>
             `;
