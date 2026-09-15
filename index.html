@@ -551,6 +551,14 @@
     <!-- 4. CORE ENGINE SCRIPT (FIREBASE AUTH & DB INTEGRATED)                      -->
     <!-- ========================================================================= -->
     <script>
+        // --- DISABLE RIGHT CLICK & F12 / INSPECT ELEMENT ---
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false; // F12
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) return false; // Inspect
+            if (e.ctrlKey && e.keyCode == 85) return false; // View Source
+        };
         const firebaseConfig = {
             apiKey: "AIzaSyA1cm7-3U6cVZlYspfDRSZ2apbAhRB6iaE",
             authDomain: "labour-mitra.firebaseapp.com",
