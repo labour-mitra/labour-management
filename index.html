@@ -2692,6 +2692,12 @@
             const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
             const today = new Date().toISOString().split('T')[0];
 
+            // Form me bhari hui Client Company ka data auto pick hoga:
+            const clientName = firm && firm.clientCompanyName ? firm.clientCompanyName : 'M/s Principal Employer / Client Industry';
+            const clientGst = firm && firm.clientGstin ? firm.clientGstin : '22BBBBB1111B1Z2';
+            const clientPo = firm && firm.clientPoNumber ? firm.clientPoNumber : 'WO/PLANT/2026/089';
+            const clientAddr = firm && firm.clientAddress ? firm.clientAddress : 'Industrial Area, Heavy Growth Centre';
+
             let tradeMap = {};
             let totalBasicWages = 0;
 
@@ -2768,15 +2774,15 @@
                             <td width="50%">
                                 <b>BILLING PERIOD:</b><br>
                                 Month & Year: <b>${APP_STATE.selectedMonth}</b><br>
-                                Work Order / PO No: <b>WO/PLANT/2026/089</b>
+                                Work Order / PO No: <b>${clientPo}</b>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <b>BILLED TO:</b><br>
-                                M/s Principal Employer / Heavy Plant Industry<br>
-                                Industrial Area, Heavy Growth Centre<br>
-                                GSTIN: 22BBBBB1111B1Z2
+                                <b>BILLED TO (PRINCIPAL EMPLOYER / CLIENT):</b><br>
+                                <strong style="font-size: 13px;">${clientName}</strong><br>
+                                Address: ${clientAddr}<br>
+                                GSTIN: <b>${clientGst}</b>
                             </td>
                         </tr>
                     </table>
@@ -3915,6 +3921,11 @@
                     bankIfsc: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-bank-ifsc').value.trim().toUpperCase()),
                     gstin: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-gstin').value.trim().toUpperCase()),
                     address: SECURITY_ENGINE.sanitize(document.getElementById('new-firm-address').value.trim()),
+                    // Naye Client Data Fields:
+                    clientCompanyName: SECURITY_ENGINE.sanitize(document.getElementById('new-client-name').value.trim()),
+                    clientGstin: SECURITY_ENGINE.sanitize(document.getElementById('new-client-gstin').value.trim().toUpperCase()),
+                    clientPoNumber: SECURITY_ENGINE.sanitize(document.getElementById('new-client-po').value.trim()),
+                    clientAddress: SECURITY_ENGINE.sanitize(document.getElementById('new-client-address').value.trim()),
                     status: 'ACTIVE'
                 };
 
@@ -3922,7 +3933,7 @@
                 await dbRef.child("contractors").set(APP_STATE.contractors);
                 saveLocalState();
                 renderAdminWorkspace();
-                alert("Contractor Firm Registered & Saved in Firebase Authentication Successfully!");
+                alert("Contractor Firm & Client Company Details Registered Successfully!");
 
             } catch (error) {
                 alert("Error registering contractor: " + error.message);
