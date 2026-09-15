@@ -3391,8 +3391,26 @@
             const t = I18N[CURRENT_LANG];
             const worker = APP_STATE.labour.find(w => w.id === workerId);
             if (confirm(t.confirmDelLabour(workerName, worker ? worker.punchingNo : workerId))) {
+                // 1. Labour list aur Advances se hatayein
                 APP_STATE.labour = APP_STATE.labour.filter(w => w.id !== workerId);
                 delete APP_STATE.advances[workerId];
+                dbRef.child("advances").child(workerId).remove(); // Firebase se advances saaf
+
+                // 2. Attendance node ke andar se is worker ki saari dates ki attendance wipe out karein
+                Object.keys(APP_STATE.attendance).forEach(dateStr => {
+                    if (APP_STATE.attendance[dateStr] && APP_STATE.attendance[dateStr][workerId]) {
+                        delete APP_STATE.attendance[dateStr][workerId];
+                        dbRef.child("attendance").child(dateStr).child(workerId).remove();
+                    }
+                });
+
+                // 3. Verification Photos bhi hatayein
+                Object.keys(APP_STATE.attendancePhotos || {}).forEach(k => {
+                    if (APP_STATE.attendancePhotos[k].workerId === workerId) {
+                        delete APP_STATE.attendancePhotos[k];
+                        dbRef.child("attendancePhotos").child(k).remove();
+                    }
+                });
                 
                 dbRef.child("labour").set(APP_STATE.labour);
                 saveLocalState();
