@@ -945,11 +945,12 @@
         }
 
         function checkAndRestoreSession() {
-            const role = sessionStorage.getItem('LM_SESSION_ROLE');
+            // sessionStorage ki jagah localStorage se session check karein
+            const role = localStorage.getItem('LM_SESSION_ROLE');
             if (role) {
                 APP_STATE.currentUserRole = role;
-                APP_STATE.currentContractorId = sessionStorage.getItem('LM_SESSION_CONT_ID');
-                const sup = sessionStorage.getItem('LM_SESSION_SUP');
+                APP_STATE.currentContractorId = localStorage.getItem('LM_SESSION_CONT_ID');
+                const sup = localStorage.getItem('LM_SESSION_SUP');
                 if (sup) APP_STATE.currentSupervisor = JSON.parse(sup);
 
                 document.getElementById('public-website-view').classList.add('hidden');
@@ -1161,6 +1162,8 @@
             let loginEmail = role === 'ADMIN' ? (authId.includes('@') ? authId : `${authId}@learncad.com`) : `u_${authId}@labourmitra.com`;
 
             try {
+                // Browser band hone ke baad bhi session active rakhne ke liye LOCAL persistence
+                await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
                 await firebase.auth().signInWithEmailAndPassword(loginEmail, pass);
 
                 if (role === 'CONTRACTOR') {
@@ -1172,7 +1175,7 @@
                         return;
                     }
                     APP_STATE.currentContractorId = c.id;
-                    sessionStorage.setItem('LM_SESSION_CONT_ID', c.id);
+                    localStorage.setItem('LM_SESSION_CONT_ID', c.id);
                 } else if (role === 'SUPERVISOR') {
                     const s = APP_STATE.supervisors.find(x => x.mobile === authId);
                     if (!s) { alert("Supervisor record not found in database!"); return; }
@@ -1184,13 +1187,13 @@
                     }
                     APP_STATE.currentSupervisor = s;
                     APP_STATE.currentContractorId = s.contractorId;
-                    sessionStorage.setItem('LM_SESSION_SUP', JSON.stringify(s));
-                    sessionStorage.setItem('LM_SESSION_CONT_ID', s.contractorId);
+                    localStorage.setItem('LM_SESSION_SUP', JSON.stringify(s));
+                    localStorage.setItem('LM_SESSION_CONT_ID', s.contractorId);
                 }
 
                 APP_STATE.failedLoginAttempts = 0;
                 APP_STATE.currentUserRole = role;
-                sessionStorage.setItem('LM_SESSION_ROLE', role);
+                localStorage.setItem('LM_SESSION_ROLE', role);
                 closeLoginModal();
 
                 document.getElementById('public-website-view').classList.add('hidden');
@@ -1214,10 +1217,15 @@
 
         function performLogout() {
             firebase.auth().signOut().then(() => {
-                sessionStorage.clear();
+                // Sirf login session keys hatayein, offline DB data safe rahega
+                localStorage.removeItem('LM_SESSION_ROLE');
+                localStorage.removeItem('LM_SESSION_CONT_ID');
+                localStorage.removeItem('LM_SESSION_SUP');
+                
                 APP_STATE.currentUserRole = null;
                 APP_STATE.currentContractorId = null;
                 APP_STATE.currentSupervisor = null;
+                
                 document.getElementById('authenticated-app').classList.add('hidden');
                 document.getElementById('public-website-view').classList.remove('hidden');
                 lucide.createIcons();
