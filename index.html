@@ -19,7 +19,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
     <style>
-        .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+          /* Base Scrollbar & Theme */
+        .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
         .custom-scroll::-webkit-scrollbar-track { background: #0f172a; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         
@@ -28,16 +29,76 @@
         .lm-btn-gold {
             background: linear-gradient(to bottom, #f59e0b, #d97706);
             color: #0f172a;
-            font-weight: 800;
+            font-weight: 700;
         }
         .lm-btn-gold:hover {
             background: linear-gradient(to bottom, #fbbf24, #b45309);
         }
-        .muster-grid th, .muster-grid td {
-            border: 1px solid #cbd5e1;
-            text-align: center;
-            padding: 3px;
+
+        /* ========================================================= */
+        /* GLOBAL COMPACT & TIGHT SPACING OVERRIDE (FIXES SPREAD-OUT) */
+        /* ========================================================= */
+        * {
+            box-sizing: border-box;
+            line-height: 1.25 !important;
         }
+
+        body {
+            font-size: 11px !important;
+            letter-spacing: -0.2px;
+        }
+
+        /* Sidebar Buttons & Operations Tightening */
+        #lm-sidebar-actions button, 
+        .space-y-1\.5 > button {
+            padding-top: 6px !important;
+            padding-bottom: 6px !important;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+            font-size: 11px !important;
+            margin-bottom: 4px !important;
+        }
+
+        /* Master Muster & Action Bar Buttons (PDF / Bank Buttons) */
+        .muster-action-btn, 
+        #workspace-main-container button {
+            padding: 4px 10px !important;
+            font-size: 11px !important;
+            border-radius: 6px !important;
+        }
+
+        /* Tables & Muster Grid Tightening */
+        table {
+            border-collapse: collapse !important;
+            width: 100%;
+            font-family: inherit !important;
+        }
+        table th, table td {
+            padding: 2px 4px !important;
+            font-size: 10px !important;
+            border: 1px solid #cbd5e1 !important;
+            height: auto !important;
+        }
+        .muster-grid th, .muster-grid td {
+            border: 1px solid #cbd5e1 !important;
+            text-align: center !important;
+            padding: 2px 1px !important;
+            font-size: 10.5px !important;
+        }
+
+        /* Input Fields Compact */
+        input, select, textarea {
+            padding: 3px 6px !important;
+            font-size: 11px !important;
+            height: auto !important;
+        }
+
+        /* Bank Letter & Invoice Compact Container */
+        .print-view, .invoice-box {
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif !important;
+            line-height: 1.35 !important;
+        }
+
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
