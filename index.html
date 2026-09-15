@@ -1958,11 +1958,15 @@
         async function handleAddLabour(e) {
             e.preventDefault();
             const t = I18N[CURRENT_LANG];
+
+            // UNIQUE ID GENERATION: Date.now() se purani ID repeat nahi hogi
+            const uniqueWorkerId = 'WKR-' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 89 + 10);
+
             const newWorker = {
-                id: (9000 + APP_STATE.labour.length + 1).toString(),
+                id: uniqueWorkerId,
                 name: SECURITY_ENGINE.sanitize(document.getElementById('labour-name').value.trim()),
                 fatherName: SECURITY_ENGINE.sanitize(document.getElementById('labour-father').value.trim()),
-                gender: document.getElementById('labour-gender').value,
+                gender: document.getElementById('labour-gender') ? document.getElementById('labour-gender').value : 'MALE',
                 punchingNo: document.getElementById('labour-punching-no').value.trim(),
                 doj: document.getElementById('labour-doj').value,
                 contractorId: APP_STATE.currentContractorId,
@@ -1982,12 +1986,20 @@
                 isEsic: document.getElementById('labour-is-esic').value,
                 address: SECURITY_ENGINE.sanitize(document.getElementById('labour-address').value.trim())
             };
+
+            // Naye worker ke liye kisi bhi purani date ki attendance clean ensure karein
+            Object.keys(APP_STATE.attendance).forEach(dateStr => {
+                if (APP_STATE.attendance[dateStr] && APP_STATE.attendance[dateStr][uniqueWorkerId]) {
+                    delete APP_STATE.attendance[dateStr][uniqueWorkerId];
+                }
+            });
             
             APP_STATE.labour.push(newWorker);
             await dbRef.child("labour").set(APP_STATE.labour);
             saveLocalState();
+            
             e.target.reset();
-            alert(t.successLabourOnboard);
+            alert(t.successLabourOnboard || "Labour profile onboarded successfully!");
             renderContractorMusterWorkspace();
         }
 
