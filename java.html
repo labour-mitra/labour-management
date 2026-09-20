@@ -1,7 +1,8 @@
 // =========================================================================
-// LABOUR MITRA ENTERPRISE OS - CORE ENGINE (app.js) - COMPLETE PRODUCTION HARDENED
+// LABOUR MITRA ENTERPRISE OS - FINAL CONSOLIDATED PRODUCTION ENGINE (app.js)
 // =========================================================================
 
+// 1. FIREBASE CONFIGURATION
 const firebaseConfig = {
     apiKey: "AIzaSyA1cm7-3U6cVZlYspfDRSZ2apbAhRB6iaE",
     authDomain: "labour-mitra.firebaseapp.com",
@@ -13,14 +14,14 @@ const firebaseConfig = {
     measurementId: "G-NH6H28610T"
 };
 
-// Initialize Primary Firebase Application
+// Initialize Primary Firebase Instance
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const auth = firebase.auth();
 const dbRoot = firebase.database().ref("labour_mitra");
 
-// Secondary instance to prevent admin/contractor session dropout on user creation
+// Secondary instance for supervisor/admin provisioning without dropping active session
 let secondaryAuthApp = null;
 function getSecondaryAuth() {
     if (!secondaryAuthApp) {
@@ -29,7 +30,7 @@ function getSecondaryAuth() {
     return secondaryAuthApp.auth();
 }
 
-// Active Listeners Tracker for Complete Teardown / Anti-Leak
+// Track active listeners to prevent listener leaks & cross-tenant memory caching
 const ACTIVE_LISTENERS = [];
 
 function registerListener(ref, eventType, callback) {
@@ -46,7 +47,7 @@ function detachTenantListeners() {
     }
 }
 
-// Security Sanitization & Validation Helpers
+// Security Validation & Sanitization Helpers
 const SECURITY_ENGINE = {
     sanitize(str) {
         if (!str) return "";
@@ -70,7 +71,7 @@ function handleSystemError(err, userContext = "कार्रवाई वि�
     if (err && err.code) {
         switch (err.code) {
             case "PERMISSION_DENIED":
-                msg = "सुरक्षा नियम द्वारा अस्वीकृत: आपके पास इस डेटा या कार्य की अनुमति नहीं है।";
+                msg = "सुरक्षा नियम द्वारा अस्वीकृत: आपके पास इस कार्य या डेटा की अनुमति नहीं है।";
                 break;
             case "auth/network-request-failed":
                 msg = "इंटरनेट कनेक्शन समस्या। कृपया नेटवर्क जाँचें।";
@@ -94,6 +95,7 @@ function handleSystemError(err, userContext = "कार्रवाई वि�
     alert(`${userContext}: ${msg}`);
 }
 
+// Multilingual Resource Dictionary
 const I18N = {
     en: {
         langBtn: "🌐 हिन्दी",
@@ -115,7 +117,7 @@ const I18N = {
         ben1Desc: "Manage labour attendance, 12% PF & ESIC deductions, advance approvals, and in-hand salaries effortlessly.",
         ben2Head: "2. Site Supervisors",
         ben2Desc: "Record daily shift attendance (Present/Half-Day/Absent) and overtime (OT) via mobile or terminal.",
-        ben3Head: "3. Plant Management / HR",
+        ben3Head: "3. Complete Compliance Transparency",
         ben3Desc: "Complete EPFO & labor compliance transparency. Verify master registers, ECR files, and tax invoices.",
         mobileLoginLabel: "Mobile / Login ID",
         passwordLabel: "Password",
@@ -201,7 +203,7 @@ const I18N = {
         ben1Desc: "बिना किसी हिसाब की झंझट के लेबर अटेंडेंस, 12% PF/ESIC कटौती, बैंक पेमेंट लेटर और इन-हैंड सैलरी मैनेज करें।",
         ben2Head: "2. मुंशी व सुपरवाइज़र (Supervisors)",
         ben2Desc: "मोबाइल या टर्मिनल से रोज़ाना की शिफ्ट हाज़िरी (Present/Half-Day/Absent) और ओवरटाइम (OT) दर्ज करें।",
-        ben3Head: "3. प्लांट प्रबंधन / HR (Principal Employer)",
+        ben3Head: "3. पूर्ण अनुपालन पारदर्शिता",
         ben3Desc: "EPFO और लेबर कंप्लायंस की पूरी पारदर्शिता। एक क्लिक में सभी ठेकेदारों के मस्टर रजिस्टर वेरिफ़ाई करें।",
         mobileLoginLabel: "मोबाइल / लॉगिन आईडी",
         passwordLabel: "पासवर्ड",
@@ -292,6 +294,7 @@ function applyLanguage() {
     if (APP_STATE.currentUserRole) setupWorkspace(APP_STATE.currentUserRole);
 }
 
+// Clean In-Memory State Container
 function createInitialState() {
     return {
         currentUser: null,
@@ -301,22 +304,22 @@ function createInitialState() {
         selectedMonth: new Date().toISOString().slice(0, 7),
         selectedFy: "2026-2027",
         supervisorSelectedDate: new Date().toISOString().split('T')[0],
-        failedLoginAttempts: 0,
-        lockoutUntil: 0,
         contractors: [],
         supervisors: [],
         labour: [],
         workersSensitive: {},
         attendance: {},
-        lockedDates: {},
-        correctionRequests: [],
         advances: {},
+        payroll: {},
+        invoices: {},
+        correctionRequests: [],
         isPeriodUiLocked: false
     };
 }
 
 let APP_STATE = createInitialState();
 
+// Live Camera & Geolocation Context
 let CAMERA_STATE = {
     stream: null,
     facingMode: 'user',
@@ -328,11 +331,15 @@ let CAMERA_STATE = {
     timerInterval: null
 };
 
+// =========================================================================
+// 2. ZERO-TRUST AUTHENTICATION & SESSION OBSERVER
+// =========================================================================
 window.addEventListener('DOMContentLoaded', () => {
     initAuthObserver();
     initNetworkStatusMonitor();
     restorePeriodUiState();
     applyLanguage();
+    bindGlobalFormHandlers();
     lucide.createIcons();
 });
 
@@ -357,6 +364,7 @@ function initAuthObserver() {
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             try {
+                // Determine authorization solely from verified database records
                 const userSnap = await dbRoot.child("users").child(user.uid).once("value");
                 if (!userSnap.exists()) {
                     throw new Error("USER_NOT_REGISTERED");
@@ -421,9 +429,13 @@ function performLogout() {
     });
 }
 
+// =========================================================================
+// 3. SECURE TENANT REALTIME SYNCHRONIZATION
+// =========================================================================
 function initRealtimeSync(contractorId, userRole) {
     detachTenantListeners();
 
+    // 1. Sync Contractor Profile
     const contRef = dbRoot.child("contractors").child(contractorId);
     registerListener(contRef, "value", (snapshot) => {
         if (snapshot.exists()) {
@@ -436,27 +448,18 @@ function initRealtimeSync(contractorId, userRole) {
         }
     });
 
-    const supRef = dbRoot.child("supervisors").orderByChild("contractorId").equalTo(contractorId);
-    registerListener(supRef, "value", (snapshot) => {
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            APP_STATE.supervisors = Object.values(data);
-        } else {
-            APP_STATE.supervisors = [];
-        }
-    });
-
+    // 2. Sync Workers (Public Operational Node)
     const labourRef = dbRoot.child("tenants").child(contractorId).child("workers");
     registerListener(labourRef, "value", (snapshot) => {
         if (snapshot.exists()) {
-            const data = snapshot.val();
-            APP_STATE.labour = Object.values(data);
+            APP_STATE.labour = Object.values(snapshot.val());
         } else {
             APP_STATE.labour = [];
         }
         refreshActiveView();
     });
 
+    // 3. Sync Sensitive Data ONLY if authorized (Supervisors strictly excluded)
     if (userRole === 'CONTRACTOR' || userRole === 'ADMIN' || userRole === 'SUPER_ADMIN') {
         const sensitiveRef = dbRoot.child("tenants").child(contractorId).child("workers_sensitive");
         registerListener(sensitiveRef, "value", (snapshot) => {
@@ -465,6 +468,7 @@ function initRealtimeSync(contractorId, userRole) {
         });
     }
 
+    // 4. Sync Attendance for selected month
     const month = APP_STATE.selectedMonth;
     const attRef = dbRoot.child("tenants").child(contractorId).child("attendance").child(month);
     registerListener(attRef, "value", (snapshot) => {
@@ -472,17 +476,27 @@ function initRealtimeSync(contractorId, userRole) {
         refreshActiveView();
     });
 
+    // 5. Sync Advances
     const advRef = dbRoot.child("tenants").child(contractorId).child("advances");
     registerListener(advRef, "value", (snapshot) => {
         APP_STATE.advances = snapshot.val() || {};
         refreshActiveView();
     });
 
+    // 6. Sync Invoices (Contractors & Admins)
+    if (userRole !== 'SUPERVISOR') {
+        const invRef = dbRoot.child("tenants").child(contractorId).child("invoices");
+        registerListener(invRef, "value", (snapshot) => {
+            APP_STATE.invoices = snapshot.exists() ? snapshot.val() : {};
+            refreshActiveView();
+        });
+    }
+
+    // 7. Sync Correction Requests
     const corrRef = dbRoot.child("tenants").child(contractorId).child("correction_requests");
     registerListener(corrRef, "value", (snapshot) => {
         if (snapshot.exists()) {
-            const data = snapshot.val();
-            APP_STATE.correctionRequests = Object.values(data);
+            APP_STATE.correctionRequests = Object.values(snapshot.val());
         } else {
             APP_STATE.correctionRequests = [];
         }
@@ -502,6 +516,7 @@ function onPeriodChange() {
     }
 }
 
+// Browser UI Accounting Period Lock (UX lock, not DB lock)
 function lockActivePeriod() {
     const fySelect = document.getElementById('global-fy-select');
     const monthInput = document.getElementById('global-month-filter');
@@ -596,7 +611,7 @@ function updateNotificationBadge() {
 }
 
 // =========================================================================
-// STATUTORY ENGINE: 12% PF (₹15000 CAP) & 0.75% ESIC
+// 4. STATUTORY ENGINE: 12% PF (₹15000 CAP) & 0.75% ESIC
 // =========================================================================
 function getWorkerMetrics(workerId, wageRate, isEpf, isEsic, clientRateVal = 0) {
     let shifts = 0, otHours = 0;
@@ -677,7 +692,7 @@ function numberToWordsINR(amount) {
 }
 
 // =========================================================================
-// LIVE CAMERA & GEOLOCATION CAPTURE ENGINE
+// 5. LIVE CAMERA & GEOLOCATION CAPTURE ENGINE
 // =========================================================================
 function openLiveCameraAttendanceModal(date, workerId, workerName, punchNo, defaultStatus = 'P', otVal = 0) {
     CAMERA_STATE.targetDate = date;
@@ -809,8 +824,9 @@ async function captureLiveFaceSnapshot() {
         verified: true,
         photo: dataUrl,
         geo: CAMERA_STATE.currentLocation || { lat: "21.1234", lng: "82.0987" },
-        timestamp: nowStr,
-        supervisor: APP_STATE.currentUser ? APP_STATE.currentUser.email : 'Supervisor'
+        date: date,
+        workerId: workerId,
+        contractorId: contId
     };
 
     try {
@@ -826,7 +842,7 @@ async function captureLiveFaceSnapshot() {
 }
 
 // =========================================================================
-// SUPERVISOR TERMINAL
+// 6. SUPERVISOR TERMINAL
 // =========================================================================
 function renderSupervisorAttendanceDesk() {
     const t = I18N[CURRENT_LANG];
@@ -1185,7 +1201,7 @@ function renderSupervisorRequestTracking() {
 }
 
 // =========================================================================
-// CONTRACTOR MASTER MUSTER & ADVANCE DESK
+// 7. CONTRACTOR MASTER MUSTER & ADVANCE DESK
 // =========================================================================
 function renderContractorMusterWorkspace() {
     const t = I18N[CURRENT_LANG];
@@ -1459,13 +1475,12 @@ async function handleContractorRequestAction(reqId, action) {
 }
 
 // =========================================================================
-// LABOUR REGISTRATION & MANAGEMENT (ATOMIC MULTI-LOCATION)
+// 8. LABOUR REGISTRATION & MANAGEMENT (ATOMIC MULTI-LOCATION)
 // =========================================================================
 function showOnboardLabourDesk() {
     const t = I18N[CURRENT_LANG];
     document.getElementById('workspace-notice-title').innerText = t.onboardLabour;
     const container = document.getElementById('workspace-main-container');
-    const today = new Date().toISOString().split('T')[0];
 
     container.innerHTML = `
         <div class="bg-white border-2 border-amber-400 p-5 rounded-lg shadow-sm space-y-4 max-w-3xl mx-auto">
@@ -1683,7 +1698,7 @@ function showManageLabourDesk() {
 }
 
 // =========================================================================
-// SUPERVISOR PROVISIONING & ACTIONS
+// 9. SUPERVISOR PROVISIONING & ACTIONS
 // =========================================================================
 function showCreateSupervisorDesk() {
     const t = I18N[CURRENT_LANG];
@@ -1798,7 +1813,7 @@ function showManageSupervisorDesk() {
 }
 
 // =========================================================================
-// FILE 1, 2, 3 EXPORTS
+// 10. CLRA FORM T, WAGE, HISAB & BANK EXPORTS
 // =========================================================================
 function openDownloadMusterModal(type) {
     downloadPureAttendancePDF();
@@ -2028,8 +2043,46 @@ function showLabourPaymentForBankDesk() {
     `;
 }
 
+// EPFO ECR Text File Generator (#~# Standard Delimited Format)
+function generateEpfoEcrTextFile() {
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.status === 'ACTIVE' && w.isEpf !== 'NO');
+    const month = APP_STATE.selectedMonth;
+    let ecrRows = [];
+
+    myLabour.forEach(w => {
+        const sens = APP_STATE.workersSensitive[w.id] || {};
+        const uan = sens.epfNo || "";
+        if (!uan) return;
+
+        const metrics = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic);
+        const grossWages = Math.round(metrics.grossWages);
+        const epfWages = Math.round(metrics.shiftEarned);
+        const epsWages = Math.min(15000, epfWages);
+        const edliWages = epsWages;
+        const eePf = metrics.eePf;
+        const epsShare = metrics.epsShare;
+        const erEpfShare = metrics.erEpfShare;
+        const ncpDays = Math.max(0, 30 - Math.ceil(metrics.shifts));
+
+        const line = `${uan}#~#${w.name.toUpperCase()}#~#${grossWages}#~#${epfWages}#~#${epsWages}#~#${edliWages}#~#${eePf}#~#${epsShare}#~#${erEpfShare}#~#${ncpDays}#~#0`;
+        ecrRows.push(line);
+    });
+
+    if (ecrRows.length === 0) {
+        alert("इस महीने के लिए कोई वैध EPF UAN धारक श्रमिक नहीं मिला!");
+        return;
+    }
+
+    const textContent = ecrRows.join("\r\n");
+    const blob = new Blob([textContent], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `ECR_${APP_STATE.currentContractorId}_${month}.txt`;
+    link.click();
+}
+
 // =========================================================================
-// SUPER_ADMIN PERMANENT DELETION (SERVER AUTHENTICATED WORKFLOW)
+// 11. SUPER_ADMIN PERMANENT DELETION (WITH RE-AUTHENTICATION)
 // =========================================================================
 async function executePermanentContractorDeletion(targetContractorId, superAdminPassword) {
     if (!SECURITY_ENGINE.validateId(targetContractorId)) {
@@ -2039,6 +2092,12 @@ async function executePermanentContractorDeletion(targetContractorId, superAdmin
 
     if (APP_STATE.currentUserRole !== 'SUPER_ADMIN') {
         alert("सुरक्षा अस्वीकृत: केवल सुपर एडमिन ही स्थायी विलोपन निष्पादित कर सकता है।");
+        return;
+    }
+
+    const targetContractor = APP_STATE.contractors.find(c => c.id === targetContractorId);
+    if (!targetContractor || (targetContractor.status !== 'INACTIVE' && targetContractor.status !== 'BLOCKED')) {
+        alert("नियम उल्लंघन: केवल INACTIVE या BLOCKED ठेकेदार ही स्थायी रूप से मिटाए जा सकते हैं।");
         return;
     }
 
@@ -2060,6 +2119,7 @@ async function executePermanentContractorDeletion(targetContractorId, superAdmin
             actorUid: authUser.uid,
             actorRole: "SUPER_ADMIN",
             targetContractorId: targetContractorId,
+            contractorName: targetContractor.name || targetContractor.companyName || "N/A",
             timestamp: firebase.database.ServerValue.TIMESTAMP
         };
 
@@ -2074,4 +2134,35 @@ async function executePermanentContractorDeletion(targetContractorId, superAdmin
     } catch (err) {
         handleSystemError(err, "पुनः प्रमाणीकरण या विलोपन विफल");
     }
+}
+
+// =========================================================================
+// 12. DOM BINDINGS & AUTH EVENT HANDLERS
+// =========================================================================
+function bindGlobalFormHandlers() {
+    document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value.trim();
+        const pass = document.getElementById('login-password').value;
+        try {
+            await auth.signInWithEmailAndPassword(email, pass);
+        } catch (err) {
+            handleSystemError(err, "लॉगिन विफल");
+        }
+    });
+
+    document.getElementById('password-reset-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('reset-email').value.trim();
+        if (!email) return;
+        try {
+            await auth.sendPasswordResetEmail(email);
+            alert("पासवर्ड रीसेट लिंक आपके ईमेल पर भेज दिया गया है।");
+        } catch (err) {
+            handleSystemError(err, "पासवर्ड रीसेट विफल");
+        }
+    });
+
+    document.getElementById('c-adv-modal-form')?.addEventListener('submit', handleContractorDirectAdvance);
+    document.getElementById('correction-modal-form')?.addEventListener('submit', handleSendCorrectionRequest);
 }
