@@ -2,25 +2,37 @@
 /* ==========================================================================
    Labour Mitra Enterprise OS - Production Stylesheet (style.css)
    Tailored for: Industrial Manpower Supply, EPFO Compliance & 3-Sheet Ledger
+
+   UI/UX HARDENED VERSION
+   - Responsive desktop/tablet/mobile layout
+   - Touch-friendly supervisor controls
+   - High-density muster register support
+   - Accessible focus/disabled states
+   - Modal and form consistency
+   - Safe print layout
+   - Reduced-motion accessibility
+   - No client-side security assumptions
    ========================================================================== */
+
 
 /* --------------------------------------------------------------------------
    1. ROOT DESIGN TOKENS & PALETTE
    -------------------------------------------------------------------------- */
+
 :root {
   /* Neutral Slate Dark Base */
-  --bg-app: #020617;          /* Slate 950 */
-  --bg-surface: #0f172a;      /* Slate 900 */
-  --bg-surface-elevated: #1e293b; /* Slate 800 */
-  --bg-surface-subtle: #090d16;  /* Deep base */
-  
-  --border-subtle: #1e293b;   /* Slate 800 */
-  --border-strong: #334155;   /* Slate 700 */
-  --border-focus: #f59e0b;    /* Amber 500 */
+  --bg-app: #020617;                 /* Slate 950 */
+  --bg-surface: #0f172a;             /* Slate 900 */
+  --bg-surface-elevated: #1e293b;    /* Slate 800 */
+  --bg-surface-subtle: #090d16;      /* Deep base */
 
-  --text-main: #f8fafc;       /* Slate 50 */
-  --text-muted: #94a3b8;      /* Slate 400 */
-  --text-faint: #64748b;      /* Slate 500 */
+  --border-subtle: #1e293b;          /* Slate 800 */
+  --border-strong: #334155;          /* Slate 700 */
+  --border-focus: #f59e0b;           /* Amber 500 */
+
+  --text-main: #f8fafc;              /* Slate 50 */
+  --text-muted: #94a3b8;             /* Slate 400 */
+  --text-faint: #64748b;             /* Slate 500 */
 
   /* Labour Mitra Brand Identity */
   --lm-brown: #4a2411;
@@ -31,10 +43,10 @@
   /* Semantic Action & Status Colors */
   --status-emerald: #10b981;
   --status-emerald-subtle: rgba(16, 185, 129, 0.15);
-  
+
   --status-amber: #f59e0b;
   --status-amber-subtle: rgba(245, 158, 11, 0.15);
-  
+
   --status-rose: #f43f5e;
   --status-rose-subtle: rgba(244, 63, 94, 0.15);
 
@@ -42,9 +54,12 @@
   --status-indigo-subtle: rgba(99, 102, 241, 0.15);
 
   /* Typography & Layout */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+
   --radius-xs: 4px;
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -52,20 +67,47 @@
   --radius-full: 9999px;
 
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --transition-normal: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --shadow-card:
+    0 4px 6px -1px rgba(0, 0, 0, 0.4),
+    0 2px 4px -2px rgba(0, 0, 0, 0.3);
+
+  --shadow-elevated:
+    0 10px 25px -5px rgba(0, 0, 0, 0.45),
+    0 8px 10px -6px rgba(0, 0, 0, 0.35);
+
+  --focus-ring:
+    0 0 0 3px rgba(245, 158, 11, 0.25);
+
+  /* Safe touch target */
+  --touch-target: 44px;
 }
+
 
 /* --------------------------------------------------------------------------
    2. BASE RESET & SCROLLBARS
    -------------------------------------------------------------------------- */
-*, *::before, *::after {
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html {
   min-height: 100%;
+  background-color: var(--bg-app);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100%;
+  min-width: 320px;
   background-color: var(--bg-app);
   color: var(--text-main);
   font-family: var(--font-sans);
@@ -73,8 +115,49 @@ html, body {
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
+/* Prevent media from overflowing containers */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Better default button behavior */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Buttons should not accidentally inherit browser appearance */
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(245, 158, 11, 0.28);
+  color: var(--text-main);
+}
+
+/* WebKit scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -93,9 +176,17 @@ html, body {
   background: var(--text-faint);
 }
 
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--bg-app);
+}
+
+
 /* --------------------------------------------------------------------------
    3. BRAND BUTTONS & HEADER CLASSES
    -------------------------------------------------------------------------- */
+
 .lm-brown {
   background-color: var(--lm-brown) !important;
 }
@@ -105,16 +196,31 @@ html, body {
 }
 
 .lm-btn-gold {
-  background: linear-gradient(to bottom, var(--lm-gold-start), var(--lm-gold-end)) !important;
+  background: linear-gradient(
+    to bottom,
+    var(--lm-gold-start),
+    var(--lm-gold-end)
+  ) !important;
+
   color: #0f172a !important;
   font-weight: 800 !important;
   border: none !important;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    filter var(--transition-fast),
+    box-shadow var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .lm-btn-gold:hover {
-  background: linear-gradient(to bottom, #fbbf24, #b45309) !important;
+  background: linear-gradient(
+    to bottom,
+    #fbbf24,
+    #b45309
+  ) !important;
+
   transform: translateY(-1px);
 }
 
@@ -122,27 +228,95 @@ html, body {
   transform: scale(0.97);
 }
 
+.lm-btn-gold:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.lm-btn-gold:disabled,
+.lm-btn-gold[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none !important;
+  filter: grayscale(0.25);
+}
+
+
+/* Generic Labour Mitra action helpers */
+
+.lm-action-btn {
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.lm-action-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.lm-action-btn:active {
+  transform: scale(0.97);
+}
+
+.lm-action-btn:disabled,
+.lm-action-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
 /* --------------------------------------------------------------------------
    4. 30-DAY MUSTER GRID & HIGH-DENSITY DATA TABLES
    -------------------------------------------------------------------------- */
+
 .table-container {
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+  overflow-y: visible;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  background: #ffffff;
+}
+
+/* Keep large registers usable on mobile */
+.table-container table {
+  min-width: max-content;
 }
 
 .muster-grid {
   width: 100%;
   border-collapse: collapse;
   font-size: 11px;
+  background: #ffffff;
+  color: #0f172a;
 }
 
-.muster-grid th, .muster-grid td {
+.muster-grid th,
+.muster-grid td {
   border: 1px solid #cbd5e1;
   text-align: center;
   padding: 4px 2px;
   white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* Prevent empty cells from collapsing */
+.muster-grid th:empty,
+.muster-grid td:empty {
+  min-width: 24px;
 }
 
 .muster-grid thead th {
@@ -150,6 +324,9 @@ html, body {
   color: #4a2411;
   font-weight: 800;
   font-size: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 9;
 }
 
 /* Sticky Column on Horizontal Scroll for Large Registers */
@@ -158,14 +335,44 @@ html, body {
   left: 0;
   background-color: #ffffff;
   z-index: 10;
+  box-shadow: 2px 0 3px rgba(15, 23, 42, 0.08);
 }
+
+/*
+  If a sticky column is also a table header, keep it above
+  the normal sticky header layer.
+*/
+.muster-grid thead th.sticky-col {
+  z-index: 20;
+  background-color: #fef08a;
+}
+
+/* Sticky first column helper */
+.muster-grid .sticky-col {
+  min-width: 120px;
+}
+
+/* Horizontal scroll hint */
+.table-container::-webkit-scrollbar {
+  height: 7px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #64748b;
+  border-radius: 9999px;
+}
+
 
 /* --------------------------------------------------------------------------
    5. MOBILE SUPERVISOR ATTENDANCE CONTROLS
    -------------------------------------------------------------------------- */
+
 .attendance-grid {
   display: flex;
   gap: 4px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
 .attendance-btn {
@@ -181,13 +388,35 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.attendance-btn:hover {
+  filter: brightness(0.97);
+}
+
+.attendance-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 .attendance-btn:active {
   transform: scale(0.92);
+}
+
+.attendance-btn:disabled,
+.attendance-btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
 }
 
 .attendance-btn.active-p {
@@ -208,12 +437,23 @@ html, body {
   box-shadow: 0 0 8px rgba(244, 63, 94, 0.4);
 }
 
+
 /* --------------------------------------------------------------------------
    6. MODALS, POPUPS & FORMS
    -------------------------------------------------------------------------- */
+
 .modal-backdrop {
   background-color: rgba(2, 6, 23, 0.85);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Prevent backdrop from creating accidental horizontal overflow */
+.modal-backdrop {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .modal-box {
@@ -221,53 +461,684 @@ html, body {
   border: 2px solid var(--lm-brown);
   border-radius: var(--radius-lg);
   color: #0f172a;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: var(--shadow-elevated);
+  -webkit-overflow-scrolling: touch;
 }
 
-input, select, textarea {
+/* Form controls */
+
+input,
+select,
+textarea {
   background-color: #ffffff;
   border: 1px solid #94a3b8;
   color: #0f172a;
   border-radius: var(--radius-sm);
   padding: 6px 10px;
   font-size: 12px;
-  transition: border-color var(--transition-fast);
+  line-height: 1.4;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
-input:focus, select:focus, textarea:focus {
+/* Prevent textarea resize from breaking narrow layouts */
+textarea {
+  min-height: 80px;
+  max-width: 100%;
+  resize: vertical;
+}
+
+/* Date/month controls */
+input[type="date"],
+input[type="month"],
+input[type="number"],
+input[type="tel"],
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  max-width: 100%;
+}
+
+/* Focus */
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--lm-gold-end);
   box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25);
 }
 
+/* Keyboard-only focus */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: var(--focus-ring);
+}
+
+/* Invalid form state */
+input:invalid:not(:placeholder-shown),
+select:invalid,
+textarea:invalid {
+  border-color: var(--status-rose);
+}
+
+/* Disabled fields */
+input:disabled,
+select:disabled,
+textarea:disabled {
+  background-color: #e2e8f0;
+  color: #64748b;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Placeholder */
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* Checkbox and radio controls */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--lm-gold-end);
+  cursor: pointer;
+}
+
+/* File inputs */
+input[type="file"] {
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* Select options */
+select option {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+
 /* --------------------------------------------------------------------------
-   7. PRINT OPTIMIZATION (@media print)
+   7. COMMON APPLICATION PANELS / CARDS
    -------------------------------------------------------------------------- */
+
+.lm-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.lm-card-elevated {
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-elevated);
+}
+
+.lm-card-subtle {
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+
+/* --------------------------------------------------------------------------
+   8. STATUS / BADGE HELPERS
+   -------------------------------------------------------------------------- */
+
+.lm-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 24px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.lm-status-active {
+  background-color: var(--status-emerald-subtle);
+  color: #34d399;
+}
+
+.lm-status-pending {
+  background-color: var(--status-amber-subtle);
+  color: #fbbf24;
+}
+
+.lm-status-danger {
+  background-color: var(--status-rose-subtle);
+  color: #fb7185;
+}
+
+.lm-status-info {
+  background-color: var(--status-indigo-subtle);
+  color: #818cf8;
+}
+
+
+/* --------------------------------------------------------------------------
+   9. APPLICATION VISIBILITY HELPERS
+   -------------------------------------------------------------------------- */
+
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden !important;
+}
+
+/* Never use these as actual security.
+   They are UI helpers only. */
+.supervisor-only-view,
+.contractor-only-view {
+  transition: opacity var(--transition-fast);
+}
+
+
+/* --------------------------------------------------------------------------
+   10. TOPBAR / NAVIGATION SAFETY
+   -------------------------------------------------------------------------- */
+
+header,
+nav,
+aside {
+  max-width: 100%;
+}
+
+header {
+  z-index: 50;
+}
+
+/* Avoid long firm names breaking the topbar */
+#user-topbar-firm {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* --------------------------------------------------------------------------
+   11. NOTIFICATION BADGE
+   -------------------------------------------------------------------------- */
+
+#pending-request-count {
+  min-width: 18px;
+  min-height: 18px;
+  padding: 2px 5px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+
+/* --------------------------------------------------------------------------
+   12. ONLINE / OFFLINE STATUS INDICATOR
+   -------------------------------------------------------------------------- */
+
+#sync-status-indicator {
+  min-height: 22px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   13. LOCKED PERIOD UI
+   -------------------------------------------------------------------------- */
+
+#global-fy-select:disabled,
+#global-month-filter:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+#period-lock-badge {
+  user-select: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   14. DATA-DENSE RESPONSIVE HELPERS
+   -------------------------------------------------------------------------- */
+
+/* Prevent long IDs, PAN, IFSC etc. from breaking cards */
+.break-safe,
+[data-break-safe="true"] {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Numeric data */
+.numeric,
+[data-numeric="true"] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+
+/* --------------------------------------------------------------------------
+   15. TABLE ROW INTERACTION
+   -------------------------------------------------------------------------- */
+
+.muster-grid tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+.muster-grid tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.muster-grid tbody tr:hover .sticky-col {
+  background-color: #f8fafc;
+}
+
+
+/* --------------------------------------------------------------------------
+   16. PRINT OPTIMIZATION (@media print)
+   -------------------------------------------------------------------------- */
+
 @media print {
+
+  html,
   body {
     background-color: #ffffff !important;
     color: #000000 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  body {
     font-size: 9pt !important;
   }
 
-  aside, header, button, .no-print {
+  /* Hide application controls from printed register */
+  aside,
+  header,
+  nav,
+  button,
+  .no-print,
+  .no-print *,
+  #sync-status-indicator {
     display: none !important;
+  }
+
+  /* Ensure printable content is visible */
+  .print-area,
+  .print-area * {
+    visibility: visible !important;
+  }
+
+  .table-container {
+    overflow: visible !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: none !important;
   }
 
   .muster-grid {
     width: 100% !important;
+    min-width: 0 !important;
     border-collapse: collapse !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
   }
 
-  .muster-grid th, .muster-grid td {
+  .muster-grid th,
+  .muster-grid td {
     border: 0.5pt solid #000000 !important;
     color: #000000 !important;
+    background-color: #ffffff !important;
     padding: 2px !important;
+    font-size: 7pt !important;
   }
 
   .muster-grid thead th {
     background-color: #f1f5f9 !important;
+    color: #000000 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
+  .sticky-col {
+    position: static !important;
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+  }
+
+  .muster-grid tbody tr:hover {
+    background-color: transparent !important;
+  }
+
+  .muster-grid tbody tr:hover .sticky-col {
+    background-color: #ffffff !important;
+  }
+
+  .modal-backdrop,
+  .modal-box {
+    box-shadow: none !important;
+  }
+
+  /* Avoid cutting important table rows */
+  tr {
+    page-break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  @page {
+    margin: 8mm;
+  }
 }
+
+
+/* --------------------------------------------------------------------------
+   17. TABLET RESPONSIVE
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+
+  html,
+  body {
+    font-size: 13px;
+  }
+
+  .table-container {
+    border-radius: var(--radius-sm);
+  }
+
+  .muster-grid {
+    font-size: 10px;
+  }
+
+  .muster-grid th,
+  .muster-grid td {
+    padding: 4px 2px;
+  }
+
+  #user-topbar-firm {
+    max-width: 200px;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   18. MOBILE RESPONSIVE
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+  html,
+  body {
+    font-size: 12px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Modal */
+  .modal-box {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100vh - 20px);
+    border-radius: var(--radius-md);
+  }
+
+  /* Forms */
+  input,
+  select,
+  textarea {
+    min-height: 40px;
+    font-size: 13px;
+  }
+
+  /* Touch-friendly attendance controls */
+  .attendance-btn {
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 11px;
+  }
+
+  .attendance-grid {
+    gap: 5px;
+  }
+
+  /* Tables remain horizontally scrollable */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .muster-grid {
+    font-size: 10px;
+  }
+
+  .muster-grid th,
+  .muster-grid td {
+    padding: 5px 3px;
+  }
+
+  .muster-grid .sticky-col {
+    min-width: 105px;
+  }
+
+  /* Prevent topbar text from taking the whole screen */
+  #user-topbar-firm {
+    max-width: 145px;
+  }
+
+  /* Buttons should be comfortable on touch screens */
+  button,
+  .lm-action-btn {
+    min-height: 40px;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   19. SMALL MOBILE RESPONSIVE
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+
+  html,
+  body {
+    font-size: 11.5px;
+  }
+
+  .modal-box {
+    width: calc(100vw - 12px) !important;
+    max-width: calc(100vw - 12px) !important;
+    max-height: calc(100vh - 12px);
+    border-width: 1px;
+  }
+
+  input,
+  select,
+  textarea {
+    min-height: 42px;
+    padding: 8px 9px;
+  }
+
+  .attendance-btn {
+    min-width: 38px;
+    min-height: 38px;
+    padding: 4px;
+  }
+
+  .attendance-grid {
+    gap: 3px;
+  }
+
+  .muster-grid .sticky-col {
+    min-width: 95px;
+  }
+
+  #user-topbar-firm {
+    max-width: 110px;
+  }
+
+  #sync-status-indicator {
+    font-size: 9px !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   20. VERY SMALL DEVICES
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 360px) {
+
+  .attendance-btn {
+    min-width: 34px;
+    min-height: 36px;
+    font-size: 10px;
+  }
+
+  .attendance-grid {
+    gap: 2px;
+  }
+
+  .muster-grid {
+    font-size: 9px;
+  }
+
+  .muster-grid .sticky-col {
+    min-width: 88px;
+  }
+
+  #user-topbar-firm {
+    max-width: 90px;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   21. REDUCED MOTION ACCESSIBILITY
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .lm-btn-gold:hover,
+  .lm-btn-gold:active,
+  .attendance-btn:active,
+  .lm-action-btn:active {
+    transform: none !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   22. HIGH CONTRAST / FORCED COLORS SUPPORT
+   -------------------------------------------------------------------------- */
+
+@media (forced-colors: active) {
+
+  button,
+  input,
+  select,
+  textarea {
+    forced-color-adjust: auto;
+  }
+
+  .attendance-btn,
+  .lm-btn-gold {
+    border: 1px solid ButtonText !important;
+  }
+
+  .sticky-col {
+    box-shadow: none !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   23. DARK COLOR-SCHEME FORM COMPATIBILITY
+   -------------------------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+
+  input,
+  select,
+  textarea {
+    color-scheme: light;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   24. SAFE FOCUS NAVIGATION
+   -------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--lm-gold-start);
+  outline-offset: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   25. FINAL INTERACTION SAFETY
+   -------------------------------------------------------------------------- */
+
+/*
+  These CSS rules only control presentation.
+  They DO NOT provide Firebase authorization/security.
+
+  Actual authorization must remain enforced by:
+  - Firebase Authentication
+  - Firebase Realtime Database Rules
+  - Secure backend / Cloud Functions where required
+
+  Hiding a button or element must never be treated as permission control.
+*/
+
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   END OF LABOUR MITRA PRODUCTION STYLESHEET
+   -------------------------------------------------------------------------- */
+
 </style>
