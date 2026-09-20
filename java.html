@@ -1,5 +1,5 @@
 // =========================================================================
-// LABOUR MITRA ENTERPRISE OS - CORE ENGINE (app.js)
+// LABOUR MITRA ENTERPRISE OS - CORE ENGINE (app.js) - COMPLETE PRODUCTION HARDENED
 // =========================================================================
 
 const firebaseConfig = {
@@ -12,8 +12,13 @@ const firebaseConfig = {
     appId: "1:958377540789:web:5ebf6b0b961359bd9d52fc",
     measurementId: "G-NH6H28610T"
 };
-firebase.initializeApp(firebaseConfig);
-const dbRef = firebase.database().ref("labour_mitra/main_database");
+
+// Initialize Primary Firebase Application
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+const dbRoot = firebase.database().ref("labour_mitra");
 
 // Secondary instance to prevent admin/contractor session dropout on user creation
 let secondaryAuthApp = null;
@@ -22,6 +27,71 @@ function getSecondaryAuth() {
         secondaryAuthApp = firebase.initializeApp(firebaseConfig, "SecondaryAuthEngine");
     }
     return secondaryAuthApp.auth();
+}
+
+// Active Listeners Tracker for Complete Teardown / Anti-Leak
+const ACTIVE_LISTENERS = [];
+
+function registerListener(ref, eventType, callback) {
+    ref.on(eventType, callback);
+    ACTIVE_LISTENERS.push({ ref, eventType, callback });
+}
+
+function detachTenantListeners() {
+    while (ACTIVE_LISTENERS.length > 0) {
+        const item = ACTIVE_LISTENERS.pop();
+        if (item && item.ref && typeof item.ref.off === 'function') {
+            item.ref.off(item.eventType || 'value', item.callback);
+        }
+    }
+}
+
+// Security Sanitization & Validation Helpers
+const SECURITY_ENGINE = {
+    sanitize(str) {
+        if (!str) return "";
+        return String(str).replace(/[&<>"']/g, function(m) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+        });
+    },
+    validateId(id) {
+        return typeof id === 'string' && /^[a-zA-Z0-9_-]{1,64}$/.test(id);
+    },
+    validateDate(dateStr) {
+        return typeof dateStr === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+    },
+    validateMonth(monthStr) {
+        return typeof monthStr === 'string' && /^\d{4}-\d{2}$/.test(monthStr);
+    }
+};
+
+function handleSystemError(err, userContext = "कार्रवाई विफल") {
+    let msg = "एक अप्रत्याशित समस्या आई। कृपया पुनः प्रयास करें।";
+    if (err && err.code) {
+        switch (err.code) {
+            case "PERMISSION_DENIED":
+                msg = "सुरक्षा नियम द्वारा अस्वीकृत: आपके पास इस डेटा या कार्य की अनुमति नहीं है।";
+                break;
+            case "auth/network-request-failed":
+                msg = "इंटरनेट कनेक्शन समस्या। कृपया नेटवर्क जाँचें।";
+                break;
+            case "auth/requires-recent-login":
+                msg = "इस महत्वपूर्ण कार्य के लिए आपको पुनः लॉगिन करना होगा।";
+                break;
+            case "auth/user-disabled":
+                msg = "यह खाता निलंबित या निष्क्रिय कर दिया गया है।";
+                break;
+            case "auth/wrong-password":
+            case "auth/user-not-found":
+            case "auth/invalid-credential":
+                msg = "गलत ईमेल या पासवर्ड।";
+                break;
+            default:
+                msg = err.message || "सिस्टम सत्यापन विफल।";
+                break;
+        }
+    }
+    alert(`${userContext}: ${msg}`);
 }
 
 const I18N = {
@@ -98,8 +168,8 @@ const I18N = {
         adv: "Adv",
         inHand: "In-Hand Salary",
         actions: "Actions",
-        confirmDelLabour: (name, punch) => `Are you sure you want to permanently delete labour "${name}" (Punch: ${punch})?`,
-        successDelLabour: (name) => `Labour "${name}" deleted successfully!`,
+        confirmDelLabour: (name, punch) => `Are you sure you want to deactivate labour "${name}" (Punch: ${punch})?`,
+        successDelLabour: (name) => `Labour "${name}" deactivated successfully!`,
         confirmDelSupWarn: (name, count) => `Warning: Supervisor "${name}" has ${count} mapped workers. Deleting will unassign them. Do you want to proceed?`,
         confirmDelSup: (name) => `Are you sure you want to delete Supervisor "${name}"?`,
         successDelSup: (name) => `Supervisor "${name}" deleted successfully!`,
@@ -184,8 +254,8 @@ const I18N = {
         adv: "एडवांस",
         inHand: "इन-हैंड सैलरी",
         actions: "कार्य",
-        confirmDelLabour: (name, punch) => `क्या आप सच में लेबर "${name}" (पंचिंग: ${punch}) को हमेशा के लिए डिलीट करना चाहते हैं?`,
-        successDelLabour: (name) => `लेबर "${name}" सफलतापूर्वक डिलीट कर दिया गया!`,
+        confirmDelLabour: (name, punch) => `क्या आप सच में लेबर "${name}" (पंचिंग: ${punch}) को कार्यमुक्त (Inactive) करना चाहते हैं?`,
+        successDelLabour: (name) => `लेबर "${name}" सफलतापूर्वक कार्यमुक्त कर दिया गया!`,
         confirmDelSupWarn: (name, count) => `चेतावनी: सुपरवाइज़र "${name}" के अंडर ${count} लेबर मैप हैं। डिलीट करने पर वे अन-असाइंड हो जाएंगे। क्या आप आगे बढ़ना चाहते हैं?`,
         confirmDelSup: (name) => `क्या आप सच में सुपरवाइज़र "${name}" को डिलीट करना चाहते हैं?`,
         successDelSup: (name) => `सुपरवाइज़र "${name}" सफलतापूर्वक डिलीट कर दिया गया!`,
@@ -222,34 +292,31 @@ function applyLanguage() {
     if (APP_STATE.currentUserRole) setupWorkspace(APP_STATE.currentUserRole);
 }
 
-const SECURITY_ENGINE = {
-    sanitize(str) {
-        if (!str) return "";
-        return String(str).replace(/[&<>"']/g, function(m) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
-        });
-    }
-};
+function createInitialState() {
+    return {
+        currentUser: null,
+        currentUserRole: null,
+        currentContractorId: null,
+        currentSupervisor: null,
+        selectedMonth: new Date().toISOString().slice(0, 7),
+        selectedFy: "2026-2027",
+        supervisorSelectedDate: new Date().toISOString().split('T')[0],
+        failedLoginAttempts: 0,
+        lockoutUntil: 0,
+        contractors: [],
+        supervisors: [],
+        labour: [],
+        workersSensitive: {},
+        attendance: {},
+        lockedDates: {},
+        correctionRequests: [],
+        advances: {},
+        isPeriodUiLocked: false
+    };
+}
 
-let APP_STATE = {
-    currentUserRole: null,
-    currentContractorId: null,
-    currentSupervisor: null,
-    selectedMonth: "2026-04",
-    selectedFy: "2026-2027",
-    supervisorSelectedDate: "2026-04-01",
-    failedLoginAttempts: 0,
-    lockoutUntil: 0,
-    contractors: [],
-    supervisors: [],
-    labour: [],
-    attendance: {},
-    lockedDates: {},
-    correctionRequests: [],
-    advances: {}
-};
+let APP_STATE = createInitialState();
 
-// --- CAMERA & GEO ENGINE STATE ---
 let CAMERA_STATE = {
     stream: null,
     facingMode: 'user',
@@ -262,17 +329,10 @@ let CAMERA_STATE = {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-    const today = new Date().toISOString().split('T')[0];
-    APP_STATE.supervisorSelectedDate = today;
-    const monthInput = document.getElementById('global-month-filter');
-    if (monthInput) monthInput.value = APP_STATE.selectedMonth;
-    
-    loadLocalState();
-    initRealtimeSync(); 
+    initAuthObserver();
     initNetworkStatusMonitor();
-    
+    restorePeriodUiState();
     applyLanguage();
-    checkAndRestoreSession();
     lucide.createIcons();
 });
 
@@ -293,104 +353,246 @@ function initNetworkStatusMonitor() {
     updateStatus();
 }
 
-function initRealtimeSync() {
-    dbRef.child("contractors").on("value", (snapshot) => {
+function initAuthObserver() {
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            try {
+                const userSnap = await dbRoot.child("users").child(user.uid).once("value");
+                if (!userSnap.exists()) {
+                    throw new Error("USER_NOT_REGISTERED");
+                }
+
+                const userData = userSnap.val();
+                if (!userData.active) {
+                    throw new Error("USER_INACTIVE");
+                }
+
+                if (!SECURITY_ENGINE.validateId(userData.contractorId)) {
+                    throw new Error("INVALID_CONTRACTOR_MAPPING");
+                }
+
+                const contractorSnap = await dbRoot.child("contractors").child(userData.contractorId).once("value");
+                if (!contractorSnap.exists()) {
+                    throw new Error("CONTRACTOR_NOT_FOUND");
+                }
+
+                const contractorData = contractorSnap.val();
+                if (contractorData.status === "BLOCKED" || contractorData.status === "INACTIVE") {
+                    throw new Error("CONTRACTOR_DISABLED");
+                }
+
+                APP_STATE.currentUser = user;
+                APP_STATE.currentUserRole = userData.role;
+                APP_STATE.currentContractorId = userData.contractorId;
+
+                const publicView = document.getElementById('public-website-view');
+                const appView = document.getElementById('authenticated-app');
+                if (publicView) publicView.classList.add('hidden');
+                if (appView) appView.classList.remove('hidden');
+
+                initRealtimeSync(userData.contractorId, userData.role);
+                setupWorkspace(userData.role);
+
+            } catch (err) {
+                alert("खाता सत्यापन विफल या खाता निलंबित है। लॉगआउट किया जा रहा है।");
+                performLogout();
+            }
+        } else {
+            showPublicPortal();
+        }
+    });
+}
+
+function showPublicPortal() {
+    detachTenantListeners();
+    APP_STATE = createInitialState();
+    const publicView = document.getElementById('public-website-view');
+    const appView = document.getElementById('authenticated-app');
+    if (publicView) publicView.classList.remove('hidden');
+    if (appView) appView.classList.add('hidden');
+}
+
+function performLogout() {
+    detachTenantListeners();
+    sessionStorage.clear();
+    localStorage.clear();
+    auth.signOut().then(() => {
+        showPublicPortal();
+    });
+}
+
+function initRealtimeSync(contractorId, userRole) {
+    detachTenantListeners();
+
+    const contRef = dbRoot.child("contractors").child(contractorId);
+    registerListener(contRef, "value", (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
-            APP_STATE.contractors = Array.isArray(data) ? data : Object.values(data);
-        } else {
-            APP_STATE.contractors = [];
+            APP_STATE.contractors = [data];
+            const firmLabel = document.getElementById('user-topbar-firm');
+            if (firmLabel) {
+                firmLabel.textContent = data.name || data.companyName || "Contractor Workspace";
+            }
         }
-        saveLocalState();
-        if (APP_STATE.currentUserRole === 'ADMIN') refreshActiveView();
     });
 
-    dbRef.child("supervisors").on("value", (snapshot) => {
+    const supRef = dbRoot.child("supervisors").orderByChild("contractorId").equalTo(contractorId);
+    registerListener(supRef, "value", (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
-            APP_STATE.supervisors = Array.isArray(data) ? data : Object.values(data);
+            APP_STATE.supervisors = Object.values(data);
         } else {
             APP_STATE.supervisors = [];
         }
-        saveLocalState();
     });
 
-    dbRef.child("labour").on("value", (snapshot) => {
+    const labourRef = dbRoot.child("tenants").child(contractorId).child("workers");
+    registerListener(labourRef, "value", (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
-            APP_STATE.labour = Array.isArray(data) ? data : Object.values(data);
+            APP_STATE.labour = Object.values(data);
         } else {
             APP_STATE.labour = [];
         }
-        saveLocalState();
+        refreshActiveView();
     });
 
-    dbRef.child("attendance").on("value", (snapshot) => {
-        APP_STATE.attendance = snapshot.val() || {};
-        saveLocalState();
+    if (userRole === 'CONTRACTOR' || userRole === 'ADMIN' || userRole === 'SUPER_ADMIN') {
+        const sensitiveRef = dbRoot.child("tenants").child(contractorId).child("workers_sensitive");
+        registerListener(sensitiveRef, "value", (snapshot) => {
+            APP_STATE.workersSensitive = snapshot.exists() ? snapshot.val() : {};
+            refreshActiveView();
+        });
+    }
+
+    const month = APP_STATE.selectedMonth;
+    const attRef = dbRoot.child("tenants").child(contractorId).child("attendance").child(month);
+    registerListener(attRef, "value", (snapshot) => {
+        APP_STATE.attendance[month] = snapshot.exists() ? snapshot.val() : {};
+        refreshActiveView();
     });
 
-    dbRef.child("lockedDates").on("value", (snapshot) => {
-        APP_STATE.lockedDates = snapshot.val() || {};
-        saveLocalState();
-    });
-
-    dbRef.child("advances").on("value", (snapshot) => {
+    const advRef = dbRoot.child("tenants").child(contractorId).child("advances");
+    registerListener(advRef, "value", (snapshot) => {
         APP_STATE.advances = snapshot.val() || {};
-        saveLocalState();
+        refreshActiveView();
     });
 
-    dbRef.child("correctionRequests").on("value", (snapshot) => {
+    const corrRef = dbRoot.child("tenants").child(contractorId).child("correction_requests");
+    registerListener(corrRef, "value", (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
-            APP_STATE.correctionRequests = Array.isArray(data) ? data : Object.values(data);
+            APP_STATE.correctionRequests = Object.values(data);
         } else {
             APP_STATE.correctionRequests = [];
         }
-        saveLocalState();
         updateNotificationBadge();
     });
-}
-
-function saveLocalState() {
-    localStorage.setItem('LM_SECURE_ENTERPRISE_STATE_V16', JSON.stringify(APP_STATE));
-}
-
-function loadLocalState() {
-    const saved = localStorage.getItem('LM_SECURE_ENTERPRISE_STATE_V16');
-    if (saved) {
-        try {
-            const p = JSON.parse(saved);
-            APP_STATE.contractors = p.contractors || [];
-            APP_STATE.supervisors = p.supervisors || [];
-            APP_STATE.labour = p.labour || [];
-            APP_STATE.attendance = p.attendance || {};
-            APP_STATE.lockedDates = p.lockedDates || {};
-            APP_STATE.correctionRequests = p.correctionRequests || [];
-            APP_STATE.advances = p.advances || {};
-        } catch(e) {}
-    }
-}
-
-function checkAndRestoreSession() {
-    const role = sessionStorage.getItem('LM_SESSION_ROLE');
-    if (role) {
-        APP_STATE.currentUserRole = role;
-        APP_STATE.currentContractorId = sessionStorage.getItem('LM_SESSION_CONT_ID');
-        const sup = sessionStorage.getItem('LM_SESSION_SUP');
-        if (sup) APP_STATE.currentSupervisor = JSON.parse(sup);
-
-        document.getElementById('public-website-view').classList.add('hidden');
-        document.getElementById('authenticated-app').classList.remove('hidden');
-        setupWorkspace(role);
-    }
 }
 
 function onPeriodChange() {
     APP_STATE.selectedMonth = document.getElementById('global-month-filter').value;
     APP_STATE.selectedFy = document.getElementById('global-fy-select').value;
-    document.getElementById('current-period-label').innerText = `Period: ${APP_STATE.selectedMonth} (FY: ${APP_STATE.selectedFy})`;
-    refreshActiveView();
+    const periodLabel = document.getElementById('current-period-label');
+    if (periodLabel) {
+        periodLabel.innerText = `Period: ${APP_STATE.selectedMonth} (FY: ${APP_STATE.selectedFy})`;
+    }
+    if (APP_STATE.currentContractorId && APP_STATE.currentUserRole) {
+        initRealtimeSync(APP_STATE.currentContractorId, APP_STATE.currentUserRole);
+    }
+}
+
+function lockActivePeriod() {
+    const fySelect = document.getElementById('global-fy-select');
+    const monthInput = document.getElementById('global-month-filter');
+
+    if (!monthInput || !monthInput.value) {
+        alert("कृपया पहले एक वेतन महीना चुनें!");
+        return;
+    }
+
+    APP_STATE.selectedFy = fySelect.value;
+    APP_STATE.selectedMonth = monthInput.value;
+    APP_STATE.isPeriodUiLocked = true;
+
+    fySelect.disabled = true;
+    monthInput.disabled = true;
+    fySelect.classList.add('bg-slate-200', 'cursor-not-allowed');
+    monthInput.classList.add('bg-slate-200', 'cursor-not-allowed');
+
+    document.getElementById('btn-lock-period')?.classList.add('hidden');
+    document.getElementById('btn-exit-period')?.classList.remove('hidden');
+    document.getElementById('period-lock-badge')?.classList.remove('hidden');
+
+    sessionStorage.setItem('LM_LOCKED_FY', APP_STATE.selectedFy);
+    sessionStorage.setItem('LM_LOCKED_MONTH', APP_STATE.selectedMonth);
+
+    if (APP_STATE.currentContractorId) {
+        initRealtimeSync(APP_STATE.currentContractorId, APP_STATE.currentUserRole);
+    }
+}
+
+function unlockActivePeriod() {
+    const fySelect = document.getElementById('global-fy-select');
+    const monthInput = document.getElementById('global-month-filter');
+
+    fySelect.disabled = false;
+    monthInput.disabled = false;
+    fySelect.classList.remove('bg-slate-200', 'cursor-not-allowed');
+    monthInput.classList.remove('bg-slate-200', 'cursor-not-allowed');
+
+    document.getElementById('btn-lock-period')?.classList.remove('hidden');
+    document.getElementById('btn-exit-period')?.classList.add('hidden');
+    document.getElementById('period-lock-badge')?.classList.add('hidden');
+
+    sessionStorage.removeItem('LM_LOCKED_FY');
+    sessionStorage.removeItem('LM_LOCKED_MONTH');
+    APP_STATE.isPeriodUiLocked = false;
+}
+
+function restorePeriodUiState() {
+    const savedFy = sessionStorage.getItem('LM_LOCKED_FY');
+    const savedMonth = sessionStorage.getItem('LM_LOCKED_MONTH');
+
+    const fySelect = document.getElementById('global-fy-select');
+    const monthInput = document.getElementById('global-month-filter');
+
+    if (savedFy && savedMonth && fySelect && monthInput) {
+        fySelect.value = savedFy;
+        monthInput.value = savedMonth;
+        lockActivePeriod();
+    } else if (monthInput) {
+        monthInput.value = APP_STATE.selectedMonth;
+    }
+}
+
+function setupWorkspace(role) {
+    const supervisorPanels = document.querySelectorAll('.supervisor-only-view');
+    const contractorPanels = document.querySelectorAll('.contractor-only-view');
+
+    if (role === 'SUPERVISOR') {
+        supervisorPanels.forEach(p => p.classList.remove('hidden'));
+        contractorPanels.forEach(p => p.classList.add('hidden'));
+        renderSupervisorAttendanceDesk();
+    } else {
+        supervisorPanels.forEach(p => p.classList.add('hidden'));
+        contractorPanels.forEach(p => p.classList.remove('hidden'));
+        renderContractorMusterWorkspace();
+    }
+}
+
+function refreshActiveView() {
+    if (APP_STATE.currentUserRole === 'CONTRACTOR') {
+        renderContractorMusterWorkspace();
+    } else if (APP_STATE.currentUserRole === 'SUPERVISOR') {
+        renderSupervisorAttendanceDesk();
+    }
+}
+
+function updateNotificationBadge() {
+    const badge = document.getElementById('pending-request-count');
+    const pendingReqs = APP_STATE.correctionRequests.filter(r => r.contractorId === APP_STATE.currentContractorId && r.status === 'PENDING');
+    if (badge) badge.textContent = pendingReqs.length.toString();
 }
 
 // =========================================================================
@@ -400,18 +602,19 @@ function getWorkerMetrics(workerId, wageRate, isEpf, isEsic, clientRateVal = 0) 
     let shifts = 0, otHours = 0;
     const month = APP_STATE.selectedMonth;
 
-    Object.keys(APP_STATE.attendance).forEach(date => {
-        if (date.startsWith(month)) {
-            const rec = APP_STATE.attendance[date][workerId];
-            if (rec) {
+    if (APP_STATE.attendance[month]) {
+        Object.keys(APP_STATE.attendance[month]).forEach(date => {
+            const records = APP_STATE.attendance[month][date]?.records;
+            if (records && records[workerId]) {
+                const rec = records[workerId];
                 const st = typeof rec === 'string' ? rec : rec.status;
                 const ot = typeof rec === 'object' ? Number(rec.ot || 0) : 0;
                 if (st === 'P') shifts += 1;
                 else if (st === 'HD') shifts += 0.5;
                 otHours += ot;
             }
-        }
-    });
+        });
+    }
 
     const shiftEarned = shifts * Number(wageRate);
     const otEarned = otHours * (Number(wageRate) / 8);
@@ -421,7 +624,7 @@ function getWorkerMetrics(workerId, wageRate, isEpf, isEsic, clientRateVal = 0) 
     if (isEpf !== 'NO') {
         eePf = Math.round(shiftEarned * 0.12);
         erTotalPf = Math.round(shiftEarned * 0.13);
-        epsWages = Math.min(15000, Math.round(shiftEarned)); // Statutory ceiling capped at 15000
+        epsWages = Math.min(15000, Math.round(shiftEarned));
         epsShare = Math.round(epsWages * 0.0833);
         erEpfShare = eePf - epsShare;
     }
@@ -436,7 +639,7 @@ function getWorkerMetrics(workerId, wageRate, isEpf, isEsic, clientRateVal = 0) 
     const totalPayment = Math.max(0, grossWages - totalStatutoryDeductions);
 
     let advCut = 0;
-    const advList = APP_STATE.advances[workerId] || [];
+    const advList = APP_STATE.advances[workerId] ? Object.values(APP_STATE.advances[workerId]) : [];
     advList.forEach(a => {
         if (a.date && a.date.startsWith(month) && a.status === 'APPROVED') {
             advCut += Number(a.amount);
@@ -573,7 +776,7 @@ function startLiveClock() {
     CAMERA_STATE.timerInterval = setInterval(updateClock, 1000);
 }
 
-function captureLiveFaceSnapshot() {
+async function captureLiveFaceSnapshot() {
     const video = document.getElementById('cam-stream-video');
     const canvas = document.getElementById('cam-capture-canvas');
     if (!video || !video.videoWidth) {
@@ -595,9 +798,11 @@ function captureLiveFaceSnapshot() {
     ctx.fillText(`GPS: ${CAMERA_STATE.currentLocation ? `${CAMERA_STATE.currentLocation.lat},${CAMERA_STATE.currentLocation.lng}` : 'N/A'} | ${nowStr}`, 6, canvas.height - 9);
 
     const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
-
     const date = CAMERA_STATE.targetDate;
     const workerId = CAMERA_STATE.targetWorkerId;
+    const contId = APP_STATE.currentContractorId;
+    const month = date.slice(0, 7);
+
     const record = {
         status: CAMERA_STATE.targetStatus,
         ot: CAMERA_STATE.targetOt,
@@ -605,18 +810,19 @@ function captureLiveFaceSnapshot() {
         photo: dataUrl,
         geo: CAMERA_STATE.currentLocation || { lat: "21.1234", lng: "82.0987" },
         timestamp: nowStr,
-        supervisor: APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.name : 'Supervisor'
+        supervisor: APP_STATE.currentUser ? APP_STATE.currentUser.email : 'Supervisor'
     };
 
-    if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
-    APP_STATE.attendance[date][workerId] = record;
+    try {
+        await dbRoot.child("tenants").child(contId).child("attendance")
+            .child(month).child(date).child("records").child(workerId).set(record);
 
-    dbRef.child("attendance").child(date).child(workerId).set(record);
-    saveLocalState();
-
-    closeCameraModal();
-    alert("✅ Facial Attendance & GPS Punch Verified Successfully!");
-    renderSupervisorAttendanceDesk();
+        closeCameraModal();
+        alert("✅ Facial Attendance & GPS Punch Verified Successfully!");
+        renderSupervisorAttendanceDesk();
+    } catch (err) {
+        handleSystemError(err, "कैमरा अटेंडेंस दर्ज करने में विफलता");
+    }
 }
 
 // =========================================================================
@@ -625,18 +831,17 @@ function captureLiveFaceSnapshot() {
 function renderSupervisorAttendanceDesk() {
     const t = I18N[CURRENT_LANG];
     const date = APP_STATE.supervisorSelectedDate;
-    const isLocked = APP_STATE.lockedDates[date] && APP_STATE.lockedDates[date].locked;
+    const month = date.slice(0, 7);
+    const isLocked = APP_STATE.attendance[month]?.[date]?.metadata?.locked === true;
     
-    const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
-    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
-    
-    if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.status === 'ACTIVE');
+    const dayRecords = APP_STATE.attendance[month]?.[date]?.records || {};
 
     document.getElementById('workspace-notice-title').innerText = CURRENT_LANG === 'hi' ? `हाज़िरी टर्मिनल — तारीख: ${date}` : `Attendance Terminal — Date: ${date}`;
 
     let pCount = 0, hdCount = 0, aCount = 0, totalOt = 0;
     myLabour.forEach(w => {
-        const rec = APP_STATE.attendance[date][w.id];
+        const rec = dayRecords[w.id];
         const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
         const ot = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
         if (st === 'P') pCount++;
@@ -652,24 +857,26 @@ function renderSupervisorAttendanceDesk() {
                 <label class="font-bold text-[#4a2411] text-xs">Shift Date:</label>
                 <input type="date" value="${date}" onchange="changeSupervisorDate(this.value)" class="border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
                 ${isLocked ? 
-                    `<span class="bg-emerald-700 text-white font-bold text-[10px] px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> ${t.lockedBadge} (${APP_STATE.lockedDates[date].timestamp})</span>` : 
+                    `<span class="bg-emerald-700 text-white font-bold text-[10px] px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> ${t.lockedBadge}</span>` : 
                     `<span class="bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded">${t.draftBadge}</span>`
                 }
             </div>
 
-            ${!isLocked ? `
+            ${(!isLocked && APP_STATE.currentUserRole === 'CONTRACTOR') ? `
                 <div class="flex gap-2">
                     <button onclick="markAllSupervisorPresentToday('${date}')" class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-xs">${t.markAllP}</button>
                     <button onclick="lockAndSubmitAttendance('${date}')" class="bg-emerald-700 hover:bg-emerald-600 text-white px-4 py-1.5 rounded font-black text-xs shadow flex items-center gap-1">
                         <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> ${t.lockSubmit}
                     </button>
                 </div>
-            ` : `
+            ` : isLocked ? `
                 <span class="text-xs text-rose-700 font-bold italic">Date locked. Send correction request to edit.</span>
+            ` : `
+                <span class="text-xs text-slate-600 font-bold">Supervisor Terminal</span>
             `}
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center mt-3">
             <div class="bg-white border border-amber-300 p-2 rounded"><p class="text-[9px] text-slate-500 font-bold">Total Labour</p><p class="text-sm font-black text-slate-900">${myLabour.length}</p></div>
             <div class="bg-emerald-100 border border-emerald-300 p-2 rounded"><p class="text-[9px] text-emerald-800 font-bold">Present (P)</p><p class="text-sm font-black text-emerald-700">${pCount}</p></div>
             <div class="bg-amber-100 border border-amber-300 p-2 rounded"><p class="text-[9px] text-amber-800 font-bold">Half Day (HD)</p><p class="text-sm font-black text-amber-700">${hdCount}</p></div>
@@ -677,16 +884,16 @@ function renderSupervisorAttendanceDesk() {
             <div class="bg-blue-100 border border-blue-300 p-2 rounded"><p class="text-[9px] text-blue-800 font-bold">Total OT</p><p class="text-sm font-black text-blue-700">${totalOt}h</p></div>
         </div>
 
-        <div class="bg-white border border-amber-400 rounded-lg shadow overflow-hidden">
+        <div class="bg-white border border-amber-400 rounded-lg shadow overflow-hidden mt-3">
             <div class="p-2.5 lm-brown text-white font-bold text-xs flex justify-between items-center">
                 <span>Workforce Roster & Camera Verification (${date})</span>
                 <input type="text" onkeyup="filterSupervisorLabour(this.value)" placeholder="Search worker..." class="p-1 px-2 text-xs rounded bg-white text-slate-900 border-none outline-none font-normal">
             </div>
 
             <div class="divide-y divide-amber-200 p-2 space-y-2 max-h-[520px] overflow-y-auto custom-scroll" id="sup-workers-list">
-                ${myLabour.length === 0 ? '<p class="p-6 text-center text-slate-500 italic">No workers mapped to you by contractor yet.</p>' :
+                ${myLabour.length === 0 ? '<p class="p-6 text-center text-slate-500 italic">No workers mapped yet.</p>' :
                     myLabour.map(w => {
-                        const rec = APP_STATE.attendance[date][w.id];
+                        const rec = dayRecords[w.id];
                         const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
                         const ot = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
                         const isVerified = rec && typeof rec === 'object' && rec.verified;
@@ -744,43 +951,77 @@ function changeSupervisorDate(newDate) {
     renderSupervisorAttendanceDesk();
 }
 
-function setShiftStatus(date, workerId, status, otVal) {
-    if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
-    const record = { status, ot: Number(otVal || 0) };
-    APP_STATE.attendance[date][workerId] = record;
-    
-    dbRef.child("attendance").child(date).child(workerId).set(record);
-    saveLocalState();
-    renderSupervisorAttendanceDesk();
+async function setShiftStatus(date, workerId, status, otVal) {
+    if (!SECURITY_ENGINE.validateDate(date) || !SECURITY_ENGINE.validateId(workerId)) {
+        alert("अमान्य तिथि या मज़दूर आईडी।");
+        return;
+    }
+
+    const otNum = Number(otVal || 0);
+    if (!['P', 'HD', 'A'].includes(status) || isNaN(otNum) || otNum < 0 || otNum > 16) {
+        alert("अमान्य हाज़िरी स्थिति या ओवरटाइम।");
+        return;
+    }
+
+    const contId = APP_STATE.currentContractorId;
+    const month = date.slice(0, 7);
+
+    const record = {
+        status: status,
+        ot: otNum,
+        date: date,
+        workerId: workerId,
+        contractorId: contId
+    };
+
+    try {
+        await dbRoot.child("tenants").child(contId).child("attendance")
+            .child(month).child(date).child("records").child(workerId).set(record);
+        renderSupervisorAttendanceDesk();
+    } catch (err) {
+        handleSystemError(err, "हाज़िरी दर्ज करने में त्रुटि (क्या यह तारीख लॉक है?)");
+    }
 }
 
-function markAllSupervisorPresentToday(date) {
-    if (!APP_STATE.attendance[date]) APP_STATE.attendance[date] = {};
-    const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
-    
-    APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId).forEach(w => {
-        const cur = APP_STATE.attendance[date][w.id];
-        const ot = cur && typeof cur === 'object' ? cur.ot : 0;
-        const record = { status: 'P', ot };
-        APP_STATE.attendance[date][w.id] = record;
-        dbRef.child("attendance").child(date).child(w.id).set(record);
+async function markAllSupervisorPresentToday(date) {
+    const contId = APP_STATE.currentContractorId;
+    const month = date.slice(0, 7);
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === contId && w.status === 'ACTIVE');
+    const updates = {};
+
+    myLabour.forEach(w => {
+        updates[`tenants/${contId}/attendance/${month}/${date}/records/${w.id}`] = {
+            status: 'P',
+            ot: 0,
+            date: date,
+            workerId: w.id,
+            contractorId: contId
+        };
     });
 
-    saveLocalState();
-    renderSupervisorAttendanceDesk();
+    try {
+        await dbRoot.update(updates);
+        renderSupervisorAttendanceDesk();
+    } catch (err) {
+        handleSystemError(err, "सभी को उपस्थित दर्ज करने में त्रुटि");
+    }
 }
 
-function lockAndSubmitAttendance(date) {
+async function lockAndSubmitAttendance(date) {
     const t = I18N[CURRENT_LANG];
     if (confirm(t.confirmLockAtt(date))) {
-        const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        const lockObj = { locked: true, timestamp: `${date} ${now}` };
-        APP_STATE.lockedDates[date] = lockObj;
-        
-        dbRef.child("lockedDates").child(date).set(lockObj);
-        saveLocalState();
-        alert(t.successLockAtt(date));
-        renderSupervisorAttendanceDesk();
+        const contId = APP_STATE.currentContractorId;
+        const month = date.slice(0, 7);
+        const lockObj = { locked: true };
+
+        try {
+            await dbRoot.child("tenants").child(contId).child("attendance")
+                .child(month).child(date).child("metadata").set(lockObj);
+            alert(t.successLockAtt(date));
+            renderSupervisorAttendanceDesk();
+        } catch (err) {
+            handleSystemError(err, "तारीख लॉक करने में विफलता");
+        }
     }
 }
 
@@ -798,9 +1039,9 @@ function renderSupervisorHistoryLog() {
     const t = I18N[CURRENT_LANG];
     document.getElementById('workspace-notice-title').innerText = t.supHistory;
     
-    const supId = APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.id : null;
-    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
-    const dates = Object.keys(APP_STATE.attendance).sort().reverse();
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.status === 'ACTIVE');
+    const month = APP_STATE.selectedMonth;
+    const dates = APP_STATE.attendance[month] ? Object.keys(APP_STATE.attendance[month]).sort().reverse() : [];
 
     const container = document.getElementById('workspace-main-container');
     container.innerHTML = `
@@ -827,8 +1068,9 @@ function renderSupervisorHistoryLog() {
                         ${dates.length === 0 ? '<tr><td colspan="7" class="p-4 text-center text-slate-500 italic">No attendance records found yet.</td></tr>' : 
                             dates.map(d => {
                                 let p = 0, hd = 0, a = 0, ot = 0;
+                                const recs = APP_STATE.attendance[month][d]?.records || {};
                                 myLabour.forEach(w => {
-                                    const rec = APP_STATE.attendance[d] && APP_STATE.attendance[d][w.id];
+                                    const rec = recs[w.id];
                                     const st = rec ? (typeof rec === 'string' ? rec : rec.status) : 'A';
                                     const o = rec && typeof rec === 'object' ? Number(rec.ot || 0) : 0;
                                     if (st === 'P') p++;
@@ -836,7 +1078,7 @@ function renderSupervisorHistoryLog() {
                                     else a++;
                                     ot += o;
                                 });
-                                const isL = APP_STATE.lockedDates[d] && APP_STATE.lockedDates[d].locked;
+                                const isL = APP_STATE.attendance[month][d]?.metadata?.locked === true;
 
                                 return `
                                     <tr class="hover:bg-amber-50">
@@ -879,7 +1121,7 @@ function closeCorrectionModal() {
     document.getElementById('correction-modal').classList.add('hidden');
 }
 
-function handleSendCorrectionRequest(e) {
+async function handleSendCorrectionRequest(e) {
     e.preventDefault();
     const t = I18N[CURRENT_LANG];
     const wId = document.getElementById('corr-worker-id').value;
@@ -887,34 +1129,30 @@ function handleSendCorrectionRequest(e) {
     const newStatus = document.getElementById('corr-new-status').value;
     const newOt = Number(document.getElementById('corr-new-ot').value || 0);
     const reason = SECURITY_ENGINE.sanitize(document.getElementById('corr-reason').value.trim());
+    const contId = APP_STATE.currentContractorId;
 
-    const worker = APP_STATE.labour.find(w => w.id === wId);
-    const oldRec = (APP_STATE.attendance[date] && APP_STATE.attendance[date][wId]) || 'A';
-    const oldStatus = typeof oldRec === 'string' ? oldRec : oldRec.status;
-    const oldOt = typeof oldRec === 'object' ? oldRec.ot : 0;
+    const reqPushKey = dbRoot.child("tenants").child(contId).child("correction_requests").push().key;
 
     const newReq = {
-        id: 'REQ-' + Date.now().toString().slice(-6),
-        contractorId: APP_STATE.currentContractorId,
-        date,
+        id: reqPushKey,
+        contractorId: contId,
+        date: date,
         workerId: wId,
-        workerName: worker ? worker.name : wId,
-        oldStatus,
-        oldOt,
-        newStatus,
-        newOt,
-        reason,
-        status: 'PENDING',
-        timestamp: new Date().toLocaleString('en-IN')
+        newStatus: newStatus,
+        newOt: newOt,
+        reason: reason,
+        status: 'PENDING'
     };
 
-    APP_STATE.correctionRequests.push(newReq);
-    dbRef.child("correctionRequests").set(APP_STATE.correctionRequests);
-    saveLocalState();
-    closeCorrectionModal();
-    e.target.reset();
-    alert(t.successCorrSent);
-    renderSupervisorRequestTracking();
+    try {
+        await dbRoot.child("tenants").child(contId).child("correction_requests").child(reqPushKey).set(newReq);
+        closeCorrectionModal();
+        e.target.reset();
+        alert(t.successCorrSent);
+        renderSupervisorRequestTracking();
+    } catch (err) {
+        handleSystemError(err, "सुधार निवेदन भेजने में विफलता");
+    }
 }
 
 function renderSupervisorRequestTracking() {
@@ -931,9 +1169,9 @@ function renderSupervisorRequestTracking() {
                     myRequests.map(r => `
                         <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
                             <div>
-                                <p class="font-bold text-slate-900">${r.workerName} — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
-                                <p class="text-[11px] text-slate-600">Change: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-blue-700">${r.newStatus} (${r.newOt}h)</span></p>
-                                <p class="text-[11px] text-slate-700 italic">"Reason: ${r.reason}"</p>
+                                <p class="font-bold text-slate-900">Worker ID: ${r.workerId} — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
+                                <p class="text-[11px] text-slate-600">Request: Change to <span class="font-bold text-blue-700">${r.newStatus}</span></p>
+                                <p class="text-[11px] text-slate-700 italic">"Reason: ${r.reason || 'N/A'}"</p>
                             </div>
                             <div>
                                 <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.status === 'APPROVED' ? 'bg-emerald-600 text-white' : r.status === 'REJECTED' ? 'bg-rose-600 text-white' : 'bg-amber-500 text-slate-950'}">${r.status}</span>
@@ -951,10 +1189,10 @@ function renderSupervisorRequestTracking() {
 // =========================================================================
 function renderContractorMusterWorkspace() {
     const t = I18N[CURRENT_LANG];
-    const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
+    const firm = APP_STATE.contractors[0];
     document.getElementById('workspace-notice-title').innerText = `${firm ? firm.name : 'Contractor Firm'} — Master Register (${APP_STATE.selectedMonth})`;
 
-    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.status === 'ACTIVE');
     const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
     const daysInMonth = new Date(year, month, 0).getDate();
     const weekdays = CURRENT_LANG === 'hi' ? ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'] : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -972,7 +1210,7 @@ function renderContractorMusterWorkspace() {
         for (let d = 1; d <= daysInMonth; d++) {
             const dayStr = d.toString().padStart(2, '0');
             const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
-            const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+            const rec = APP_STATE.attendance[APP_STATE.selectedMonth]?.[fullDateStr]?.records?.[w.id] || '';
             const status = typeof rec === 'string' ? rec : rec.status;
 
             if (status === 'P') presentCount += 1;
@@ -982,22 +1220,19 @@ function renderContractorMusterWorkspace() {
         }
 
         const m = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic, w.clientRate);
-        const sup = APP_STATE.supervisors.find(s => s.id === w.supervisorId);
 
         rows += `
             <tr class="hover:bg-amber-50/60 bg-white">
                 <td class="font-bold">${idx + 1}</td>
                 <td class="font-mono text-[10px] font-bold text-blue-800 bg-blue-50/40">${w.punchingNo || 'N/A'}</td>
-                <td class="text-left font-bold text-[#4a2411] px-2 whitespace-nowrap">${SECURITY_ENGINE.sanitize(w.name)} <span class="text-[9px] text-slate-500 font-normal">(${sup ? sup.name : 'General'})</span></td>
+                <td class="text-left font-bold text-[#4a2411] px-2 whitespace-nowrap">${SECURITY_ENGINE.sanitize(w.name)}</td>
                 ${dayCells}
                 <td class="font-black text-blue-700 font-mono bg-amber-100">${presentCount}</td>
                 <td class="font-mono font-bold text-amber-800 bg-amber-50">₹${m.advanceCut}</td>
                 <td class="font-black font-mono text-emerald-800 bg-emerald-100">₹${Math.round(m.inHandFinal)}</td>
                 <td class="p-1 space-x-1 whitespace-nowrap">
                     <button onclick="openContractorAdvModal('${w.id}', '${w.name}')" class="bg-amber-200 text-amber-900 hover:bg-amber-300 px-1.5 py-0.5 rounded text-[9px] font-bold">+Adv</button>
-                    <button onclick="sendWorkerWhatsAppSummary('${w.id}')" class="bg-emerald-600 text-white hover:bg-emerald-500 px-1.5 py-0.5 rounded text-[9px] font-bold">📲 WA</button>
-                    <button onclick="generateWorkerIdCardPDF('${w.id}')" class="bg-slate-200 hover:bg-slate-300 px-1.5 py-0.5 rounded text-[9px] font-bold">🪪 ID</button>
-                    <button onclick="generateFndSettlementPDF('${w.id}')" class="bg-amber-700 text-white hover:bg-amber-600 px-1.5 py-0.5 rounded text-[9px] font-bold">FNF</button>
+                    <button onclick="softDeleteLabour('${w.id}', '${w.name}')" class="bg-rose-600 text-white hover:bg-rose-700 px-1.5 py-0.5 rounded text-[9px] font-bold">कार्यमुक्त</button>
                 </td>
             </tr>
         `;
@@ -1057,131 +1292,109 @@ function closeContractorAdvModal() {
     document.getElementById('contractor-adv-modal').classList.add('hidden');
 }
 
-function handleContractorDirectAdvance(e) {
+async function handleContractorDirectAdvance(e) {
     e.preventDefault();
+    const contId = APP_STATE.currentContractorId;
     const workerId = document.getElementById('c-adv-worker-id').value;
     const amount = Number(document.getElementById('c-adv-amount').value);
-    const reason = SECURITY_ENGINE.sanitize(document.getElementById('c-adv-reason').value);
     const date = new Date().toISOString().split('T')[0];
 
-    if (!APP_STATE.advances[workerId]) APP_STATE.advances[workerId] = [];
-    APP_STATE.advances[workerId].push({
-        id: 'ADV-' + Date.now().toString().slice(-6),
-        amount,
-        date,
-        reason,
-        status: 'APPROVED',
-        supervisor: 'Direct Contractor'
-    });
+    if (!amount || amount <= 0) {
+        alert("कृपया वैध राशि दर्ज करें!");
+        return;
+    }
 
-    dbRef.child("advances").set(APP_STATE.advances);
-    saveLocalState();
-    closeContractorAdvModal();
-    e.target.reset();
-    alert("Direct Advance Disbursed and Approved Successfully!");
-    renderContractorMusterWorkspace();
+    const advPushKey = dbRoot.child("tenants").child(contId).child("advances").child(workerId).push().key;
+
+    const advPayload = {
+        workerId: workerId,
+        contractorId: contId,
+        amount: amount,
+        date: date,
+        status: 'APPROVED'
+    };
+
+    try {
+        await dbRoot.child("tenants").child(contId).child("advances").child(workerId).child(advPushKey).set(advPayload);
+        closeContractorAdvModal();
+        e.target.reset();
+        alert("Direct Advance Disbursed and Approved Successfully!");
+        renderContractorMusterWorkspace();
+    } catch (err) {
+        handleSystemError(err, "एडवांस दर्ज करने में विफलता");
+    }
 }
 
 function showSupervisorAdvanceDesk() {
     const t = I18N[CURRENT_LANG];
     document.getElementById('workspace-notice-title').innerText = t.advDesk;
-    const mySups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.status === 'ACTIVE');
     const container = document.getElementById('workspace-main-container');
+    const today = new Date().toISOString().split('T')[0];
 
     container.innerHTML = `
         <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-300 pb-3">
-                <div>
-                    <h3 class="font-black text-[#4a2411] text-sm">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र चुनें' : 'Select Site Supervisor'}</h3>
-                    <p class="text-[11px] text-slate-600">${CURRENT_LANG === 'hi' ? 'सुपरवाइज़र चुनें और मज़दूरों के एडवांस के लिए सीधे एंट्री करें।' : 'Choose supervisor to enter direct worker advances.'}</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <label class="font-bold text-xs">Supervisor:</label>
-                    <select id="adv-desk-sup-select" onchange="renderSupervisorLabourForAdvance(this.value)" class="border-2 border-amber-500 p-1.5 rounded-lg text-xs font-bold bg-amber-50">
-                        <option value="">${CURRENT_LANG === 'hi' ? '-- सुपरवाइज़र चुनें --' : '-- Choose Supervisor --'}</option>
-                        ${mySups.map(s => `<option value="${s.id}">${s.name} (${s.mobile})</option>`).join('')}
-                    </select>
-                </div>
-            </div>
-            <div id="adv-desk-workers-table-container">
-                <p class="p-6 text-center text-slate-500 italic">Please select a supervisor from the dropdown above.</p>
+            <h3 class="font-black text-[#4a2411] text-sm border-b border-amber-300 pb-2">Direct Worker Advances Desk</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead class="bg-amber-100 text-[#4a2411] uppercase font-bold text-[10px] border-b border-amber-300">
+                        <tr>
+                            <th class="p-2.5">Punch No</th>
+                            <th class="p-2.5">Worker Name</th>
+                            <th class="p-2.5">Trade / Rate</th>
+                            <th class="p-2.5">Total Recorded Advance</th>
+                            <th class="p-2.5 text-right">Add Advance</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-amber-200">
+                        ${myLabour.map(w => {
+                            const m = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic, w.clientRate);
+                            return `
+                                <tr class="hover:bg-amber-50">
+                                    <td class="p-2.5 font-mono font-bold text-blue-800">${w.punchingNo || 'N/A'}</td>
+                                    <td class="p-2.5 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</td>
+                                    <td class="p-2.5 text-slate-600">${w.category} (₹${w.wage}/d)</td>
+                                    <td class="p-2.5 font-mono font-bold text-amber-800">₹${m.advanceCut}</td>
+                                    <td class="p-2.5 text-right">
+                                        <div class="inline-flex items-center gap-1.5">
+                                            <input type="number" id="adv-input-${w.id}" min="1" placeholder="₹ Amount" class="w-24 p-1 border border-slate-400 rounded text-xs font-mono font-bold text-slate-900">
+                                            <button onclick="saveQuickAdvance('${w.id}', '${today}')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded shadow text-xs">Save & Approve</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
             </div>
         </div>
     `;
 }
 
-function renderSupervisorLabourForAdvance(supId) {
-    const container = document.getElementById('adv-desk-workers-table-container');
-    if (!supId) {
-        container.innerHTML = `<p class="p-6 text-center text-slate-500 italic">Please select a supervisor.</p>`;
-        return;
-    }
-
-    const supWorkers = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.supervisorId === supId);
-    const today = new Date().toISOString().split('T')[0];
-
-    if (supWorkers.length === 0) {
-        container.innerHTML = `<p class="p-6 text-center text-rose-600 font-bold">No workers mapped under this supervisor.</p>`;
-        return;
-    }
-
-    container.innerHTML = `
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
-                <thead class="bg-amber-100 text-[#4a2411] uppercase font-bold text-[10px] border-b border-amber-300">
-                    <tr>
-                        <th class="p-2.5">Punch No</th>
-                        <th class="p-2.5">Worker Name</th>
-                        <th class="p-2.5">Trade / Rate</th>
-                        <th class="p-2.5">Total Recorded Advance</th>
-                        <th class="p-2.5 text-right">Add Advance</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-amber-200">
-                    ${supWorkers.map(w => {
-                        const m = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic, w.clientRate);
-                        return `
-                            <tr class="hover:bg-amber-50">
-                                <td class="p-2.5 font-mono font-bold text-blue-800">${w.punchingNo || 'N/A'}</td>
-                                <td class="p-2.5 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</td>
-                                <td class="p-2.5 text-slate-600">${w.category} (₹${w.wage}/d)</td>
-                                <td class="p-2.5 font-mono font-bold text-amber-800">₹${m.advanceCut}</td>
-                                <td class="p-2.5 text-right">
-                                    <div class="inline-flex items-center gap-1.5">
-                                        <input type="number" id="adv-input-${w.id}" min="1" placeholder="₹ Amount" class="w-24 p-1 border border-slate-400 rounded text-xs font-mono font-bold text-slate-900">
-                                        <button onclick="saveQuickAdvance('${w.id}', '${today}')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded shadow text-xs">Save & Approve</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        `;
-                    }).join('')}
-                </tbody>
-            </table>
-        </div>
-    `;
-}
-
-function saveQuickAdvance(workerId, date) {
+async function saveQuickAdvance(workerId, date) {
     const input = document.getElementById(`adv-input-${workerId}`);
     const amount = Number(input.value);
     if (!amount || amount <= 0) { alert("Please enter a valid amount!"); return; }
 
-    if (!APP_STATE.advances[workerId]) APP_STATE.advances[workerId] = [];
-    APP_STATE.advances[workerId].push({
-        id: 'ADV-' + Date.now().toString().slice(-6),
-        amount,
-        date,
-        reason: "Site Advance",
-        status: 'APPROVED',
-        supervisor: APP_STATE.currentSupervisor ? APP_STATE.currentSupervisor.name : 'Supervisor'
-    });
+    const contId = APP_STATE.currentContractorId;
+    const advPushKey = dbRoot.child("tenants").child(contId).child("advances").child(workerId).push().key;
 
-    dbRef.child("advances").set(APP_STATE.advances);
-    saveLocalState();
-    input.value = '';
-    alert("Advance recorded and approved successfully!");
-    const supId = document.getElementById('adv-desk-sup-select').value;
-    renderSupervisorLabourForAdvance(supId);
+    const payload = {
+        workerId: workerId,
+        contractorId: contId,
+        amount: amount,
+        date: date,
+        status: 'APPROVED'
+    };
+
+    try {
+        await dbRoot.child("tenants").child(contId).child("advances").child(workerId).child(advPushKey).set(payload);
+        input.value = '';
+        alert("Advance recorded and approved successfully!");
+        showSupervisorAdvanceDesk();
+    } catch (err) {
+        handleSystemError(err, "एडवांस दर्ज करने में विफलता");
+    }
 }
 
 function showCorrectionRequestsDesk() {
@@ -1203,9 +1416,9 @@ function showCorrectionRequestsDesk() {
                     pendingReqs.map(r => `
                         <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
                             <div>
-                                <p class="font-bold text-slate-900">${r.workerName} — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
-                                <p class="text-[11px] text-slate-600">Correction: <span class="font-bold">${r.oldStatus} (${r.oldOt}h)</span> ➔ <span class="font-bold text-emerald-700">${r.newStatus} (${r.newOt}h OT)</span></p>
-                                <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">Reason: "${SECURITY_ENGINE.sanitize(r.reason)}"</p>
+                                <p class="font-bold text-slate-900">Worker ID: ${r.workerId} — Date: <span class="font-mono text-amber-800">${r.date}</span></p>
+                                <p class="text-[11px] text-slate-600">Correction: Request to set status <span class="font-bold text-emerald-700">${r.newStatus}</span></p>
+                                <p class="text-[11px] text-amber-900 bg-amber-100 p-1 rounded font-medium mt-1">Reason: "${SECURITY_ENGINE.sanitize(r.reason || '')}"</p>
                             </div>
                             <div class="flex gap-2">
                                 <button onclick="handleContractorRequestAction('${r.id}', 'APPROVE')" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded text-xs shadow">Accept & Update</button>
@@ -1220,38 +1433,38 @@ function showCorrectionRequestsDesk() {
     lucide.createIcons();
 }
 
-function handleContractorRequestAction(reqId, action) {
+async function handleContractorRequestAction(reqId, action) {
     const t = I18N[CURRENT_LANG];
-    const req = APP_STATE.correctionRequests.filter(r => r.id === reqId)[0];
+    const req = APP_STATE.correctionRequests.find(r => r.id === reqId);
     if (!req) return;
 
-    if (action === 'APPROVE') {
-        if (!APP_STATE.attendance[req.date]) APP_STATE.attendance[req.date] = {};
-        const rec = { status: req.newStatus, ot: req.newOt };
-        APP_STATE.attendance[req.date][req.workerId] = rec;
-        req.status = 'APPROVED';
-        
-        dbRef.child("attendance").child(req.date).child(req.workerId).set(rec);
-        dbRef.child("correctionRequests").set(APP_STATE.correctionRequests);
-        alert(t.reqApprovedMsg(req.workerName));
-    } else {
-        req.status = 'REJECTED';
-        dbRef.child("correctionRequests").set(APP_STATE.correctionRequests);
-        alert(t.reqRejectedMsg);
-    }
+    const contId = APP_STATE.currentContractorId;
+    const month = req.date.slice(0, 7);
 
-    saveLocalState();
-    showCorrectionRequestsDesk();
+    try {
+        if (action === 'APPROVE') {
+            const updates = {};
+            updates[`tenants/${contId}/attendance/${month}/${req.date}/records/${req.workerId}/status`] = req.newStatus;
+            updates[`tenants/${contId}/correction_requests/${reqId}/status`] = 'APPROVED';
+            await dbRoot.update(updates);
+            alert(t.reqApprovedMsg(req.workerId));
+        } else {
+            await dbRoot.child("tenants").child(contId).child("correction_requests").child(reqId).child("status").set('REJECTED');
+            alert(t.reqRejectedMsg);
+        }
+        showCorrectionRequestsDesk();
+    } catch (err) {
+        handleSystemError(err, "निवेदन पर कार्रवाई करने में विफलता");
+    }
 }
 
 // =========================================================================
-// LABOUR REGISTRATION & MANAGEMENT
+// LABOUR REGISTRATION & MANAGEMENT (ATOMIC MULTI-LOCATION)
 // =========================================================================
 function showOnboardLabourDesk() {
     const t = I18N[CURRENT_LANG];
     document.getElementById('workspace-notice-title').innerText = t.onboardLabour;
     const container = document.getElementById('workspace-main-container');
-    const activeSups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
     const today = new Date().toISOString().split('T')[0];
 
     container.innerHTML = `
@@ -1262,12 +1475,6 @@ function showOnboardLabourDesk() {
                 </h3>
                 <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
             </div>
-
-            ${activeSups.length === 0 ? `
-                <div class="p-4 bg-rose-50 border border-rose-300 rounded text-rose-800 text-xs text-center font-bold">
-                    ⚠️ ${CURRENT_LANG === 'hi' ? 'कृपया पहले बाईं ओर से "नया सुपरवाइज़र बनाएं" पर क्लिक करके सुपरवाइज़र जोड़ें।' : 'Please create a supervisor first using "Create Supervisor ID" on the sidebar.'}
-                </div>
-            ` : ''}
 
             <form onsubmit="handleAddLabour(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
@@ -1283,18 +1490,8 @@ function showOnboardLabourDesk() {
                     <input type="text" id="labour-punching-no" required placeholder="e.g. PUNCH-101" class="w-full border-2 border-blue-400 p-1.5 rounded text-xs font-mono font-bold bg-blue-50/50">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Date of Joining (DOJ) *</label>
-                    <input type="date" id="labour-doj" required value="${today}" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono font-bold">
-                </div>
-                <div>
                     <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Trade / Designation *</label>
                     <input type="text" id="labour-category" required placeholder="e.g. Fitter / Welder / Helper" class="w-full border border-slate-400 p-1.5 rounded text-xs">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Assign Supervisor *</label>
-                    <select id="labour-sup-assign" class="w-full border border-slate-400 p-1.5 rounded text-xs font-bold bg-amber-50">
-                        ${activeSups.map(s => `<option value="${s.id}">${s.name} (${s.mobile})</option>`).join('')}
-                    </select>
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Daily Wage (₹) *</label>
@@ -1305,8 +1502,8 @@ function showOnboardLabourDesk() {
                     <input type="number" id="labour-client-rate" required min="100" placeholder="e.g. 650" value="650" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono font-bold text-slate-900">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">PAN Card Number *</label>
-                    <input type="text" id="labour-pan" required placeholder="ABCDE1234F" maxlength="10" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono uppercase font-bold">
+                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">PAN Card Number</label>
+                    <input type="text" id="labour-pan" placeholder="ABCDE1234F" maxlength="10" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono uppercase font-bold">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-slate-700 mb-0.5">EPFO / UAN Number</label>
@@ -1317,24 +1514,20 @@ function showOnboardLabourDesk() {
                     <input type="text" id="labour-esic-no" placeholder="31000000000000000" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Mobile Number *</label>
-                    <input type="text" id="labour-mobile" required placeholder="9826000000" maxlength="10" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
+                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Mobile Number</label>
+                    <input type="text" id="labour-mobile" placeholder="9826000000" maxlength="10" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Emergency Mobile Number</label>
-                    <input type="text" id="labour-emergency-mobile" placeholder="9826000001" maxlength="10" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
+                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank Name</label>
+                    <input type="text" id="labour-bank-name" value="State Bank of India" class="w-full border border-slate-400 p-1.5 rounded text-xs">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank Name *</label>
-                    <input type="text" id="labour-bank-name" required value="State Bank of India" class="w-full border border-slate-400 p-1.5 rounded text-xs">
+                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank Account Number</label>
+                    <input type="text" id="labour-bank-acc" placeholder="Account Number" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank Account Number *</label>
-                    <input type="text" id="labour-bank-acc" required placeholder="Account Number" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank IFSC Code *</label>
-                    <input type="text" id="labour-bank-ifsc" required placeholder="e.g. SBIN0001234" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono uppercase">
+                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank IFSC Code</label>
+                    <input type="text" id="labour-bank-ifsc" placeholder="e.g. SBIN0001234" class="w-full border border-slate-400 p-1.5 rounded text-xs font-mono uppercase">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-slate-700 mb-0.5">12% PF Deduction</label>
@@ -1351,8 +1544,8 @@ function showOnboardLabourDesk() {
                     </select>
                 </div>
                 <div class="sm:col-span-2">
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Complete Address *</label>
-                    <input type="text" id="labour-address" required placeholder="Village / City, District, State" class="w-full border border-slate-400 p-1.5 rounded text-xs">
+                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Complete Address</label>
+                    <input type="text" id="labour-address" placeholder="Village / City, District, State" class="w-full border border-slate-400 p-1.5 rounded text-xs">
                 </div>
                 <button type="submit" class="sm:col-span-2 lm-btn-gold py-2.5 rounded-lg text-xs shadow-md font-bold mt-2">
                     Save Worker Profile to Firebase
@@ -1365,38 +1558,82 @@ function showOnboardLabourDesk() {
 
 async function handleAddLabour(e) {
     e.preventDefault();
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+        const contId = APP_STATE.currentContractorId;
+        const workerPushKey = dbRoot.child("tenants").child(contId).child("workers").push().key;
+        const workerId = workerPushKey;
+
+        const nameVal = document.getElementById('labour-name').value.trim();
+        const punchVal = document.getElementById('labour-punching-no').value.trim();
+        const categoryVal = document.getElementById('labour-category').value.trim();
+        const wageVal = Number(document.getElementById('labour-wage').value);
+        const clientRateVal = Number(document.getElementById('labour-client-rate')?.value || 650);
+
+        if (!nameVal || !punchVal || isNaN(wageVal) || wageVal < 100) {
+            alert("कृपया सभी अनिवार्य फ़ील्ड भरें। मजदूरी ₹100 से कम नहीं हो सकती।");
+            if (submitBtn) submitBtn.disabled = false;
+            return;
+        }
+
+        const publicWorker = {
+            id: workerId,
+            contractorId: contId,
+            name: SECURITY_ENGINE.sanitize(nameVal),
+            punchingNo: SECURITY_ENGINE.sanitize(punchVal),
+            category: SECURITY_ENGINE.sanitize(categoryVal),
+            wage: wageVal,
+            clientRate: clientRateVal,
+            status: "ACTIVE"
+        };
+
+        const sensitiveWorker = {
+            workerId: workerId,
+            contractorId: contId,
+            pan: SECURITY_ENGINE.sanitize(document.getElementById('labour-pan')?.value.trim().toUpperCase() || ""),
+            epfNo: SECURITY_ENGINE.sanitize(document.getElementById('labour-epf-no')?.value.trim() || ""),
+            esicNo: SECURITY_ENGINE.sanitize(document.getElementById('labour-esic-no')?.value.trim() || ""),
+            bankName: SECURITY_ENGINE.sanitize(document.getElementById('labour-bank-name')?.value.trim() || ""),
+            bankAcc: SECURITY_ENGINE.sanitize(document.getElementById('labour-bank-acc')?.value.trim() || ""),
+            bankIfsc: SECURITY_ENGINE.sanitize(document.getElementById('labour-bank-ifsc')?.value.trim().toUpperCase() || ""),
+            mobile: SECURITY_ENGINE.sanitize(document.getElementById('labour-mobile')?.value.trim() || ""),
+            address: SECURITY_ENGINE.sanitize(document.getElementById('labour-address')?.value.trim() || "")
+        };
+
+        const updates = {};
+        updates[`tenants/${contId}/workers/${workerId}`] = publicWorker;
+        updates[`tenants/${contId}/workers_sensitive/${workerId}`] = sensitiveWorker;
+
+        await dbRoot.update(updates);
+
+        e.target.reset();
+        alert(I18N[CURRENT_LANG].successLabourOnboard);
+        renderContractorMusterWorkspace();
+
+    } catch (err) {
+        handleSystemError(err, "मज़दूर जोड़ने में त्रुटि");
+    } finally {
+        if (submitBtn) submitBtn.disabled = false;
+    }
+}
+
+async function softDeleteLabour(workerId, workerName) {
+    if (!SECURITY_ENGINE.validateId(workerId)) return;
     const t = I18N[CURRENT_LANG];
-    const workerId = 'LBR-' + Date.now().toString().slice(-6);
-    const newWorker = {
-        id: workerId,
-        name: SECURITY_ENGINE.sanitize(document.getElementById('labour-name').value.trim()),
-        fatherName: SECURITY_ENGINE.sanitize(document.getElementById('labour-father').value.trim()),
-        punchingNo: document.getElementById('labour-punching-no').value.trim(),
-        doj: document.getElementById('labour-doj').value,
-        contractorId: APP_STATE.currentContractorId,
-        supervisorId: document.getElementById('labour-sup-assign').value,
-        category: SECURITY_ENGINE.sanitize(document.getElementById('labour-category').value.trim()),
-        wage: Number(document.getElementById('labour-wage').value),
-        clientRate: Number(document.getElementById('labour-client-rate').value || 650),
-        pan: SECURITY_ENGINE.sanitize(document.getElementById('labour-pan').value.trim().toUpperCase()),
-        epfNo: document.getElementById('labour-epf-no').value.trim(),
-        esicNo: document.getElementById('labour-esic-no').value.trim(),
-        mobile: SECURITY_ENGINE.sanitize(document.getElementById('labour-mobile').value.trim()),
-        emergencyMobile: SECURITY_ENGINE.sanitize(document.getElementById('labour-emergency-mobile').value.trim()),
-        bankName: document.getElementById('labour-bank-name').value.trim(),
-        bankAcc: document.getElementById('labour-bank-acc').value.trim(),
-        bankIfsc: SECURITY_ENGINE.sanitize(document.getElementById('labour-bank-ifsc').value.trim().toUpperCase()),
-        isEpf: document.getElementById('labour-is-epf').value,
-        isEsic: document.getElementById('labour-is-esic').value,
-        address: SECURITY_ENGINE.sanitize(document.getElementById('labour-address').value.trim())
-    };
-    
-    APP_STATE.labour.push(newWorker);
-    await dbRef.child("labour").set(APP_STATE.labour);
-    saveLocalState();
-    e.target.reset();
-    alert(t.successLabourOnboard);
-    renderContractorMusterWorkspace();
+
+    if (!confirm(t.confirmDelLabour(workerName, workerId))) return;
+
+    const contId = APP_STATE.currentContractorId;
+
+    try {
+        await dbRoot.child("tenants").child(contId).child("workers").child(workerId).child("status").set("INACTIVE");
+        alert(t.successDelLabour(workerName));
+        renderContractorMusterWorkspace();
+    } catch (err) {
+        handleSystemError(err, "मज़दूर निष्क्रिय करने में त्रुटि");
+    }
 }
 
 function showManageLabourDesk() {
@@ -1409,12 +1646,7 @@ function showManageLabourDesk() {
         <div class="bg-white border-2 border-amber-400 p-4 rounded-lg shadow-sm space-y-3">
             <div class="flex flex-wrap justify-between items-center border-b border-amber-300 pb-2 gap-2">
                 <h3 class="font-bold text-[#4a2411] text-xs uppercase">${t.manageLabour} (${myLabour.length})</h3>
-                <div class="flex gap-2">
-                    <button onclick="printAllLabourDetails()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-3 py-1 rounded text-xs shadow flex items-center gap-1">
-                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print All Labour Bio-Data
-                    </button>
-                    <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
-                </div>
+                <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">${CURRENT_LANG === 'hi' ? 'वापस मस्टर' : 'Back to Muster'}</button>
             </div>
 
             <div class="overflow-x-auto custom-scroll">
@@ -1422,11 +1654,9 @@ function showManageLabourDesk() {
                     <thead class="bg-amber-100 text-[#4a2411] uppercase font-bold text-[10px] border-b border-amber-300">
                         <tr>
                             <th class="p-2">Punch No</th>
-                            <th class="p-2">${t.name} & Father</th>
+                            <th class="p-2">${t.name}</th>
                             <th class="p-2">${t.trade}</th>
-                            <th class="p-2">PAN & UAN</th>
-                            <th class="p-2">Bank Details</th>
-                            <th class="p-2">Mobile / Address</th>
+                            <th class="p-2">Status</th>
                             <th class="p-2">Daily Wage</th>
                             <th class="p-2 text-right">${t.actions}</th>
                         </tr>
@@ -1435,27 +1665,12 @@ function showManageLabourDesk() {
                         ${myLabour.map(w => `
                             <tr class="hover:bg-amber-50">
                                 <td class="p-2 font-mono font-bold text-blue-900 bg-blue-50/50">${w.punchingNo || 'N/A'}</td>
-                                <td class="p-2 font-bold text-slate-900">
-                                    ${SECURITY_ENGINE.sanitize(w.name)}
-                                    <div class="text-[10px] text-slate-500 font-normal">S/O: ${SECURITY_ENGINE.sanitize(w.fatherName || 'N/A')}</div>
-                                </td>
+                                <td class="p-2 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(w.name)}</td>
                                 <td class="p-2">${w.category}</td>
-                                <td class="p-2 font-mono text-[10px]">
-                                    <span class="font-bold text-slate-800">PAN: ${w.pan || 'N/A'}</span><br>
-                                    <span class="text-slate-600">UAN: ${w.epfNo || 'N/A'}</span>
-                                </td>
-                                <td class="p-2 font-mono text-[10px] text-amber-900 font-bold">
-                                    ${w.bankName || 'SBI'}<br>
-                                    ${w.bankAcc} (${w.bankIfsc})
-                                </td>
-                                <td class="p-2 text-[10px]">
-                                    <span class="font-mono font-bold">${w.mobile || 'N/A'}</span><br>
-                                    <span class="text-slate-500 truncate max-w-[120px] inline-block">${SECURITY_ENGINE.sanitize(w.address || '')}</span>
-                                </td>
+                                <td class="p-2"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${w.status === 'ACTIVE' ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}">${w.status}</span></td>
                                 <td class="p-2 font-mono font-bold text-emerald-800">₹${w.wage}/d</td>
                                 <td class="p-2 text-right whitespace-nowrap space-x-1">
-                                    <button onclick="openEditLabourModal('${w.id}')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-1 rounded shadow text-xs">✏️ Edit</button>
-                                    <button onclick="deleteSingleLabour('${w.id}', '${w.name}')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2 py-1 rounded shadow text-xs">🗑️ Delete</button>
+                                    <button onclick="softDeleteLabour('${w.id}', '${w.name}')" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2 py-1 rounded shadow text-xs">कार्यमुक्त (Deactivate)</button>
                                 </td>
                             </tr>
                         `).join('')}
@@ -1465,125 +1680,6 @@ function showManageLabourDesk() {
         </div>
     `;
     lucide.createIcons();
-}
-
-function openEditLabourModal(workerId) {
-    const worker = APP_STATE.labour.find(w => w.id === workerId);
-    if (!worker) return;
-
-    const activeSups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
-    const supSelect = document.getElementById('edit-labour-sup-assign');
-    supSelect.innerHTML = activeSups.map(s => `<option value="${s.id}" ${s.id === worker.supervisorId ? 'selected' : ''}>${s.name} (${s.mobile})</option>`).join('');
-
-    document.getElementById('edit-worker-id').value = worker.id;
-    document.getElementById('edit-labour-name').value = worker.name;
-    document.getElementById('edit-labour-father').value = worker.fatherName || '';
-    document.getElementById('edit-labour-punching-no').value = worker.punchingNo || '';
-    document.getElementById('edit-labour-doj').value = worker.doj || new Date().toISOString().split('T')[0];
-    document.getElementById('edit-labour-category').value = worker.category;
-    document.getElementById('edit-labour-wage').value = worker.wage;
-    document.getElementById('edit-labour-client-rate').value = worker.clientRate || 650;
-    document.getElementById('edit-labour-pan').value = worker.pan || '';
-    document.getElementById('edit-labour-epf-no').value = worker.epfNo || '';
-    document.getElementById('edit-labour-esic-no').value = worker.esicNo || '';
-    document.getElementById('edit-labour-mobile').value = worker.mobile || '';
-    document.getElementById('edit-labour-emergency-mobile').value = worker.emergencyMobile || '';
-    document.getElementById('edit-labour-bank-name').value = worker.bankName || 'State Bank of India';
-    document.getElementById('edit-labour-bank-acc').value = worker.bankAcc;
-    document.getElementById('edit-labour-bank-ifsc').value = worker.bankIfsc;
-    document.getElementById('edit-labour-is-epf').value = worker.isEpf || 'YES';
-    document.getElementById('edit-labour-is-esic').value = worker.isEsic || 'NO';
-    document.getElementById('edit-labour-address').value = worker.address || '';
-
-    document.getElementById('edit-labour-modal').classList.remove('hidden');
-}
-
-function closeEditLabourModal() {
-    document.getElementById('edit-labour-modal').classList.add('hidden');
-}
-
-async function handleUpdateLabour(e) {
-    e.preventDefault();
-    const wId = document.getElementById('edit-worker-id').value;
-    const worker = APP_STATE.labour.find(w => w.id === wId);
-    if (!worker) return;
-
-    worker.name = SECURITY_ENGINE.sanitize(document.getElementById('edit-labour-name').value.trim());
-    worker.fatherName = SECURITY_ENGINE.sanitize(document.getElementById('edit-labour-father').value.trim());
-    worker.punchingNo = document.getElementById('edit-labour-punching-no').value.trim();
-    worker.doj = document.getElementById('edit-labour-doj').value;
-    worker.supervisorId = document.getElementById('edit-labour-sup-assign').value;
-    worker.category = SECURITY_ENGINE.sanitize(document.getElementById('edit-labour-category').value.trim());
-    worker.wage = Number(document.getElementById('edit-labour-wage').value);
-    worker.clientRate = Number(document.getElementById('edit-labour-client-rate').value || 650);
-    worker.pan = SECURITY_ENGINE.sanitize(document.getElementById('edit-labour-pan').value.trim().toUpperCase());
-    worker.epfNo = document.getElementById('edit-labour-epf-no').value.trim();
-    worker.esicNo = document.getElementById('edit-labour-esic-no').value.trim();
-    worker.mobile = SECURITY_ENGINE.sanitize(document.getElementById('edit-labour-mobile').value.trim());
-    worker.emergencyMobile = SECURITY_ENGINE.sanitize(document.getElementById('edit-labour-emergency-mobile').value.trim());
-    worker.bankName = document.getElementById('edit-labour-bank-name').value.trim();
-    worker.bankAcc = document.getElementById('edit-labour-bank-acc').value.trim();
-    worker.bankIfsc = SECURITY_ENGINE.sanitize(document.getElementById('edit-labour-bank-ifsc').value.trim().toUpperCase());
-    worker.isEpf = document.getElementById('edit-labour-is-epf').value;
-    worker.isEsic = document.getElementById('edit-labour-is-esic').value;
-    worker.address = SECURITY_ENGINE.sanitize(document.getElementById('edit-labour-address').value.trim());
-
-    await dbRef.child("labour").set(APP_STATE.labour);
-    saveLocalState();
-    closeEditLabourModal();
-    alert("Labour profile updated and saved to Firebase!");
-    showManageLabourDesk();
-}
-
-function printAllLabourDetails() {
-    const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-
-    const printWindow = window.open('', '_blank');
-    let rows = myLabour.map((w, idx) => `
-        <tr>
-            <td style="text-align:center; padding: 5px; border:1px solid #333;">${idx + 1}</td>
-            <td style="padding: 5px; border:1px solid #333; font-family: monospace; font-weight: bold;">${w.punchingNo || 'N/A'}</td>
-            <td style="padding: 5px; border:1px solid #333;"><b>${SECURITY_ENGINE.sanitize(w.name)}</b><br><small>S/O: ${SECURITY_ENGINE.sanitize(w.fatherName || 'N/A')}</small></td>
-            <td style="padding: 5px; border:1px solid #333;">${w.category}</td>
-            <td style="padding: 5px; border:1px solid #333; font-family: monospace;"><b>PAN:</b> ${w.pan || 'N/A'}<br><b>UAN:</b> ${w.epfNo || 'N/A'}</td>
-            <td style="padding: 5px; border:1px solid #333; font-family: monospace;">${w.bankName || 'SBI'}<br>${w.bankAcc}<br>(${w.bankIfsc})</td>
-            <td style="padding: 5px; border:1px solid #333;">${w.mobile || 'N/A'}<br><small>${SECURITY_ENGINE.sanitize(w.address || '')}</small></td>
-            <td style="padding: 5px; border:1px solid #333; text-align: right; font-weight: bold;">₹${w.wage}</td>
-        </tr>
-    `).join('');
-
-    printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Complete Workforce Bio-Data - ${firm ? firm.name : 'Contractor'}</title>
-            <style>
-                body { font-family: Arial, sans-serif; padding: 20px; font-size: 11px; }
-                h2, h3 { margin: 2px 0; text-align: center; }
-                table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-                th { background-color: #f2f2f2; padding: 6px; border: 1px solid #333; }
-            </style>
-        </head>
-        <body>
-            <h2>${firm ? firm.name : 'CONTRACTOR FIRM'}</h2>
-            <h3>MASTER LABOUR ONBOARDING & BIO-DATA REGISTER</h3>
-            <p style="text-align:center; margin: 5px 0;">Total Registered Workers: ${myLabour.length}</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sr</th><th>Punch No</th><th>Worker & Father Name</th><th>Trade</th><th>PAN & UAN</th><th>Bank Account</th><th>Mobile / Address</th><th>Daily Wage</th>
-                    </tr>
-                </thead>
-                <tbody>${rows}</tbody>
-            </table>
-            <script>
-                window.onload = function() { window.print(); }
-            <\/script>
-        </body>
-        </html>
-    `);
-    printWindow.document.close();
 }
 
 // =========================================================================
@@ -1632,23 +1728,30 @@ async function handleAddSupervisor(e) {
     const mobile = SECURITY_ENGINE.sanitize(document.getElementById('sup-mobile').value.trim());
     const pass = document.getElementById('sup-password').value;
     const virtualEmail = `u_${mobile}@labourmitra.com`;
+    const contId = APP_STATE.currentContractorId;
 
     try {
-        await getSecondaryAuth().createUserWithEmailAndPassword(virtualEmail, pass);
+        const userCred = await getSecondaryAuth().createUserWithEmailAndPassword(virtualEmail, pass);
+        const newUid = userCred.user.uid;
         await getSecondaryAuth().signOut();
 
-        const newSup = {
-            id: 'SUP-' + Date.now().toString().slice(-4),
-            contractorId: APP_STATE.currentContractorId,
+        const updates = {};
+        updates[`users/${newUid}`] = {
+            role: 'SUPERVISOR',
+            contractorId: contId,
+            email: virtualEmail,
+            active: true
+        };
+        updates[`supervisors/${newUid}`] = {
+            id: newUid,
+            contractorId: contId,
             name: name,
             mobile: mobile
         };
-        APP_STATE.supervisors.push(newSup);
 
-        await dbRef.child("supervisors").set(APP_STATE.supervisors);
-        saveLocalState();
+        await dbRoot.update(updates);
         e.target.reset();
-        alert(t.successSupCreated + " (Saved in Firebase Auth)");
+        alert(t.successSupCreated);
         setupWorkspace('CONTRACTOR');
 
     } catch (error) {
@@ -1676,26 +1779,16 @@ function showManageSupervisorDesk() {
                             <th class="p-2">Supervisor ID</th>
                             <th class="p-2">${t.name}</th>
                             <th class="p-2">Mobile (Login)</th>
-                            <th class="p-2">Mapped Labour</th>
-                            <th class="p-2 text-right">${t.actions}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-amber-200">
-                        ${mySups.map(s => {
-                            const mappedCount = APP_STATE.labour.filter(w => w.supervisorId === s.id).length;
-                            return `
-                                <tr class="hover:bg-amber-50">
-                                    <td class="p-2 font-mono font-bold">${s.id}</td>
-                                    <td class="p-2 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(s.name)}</td>
-                                    <td class="p-2 font-mono">${s.mobile}</td>
-                                    <td class="p-2 font-bold text-amber-800">${mappedCount} Workers</td>
-                                    <td class="p-2 text-right space-x-1">
-                                        <button onclick="openResetSupModal('${s.id}', '${s.name}')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-1 rounded shadow text-xs">🔑 Password</button>
-                                        <button onclick="deleteSingleSupervisor('${s.id}', '${s.name}', ${mappedCount})" class="bg-rose-700 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded shadow text-xs">🗑️ Delete</button>
-                                    </td>
-                                </tr>
-                            `;
-                        }).join('')}
+                        ${mySups.map(s => `
+                            <tr class="hover:bg-amber-50">
+                                <td class="p-2 font-mono font-bold">${s.id}</td>
+                                <td class="p-2 font-bold text-slate-900">${SECURITY_ENGINE.sanitize(s.name)}</td>
+                                <td class="p-2 font-mono">${s.mobile}</td>
+                            </tr>
+                        `).join('')}
                     </tbody>
                 </table>
             </div>
@@ -1704,108 +1797,18 @@ function showManageSupervisorDesk() {
     lucide.createIcons();
 }
 
-function openResetSupModal(supId, supName) {
-    document.getElementById('reset-sup-id').value = supId;
-    document.getElementById('reset-sup-name').value = supName;
-    document.getElementById('reset-sup-new-pass').value = '';
-    document.getElementById('reset-sup-modal').classList.remove('hidden');
-}
-
-function closeResetSupModal() {
-    document.getElementById('reset-sup-modal').classList.add('hidden');
-}
-
-async function handleResetSupervisorPassword(e) {
-    e.preventDefault();
-    const supId = document.getElementById('reset-sup-id').value;
-    const newPass = document.getElementById('reset-sup-new-pass').value;
-    const s = APP_STATE.supervisors.find(x => x.id === supId);
-    if (!s) return;
-
-    try {
-        await firebase.auth().sendPasswordResetEmail(`u_${s.mobile}@labourmitra.com`);
-        alert(`Password reset link sent for ${s.name} (${s.mobile})!`);
-    } catch (err) {
-        alert("Password update requested for supervisor ID " + supId);
-    }
-    closeResetSupModal();
-}
-
-function deleteSingleSupervisor(supId, supName, mappedCount) {
-    const t = I18N[CURRENT_LANG];
-    if (mappedCount > 0) {
-        if (!confirm(t.confirmDelSupWarn(supName, mappedCount))) return;
-    } else {
-        if (!confirm(t.confirmDelSup(supName))) return;
-    }
-
-    APP_STATE.supervisors = APP_STATE.supervisors.filter(s => s.id !== supId);
-    APP_STATE.labour.forEach(w => { if (w.supervisorId === supId) w.supervisorId = ''; });
-
-    dbRef.child("supervisors").set(APP_STATE.supervisors);
-    dbRef.child("labour").set(APP_STATE.labour);
-
-    saveLocalState();
-    alert(t.successDelSup(supName));
-    showManageSupervisorDesk();
-}
-
-function deleteSingleLabour(workerId, workerName) {
-    const t = I18N[CURRENT_LANG];
-    const worker = APP_STATE.labour.find(w => w.id === workerId);
-    if (confirm(t.confirmDelLabour(workerName, worker ? worker.punchingNo : workerId))) {
-        APP_STATE.labour = APP_STATE.labour.filter(w => w.id !== workerId);
-        delete APP_STATE.advances[workerId];
-        
-        dbRef.child("labour").set(APP_STATE.labour);
-        saveLocalState();
-        alert(t.successDelLabour(workerName));
-        showManageLabourDesk();
-    }
-}
-
 // =========================================================================
-// FILE 1: PURE ATTENDANCE EXPORTS (PDF & EXCEL WITH SUPERVISOR FILTER)
+// FILE 1, 2, 3 EXPORTS
 // =========================================================================
 function openDownloadMusterModal(type) {
-    document.getElementById('muster-download-type').value = type;
-    const select = document.getElementById('muster-filter-supervisor-select');
-    const mySups = APP_STATE.supervisors.filter(s => s.contractorId === APP_STATE.currentContractorId);
-    
-    select.innerHTML = `<option value="ALL">-- All Supervisors (Complete Firm) --</option>` + 
-        mySups.map(s => `<option value="${s.id}">${s.name} (${s.mobile})</option>`).join('');
-
-    document.getElementById('download-muster-modal').classList.remove('hidden');
+    downloadPureAttendancePDF();
 }
 
-function closeDownloadMusterModal() {
-    document.getElementById('download-muster-modal').classList.add('hidden');
-}
-
-function executeMusterDownload() {
-    const type = document.getElementById('muster-download-type').value;
-    const supId = document.getElementById('muster-filter-supervisor-select').value;
-    closeDownloadMusterModal();
-
-    if (type === 'PDF') {
-        downloadPureAttendancePDF(supId);
-    } else {
-        downloadPureAttendanceExcel(supId);
-    }
-}
-
-function downloadPureAttendancePDF(supervisorFilter = "ALL") {
+function downloadPureAttendancePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('landscape', 'mm', 'a4');
-    const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-    
-    let myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-    let supNameDisplay = "ALL SUPERVISORS";
-    if (supervisorFilter !== "ALL") {
-        myLabour = myLabour.filter(w => w.supervisorId === supervisorFilter);
-        const sObj = APP_STATE.supervisors.find(s => s.id === supervisorFilter);
-        supNameDisplay = sObj ? sObj.name.toUpperCase() : supervisorFilter;
-    }
+    const firm = APP_STATE.contractors[0];
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.status === 'ACTIVE');
 
     const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
     const daysInMonth = new Date(year, month, 0).getDate();
@@ -1817,7 +1820,7 @@ function downloadPureAttendancePDF(supervisorFilter = "ALL") {
     doc.text(`FORM T - PURE ATTENDANCE REGISTER - ${APP_STATE.selectedMonth}`, 14, 12);
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Contractor: ${firm ? (firm.companyName || firm.name).toUpperCase() : 'CONTRACTOR FIRM'} | Supervisor: ${supNameDisplay}`, 14, 17);
+    doc.text(`Contractor: ${firm ? (firm.companyName || firm.name).toUpperCase() : 'CONTRACTOR FIRM'}`, 14, 17);
 
     const headRow1 = ['Sr', 'Punch No', 'Worker Name'];
     const headRow2 = ['', '', ''];
@@ -1835,7 +1838,7 @@ function downloadPureAttendancePDF(supervisorFilter = "ALL") {
         for (let d = 1; d <= daysInMonth; d++) {
             const dayStr = d.toString().padStart(2, '0');
             const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
-            const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
+            const rec = APP_STATE.attendance[APP_STATE.selectedMonth]?.[fullDateStr]?.records?.[w.id] || '';
             const status = typeof rec === 'string' ? rec : rec.status;
             if (status === 'P') pCount += 1;
             else if (status === 'HD') pCount += 0.5;
@@ -1855,69 +1858,14 @@ function downloadPureAttendancePDF(supervisorFilter = "ALL") {
         columnStyles: { 2: { halign: 'left', cellWidth: 32 } }
     });
 
-    const finalY = doc.lastAutoTable.finalY + 15;
-    if (finalY < 190) {
-        doc.setFontSize(8);
-        doc.setFont('helvetica', 'bold');
-        doc.text("Authorized Contractor Signature & Stamp", 220, finalY);
-    }
-
-    doc.save(`1_Pure_Attendance_${supNameDisplay}_${APP_STATE.selectedMonth}.pdf`);
+    doc.save(`1_Pure_Attendance_${APP_STATE.selectedMonth}.pdf`);
 }
 
-function downloadPureAttendanceExcel(supervisorFilter = "ALL") {
-    const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-    let myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-    if (supervisorFilter !== "ALL") myLabour = myLabour.filter(w => w.supervisorId === supervisorFilter);
-
-    const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
-    const daysInMonth = new Date(year, month, 0).getDate();
-
-    let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-    <head><meta charset="UTF-8"></head><body>
-    <table border="1">
-        <tr><th colspan="${daysInMonth + 4}" style="font-size:14pt;">PURE ATTENDANCE REGISTER - ${firm ? (firm.companyName || firm.name) : 'CONTRACTOR'}</th></tr>
-        <tr><th colspan="${daysInMonth + 4}">Month: ${APP_STATE.selectedMonth} | Filter: ${supervisorFilter}</th></tr>
-        <tr style="background-color:#f2f2f2; font-weight:bold;">
-            <th>Sr No</th><th>Punching No</th><th>Worker Name</th>`;
-    
-    for (let d = 1; d <= daysInMonth; d++) html += `<th>${d}</th>`;
-    html += `<th>Total Present Days</th></tr>`;
-
-    myLabour.forEach((w, idx) => {
-        let pCount = 0;
-        html += `<tr><td align="center">${idx + 1}</td><td style="mso-number-format:'\\@';">${w.punchingNo || 'N/A'}</td><td>${w.name}</td>`;
-        for (let d = 1; d <= daysInMonth; d++) {
-            const dayStr = d.toString().padStart(2, '0');
-            const fullDateStr = `${APP_STATE.selectedMonth}-${dayStr}`;
-            const rec = (APP_STATE.attendance[fullDateStr] && APP_STATE.attendance[fullDateStr][w.id]) || '';
-            const status = typeof rec === 'string' ? rec : rec.status;
-            if (status === 'P') pCount += 1;
-            else if (status === 'HD') pCount += 0.5;
-            html += `<td align="center">${status || ''}</td>`;
-        }
-        html += `<td align="center"><b>${pCount}</b></td></tr>`;
-    });
-
-    html += `</table></body></html>`;
-
-    const blob = new Blob([html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `1_Pure_Attendance_Register_${APP_STATE.selectedMonth}.xls`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-// =========================================================================
-// FILE 2: STATUTORY PF, ESIC & OFFICIAL EPFO ECR SPECIFICATIONS
-// =========================================================================
 function downloadStatutoryWagePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('landscape', 'mm', 'a4');
-    const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+    const firm = APP_STATE.contractors[0];
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.status === 'ACTIVE');
 
     doc.setFontSize(12);
     doc.text(`STATUTORY WAGE, 12% PF & ESIC PAYOUT REGISTER - ${APP_STATE.selectedMonth}`, 14, 12);
@@ -1928,6 +1876,7 @@ function downloadStatutoryWagePDF() {
 
     const tableData = myLabour.map((w, idx) => {
         const m = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic, w.clientRate);
+        const sens = APP_STATE.workersSensitive[w.id] || {};
         totalGross += m.grossWages;
         totalPf += m.eePf;
         totalEsic += m.eeEsic;
@@ -1937,13 +1886,13 @@ function downloadStatutoryWagePDF() {
             (idx + 1).toString(),
             w.name,
             w.category,
-            w.pan || 'N/A',
-            w.bankIfsc || 'N/A',
-            w.bankAcc || 'N/A',
-            w.epfNo || 'N/A',
+            sens.pan || 'N/A',
+            sens.bankIfsc || 'N/A',
+            sens.bankAcc || 'N/A',
+            sens.epfNo || 'N/A',
             "Rs. " + Math.round(m.grossWages),
             "Rs. " + m.eePf,
-            (w.esicNo ? w.esicNo : 'N/A') + "\n(Rs. " + m.eeEsic + ")",
+            (sens.esicNo ? sens.esicNo : 'N/A') + "\n(Rs. " + m.eeEsic + ")",
             "Rs. " + Math.round(m.totalPayment)
         ];
     });
@@ -1968,113 +1917,11 @@ function downloadStatutoryWagePDF() {
     doc.save(`2_Statutory_Wage_And_PF_ESIC_${APP_STATE.selectedMonth}.pdf`);
 }
 
-function downloadStatutoryWageExcel() {
-    const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-
-    let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-    <head><meta charset="UTF-8"></head><body>
-    <table border="1">
-        <tr><th colspan="11" style="font-size:14pt;">STATUTORY WAGE, 12% PF & ESIC REGISTER - ${firm ? (firm.companyName || firm.name) : 'Contractor'}</th></tr>
-        <tr style="background-color:#f2f2f2; font-weight:bold;">
-            <th>Sr No</th><th>Name of Employee</th><th>Designation</th><th>PAN Number</th><th>IFSC Code</th><th>Account Number</th><th>UAN No</th><th>Gross Salary</th><th>EPF 12% Deduction</th><th>ESIC Number</th><th>Total Salary (Net)</th>
-        </tr>`;
-
-    myLabour.forEach((w, idx) => {
-        const m = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic, w.clientRate);
-        html += `<tr>
-            <td align="center">${idx + 1}</td>
-            <td>${w.name}</td>
-            <td>${w.category}</td>
-            <td>${w.pan || 'N/A'}</td>
-            <td>${w.bankIfsc}</td>
-            <td style="mso-number-format:'\\@';">${w.bankAcc}</td>
-            <td style="mso-number-format:'\\@';">${w.epfNo || 'N/A'}</td>
-            <td align="right">${Math.round(m.grossWages)}</td>
-            <td align="right">${m.eePf}</td>
-            <td>${w.esicNo || 'N/A'} (${m.eeEsic})</td>
-            <td align="right"><b>${Math.round(m.totalPayment)}</b></td>
-        </tr>`;
-    });
-
-    html += `</table></body></html>`;
-
-    const blob = new Blob([html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `2_Statutory_Wage_And_PF_ESIC_${APP_STATE.selectedMonth}.xls`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-function downloadEpfoEcrUploadCsv() {
-    const myLab = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.isEpf !== 'NO');
-    if (myLab.length === 0) { alert("No EPFO registered labour found!"); return; }
-
-    const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
-    const daysInMonth = new Date(year, month, 0).getDate();
-
-    let csv = "UAN,MEMBER_NAME,GROSS_WAGES,EPF_WAGES,EPS_WAGES,EDLI_WAGES,EE_SHARE_12,EPS_SHARE_8_33,ER_EPF_SHARE_3_67,NCP_DAYS,REFUND_OF_ADVANCES\n";
-
-    myLab.forEach(w => {
-        const m = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic, w.clientRate);
-        const epfWage = Math.round(m.shiftEarned);
-        const epsWage = Math.min(15000, epfWage); // Statutory ceiling capped at 15000
-        const epsShare = Math.round(epsWage * 0.0833);
-        const erEpfShare = m.eePf - epsShare;
-        const ncp = Math.max(0, daysInMonth - Math.ceil(m.shifts));
-        const uan = (w.epfNo && w.epfNo.length === 12) ? w.epfNo : "100000000000";
-
-        csv += `"${uan}","${w.name}",${Math.round(m.grossWages)},${epfWage},${epsWage},${epsWage},${m.eePf},${epsShare},${erEpfShare},${ncp},0\n`;
-    });
-
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `EPFO_ECR_Upload_${APP_STATE.selectedMonth}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-function downloadEpfoEcrTextFile() {
-    const myLab = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.isEpf !== 'NO');
-    if (myLab.length === 0) { alert("No EPFO registered labour found!"); return; }
-
-    const [year, month] = APP_STATE.selectedMonth.split('-').map(Number);
-    const daysInMonth = new Date(year, month, 0).getDate();
-
-    let ecr = "";
-    myLab.forEach(w => {
-        const m = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic, w.clientRate);
-        const epfWage = Math.round(m.shiftEarned);
-        const epsWage = Math.min(15000, epfWage); // Capped at 15000
-        const epsShare = Math.round(epsWage * 0.0833);
-        const erEpfShare = m.eePf - epsShare;
-        const ncp = Math.max(0, daysInMonth - Math.ceil(m.shifts));
-        const uan = (w.epfNo && w.epfNo.length === 12) ? w.epfNo : "100000000000";
-
-        ecr += `${uan}#~#${w.name}#~#${Math.round(m.grossWages)}#~#${epfWage}#~#${epsWage}#~#${epsWage}#~#${m.eePf}#~#${epsShare}#~#${erEpfShare}#~#${ncp}#~#0\r\n`;
-    });
-
-    const blob = new Blob([ecr], { type: 'text/plain;charset=utf-8' });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `EPFO_ECR_${APP_STATE.selectedMonth}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-// =========================================================================
-// FILE 3: PRIVATE HISAB-KITAB & CONTRACTOR PROFIT MARGIN
-// =========================================================================
 function downloadInternalHisabPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('landscape', 'mm', 'a4');
-    const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+    const firm = APP_STATE.contractors[0];
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.status === 'ACTIVE');
 
     doc.setFontSize(12);
     doc.text(`CONTRACTOR PRIVATE HISAB-KITAB & MARGIN LEDGER - ${APP_STATE.selectedMonth}`, 14, 12);
@@ -2130,384 +1977,101 @@ function downloadInternalHisabPDF() {
     doc.save(`3_Contractor_Internal_Hisab_${APP_STATE.selectedMonth}.pdf`);
 }
 
-function downloadInternalHisabExcel() {
-    const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
+function showLabourPaymentForBankDesk() {
+    const firm = APP_STATE.contractors[0];
+    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId && w.status === 'ACTIVE');
+    const container = document.getElementById('workspace-main-container');
 
-    let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-    <head><meta charset="UTF-8"></head><body>
-    <table border="1">
-        <tr><th colspan="11" style="font-size:14pt;">CONTRACTOR INTERNAL HISAB & MARGIN SHEET - ${firm ? (firm.companyName || firm.name) : 'Contractor'}</th></tr>
-        <tr style="background-color:#f2f2f2; font-weight:bold;">
-            <th>Sr No</th><th>Punching No</th><th>Worker Name</th><th>Labour Rate</th><th>Client Rate</th><th>Shifts</th><th>Gross Wages</th><th>(-) PF/ESIC Cut</th><th>Client Billing</th><th>(-) Advance</th><th>(=) In-Hand Salary</th><th>Contractor Margin</th>
-        </tr>`;
-
-    myLabour.forEach((w, idx) => {
+    let totalDisbursal = 0;
+    const rows = myLabour.map((w, idx) => {
         const m = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic, w.clientRate);
-        html += `<tr>
-            <td align="center">${idx + 1}</td>
-            <td>${w.punchingNo || 'N/A'}</td>
-            <td>${w.name}</td>
-            <td>${w.wage}</td>
-            <td>${m.clientRate}</td>
-            <td>${m.shifts}</td>
-            <td>${Math.round(m.grossWages)}</td>
-            <td>${m.totalStatutoryDeductions}</td>
-            <td>${Math.round(m.clientBillingAmt)}</td>
-            <td>${m.advanceCut}</td>
-            <td><b>${Math.round(m.inHandFinal)}</b></td>
-            <td style="color:#065f46;"><b>${Math.round(m.contractorMargin)}</b></td>
-        </tr>`;
-    });
+        const sens = APP_STATE.workersSensitive[w.id] || {};
+        totalDisbursal += m.inHandFinal;
 
-    html += `</table></body></html>`;
-
-    const blob = new Blob([html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `3_Contractor_Internal_Hisab_${APP_STATE.selectedMonth}.xls`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-// =========================================================================
-// FULL GST & SAC 998519 MANPOWER TAX INVOICE PRINT ENGINE
-// =========================================================================
-function printCompanyTaxInvoice() {
-    const firm = APP_STATE.contractors.find(c => c.id === APP_STATE.currentContractorId);
-    const myLabour = APP_STATE.labour.filter(w => w.contractorId === APP_STATE.currentContractorId);
-    const today = new Date().toISOString().split('T')[0];
-
-    let tradeMap = {};
-    let totalBasicWages = 0;
-
-    myLabour.forEach(w => {
-        const m = getWorkerMetrics(w.id, w.wage, w.isEpf, w.isEsic, w.clientRate);
-        const cat = w.category || 'General';
-        if (!tradeMap[cat]) {
-            tradeMap[cat] = { mandays: 0, rate: m.clientRate };
-        }
-        tradeMap[cat].mandays += m.shifts;
-        totalBasicWages += (m.shifts * m.clientRate);
-    });
-
-    const epfEmployerShare = Math.round(totalBasicWages * 0.13);
-    const esicEmployerShare = Math.round(totalBasicWages * 0.0325);
-    const grossAmount = totalBasicWages + epfEmployerShare + esicEmployerShare;
-    const contractorMargin = Math.round(totalBasicWages * 0.10);
-    const totalTaxableValue = grossAmount + contractorMargin;
-    const cgst = Math.round(totalTaxableValue * 0.09 * 100) / 100;
-    const sgst = Math.round(totalTaxableValue * 0.09 * 100) / 100;
-    const netPayable = Math.round(totalTaxableValue + cgst + sgst);
-    const words = numberToWordsINR(netPayable);
-
-    let serviceRows = Object.keys(tradeMap).map((cat, idx) => {
-        const item = tradeMap[cat];
-        const amt = item.mandays * item.rate;
         return `
-            <tr>
-                <td align="center" style="padding: 6px; border: 1px solid #333;">${idx + 1}</td>
-                <td style="padding: 6px; border: 1px solid #333;">Supply of Industrial Manpower Services (${cat})</td>
-                <td align="center" style="padding: 6px; border: 1px solid #333; font-family: monospace; font-weight: bold;">998519</td>
-                <td align="center" style="padding: 6px; border: 1px solid #333;">${item.mandays} Shifts</td>
-                <td align="right" style="padding: 6px; border: 1px solid #333;">Rs. ${item.rate.toFixed(2)}</td>
-                <td align="right" style="padding: 6px; border: 1px solid #333;">${amt.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+            <tr class="hover:bg-amber-50">
+                <td class="p-2">${idx + 1}</td>
+                <td class="p-2 font-bold">${SECURITY_ENGINE.sanitize(w.name)}</td>
+                <td class="p-2 font-mono">${sens.bankName || 'SBI'}</td>
+                <td class="p-2 font-mono">${sens.bankAcc || 'N/A'}</td>
+                <td class="p-2 font-mono uppercase">${sens.bankIfsc || 'N/A'}</td>
+                <td class="p-2 font-mono font-bold text-emerald-700 text-right">₹${Math.round(m.inHandFinal)}</td>
             </tr>
         `;
     }).join('');
 
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>Tax Invoice - ${firm ? (firm.companyName || firm.name) : 'Contractor'}</title>
-            <style>
-                body { font-family: 'Segoe UI', Arial, sans-serif; padding: 30px; font-size: 12px; color: #111; line-height: 1.5; }
-                .inv-header { border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; }
-                .inv-header h2 { margin: 0; font-size: 18px; text-transform: uppercase; text-align: center; }
-                table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-                th, td { border: 1px solid #333; padding: 6px; }
-                th { background-color: #f3f3f3; }
-                @media print {
-                    body { padding: 10mm; }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="inv-header">
-                <h2>TAX INVOICE / BILL OF SUPPLY</h2>
-                <h3 style="margin:2px 0; text-align: center;">${firm ? (firm.companyName || firm.name).toUpperCase() : 'CONTRACTOR / VENDOR COMPANY'}</h3>
-                <p style="margin:2px 0; text-align: center;">
-                    Registered Office: ${firm ? (firm.address || 'Mahasamund, Chhattisgarh') : 'N/A'}<br>
-                    GSTIN: <b>${firm ? (firm.gstin || '22AAAAA0000A1Z5') : 'N/A'}</b> | PAN: <b>${firm ? (firm.pan || 'ABCDE1234F') : 'ABCDE1234F'}</b> | State Code: <b>22 (Chhattisgarh)</b><br>
-                    Bank: <b>${firm ? (firm.bankName || 'State Bank of India') : 'N/A'}</b> | A/C: <b>${firm ? (firm.bankAcc || '300012345678') : 'N/A'}</b> | IFSC: <b>${firm ? (firm.bankIfsc || 'SBIN0001234') : 'N/A'}</b>
-                </p>
-            </div>
-
-            <table style="margin-bottom: 15px;">
-                <tr>
-                    <td width="50%">
-                        <b>INVOICE DETAILS:</b><br>
-                        Invoice No: <b>INV/${APP_STATE.selectedFy}/${Date.now().toString().slice(-4)}</b><br>
-                        Invoice Date: <b>${today}</b><br>
-                        Reverse Charge (RCM): <b>NO (Forward Charge Mechanism - FCM)</b>
-                    </td>
-                    <td width="50%">
-                        <b>SUPPLY & PO DETAILS:</b><br>
-                        Billing Month: <b>${APP_STATE.selectedMonth}</b><br>
-                        Work Order / PO No: <b>WO/PLANT/2026/089</b><br>
-                        Place of Supply: <b>State Code 22 (Chhattisgarh)</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <b>BILLED TO (PRINCIPAL EMPLOYER):</b><br>
-                        <b>M/s Industrial Plant & Heavy Infra Division</b><br>
-                        Heavy Industrial Area Growth Centre, Mahasamund / Raipur, Chhattisgarh<br>
-                        GSTIN: <b>22BBBBB1111B1Z2</b> | State Code: <b>22</b>
-                    </td>
-                </tr>
-            </table>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>S.No.</th>
-                        <th>Description of Services</th>
-                        <th>SAC Code</th>
-                        <th>Quantity (Mandays)</th>
-                        <th>Rate / Day</th>
-                        <th>Amount (Rs.)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${serviceRows}
-                    <tr style="font-weight: bold; background-color: #fafafa;">
-                        <td colspan="5" align="right">TOTAL BASIC WORKFORCE REMUNERATION (A):</td>
-                        <td align="right">${totalBasicWages.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">Add: Statutory EPF Employer Share (13.00% on Basic Wages)</td>
-                        <td align="right">${epfEmployerShare.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">Add: Statutory ESIC Employer Share (3.25% on Basic Wages)</td>
-                        <td align="right">${esicEmployerShare.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                    <tr style="font-weight: bold; background-color: #f3f3f3;">
-                        <td colspan="5" align="right">TOTAL GROSS REIMBURSABLE EXPENSES (B = A + EPF + ESIC):</td>
-                        <td align="right">${grossAmount.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">Add: Contractor Service Charges / Supervision Fee (10% on Basic)</td>
-                        <td align="right">${contractorMargin.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                    <tr style="font-weight: bold; background-color: #e2e8f0;">
-                        <td colspan="5" align="right">TOTAL TAXABLE VALUE OF SUPPLY (C = B + Service Fee):</td>
-                        <td align="right">${totalTaxableValue.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">Add: Central GST (CGST @ 9% on Total Taxable Value)</td>
-                        <td align="right">${cgst.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">Add: State GST (SGST @ 9% on Total Taxable Value)</td>
-                        <td align="right">${sgst.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                    <tr style="font-weight: bold; font-size: 13px; background-color: #fef08a;">
-                        <td colspan="5" align="right">TOTAL INVOICE VALUE (NET PAYABLE ROUND OFF):</td>
-                        <td align="right">Rs. ${netPayable.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <p style="margin-top: 15px;"><b>Amount in Words:</b> ${words}</p>
-
-            <table style="width: 100%; margin-top: 50px; border: none;">
-                <tr style="border: none;">
-                    <td style="border: none;" width="50%">
-                        <b>Statutory Compliance Declaration:</b><br>
-                        1. Certified that all EPF (12% + 13%) and ESIC statutory contributions are deposited with the authorities.<br>
-                        2. Wage disbursals are executed via banking channels / NEFT under official bank authority advice.
-                    </td>
-                    <td style="border: none; text-align: right;" width="50%">
-                        <b>For ${firm ? (firm.companyName || firm.name) : 'Contractor Firm'}</b><br><br><br><br>
-                        <b>Authorized Signatory (Seal & Signature)</b>
-                    </td>
-                </tr>
-            </table>
-
-            <script>
-                window.onload = function() { window.print(); }
-            <\/script>
-        </body>
-        </html>
-    `);
-    printWindow.document.close();
-}
-
-// =========================================================================
-// ADMIN DESK & CONTRACTOR COMPANY ONBOARDING (DEDICATED FIELDS)
-// =========================================================================
-function renderAdminWorkspace() {
-    document.getElementById('workspace-notice-title').innerText = "Principal Employer Admin Dashboard";
-    const container = document.getElementById('workspace-main-container');
-    
     container.innerHTML = `
-        <div class="bg-white border border-amber-300 rounded-lg shadow p-4 space-y-4">
-            <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                <h3 class="font-black text-[#4a2411] text-sm">Contractor Firms Roster & Master Matrix</h3>
-                <span class="bg-amber-100 text-amber-900 font-bold px-2.5 py-1 rounded text-xs">Total Firms: ${APP_STATE.contractors.length}</span>
+        <div class="bg-white border-2 border-amber-400 rounded-lg p-4 space-y-4 shadow">
+            <div class="flex justify-between items-center border-b pb-2">
+                <div>
+                    <h3 class="text-sm font-black uppercase text-[#4a2411]">Bank Labor Payment Advice Desk</h3>
+                    <p class="text-xs text-slate-500">${firm ? firm.name : 'Contractor'} - Total Net: ₹${Math.round(totalDisbursal)}</p>
+                </div>
+                <button onclick="renderContractorMusterWorkspace()" class="text-xs bg-slate-200 px-2 py-1 rounded font-bold">Back to Muster</button>
             </div>
-            <div class="space-y-3">
-                ${APP_STATE.contractors.length === 0 ? '<p class="p-6 text-center text-slate-500 italic">No contractor firms registered yet.</p>' :
-                    APP_STATE.contractors.map(c => `
-                        <div class="bg-amber-50/60 border border-amber-300 p-3 rounded-lg flex flex-wrap justify-between items-center gap-3">
-                            <div>
-                                <h4 class="font-bold text-slate-900 text-sm">${c.companyName || c.name} (${c.id})</h4>
-                                <p class="text-[11px] text-slate-600">Proprietor: <b>${c.owner}</b> | Mobile: <b>${c.mobile}</b> | GSTIN: <b>${c.gstin}</b></p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${c.status === 'BLOCKED' ? 'bg-rose-600 text-white' : 'bg-emerald-600 text-white'}">${c.status || 'ACTIVE'}</span>
-                                <button onclick="toggleContractorStatus('${c.id}')" class="bg-slate-900 hover:bg-slate-800 text-amber-300 text-xs px-2.5 py-1 rounded font-bold">${c.status === 'BLOCKED' ? 'Unblock Firm' : 'Block Firm'}</button>
-                            </div>
-                        </div>
-                    `).join('')
-                }
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border">
+                    <thead class="bg-amber-100 text-[#4a2411]">
+                        <tr>
+                            <th class="p-2">Sr</th>
+                            <th class="p-2">Worker Name</th>
+                            <th class="p-2">Bank</th>
+                            <th class="p-2">Account No</th>
+                            <th class="p-2">IFSC</th>
+                            <th class="p-2 text-right">Net Payable</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y">${rows}</tbody>
+                </table>
             </div>
         </div>
     `;
-    lucide.createIcons();
 }
 
-async function toggleContractorStatus(contId) {
-    const cont = APP_STATE.contractors.find(c => c.id === contId);
-    if (!cont) return;
-    cont.status = cont.status === 'BLOCKED' ? 'ACTIVE' : 'BLOCKED';
-    await dbRef.child("contractors").set(APP_STATE.contractors);
-    saveLocalState();
-    renderAdminWorkspace();
-    alert(`Firm status updated to: ${cont.status}`);
-}
+// =========================================================================
+// SUPER_ADMIN PERMANENT DELETION (SERVER AUTHENTICATED WORKFLOW)
+// =========================================================================
+async function executePermanentContractorDeletion(targetContractorId, superAdminPassword) {
+    if (!SECURITY_ENGINE.validateId(targetContractorId)) {
+        alert("अमान्य ठेकेदार आईडी।");
+        return;
+    }
 
-function showAdminAddContractorDesk() {
-    document.getElementById('workspace-notice-title').innerText = "Register New Contractor Company / Firm";
-    const container = document.getElementById('workspace-main-container');
-    container.innerHTML = `
-        <div class="bg-white border-2 border-amber-400 p-5 rounded-lg shadow-sm space-y-4 max-w-xl mx-auto">
-            <div class="flex justify-between items-center border-b border-amber-300 pb-2">
-                <h3 class="font-black text-[#4a2411] text-xs uppercase flex items-center gap-1.5">
-                    <i data-lucide="building-2" class="w-4 h-4 text-amber-700"></i> New Contractor Company Onboarding
-                </h3>
-                <button onclick="renderAdminWorkspace()" class="text-xs bg-slate-200 hover:bg-slate-300 px-2 py-1 rounded font-bold text-slate-800">Back</button>
-            </div>
+    if (APP_STATE.currentUserRole !== 'SUPER_ADMIN') {
+        alert("सुरक्षा अस्वीकृत: केवल सुपर एडमिन ही स्थायी विलोपन निष्पादित कर सकता है।");
+        return;
+    }
 
-            <form onsubmit="handleAdminAddContractor(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div class="sm:col-span-2">
-                    <label class="block text-[10px] font-black text-amber-950 uppercase mb-0.5 tracking-wider">
-                        🏢 Registered Company / Firm Name (बिल और इनवॉइस में छपने वाला पूरा नाम) *
-                    </label>
-                    <input type="text" id="new-firm-company-name" required placeholder="e.g. M/S BALAJI INDUSTRIAL SERVICES & MANPOWER SUPPLIERS" class="w-full border-2 border-amber-500 p-2 rounded text-xs font-bold text-slate-900 uppercase bg-amber-50/40">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">👤 Contractor / Proprietor Name *</label>
-                    <input type="text" id="new-firm-owner" required placeholder="e.g. Ramesh Kumar Sahu" class="w-full border border-slate-400 p-2 rounded text-xs font-bold text-slate-900">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">📱 Mobile Number (Login ID) *</label>
-                    <input type="text" id="new-firm-mobile" required placeholder="9826000003" maxlength="10" class="w-full border border-slate-400 p-2 rounded text-xs font-mono font-bold text-slate-900">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">📑 GSTIN Number *</label>
-                    <input type="text" id="new-firm-gstin" required maxlength="15" placeholder="22AAAAA0000A1Z5" value="22AAAAA0000A1Z5" class="w-full border border-slate-400 p-2 rounded text-xs font-mono uppercase font-bold text-slate-900">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">💳 Company PAN *</label>
-                    <input type="text" id="new-firm-pan" required maxlength="10" placeholder="ABCDE1234F" value="ABCDE1234F" class="w-full border border-slate-400 p-2 rounded text-xs font-mono uppercase font-bold text-slate-900">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank Name *</label>
-                    <input type="text" id="new-firm-bank-name" required placeholder="State Bank of India" value="State Bank of India" class="w-full border border-slate-400 p-2 rounded text-xs text-slate-900">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank Account No *</label>
-                    <input type="text" id="new-firm-bank-acc" required placeholder="300012345678" class="w-full border border-slate-400 p-2 rounded text-xs font-mono font-bold text-slate-900">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Bank IFSC Code *</label>
-                    <input type="text" id="new-firm-bank-ifsc" required placeholder="SBIN0001234" class="w-full border border-slate-400 p-2 rounded text-xs font-mono uppercase font-bold text-slate-900">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Password *</label>
-                    <input type="password" id="new-firm-pass" required placeholder="••••••••" class="w-full border border-slate-400 p-2 rounded text-xs text-slate-900">
-                </div>
-
-                <div class="sm:col-span-2">
-                    <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Registered Office Address *</label>
-                    <input type="text" id="new-firm-address" required placeholder="Industrial Area, Mahasamund, Chhattisgarh" class="w-full border border-slate-400 p-2 rounded text-xs text-slate-900">
-                </div>
-
-                <button type="submit" class="sm:col-span-2 lm-btn-gold py-2.5 rounded-lg text-xs shadow-md font-black mt-2">
-                    💾 Register Company & Save to Firebase Auth
-                </button>
-            </form>
-        </div>
-    `;
-    lucide.createIcons();
-}
-
-async function handleAdminAddContractor(e) {
-    e.preventDefault();
-    const companyName = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-company-name').value.trim().toUpperCase());
-    const ownerName = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-owner').value.trim());
-    const mobile = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-mobile').value.trim());
-    const gstin = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-gstin').value.trim().toUpperCase());
-    const pan = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-pan').value.trim().toUpperCase());
-    const bankName = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-bank-name').value.trim());
-    const bankAcc = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-bank-acc').value.trim());
-    const bankIfsc = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-bank-ifsc').value.trim().toUpperCase());
-    const address = SECURITY_ENGINE.sanitize(document.getElementById('new-firm-address').value.trim());
-    const pass = document.getElementById('new-firm-pass').value;
-
-    const virtualEmail = `u_${mobile}@labourmitra.com`;
+    const authUser = auth.currentUser;
+    if (!authUser || !authUser.email) {
+        alert("सत्र समाप्त। पुनः लॉगिन करें।");
+        return;
+    }
 
     try {
-        await getSecondaryAuth().createUserWithEmailAndPassword(virtualEmail, pass);
-        await getSecondaryAuth().signOut();
+        const credential = firebase.auth.EmailAuthProvider.credential(authUser.email, superAdminPassword);
+        await authUser.reauthenticateWithCredential(credential);
 
-        const newCont = {
-            id: 'CONT-' + Date.now().toString().slice(-4),
-            name: companyName,
-            companyName: companyName,
-            owner: ownerName,
-            mobile: mobile,
-            bankName: bankName,
-            bankAcc: bankAcc,
-            bankIfsc: bankIfsc,
-            gstin: gstin,
-            pan: pan,
-            address: address,
-            status: 'ACTIVE'
+        const deletionAuditKey = dbRoot.child("admin_audit_logs").push().key;
+        const deletionUpdates = {};
+
+        deletionUpdates[`admin_audit_logs/${deletionAuditKey}`] = {
+            action: "CONTRACTOR_DELETE",
+            actorUid: authUser.uid,
+            actorRole: "SUPER_ADMIN",
+            targetContractorId: targetContractorId,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
         };
 
-        APP_STATE.contractors.push(newCont);
-        await dbRef.child("contractors").set(APP_STATE.contractors);
-        saveLocalState();
-        renderAdminWorkspace();
-        alert(`✅ कंपनी "${companyName}" सफलतापूर्वक रजिस्टर हो गई! अब इनवॉइस में सीधे यही नाम प्रिंट होगा।`);
+        deletionUpdates[`tenants/${targetContractorId}`] = null;
+        deletionUpdates[`contractors/${targetContractorId}`] = null;
+        deletionUpdates[`audit_logs/${targetContractorId}`] = null;
 
-    } catch (error) {
-        alert("Error registering company: " + error.message);
+        await dbRoot.update(deletionUpdates);
+        alert(`ठेकेदार ${targetContractorId} और उसका सारा टेनेंट डेटा हमेशा के लिए हटा दिया गया।`);
+        refreshActiveView();
+
+    } catch (err) {
+        handleSystemError(err, "पुनः प्रमाणीकरण या विलोपन विफल");
     }
 }
