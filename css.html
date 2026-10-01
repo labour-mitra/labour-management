@@ -28,42 +28,27 @@
   --lm-brown-dark: #33180a;
   --lm-gold-start: #f59e0b;
   --lm-gold-end: #d97706;
+  --lm-gold-gradient: linear-gradient(135deg, var(--lm-gold-start), var(--lm-gold-end));
 
-  /* Semantic Action & Status Colors */
+  /* Semantic Status Palette (Solid) */
   --status-emerald: #10b981;
-  --status-emerald-subtle: rgba(16, 185, 129, 0.15);
-
   --status-amber: #f59e0b;
-  --status-amber-subtle: rgba(245, 158, 11, 0.15);
-
   --status-rose: #f43f5e;
-  --status-rose-subtle: rgba(244, 63, 94, 0.15);
-
   --status-indigo: #6366f1;
-  --status-indigo-subtle: rgba(99, 102, 241, 0.15);
-
   --status-sky: #0ea5e9;
+
+  /* Semantic Status Palette (Subtle Backgrounds) */
+  --status-emerald-subtle: rgba(16, 185, 129, 0.15);
+  --status-amber-subtle: rgba(245, 158, 11, 0.15);
+  --status-rose-subtle: rgba(244, 63, 94, 0.15);
+  --status-indigo-subtle: rgba(99, 102, 241, 0.15);
   --status-sky-subtle: rgba(14, 165, 233, 0.15);
 
-  /* Typography & Layout */
-  --font-sans:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
+  /* Typography Stacks */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 
-  --font-mono:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    "Liberation Mono",
-    monospace;
-
+  /* Radii */
   --radius-xs: 4px;
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -71,20 +56,18 @@
   --radius-xl: 18px;
   --radius-full: 9999px;
 
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Motion & Transitions */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.15s var(--ease-standard);
+  --transition-normal: 0.22s var(--ease-standard);
 
-  --shadow-card:
-    0 4px 6px -1px rgba(0, 0, 0, 0.4),
-    0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  /* Elevation & Shadows */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 12px 30px rgba(0, 0, 0, 0.35);
 
-  --shadow-elevated:
-    0 12px 30px rgba(0, 0, 0, 0.35);
-
-  --focus-ring:
-    0 0 0 3px rgba(245, 158, 11, 0.25);
+  /* Accessibility & Focus */
+  --focus-ring: 0 0 0 3px rgba(245, 158, 11, 0.25);
 }
-
 
 /* --------------------------------------------------------------------------
    2. BASE RESET & SCROLLBARS
@@ -103,6 +86,7 @@ html {
   background-color: var(--bg-app);
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  tab-size: 2;
 }
 
 body {
@@ -111,29 +95,38 @@ body {
   color: var(--text-main);
   font-family: var(--font-sans);
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
+/* Media Elements */
 img,
 svg,
 video,
 canvas {
+  display: block;
   max-width: 100%;
   height: auto;
 }
 
+/* Form Controls */
 button,
 input,
 select,
 textarea {
   font: inherit;
+  color: inherit;
+  background-color: transparent;
+  border: none;
 }
 
 button {
+  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 button:disabled,
@@ -141,9 +134,10 @@ input:disabled,
 select:disabled,
 textarea:disabled {
   cursor: not-allowed;
-  opacity: 0.65;
+  opacity: 0.6;
 }
 
+/* Typography & Lists */
 a {
   color: inherit;
   text-decoration: none;
@@ -154,11 +148,19 @@ ol {
   list-style: none;
 }
 
+/* Selection Highlight */
 ::selection {
-  background-color: rgba(245, 158, 11, 0.30);
+  background-color: rgba(245, 158, 11, 0.3);
   color: #ffffff;
 }
 
+/* Scrollbars (Standard Firefox Support) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--bg-app);
+}
+
+/* Scrollbars (WebKit / Blink: Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -177,52 +179,60 @@ ol {
   background: var(--text-faint);
 }
 
-
 /* --------------------------------------------------------------------------
    3. BRAND BUTTONS & HEADER CLASSES
    -------------------------------------------------------------------------- */
 
 .lm-brown {
   background-color: var(--lm-brown) !important;
+  color: #ffffff;
 }
 
 .lm-brown-dark {
   background-color: var(--lm-brown-dark) !important;
+  color: #ffffff;
 }
 
+/* Primary Brand Gold Button */
 .lm-btn-gold {
-  background:
-    linear-gradient(
-      to bottom,
-      var(--lm-gold-start),
-      var(--lm-gold-end)
-    ) !important;
-
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    to bottom,
+    var(--lm-gold-start),
+    var(--lm-gold-end)
+  ) !important;
   color: #0f172a !important;
   font-weight: 800 !important;
-  border: none !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
   cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
   transition:
     transform var(--transition-fast),
     filter var(--transition-fast),
     box-shadow var(--transition-fast);
 }
 
-.lm-btn-gold:hover {
-  background:
-    linear-gradient(
-      to bottom,
-      #fbbf24,
-      #b45309
-    ) !important;
-
+.lm-btn-gold:hover:not(:disabled) {
+  background: linear-gradient(
+    to bottom,
+    #fbbf24,
+    #b45309
+  ) !important;
   transform: translateY(-1px);
   filter: brightness(1.04);
-  box-shadow: 0 5px 14px rgba(245, 158, 11, 0.20);
+  box-shadow: 0 5px 14px rgba(245, 158, 11, 0.25);
 }
 
-.lm-btn-gold:active {
+.lm-btn-gold:active:not(:disabled) {
   transform: scale(0.97);
+  box-shadow: none;
 }
 
 .lm-btn-gold:focus-visible {
@@ -230,20 +240,31 @@ ol {
   box-shadow: var(--focus-ring);
 }
 
+.lm-btn-gold:disabled {
+  background: var(--border-strong) !important;
+  color: var(--text-faint) !important;
+  border-color: transparent !important;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
 
-/* Generic Labour Mitra action buttons */
-
+/* Generic Labour Mitra Action Buttons */
 .lm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   min-height: 36px;
   padding: 7px 13px;
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   font-weight: 700;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  user-select: none;
+  white-space: nowrap;
+  text-decoration: none;
   transition:
     background-color var(--transition-fast),
     border-color var(--transition-fast),
@@ -251,7 +272,12 @@ ol {
     box-shadow var(--transition-fast);
 }
 
-.lm-btn:active {
+.lm-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.lm-btn:active:not(:disabled) {
   transform: scale(0.97);
 }
 
@@ -260,9 +286,21 @@ ol {
   box-shadow: var(--focus-ring);
 }
 
+.lm-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 .lm-btn-primary {
   background-color: var(--status-indigo);
   color: #ffffff;
+}
+
+.lm-btn-primary:hover:not(:disabled) {
+  background-color: #4f46e5;
+  box-shadow: 0 4px 12px var(--status-indigo-subtle);
 }
 
 .lm-btn-success {
@@ -270,14 +308,29 @@ ol {
   color: #ffffff;
 }
 
+.lm-btn-success:hover:not(:disabled) {
+  background-color: #059669;
+  box-shadow: 0 4px 12px var(--status-emerald-subtle);
+}
+
 .lm-btn-warning {
   background-color: var(--status-amber);
   color: #0f172a;
 }
 
+.lm-btn-warning:hover:not(:disabled) {
+  background-color: #d97706;
+  box-shadow: 0 4px 12px var(--status-amber-subtle);
+}
+
 .lm-btn-danger {
   background-color: var(--status-rose);
   color: #ffffff;
+}
+
+.lm-btn-danger:hover:not(:disabled) {
+  background-color: #e11d48;
+  box-shadow: 0 4px 12px var(--status-rose-subtle);
 }
 
 .lm-btn-secondary {
@@ -286,6 +339,64 @@ ol {
   border-color: var(--border-strong);
 }
 
+.lm-btn-secondary:hover:not(:disabled) {
+  background-color: var(--border-strong);
+  border-color: var(--text-faint);
+}
+
+/* Captcha Module Components */
+.lm-captcha-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.lm-captcha-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lm-captcha-canvas {
+  height: 38px;
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.lm-captcha-canvas:hover {
+  border-color: var(--border-focus);
+}
+
+.lm-captcha-input {
+  width: 100%;
+  height: 38px;
+  padding: 8px 12px;
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.lm-captcha-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
+}
+
+.lm-captcha-error {
+  color: var(--status-rose);
+  font-size: 11px;
+  font-weight: 600;
+  display: none;
+}
 
 /* --------------------------------------------------------------------------
    4. 30-DAY MUSTER GRID & HIGH-DENSITY DATA TABLES
@@ -294,19 +405,22 @@ ol {
 .table-container {
   width: 100%;
   max-width: 100%;
+  max-height: calc(100vh - 220px);
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: auto;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   background-color: #ffffff;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
+  position: relative;
 }
 
+/* Base Muster Grid */
 .muster-grid {
   width: max-content;
   min-width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate; /* Sticky बॉर्डर्स को टूटने से बचाता है */
   border-spacing: 0;
   font-size: 11px;
   background-color: #ffffff;
@@ -314,14 +428,21 @@ ol {
 
 .muster-grid th,
 .muster-grid td {
-  border: 1px solid #cbd5e1;
+  border-right: 1px solid #cbd5e1;
+  border-bottom: 1px solid #cbd5e1;
   text-align: center;
-  padding: 4px 2px;
+  padding: 4px 3px;
   white-space: nowrap;
   vertical-align: middle;
   height: 28px;
 }
 
+.muster-grid th:first-child,
+.muster-grid td:first-child {
+  border-left: 1px solid #cbd5e1;
+}
+
+/* Sticky Header Rows */
 .muster-grid thead th {
   background-color: #fef08a;
   color: #4a2411;
@@ -329,88 +450,248 @@ ol {
   font-size: 10px;
   position: sticky;
   top: 0;
-  z-index: 5;
+  z-index: 10;
+  border-top: 1px solid #cbd5e1;
 }
 
-.muster-grid tbody tr:nth-child(even) {
+.muster-grid tbody tr:nth-child(even) td {
   background-color: #f8fafc;
 }
 
-.muster-grid tbody tr:hover {
-  background-color: #fef3c7;
+/* Row Hover Interaction */
+.muster-grid tbody tr:hover td {
+  background-color: #fef3c7 !important;
 }
 
+/* --------------------------------------------------------------------------
+   STICKY COLUMNS (IDENTIFIERS)
+   -------------------------------------------------------------------------- */
 
-/* Sticky Column on Horizontal Scroll for Large Registers */
+:root {
+  --muster-col1-w: 64px;  /* Sr / Punch No Width */
+  --muster-col2-w: 160px; /* Worker Name Width */
+}
 
-.sticky-col {
+/* Sticky Column 1: Sr / Punch No */
+.muster-grid .sticky-col-1 {
   position: sticky;
   left: 0;
+  z-index: 5;
   background-color: #ffffff;
-  z-index: 10;
-  box-shadow: 2px 0 4px rgba(15, 23, 42, 0.08);
+  min-width: var(--muster-col1-w);
+  max-width: var(--muster-col1-w);
 }
 
-.muster-grid thead .sticky-col {
-  z-index: 20;
+.muster-grid tbody tr:nth-child(even) .sticky-col-1 {
+  background-color: #f8fafc;
+}
+
+.muster-grid thead th.sticky-col-1 {
+  z-index: 25;
   background-color: #fef08a;
+  left: 0;
 }
 
-
-/* Better sticky support for multiple identity columns */
-
-.sticky-col-2 {
+/* Sticky Column 2: Worker Name */
+.muster-grid .sticky-col-2 {
   position: sticky;
-  left: 80px;
+  left: var(--muster-col1-w);
+  z-index: 5;
   background-color: #ffffff;
-  z-index: 9;
+  min-width: var(--muster-col2-w);
+  text-align: left;
+  padding-left: 8px;
+  box-shadow: 3px 0 5px -2px rgba(15, 23, 42, 0.12); /* दाएँ तरफ सॉफ्ट शैडो */
 }
 
-.muster-grid thead .sticky-col-2 {
-  z-index: 19;
+.muster-grid tbody tr:nth-child(even) .sticky-col-2 {
+  background-color: #f8fafc;
+}
+
+.muster-grid thead th.sticky-col-2 {
+  z-index: 25;
   background-color: #fef08a;
+  left: var(--muster-col1-w);
+  box-shadow: 3px 0 5px -2px rgba(15, 23, 42, 0.12);
 }
 
+/* --------------------------------------------------------------------------
+   ATTENDANCE STATUS CELLS (P, HD, A)
+   -------------------------------------------------------------------------- */
+
+.att-cell {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  width: 26px;
+  min-width: 26px;
+}
+
+.att-cell.p {
+  color: #047857;
+  background-color: #ecfdf5;
+}
+
+.att-cell.hd {
+  color: #b45309;
+  background-color: #fffbeb;
+}
+
+.att-cell.a {
+  color: #b91c1c;
+  background-color: #fef2f2;
+}
+
+/* --------------------------------------------------------------------------
+   PRINT STYLES (FORM T COMPLIANCE EXPORT)
+   -------------------------------------------------------------------------- */
+
+@media print {
+  .table-container {
+    overflow: visible !important;
+    border: none !important;
+    max-height: none !important;
+  }
+
+  .muster-grid {
+    width: 100% !important;
+    font-size: 8px !important;
+  }
+
+  .muster-grid th,
+  .muster-grid td {
+    height: 18px !important;
+    padding: 1px !important;
+    position: static !important;
+    box-shadow: none !important;
+  }
+}
 
 /* --------------------------------------------------------------------------
    5. MOBILE SUPERVISOR ATTENDANCE CONTROLS
    -------------------------------------------------------------------------- */
 
+.supervisor-attendance-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-x: hidden;
+}
+
+/* Worker Attendance Card */
+.supervisor-attendance-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--transition-fast);
+}
+
+.supervisor-attendance-card:hover {
+  border-color: var(--border-strong);
+}
+
+/* Worker Identity Meta in Card */
+.supervisor-worker-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 160px;
+}
+
+.supervisor-worker-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--text-main);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.supervisor-worker-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.supervisor-worker-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.supervisor-worker-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.supervisor-worker-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Action Controls Row (P / HD / A / OT / CAM) */
 .attendance-grid {
   display: flex;
-  gap: 4px;
-  flex-wrap: nowrap;
   align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+/* Attendance Shift Toggle Buttons */
+.attendance-btn-group {
+  display: inline-flex;
+  gap: 4px;
 }
 
 .attendance-btn {
-  min-width: 36px;
-  min-height: 32px;
-  padding: 5px 8px;
-  border-radius: var(--radius-xs);
-  font-size: 11px;
+  min-width: 40px;
+  min-height: 36px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 800;
-  border: none;
+  border: 1px solid var(--border-subtle);
   cursor: pointer;
-  background-color: #e2e8f0;
-  color: #334155;
+  background-color: var(--bg-surface-elevated);
+  color: var(--text-muted);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition:
-    background-color var(--transition-fast),
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
-.attendance-btn:hover {
-  filter: brightness(0.97);
+.attendance-btn:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  color: var(--text-main);
 }
 
-.attendance-btn:active {
+.attendance-btn:active:not(:disabled) {
   transform: scale(0.92);
 }
 
@@ -419,136 +700,295 @@ ol {
   box-shadow: var(--focus-ring);
 }
 
+/* Active Status States */
 .attendance-btn.active-p {
   background-color: var(--status-emerald) !important;
   color: #ffffff !important;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  border-color: var(--status-emerald) !important;
+  box-shadow: 0 0 10px var(--status-emerald-subtle);
 }
 
 .attendance-btn.active-hd {
   background-color: var(--status-amber) !important;
-  color: #ffffff !important;
-  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+  color: #0f172a !important; /* स्पष्ट दृश्यता हेतु डार्क टेक्स्ट */
+  border-color: var(--status-amber) !important;
+  box-shadow: 0 0 10px var(--status-amber-subtle);
 }
 
 .attendance-btn.active-a {
   background-color: var(--status-rose) !important;
   color: #ffffff !important;
-  box-shadow: 0 0 8px rgba(244, 63, 94, 0.4);
+  border-color: var(--status-rose) !important;
+  box-shadow: 0 0 10px var(--status-rose-subtle);
 }
 
-
-/* Supervisor mobile action area */
-
-.supervisor-attendance-container {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
+.attendance-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
-.supervisor-attendance-card {
-  background-color: var(--bg-surface);
+/* Overtime (OT) Inline Input Box */
+.attendance-ot-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 36px;
+  padding: 0 6px;
+  background-color: var(--bg-surface-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
 }
 
+.attendance-ot-input {
+  width: 32px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  outline: none;
+}
+
+.attendance-ot-input::-webkit-inner-spin-button,
+.attendance-ot-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Camera Snapshot Trigger Button */
+.attendance-cam-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: var(--lm-gold-gradient);
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  touch-action: manipulation;
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.attendance-cam-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.attendance-cam-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+/* Verified Badge State */
+.attendance-cam-btn.is-verified {
+  background: var(--status-emerald) !important;
+  color: #ffffff !important;
+  border-color: var(--status-emerald) !important;
+}
 
 /* --------------------------------------------------------------------------
    6. MODALS, POPUPS & FORMS
    -------------------------------------------------------------------------- */
 
+/* Modal Backdrop & Overlay */
 .modal-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
   background-color: rgba(2, 6, 23, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast), visibility var(--transition-fast);
 }
 
+.modal-backdrop.active,
+.modal-backdrop:not(.hidden) {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal Surface Box */
 .modal-box {
+  width: 100%;
+  max-width: min(96vw, 760px);
+  max-height: 90vh;
   background-color: #fffbeb;
   border: 2px solid var(--lm-brown);
   border-radius: var(--radius-lg);
   color: #0f172a;
   box-shadow: var(--shadow-elevated);
-  max-width: min(96vw, 900px);
-  max-height: 92vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.96);
+  transition: transform var(--transition-fast);
 }
 
-input,
-select,
-textarea {
+.modal-backdrop.active .modal-box,
+.modal-backdrop:not(.hidden) .modal-box {
+  transform: scale(1);
+}
+
+/* Modal Header & Footer Bars */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid #fde68a;
+  background-color: #fef3c7;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #4a2411;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-close {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #78350f;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.modal-close:hover {
+  background-color: #fde68a;
+  color: #451a03;
+}
+
+.modal-body {
+  padding: 18px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --------------------------------------------------------------------------
+   FORM CONTROLS & INPUTS (SCOPED TO MODAL & LM-FORMS)
+   -------------------------------------------------------------------------- */
+
+.modal-box input,
+.modal-box select,
+.modal-box textarea,
+.lm-input,
+.lm-select,
+.lm-textarea {
   width: 100%;
   max-width: 100%;
   background-color: #ffffff;
   border: 1px solid #94a3b8;
   color: #0f172a;
   border-radius: var(--radius-sm);
-  padding: 7px 10px;
-  font-size: 12px;
+  padding: 8px 12px;
+  font-size: 13px;
   line-height: 1.4;
+  outline: none;
   transition:
     border-color var(--transition-fast),
     box-shadow var(--transition-fast),
     background-color var(--transition-fast);
 }
 
-textarea {
+.modal-box textarea,
+.lm-textarea {
   min-height: 80px;
   resize: vertical;
 }
 
-select {
+.modal-box select,
+.lm-select {
   cursor: pointer;
 }
 
-input::placeholder,
-textarea::placeholder {
+.modal-box input::placeholder,
+.modal-box textarea::placeholder,
+.lm-input::placeholder,
+.lm-textarea::placeholder {
   color: #64748b;
   opacity: 1;
 }
 
-input:hover,
-select:hover,
-textarea:hover {
-  border-color: #64748b;
+.modal-box input:hover,
+.modal-box select:hover,
+.modal-box textarea:hover,
+.lm-input:hover,
+.lm-select:hover,
+.lm-textarea:hover {
+  border-color: #475569;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
+.modal-box input:focus,
+.modal-box select:focus,
+.modal-box textarea:focus,
+.lm-input:focus,
+.lm-select:focus,
+.lm-textarea:focus {
   border-color: var(--lm-gold-end);
-  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
 }
 
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: none;
-  border-color: var(--lm-gold-end);
-  box-shadow: var(--focus-ring);
-}
-
-input:disabled,
-select:disabled,
-textarea:disabled {
+.modal-box input:disabled,
+.modal-box select:disabled,
+.modal-box textarea:disabled,
+.lm-input:disabled,
+.lm-select:disabled,
+.lm-textarea:disabled {
   background-color: #e2e8f0;
   color: #64748b;
+  cursor: not-allowed;
+  border-color: #cbd5e1;
 }
 
-
-/* Form layout helpers */
+/* --------------------------------------------------------------------------
+   FORM GRID & RESPONSIVE LAYOUT
+   -------------------------------------------------------------------------- */
 
 .lm-form-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
+@media (min-width: 640px) {
+  .lm-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .lm-form-group {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
 }
 
@@ -562,134 +1002,247 @@ textarea:disabled {
   color: #334155;
   font-size: 11px;
   font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .lm-required {
   color: var(--status-rose);
+  font-weight: 800;
+  margin-left: 2px;
 }
-
 
 /* --------------------------------------------------------------------------
    7. PRINT OPTIMIZATION (@media print)
    -------------------------------------------------------------------------- */
 
 @media print {
+  /* Default Page Setup */
   @page {
     size: A4 landscape;
-    margin: 8mm;
+    margin: 6mm 8mm;
   }
 
+  @page portrait-page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  /* Base Document Reset for Print */
   html,
   body {
+    background: #ffffff !important;
     background-color: #ffffff !important;
     color: #000000 !important;
-    font-size: 9pt !important;
+    font-size: 8pt !important;
+    line-height: 1.2 !important;
     min-height: auto !important;
-  }
-
-  body {
+    height: auto !important;
     overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
+  /* Hide Non-Print UI Components */
   aside,
   header,
   nav,
+  footer,
   button,
+  canvas,
+  video,
   .no-print,
+  .no-print-on-paper,
   .modal-backdrop,
-  .modal-box,
-  .no-print-on-paper {
+  .modal-close,
+  #sync-status-indicator,
+  #contractor-notif-btn,
+  .attendance-cam-btn,
+  .attendance-ot-wrap {
     display: none !important;
   }
 
+  /* Show Print-Only Content */
   .print-only {
     display: block !important;
   }
 
-  .table-container {
+  /* Container Reset */
+  .table-container,
+  .supervisor-attendance-container,
+  #workspace-main-container {
     overflow: visible !important;
+    max-height: none !important;
     width: 100% !important;
+    max-width: 100% !important;
     border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
+  /* High-Density Muster Table Optimization */
   .muster-grid {
     width: 100% !important;
-    min-width: 0 !important;
+    min-width: 100% !important;
     border-collapse: collapse !important;
+    border-spacing: 0 !important;
     table-layout: auto !important;
+    font-size: 6.5pt !important;
   }
 
-  .muster-grid thead th {
-    position: static !important;
-    background-color: #f1f5f9 !important;
-    color: #000000 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  .muster-grid thead {
+    display: table-header-group; /* हर पन्ने पर हेडर रिपीट हो */
   }
 
-  .sticky-col,
-  .sticky-col-2 {
-    position: static !important;
-    box-shadow: none !important;
+  .muster-grid tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
   .muster-grid th,
   .muster-grid td {
+    height: 16px !important;
+    padding: 1.5px 2px !important;
     border: 0.5pt solid #000000 !important;
     color: #000000 !important;
     background-color: #ffffff !important;
-    padding: 2px !important;
-    font-size: 7pt !important;
+    font-size: 6.5pt !important;
+    box-shadow: none !important;
+    position: static !important; /* Sticky पोजीशन प्रिंट में हटाएँ */
   }
 
   .muster-grid thead th {
     background-color: #f1f5f9 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    font-weight: 800 !important;
+    border-top: 1pt solid #000000 !important;
+    border-bottom: 1pt solid #000000 !important;
   }
 
+  /* Attendance Status Text in Print */
+  .att-cell {
+    font-size: 7pt !important;
+    font-weight: 800 !important;
+    background: transparent !important;
+  }
+
+  .att-cell.p { color: #047857 !important; }
+  .att-cell.hd { color: #b45309 !important; }
+  .att-cell.a { color: #b91c1c !important; }
+
+  /* Sticky Column Overrides */
+  .sticky-col-1,
+  .sticky-col-2 {
+    position: static !important;
+    box-shadow: none !important;
+    left: auto !important;
+    background: transparent !important;
+  }
+
+  /* Reset Button Stencils for Attendance Logs */
   .attendance-btn {
     min-width: auto !important;
     min-height: auto !important;
-    padding: 1px !important;
-    box-shadow: none !important;
+    padding: 0 !important;
+    border: none !important;
     background: transparent !important;
+    box-shadow: none !important;
     color: #000000 !important;
+    font-weight: 700 !important;
   }
 
+  /* Links & Clean Typography */
   a {
     color: #000000 !important;
     text-decoration: none !important;
   }
-}
 
+  a[href]::after {
+    content: none !important; /* लिंक का URL प्रिंट न हो */
+  }
+
+  /* Specific Print Layout Overrides */
+  .print-portrait {
+    page: portrait-page;
+  }
+
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+}
 
 /* --------------------------------------------------------------------------
    8. RESPONSIVE TABLET LAYOUT
    -------------------------------------------------------------------------- */
 
 @media (max-width: 900px) {
-
+  /* Typography & Base Sizing */
   html,
   body {
-    font-size: 13px;
+    font-size: 12.5px;
   }
 
+  /* App Layout Structure */
+  #authenticated-app > .flex-1 {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  /* Tablet Sidebar Adaptation */
+  aside.w-64 {
+    width: 100% !important;
+    max-height: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-strong);
+    padding: 10px 12px;
+  }
+
+  /* Sidebar Grid Layout for Tablet */
+  #lm-sidebar-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 6px;
+  }
+
+  /* KPI Analytics Grid (4 columns to 2x2 grid) */
+  #kpi-dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px;
+  }
+
+  /* Form Grids (Full Width Single Column) */
   .lm-form-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 10px;
   }
 
   .lm-form-group-full {
-    grid-column: auto;
+    grid-column: 1 / -1;
+  }
+
+  /* Modal Optimization for Tablet Viewport */
+  .modal-backdrop {
+    padding: 10px;
   }
 
   .modal-box {
-    max-width: 94vw;
-    max-height: 90vh;
+    max-width: 96vw !important;
+    max-height: 92vh !important;
+    border-radius: var(--radius-md);
   }
 
+  .modal-body {
+    padding: 14px;
+  }
+
+  /* High-Density Data Tables on Tablet */
   .table-container {
     border-radius: var(--radius-sm);
+    max-height: calc(100vh - 280px);
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
   }
 
   .muster-grid {
@@ -698,17 +1251,41 @@ textarea:disabled {
 
   .muster-grid th,
   .muster-grid td {
-    padding: 4px 3px;
+    padding: 3px 2px;
+    height: 26px;
+  }
+
+  /* Sticky Identifiers Optimization */
+  :root {
+    --muster-col1-w: 52px;
+    --muster-col2-w: 130px;
+  }
+
+  .muster-grid .sticky-col-2 {
+    padding-left: 6px;
+    font-size: 10.5px;
+  }
+
+  /* Supervisor Attendance Cards */
+  .supervisor-attendance-card {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .attendance-btn {
+    min-width: 36px;
+    min-height: 34px;
+    padding: 4px 8px;
+    font-size: 11px;
   }
 }
-
-
+   
 /* --------------------------------------------------------------------------
-   9. MOBILE LAYOUT
+   9. MOBILE LAYOUT (SMARTPHONES & FIELD DEVICES)
    -------------------------------------------------------------------------- */
 
 @media (max-width: 640px) {
-
+  /* Typography & Base Reset */
   html,
   body {
     font-size: 12px;
@@ -718,107 +1295,263 @@ textarea:disabled {
     overflow-x: hidden;
   }
 
-  .lm-btn {
-    min-height: 40px;
-    padding: 8px 12px;
+  /* Top Navigation Bar on Mobile */
+  #authenticated-app header.lm-brown {
+    height: auto !important;
+    padding: 8px 10px;
+    flex-wrap: wrap;
+    gap: 6px;
   }
 
-  .lm-btn-gold {
-    min-height: 40px;
-  }
-
-  .attendance-grid {
-    gap: 5px;
-  }
-
-  .attendance-btn {
-    min-width: 40px;
-    min-height: 38px;
-    padding: 6px 9px;
+  #user-topbar-firm {
+    max-width: 130px !important;
     font-size: 11px;
   }
 
-  .table-container {
-    width: 100%;
-    overflow-x: auto;
-    border-radius: var(--radius-sm);
+  /* Touch-Friendly Action Buttons */
+  .lm-btn,
+  .lm-btn-gold {
+    min-height: 42px;
+    padding: 8px 14px;
+    font-size: 12px;
+    width: 100%; /* मोबाइल पर बटन्स फुल विड्थ */
   }
 
-  .muster-grid {
-    width: max-content;
-    min-width: 900px;
-    font-size: 10px;
+  /* Form Controls (iOS Safari Auto-Zoom Fix) */
+  .modal-box input,
+  .modal-box select,
+  .modal-box textarea,
+  .lm-input,
+  .lm-select,
+  .lm-textarea {
+    min-height: 42px;
+    font-size: 16px !important; /* iOS पर अवांछित ज़ूम रोकता है */
+    padding: 8px 12px;
   }
 
-  .muster-grid th,
-  .muster-grid td {
-    padding: 5px 3px;
-    height: 32px;
-  }
-
-  .modal-backdrop {
-    padding: 10px;
-  }
-
-  .modal-box {
-    width: 100%;
-    max-width: 100%;
-    max-height: 94vh;
-    border-radius: var(--radius-md);
-  }
-
-  input,
-  select,
-  textarea {
-    min-height: 40px;
-    font-size: 13px;
-  }
-
-  textarea {
+  .modal-box textarea,
+  .lm-textarea {
     min-height: 90px;
   }
 
   .lm-form-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     gap: 10px;
   }
-}
 
-
-/* --------------------------------------------------------------------------
-   10. EXTRA SMALL MOBILE DEVICES
-   -------------------------------------------------------------------------- */
-
-@media (max-width: 380px) {
-
-  .attendance-btn {
-    min-width: 36px;
-    min-height: 36px;
-    padding: 5px 7px;
-    font-size: 10px;
+  .lm-form-group-full {
+    grid-column: 1 / -1;
   }
 
-  .lm-btn {
-    padding: 7px 9px;
-    font-size: 11px;
+  /* Captcha Row on Small Screens */
+  .lm-captcha-row {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .lm-captcha-canvas {
+    width: 120px !important;
+    height: 38px !important;
+  }
+
+  /* Supervisor Mobile Attendance Card & Controls */
+  .supervisor-attendance-card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .supervisor-worker-meta {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .attendance-grid {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+  }
+
+  .attendance-btn-group {
+    flex: 1;
+    display: flex;
+    gap: 4px;
+  }
+
+  .attendance-btn {
+    flex: 1;
+    min-width: 0;
+    min-height: 42px;
+    padding: 6px 4px;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .attendance-ot-wrap {
+    height: 42px;
+    padding: 0 4px;
+  }
+
+  .attendance-ot-input {
+    width: 28px;
+    font-size: 13px !important;
+  }
+
+  .attendance-cam-btn {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+  }
+
+  /* Modal Surface on Mobile */
+  .modal-backdrop {
+    padding: 8px;
+    align-items: flex-end; /* मोबाइल पर बॉटम-शीट जैसा व्यवहार */
+  }
+
+  .modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 92vh !important;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-bottom: none;
+  }
+
+  .modal-header {
+    padding: 10px 14px;
+  }
+
+  .modal-body {
+    padding: 14px 12px;
+  }
+
+  /* 31-Day Muster Register Table Container */
+  .table-container {
+    width: 100%;
+    max-height: calc(100vh - 240px);
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
   }
 
   .muster-grid {
-    min-width: 850px;
+    width: max-content;
+    min-width: 100%;
+    font-size: 9.5px;
   }
 
-  input,
-  select,
-  textarea {
-    font-size: 12px;
+  .muster-grid th,
+  .muster-grid td {
+    padding: 4px 2px;
+    height: 30px;
+  }
+
+  /* Compact Sticky Offsets for 360px Screens */
+  :root {
+    --muster-col1-w: 48px;
+    --muster-col2-w: 110px;
+  }
+
+  .muster-grid .sticky-col-2 {
+    font-size: 10px;
+    padding-left: 4px;
   }
 }
 
+/* --------------------------------------------------------------------------
+   10. EXTRA SMALL MOBILE DEVICES (iPhone SE, Small Androids <= 380px)
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 380px) {
+  /* Topbar Tight Viewport Adaptation */
+  #authenticated-app header.lm-brown {
+    padding: 6px 8px;
+    gap: 4px;
+  }
+
+  #user-topbar-firm {
+    max-width: 90px !important;
+    font-size: 10px;
+  }
+
+  /* Retain 16px to prevent iOS Safari auto-zoom */
+  .modal-box input,
+  .modal-box select,
+  .modal-box textarea,
+  .lm-input,
+  .lm-select,
+  .lm-textarea {
+    font-size: 16px !important;
+    padding: 6px 10px;
+    min-height: 38px;
+  }
+
+  /* Compact Action Buttons with Usable Touch Area */
+  .lm-btn,
+  .lm-btn-gold {
+    min-height: 38px;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  /* Mobile Supervisor Attendance Group */
+  .attendance-grid {
+    gap: 2px;
+  }
+
+  .attendance-btn {
+    min-width: 32px;
+    min-height: 38px;
+    padding: 4px 2px;
+    font-size: 11px;
+  }
+
+  .attendance-ot-wrap {
+    height: 38px;
+    padding: 0 2px;
+  }
+
+  .attendance-ot-input {
+    width: 24px;
+    font-size: 12px !important;
+  }
+
+  .attendance-cam-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  /* High-Density Muster Grid Scaling */
+  :root {
+    --muster-col1-w: 42px;
+    --muster-col2-w: 96px;
+  }
+
+  .muster-grid {
+    font-size: 9px;
+  }
+
+  .muster-grid th,
+  .muster-grid td {
+    height: 26px;
+    padding: 2px 1px;
+  }
+
+  .muster-grid .sticky-col-2 {
+    font-size: 9.5px;
+    padding-left: 3px;
+  }
+}
 
 /* --------------------------------------------------------------------------
    11. UTILITY CLASSES
    -------------------------------------------------------------------------- */
 
+/* Display & Visibility */
 .hidden {
   display: none !important;
 }
@@ -827,89 +1560,254 @@ textarea:disabled {
   visibility: hidden !important;
 }
 
+.block {
+  display: block !important;
+}
+
+.inline-block {
+  display: inline-block !important;
+}
+
+.flex {
+  display: flex !important;
+}
+
+.inline-flex {
+  display: inline-flex !important;
+}
+
+/* Flex Alignment Helpers */
+.flex-center {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.flex-between {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+/* User Interaction */
 .pointer-events-none {
   pointer-events: none !important;
 }
 
+.pointer-events-auto {
+  pointer-events: auto !important;
+}
+
 .select-none {
   user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.select-text {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+/* Overflow Controls */
+.overflow-hidden {
+  overflow: hidden !important;
 }
 
 .overflow-x-auto {
   overflow-x: auto !important;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .overflow-y-auto {
   overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
+/* Typography Helpers */
 .text-mono {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono) !important;
+}
+
+.text-sans {
+  font-family: var(--font-sans) !important;
 }
 
 .text-muted {
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
 }
 
 .text-faint {
-  color: var(--text-faint);
+  color: var(--text-faint) !important;
 }
 
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.truncate {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Live Status Pulse Helper */
+.pulse-emerald {
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: lmPulse 2s infinite;
+}
+
+@keyframes lmPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
 
 /* --------------------------------------------------------------------------
-   12. STATUS BADGES
+   12. STATUS BADGES (TAMPER-RESISTANT & COMPLIANCE READY)
    -------------------------------------------------------------------------- */
 
 .lm-status {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  min-height: 24px;
-  padding: 3px 8px;
+  gap: 5.5px;
+  min-height: 22px;
+  padding: 2px 9px;
   border-radius: var(--radius-full);
+  font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  border: 1px solid transparent;
+  pointer-events: none; /* अनपेक्षित क्लिक या टेक्स्ट सलेक्शन से छेड़छाड़ रोकने हेतु */
 }
 
+/* लाइव स्टेटस डॉट (Anti-Spoofing Visual Dot) */
+.lm-status::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* 1. ACTIVE / ACTIVE CONTRACTOR */
 .lm-status-active {
   background-color: var(--status-emerald-subtle);
   color: #34d399;
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
-.lm-status-inactive {
-  background-color: var(--status-rose-subtle);
-  color: #fb7185;
+.lm-status-active::before {
+  background-color: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
 }
 
-.lm-status-pending {
-  background-color: var(--status-amber-subtle);
-  color: #fbbf24;
-}
-
+/* 2. APPROVED / VERIFIED RECORD */
 .lm-status-approved {
   background-color: var(--status-emerald-subtle);
   color: #34d399;
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
+.lm-status-approved::before {
+  background-color: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+/* 3. PENDING / AWAITING APPROVAL */
+.lm-status-pending {
+  background-color: var(--status-amber-subtle);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.lm-status-pending::before {
+  background-color: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+}
+
+/* 4. INACTIVE / SUSPENDED */
+.lm-status-inactive {
+  background-color: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+  border-color: rgba(148, 163, 184, 0.25);
+}
+
+.lm-status-inactive::before {
+  background-color: #94a3b8;
+}
+
+/* 5. BLOCKED / REJECTED */
 .lm-status-blocked {
   background-color: var(--status-rose-subtle);
   color: #fb7185;
+  border-color: rgba(244, 63, 94, 0.3);
 }
 
+.lm-status-blocked::before {
+  background-color: #f43f5e;
+  box-shadow: 0 0 6px rgba(244, 63, 94, 0.6);
+}
 
 /* --------------------------------------------------------------------------
-   13. DASHBOARD CARDS
+   PRINT STYLES FOR STATUS BADGES (High-Contrast Audit Export)
    -------------------------------------------------------------------------- */
 
+@media print {
+  .lm-status {
+    border: 1pt solid #000000 !important;
+    background: transparent !important;
+    color: #000000 !important;
+    font-size: 7pt !important;
+    padding: 1px 4px !important;
+    min-height: auto !important;
+  }
+
+  .lm-status::before {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. DASHBOARD CARDS & STAT METRICS
+   -------------------------------------------------------------------------- */
+
+/* Base Dashboard Card */
 .lm-card {
+  display: flex;
+  flex-direction: column;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   min-width: 0;
+  overflow: hidden;
   transition:
     border-color var(--transition-normal),
     transform var(--transition-normal),
@@ -921,109 +1819,430 @@ textarea:disabled {
   box-shadow: var(--shadow-elevated);
 }
 
+/* Card Header */
 .lm-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   padding: 12px 14px;
+  background-color: var(--bg-surface-elevated);
   border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
 }
 
+.lm-card-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.2;
+}
+
+.lm-card-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Card Body */
 .lm-card-body {
   padding: 14px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
+/* Card Footer */
 .lm-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   padding: 10px 14px;
+  background-color: var(--bg-surface-subtle);
   border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--text-muted);
 }
-
 
 /* --------------------------------------------------------------------------
-   14. PERIOD LOCK UI
+   KPI METRIC STAT CARDS
    -------------------------------------------------------------------------- */
 
+.lm-card-stat {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  border-left: 3px solid var(--border-strong);
+}
+
+.lm-card-stat.stat-emerald {
+  border-left-color: var(--status-emerald);
+}
+
+.lm-card-stat.stat-amber {
+  border-left-color: var(--status-amber);
+}
+
+.lm-card-stat.stat-rose {
+  border-left-color: var(--status-rose);
+}
+
+.lm-card-stat.stat-sky {
+  border-left-color: var(--status-sky);
+}
+
+.lm-stat-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.lm-stat-value {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text-main);
+  line-height: 1.1;
+}
+
+.lm-stat-meta {
+  font-size: 10px;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   14. PERIOD LOCK UI (TAMPER-RESISTANT WORKFORCE FREEZE)
+   -------------------------------------------------------------------------- */
+
+/* Lock Status Badge in Workspace Topbar */
 #period-lock-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  min-height: 22px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  border: 1px solid transparent;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
+/* State: Period Locked / Finalized */
+#period-lock-badge.is-locked {
+  background-color: var(--status-rose-subtle);
+  color: #fb7185;
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
+#period-lock-badge.is-locked::before {
+  content: "🔒";
+  font-size: 11px;
+}
+
+/* State: Period Open / Modifiable */
+#period-lock-badge.is-open {
+  background-color: var(--status-emerald-subtle);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+#period-lock-badge.is-open::before {
+  content: "🔓";
+  font-size: 11px;
+}
+
+/* Disabled Input Controls when Period is Frozen */
 #global-fy-select:disabled,
-#global-month-filter:disabled {
-  cursor: not-allowed;
-  opacity: 0.75;
+#global-month-filter:disabled,
+.period-locked-control:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.7;
+  background-color: var(--bg-surface-elevated) !important;
+  border-color: var(--border-strong) !important;
+  color: var(--text-faint) !important;
 }
 
+/* Comprehensive Lock Freeze Overlay (Prevents Inspection Tampering) */
+.period-frozen-overlay {
+  position: relative;
+}
+
+.period-frozen-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(2, 6, 23, 0.35);
+  backdrop-filter: grayscale(40%);
+  -webkit-backdrop-filter: grayscale(40%);
+  pointer-events: all;
+  cursor: not-allowed;
+  z-index: 30;
+  border-radius: inherit;
+}
+
+/* Visual Notice Banner when Reviewing a Locked Period */
+.period-lock-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  border-radius: var(--radius-sm);
+  color: #fca5a5;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.period-lock-notice-icon {
+  color: var(--status-rose);
+  font-size: 14px;
+  flex-shrink: 0;
+}
 
 /* --------------------------------------------------------------------------
-   15. NETWORK / SYNC STATUS
+   15. NETWORK / REALTIME SYNC STATUS
    -------------------------------------------------------------------------- */
 
 #sync-status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 5.5px;
+  min-height: 20px;
+  padding: 2px 7.5px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.03em;
   white-space: nowrap;
   user-select: none;
+  -webkit-user-select: none;
+  border: 1px solid transparent;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
+/* रियल-टाइम स्टेटस इंडिकेटर डॉट */
+#sync-status-indicator::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* 1. STATE: ONLINE & FULLY SYNCED */
 .sync-online {
-  background-color: #047857 !important;
-  color: #ffffff !important;
+  background-color: rgba(16, 185, 129, 0.18) !important;
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
 }
 
+.sync-online::before {
+  background-color: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
+  animation: lmSyncPulse 2s infinite ease-in-out;
+}
+
+/* 2. STATE: OFFLINE / DISCONNECTED */
 .sync-offline {
-  background-color: #be123c !important;
-  color: #ffffff !important;
+  background-color: rgba(244, 63, 94, 0.18) !important;
+  color: #fb7185 !important;
+  border-color: rgba(244, 63, 94, 0.4) !important;
 }
 
+.sync-offline::before {
+  background-color: #f43f5e;
+  box-shadow: 0 0 6px rgba(244, 63, 94, 0.8);
+}
+
+/* 3. STATE: SYNCING / PENDING WRITE */
 .sync-pending {
-  background-color: #b45309 !important;
-  color: #ffffff !important;
+  background-color: rgba(245, 158, 11, 0.18) !important;
+  color: #fbbf24 !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
 }
 
+.sync-pending::before {
+  background-color: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.8);
+  animation: lmSyncSpin 1s infinite linear;
+}
+
+/* Live Pulse Animation */
+@keyframes lmSyncPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes lmSyncSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 /* --------------------------------------------------------------------------
-   16. NOTIFICATION BADGE
+   16. NOTIFICATION BADGE & ACTION ALERTS
    -------------------------------------------------------------------------- */
 
+/* Parent Anchor on Notification Bell Button */
+#contractor-notif-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Floating Notification Counter Badge */
 #pending-request-count {
-  min-width: 18px;
-  min-height: 18px;
-  padding: 2px 5px;
+  position: absolute;
+  top: -4px;
+  right: -5px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
   border-radius: var(--radius-full);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background-color: var(--status-rose);
   color: #ffffff;
+  border: 1.5px solid var(--bg-surface);
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 900;
   line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  box-shadow: 0 2px 5px rgba(244, 63, 94, 0.4);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
 }
 
+/* Empty or Zero State Auto-Hide */
+#pending-request-count:empty,
+#pending-request-count[data-count="0"] {
+  display: none !important;
+}
+
+/* Active Alert Pulse Effect */
+#pending-request-count.has-pending {
+  animation: lmNotifPing 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes lmNotifPing {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7);
+  }
+  70% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 5px rgba(244, 63, 94, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0);
+  }
+}
 
 /* --------------------------------------------------------------------------
    17. ACCESSIBILITY & KEYBOARD NAVIGATION
    -------------------------------------------------------------------------- */
 
+/* Universal Focus State for Keyboard Users */
 :focus-visible {
-  outline: 2px solid var(--lm-gold-start);
+  outline: 2px solid var(--lm-gold-start, #fbbf24);
   outline-offset: 2px;
+  border-radius: inherit; /* फोकस रिंग को एलिमेंट के आकार (गोल/चकोर) के अनुसार मोड़ता है */
+  box-shadow: none; /* डिफ़ॉल्ट ब्राउज़र शैडो को ओवरराइड करें */
 }
 
+/* Screen Reader Only (Visually Hidden but Accessible to Screen Readers) */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip to Main Content Link (Keyboard Navigation Standard) */
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 10px;
+  background-color: var(--lm-brown);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  z-index: 9999;
+  font-weight: 800;
+  font-family: var(--font-sans);
+  transition: top var(--transition-fast);
+}
+
+.skip-to-content:focus {
+  top: 10px;
+  outline: 2px solid var(--lm-gold-start);
+}
+
+/* Decorative elements should not intercept pointer interactions */
 [aria-hidden="true"] {
   pointer-events: none;
 }
 
+/* Respect OS-level "Reduce Motion" Preferences */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
     scroll-behavior: auto !important;
+    /* 0ms की जगह 0.01ms का उपयोग ताकि JS के "transitionend" इवेंट क्रैश न हों */
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
 }
-
 
 /* --------------------------------------------------------------------------
    18. DARK UI TABLE WRAPPER SAFETY
@@ -1031,85 +2250,234 @@ textarea:disabled {
 
 /*
    Muster table intentionally remains white because it represents
-   a printable attendance / wage register.
+   a printable statutory attendance / wage register (Form T Compliance).
 */
 
 .table-container .muster-grid {
-  color: #0f172a;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
 }
 
+/* Form Controls Inside Printable White Grid */
 .table-container .muster-grid input,
 .table-container .muster-grid select {
-  color: #0f172a;
-  background-color: #ffffff;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: var(--radius-xs);
+  padding: 2px 4px !important;
+  font-family: var(--font-mono);
+  font-size: 11px !important;
+  line-height: 1.2;
+  text-align: center;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
+/* Hover & Focus inside Table Cells */
+.table-container .muster-grid input:hover:not(:disabled),
+.table-container .muster-grid select:hover:not(:disabled) {
+  border-color: #64748b !important;
+}
+
+.table-container .muster-grid input:focus,
+.table-container .muster-grid select:focus {
+  border-color: var(--lm-gold-end, #b45309) !important;
+  background-color: #fffbeb !important;
+  box-shadow: inset 0 0 0 1px var(--lm-gold-end, #b45309) !important;
+}
+
+/* Disabled & Read-Only Cells in Table */
+.table-container .muster-grid input:disabled,
+.table-container .muster-grid select:disabled,
+.table-container .muster-grid input[readonly] {
+  background-color: #f1f5f9 !important;
+  color: #64748b !important;
+  border-color: #e2e8f0 !important;
+  cursor: not-allowed !important;
+}
+
+/* Hide Spin Buttons inside Grid Inputs (OT / Hours) */
+.table-container .muster-grid input[type="number"]::-webkit-inner-spin-button,
+.table-container .muster-grid input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.table-container .muster-grid input[type="number"] {
+  -moz-appearance: textfield;
+}
 
 /* --------------------------------------------------------------------------
-   19. SAFE LONG TEXT HANDLING
+   19. SAFE LONG TEXT HANDLING (FLEX & AUDIT COMPLIANT)
    -------------------------------------------------------------------------- */
 
+/* Standard Word Breaking for Dynamic Strings & Notes */
 .lm-break-word {
   overflow-wrap: anywhere;
   word-break: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
+/* Force Single-Line Presentation */
 .lm-nowrap {
-  white-space: nowrap;
+  white-space: nowrap !important;
 }
 
+/* Flex-Safe Single-Line Truncation */
 .lm-truncate {
+  display: block;
+  max-width: 100%;
+  min-width: 0; /* Flexbox और CSS Grid में ट्रंकेशन फेल होने से रोकता है */
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Multi-Line Clamping for Descriptions & Site Addresses */
+.lm-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  min-width: 0;
 }
 
+.lm-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Secure Preserved Identifiers (Aadhaar, Bank A/c, IFSC, TRRN) */
+.lm-id-code {
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  user-select: all; /* एक क्लिक में पूरा अकाउंट/आईडी कॉपी करने हेतु */
+}
 
 /* --------------------------------------------------------------------------
-   20. FINAL MOBILE SAFETY
+   20. FINAL MOBILE SAFETY (EDGE-CASE VIEWPORTS & TOUCH SHIELDS)
    -------------------------------------------------------------------------- */
 
 @media (max-width: 640px) {
+  /* Dynamic Sticky Offsets based on Mobile Scale */
+  .muster-grid .sticky-col-1 {
+    left: 0 !important;
+    z-index: 6 !important;
+  }
 
-  .sticky-col {
+  .muster-grid .sticky-col-2 {
+    left: var(--muster-col1-w, 48px) !important;
+    z-index: 6 !important;
+    box-shadow: 3px 0 5px -2px rgba(15, 23, 42, 0.16) !important;
+  }
+
+  /* Fixed sticky headers crossing over sticky columns */
+  .muster-grid thead th.sticky-col-1 {
+    z-index: 30 !important;
     left: 0 !important;
   }
 
-  .sticky-col-2 {
-    left: 70px !important;
+  .muster-grid thead th.sticky-col-2 {
+    z-index: 30 !important;
+    left: var(--muster-col1-w, 48px) !important;
+    box-shadow: 3px 0 5px -2px rgba(15, 23, 42, 0.16) !important;
   }
 
-  .muster-grid .sticky-col,
-  .muster-grid .sticky-col-2 {
-    box-shadow: 2px 0 5px rgba(15, 23, 42, 0.12);
-  }
-
+  /* Supervisor Touch Attendance Container Safety */
   .supervisor-attendance-container {
-    overflow-x: auto;
-    overflow-y: visible;
+    width: 100% !important;
+    overflow-x: hidden !important; /* कार्ड्स फुल-विड्थ हैं, हॉरिजॉन्टल स्क्रॉल की आवश्यकता नहीं */
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y; /* केवल वर्टिकल स्वाइप की अनुमति दें */
+  }
+
+  /* Touch Device Tap Highlight Elimination */
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 }
-
 
 /* --------------------------------------------------------------------------
-   21. PRINT VISIBILITY HELPERS
+   21. PRINT VISIBILITY & STATUTORY REPORTING HELPERS
    -------------------------------------------------------------------------- */
 
-.print-only {
-  display: none;
+/* Default Screen Behavior: Completely Suppress Print Content */
+.print-only,
+.print-only-inline,
+.print-only-flex,
+.print-only-table,
+.print-only-row {
+  display: none !important;
 }
 
+.screen-only {
+  display: block;
+}
+
+span.screen-only {
+  display: inline;
+}
+
+/* Print Overrides */
 @media print {
+  /* Hide Screen UI Elements */
+  .screen-only,
+  .no-print,
+  .hide-on-print {
+    display: none !important;
+  }
+
+  /* Structural Print Displays */
   .print-only {
     display: block !important;
   }
 
-  .screen-only {
-    display: none !important;
+  .print-only-inline {
+    display: inline !important;
+  }
+
+  .print-only-flex {
+    display: flex !important;
+  }
+
+  .print-only-table {
+    display: table !important;
+    width: 100% !important;
+  }
+
+  .print-only-row {
+    display: table-row !important;
+  }
+
+  /* Page Break Controllers for Multi-Worker Registers */
+  .break-before-page {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  .break-after-page {
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .avoid-break-inside {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 }
-
-
 /* --------------------------------------------------------------------------
    END OF LABOUR MITRA ENTERPRISE OS PRODUCTION STYLESHEET V4.0
    -------------------------------------------------------------------------- */
