@@ -4078,7 +4078,7 @@ function showCorrectionRequestsDesk() {
                                 ${SECURITY_ENGINE.sanitize(r.workerName)} — तारीख: <span class="text-mono" style="color: #fbbf24;">${formatIndianDate(r.date)}</span>
                             </p>
                             <p style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
-                                सुधार: <span style="font-weight: 700; color: #f87171;">${r.oldStatus \vert{}\vert{} 'A'} (${r.oldOt || 0}h)</span> ➔ <span style="font-weight: 800; color: #34d399;">${r.newStatus} (${r.newOt || 0}h OT)</span>
+                               सुधार: <span style="font-weight: 700; color: #f87171;">${r.oldStatus || 'A'} (${r.oldOt || 0}h)</span> ➔ <span style="font-weight: 800; color: #34d399;">${r.newStatus} (${r.newOt || 0}h OT)</span>
                             </p>
                             <p style="font-size: 11px; color: #fde68a; background-color: rgba(245, 158, 11, 0.15); padding: 4px 8px; border-radius: var(--radius-xs); border: 1px solid rgba(245, 158, 11, 0.3); margin-top: 5px;">
                                 कारण: "${SECURITY_ENGINE.sanitize(r.reason || 'Not specified')}"
