@@ -1,0 +1,236 @@
+/* ==========================================================================
+   LABOUR MITRA ENTERPRISE OS - PRODUCTION STYLESHEET V4.2
+   Tailored for: Industrial Manpower Supply, EPFO Compliance & 3-Sheet Ledger
+   ========================================================================== */
+
+:root {
+  --bg-app: #020617;
+  --bg-surface: #0f172a;
+  --bg-surface-elevated: #1e293b;
+  --bg-surface-subtle: #090d16;
+
+  --border-subtle: #1e293b;
+  --border-strong: #334155;
+  --border-focus: #f59e0b;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+
+  --lm-brown: #4a2411;
+  --lm-brown-dark: #33180a;
+  --lm-gold-start: #f59e0b;
+  --lm-gold-end: #d97706;
+  --lm-gold-gradient: linear-gradient(135deg, var(--lm-gold-start), var(--lm-gold-end));
+
+  --status-emerald: #10b981;
+  --status-amber: #f59e0b;
+  --status-rose: #f43f5e;
+  --status-indigo: #6366f1;
+  --status-sky: #0ea5e9;
+
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.15s ease;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --focus-ring: 0 0 0 3px rgba(245, 158, 11, 0.25);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+}
+
+button {
+  cursor: pointer;
+  user-select: none;
+}
+
+.lm-brown {
+  background-color: var(--lm-brown) !important;
+  color: #ffffff;
+}
+
+.lm-brown-dark {
+  background-color: var(--lm-brown-dark) !important;
+  color: #ffffff;
+}
+
+.lm-btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--lm-gold-gradient) !important;
+  color: #0f172a !important;
+  font-weight: 800 !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.lm-btn-gold:hover:not(:disabled) {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+/* 31-Day Muster Grid Styles */
+.table-container {
+  width: 100%;
+  max-height: calc(100vh - 220px);
+  overflow: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+}
+
+.muster-grid {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 11px;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.muster-grid th, .muster-grid td {
+  border-right: 1px solid #cbd5e1;
+  border-bottom: 1px solid #cbd5e1;
+  text-align: center;
+  padding: 4px 3px;
+  white-space: nowrap;
+  height: 28px;
+}
+
+.muster-grid thead th {
+  background-color: #fef08a;
+  color: #4a2411;
+  font-weight: 800;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Sticky Columns for Muster */
+:root {
+  --muster-col1-w: 64px;
+  --muster-col2-w: 160px;
+}
+
+.muster-grid .sticky-col-1 {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background-color: #ffffff;
+  min-width: var(--muster-col1-w);
+}
+
+.muster-grid .sticky-col-2 {
+  position: sticky;
+  left: var(--muster-col1-w);
+  z-index: 5;
+  background-color: #ffffff;
+  min-width: var(--muster-col2-w);
+  text-align: left;
+  padding-left: 8px;
+}
+
+.muster-grid thead th.sticky-col-1 { z-index: 25; left: 0; background-color: #fef08a; }
+.muster-grid thead th.sticky-col-2 { z-index: 25; left: var(--muster-col1-w); background-color: #fef08a; }
+
+/* Floating Live Chat Widget Styles */
+.lm-chat-floating-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-full);
+  background: var(--lm-gold-gradient);
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-elevated);
+  cursor: pointer;
+  z-index: 999;
+  border: 2px solid #ffffff;
+  transition: transform var(--transition-fast);
+}
+.lm-chat-floating-btn:hover {
+  transform: scale(1.08);
+}
+.lm-chat-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: var(--status-rose);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-app);
+}
+
+/* Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.modal-box {
+  width: 100%;
+  max-width: min(96vw, 760px);
+  max-height: 90vh;
+  background-color: #fffbeb;
+  border: 2px solid var(--lm-brown);
+  border-radius: var(--radius-lg);
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Print Optimization */
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  aside, header, nav, footer, button, .no-print, .modal-backdrop, .lm-chat-floating-btn { display: none !important; }
+  .table-container { overflow: visible !important; border: none !important; }
+  .muster-grid th, .muster-grid td { position: static !important; border: 0.5pt solid #000 !important; }
+}
